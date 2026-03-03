@@ -45,6 +45,10 @@ require_once MEDIALAB_CORE_PATH . 'inc/activity-log.php';
     require_once MEDIALAB_CORE_PATH . 'inc/hero-image.php';
     require_once MEDIALAB_CORE_PATH . 'inc/notifications-cpt.php';
     require_once MEDIALAB_CORE_PATH . 'inc/notifications-shortcodes.php';
+
+// Multi-Language & Top Header
+require_once __DIR__ . '/inc/multi-language.php';
+require_once __DIR__ . '/inc/acf-top-header.php';
 }
 add_action('plugins_loaded', 'medialab_core_init', 5);
 

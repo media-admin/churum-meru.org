@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-02-24 23:10:35+0000\n"
+"PO-Revision-Date: 2026-03-02 22:16:42+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6740,13 +6740,13 @@ msgstr "Sichere und zuverlässig Zahlungen über das PayPal-Konto deines Kunden.
 msgid "Paymob is a leading payment gateway in the Middle East and Africa. Accept payments online and in-store with Paymob."
 msgstr "Paymob ist ein führendes Zahlungs-Gateway im Nahen Osten und Afrika. Akzeptiere Zahlungen online und in Geschäften mit Paymob."
 
-#: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3405
-msgid "Paymob"
-msgstr "Paymob"
-
 #: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3372
 msgid "The Payfast extension for WooCommerce enables you to accept payments by Credit Card and EFT via one of South Africa's most popular payment gateways. No setup fees or monthly subscription costs. Selecting this extension will configure your store to use South African rands as the selected currency."
 msgstr "Mithilfe der PayFast-Erweiterung für WooCommerce kannst du über eines der beliebtesten Zahlungs-Gateways Südafrikas Zahlungen per Kreditkarte und elektronischer Überweisung entgegennehmen. Keine Einrichtungsgebühren oder monatlichen Abonnementkosten. Durch die Auswahl dieser Erweiterung wird dein Shop darauf konfiguriert, den südafrikanischen Rand als ausgewählte Währung zu verwenden."
+
+#: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3405
+msgid "Paymob"
+msgstr "Paymob"
 
 #: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3286
 msgid "Your trusted payments partner in Asia and around the world."
@@ -18540,16 +18540,16 @@ msgstr "Ein Link zu einer Produktkategorie."
 msgid "Product Category Link"
 msgstr "Produktkategorie-Link"
 
+#: src/Internal/Admin/CustomerEffortScoreTracks.php:517
+msgid "How easy was it to add a product tag?"
+msgstr "Wie einfach war das Hinzufügen deines Produktschlagworts?"
+
 #. translators: %1$s: Link to WP Mail Logging plugin, %2$s: Link to Email FAQ
 #. support page.
 #: includes/admin/settings/class-wc-settings-emails.php:78
 #: includes/admin/settings/class-wc-settings-emails.php:594
 msgid "To ensure your store&rsquo;s notifications arrive in your and your customers&rsquo; inboxes, we recommend connecting your email address to your domain and setting up a dedicated SMTP server. If something doesn&rsquo;t seem to be sending correctly, install the <a href=\"%1$s\">WP Mail Logging Plugin</a> or check the <a href=\"%2$s\">Email FAQ page</a>."
 msgstr "Um sicherzustellen, dass die Benachrichtigungen deines Shops in deinem Posteingang und denen deiner Kunden ankommen, empfehlen wir dir, deine E-Mail-Adresse mit deiner Domain zu verbinden und einen dedizierten SMTP-Server einzurichten. Sollte etwas nicht korrekt gesendet werden, installiere das <a href=\"%1$s\">WP Mail Logging-Plugin</a> oder lies dir die <a href=\"%2$s\">FAQ-Seite zu E-Mails</a> durch."
-
-#: src/Internal/Admin/CustomerEffortScoreTracks.php:517
-msgid "How easy was it to add a product tag?"
-msgstr "Wie einfach war das Hinzufügen deines Produktschlagworts?"
 
 #: includes/class-wc-post-types.php:380
 msgid "A link to a product."
@@ -18559,7 +18559,7 @@ msgstr "Ein Link zu einem Produkt."
 msgid "Product Link"
 msgstr "Produkt-Link"
 
-#: src/StoreApi/Routes/V1/Batch.php:121
+#: src/StoreApi/Routes/V1/Batch.php:122
 msgid "Invalid path provided."
 msgstr "Ungültiger Pfad angegeben."
 
@@ -22004,13 +22004,13 @@ msgstr "Tutorial ansehen"
 msgid "Changing eCommerce platforms might seem like a big hurdle to overcome, but it is easier than you might think to move your products, customers, and orders to WooCommerce. This article will help you with going through this process."
 msgstr "Der Wechsel der E-Commerce-Plattform mag zunächst als große Hürde erscheinen, es ist aber einfacher als du denkst, deine Produkte, Kunden und Bestellungen zu WooCommerce zu übertragen. Dieser Artikel geleitet dich durch diesen Prozess."
 
-#: src/Internal/Admin/Notes/WooCommerceSubscriptions.php:48
-msgid "WooCommerce Subscriptions allows you to introduce a variety of subscriptions for physical or virtual products and services. Create product-of-the-month clubs, weekly service subscriptions or even yearly software billing packages. Add sign-up fees, offer free trials, or set expiration periods."
-msgstr "WooCommerce-Abonnements ermöglichen dir die Einführung verschiedener Abonnements für physische oder virtuelle Produkte und Dienste. Erstelle monatliche Abonnement-Boxen, wöchentliche Dienstabonnements oder auch Softwarepakete mit jährlicher Abrechnung. Füge Registrierungsgebühren hinzu, biete Gratis-Tests an oder richte Ablauffristen ein."
-
 #: src/Internal/Admin/Notes/MigrateFromShopify.php:65
 msgid "Do you want to migrate from Shopify to WooCommerce?"
 msgstr "Möchtest du von Shopify zu WooCommerce migrieren?"
+
+#: src/Internal/Admin/Notes/WooCommerceSubscriptions.php:48
+msgid "WooCommerce Subscriptions allows you to introduce a variety of subscriptions for physical or virtual products and services. Create product-of-the-month clubs, weekly service subscriptions or even yearly software billing packages. Add sign-up fees, offer free trials, or set expiration periods."
+msgstr "WooCommerce-Abonnements ermöglichen dir die Einführung verschiedener Abonnements für physische oder virtuelle Produkte und Dienste. Erstelle monatliche Abonnement-Boxen, wöchentliche Dienstabonnements oder auch Softwarepakete mit jährlicher Abrechnung. Füge Registrierungsgebühren hinzu, biete Gratis-Tests an oder richte Ablauffristen ein."
 
 #: i18n/states.php:1102
 msgid "Taita-Taveta"
@@ -27274,6 +27274,13 @@ msgstr "Anfrage zum Zurücksetzen des Passworts für {site_title}"
 msgid "Action [%1$s] has invalid arguments. It cannot be JSON decoded to an array. $args = %2$s"
 msgstr "Die Aktion [%1$s] hat ungültige Argumente. Sie kann nicht von JSON zu einem Array umgewandelt werden. $args = %2$s"
 
+#. translators: %s: amount of claims
+#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:381
+msgid "Maximum simultaneous queues already in progress (%s queue). No additional queues will begin processing until the current queues are complete."
+msgid_plural "Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete."
+msgstr[0] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlange). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
+msgstr[1] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlangen). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
+
 #. translators: 1: error message 2: filename 3: line
 #: packages/action-scheduler/classes/abstracts/ActionScheduler_Logger.php:183
 msgid "unexpected shutdown: PHP Fatal error %1$s in %2$s on line %3$s"
@@ -27283,13 +27290,6 @@ msgstr "Unerwartete Abschaltung: Fataler PHP-Fehler %1$s in %2$s in Zeile %3$s"
 #: packages/action-scheduler/classes/ActionScheduler_ListTable.php:437
 msgid "Could not process change for action: \"%1$s\" (ID: %2$d). Error: %3$s"
 msgstr "Änderung für folgende Aktion konnte nicht verarbeitet werden: „%1$s“ (ID: %2$d). Fehler: %3$s"
-
-#. translators: %s: amount of claims
-#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:381
-msgid "Maximum simultaneous queues already in progress (%s queue). No additional queues will begin processing until the current queues are complete."
-msgid_plural "Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete."
-msgstr[0] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlange). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
-msgstr[1] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlangen). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
 
 #. translators: %s: group name(s)
 #. translators: %s is the group name
@@ -37856,6 +37856,10 @@ msgstr "Bestellhinweis."
 msgid "The date the order note was created, in the site's timezone."
 msgstr "Das Datum, an dem der Bestellhinweis erstellt wurde (in der Zeitzone der Website)."
 
+#: includes/class-wc-rest-authentication.php:517
+msgid "Invalid nonce - nonce has already been used."
+msgstr "Ungültiger Nonce – Nonce wurde bereits verwendet."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-order-notes-v1-controller.php:186
 #: includes/rest-api/Controllers/Version1/class-wc-rest-order-notes-v1-controller.php:226
 #: includes/rest-api/Controllers/Version1/class-wc-rest-order-notes-v1-controller.php:268
@@ -37876,10 +37880,6 @@ msgstr "Das Datum, an dem der Bestellhinweis erstellt wurde (in der Zeitzone der
 #: src/StoreApi/Utilities/OrderAuthorizationTrait.php:69
 msgid "Invalid order ID."
 msgstr "Ungültige Bestell-ID."
-
-#: includes/class-wc-rest-authentication.php:517
-msgid "Invalid nonce - nonce has already been used."
-msgstr "Ungültiger Nonce – Nonce wurde bereits verwendet."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-customers-v1-controller.php:788
 #: includes/rest-api/Controllers/Version2/class-wc-rest-customers-v2-controller.php:214
@@ -38663,6 +38663,13 @@ msgstr "Hilfe und Support"
 msgid "Invalid post ID."
 msgstr "Die Beitrags-ID ist ungültig."
 
+#: includes/rest-api/Controllers/Version3/class-wc-rest-crud-controller.php:683
+#: includes/rest-api/Controllers/Version3/class-wc-rest-posts-controller.php:694
+#: src/Admin/API/Reports/Stock/Controller.php:469
+#: src/StoreApi/Routes/V1/Products.php:261
+msgid "Limit result set to all items except those of a particular parent ID."
+msgstr "Den Ergebnissatz auf alle Elemente begrenzen, außer denen mit einer bestimmten übergeordneten ID."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-customers-v1-controller.php:999
 #: includes/rest-api/Controllers/Version1/class-wc-rest-taxes-v1-controller.php:733
 #: includes/rest-api/Controllers/Version1/class-wc-rest-webhooks-v1-controller.php:744
@@ -38674,13 +38681,6 @@ msgstr "Die Beitrags-ID ist ungültig."
 #: src/StoreApi/Routes/V1/Products.php:216
 msgid "Offset the result set by a specific number of items."
 msgstr "Verschiebt den Ergebnissatz um eine bestimmte Elementanzahl."
-
-#: includes/rest-api/Controllers/Version3/class-wc-rest-crud-controller.php:683
-#: includes/rest-api/Controllers/Version3/class-wc-rest-posts-controller.php:694
-#: src/Admin/API/Reports/Stock/Controller.php:469
-#: src/StoreApi/Routes/V1/Products.php:261
-msgid "Limit result set to all items except those of a particular parent ID."
-msgstr "Den Ergebnissatz auf alle Elemente begrenzen, außer denen mit einer bestimmten übergeordneten ID."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-customers-v1-controller.php:1006
 #: includes/rest-api/Controllers/Version1/class-wc-rest-taxes-v1-controller.php:740
@@ -39278,12 +39278,6 @@ msgstr "Diese findest du in der Bestellbestätigungs-E-Mail."
 msgid "To track your order please enter your Order ID in the box below and press the \"Track\" button. This was given to you on your receipt and in the confirmation email you should have received."
 msgstr "Um den Status deiner Bestellung zu verfolgen, gib bitte deine Bestellnummer ein und klicke auf „Nachverfolgen“. Die Bestellnummer steht auf dem Bestellbeleg oder in der Bestätigungsmail, die du erhalten haben solltest."
 
-#. translators: %s is product title
-#: src/Blocks/BlockTypes/Reviews/ProductReviewForm.php:71
-#: templates/single-product-reviews.php:77
-msgid "Leave a Reply to %s"
-msgstr "Schreibe eine Antwort auf %s"
-
 #: templates/single-product/meta.php:38
 msgid "Tag:"
 msgid_plural "Tags:"
@@ -39357,6 +39351,12 @@ msgstr "Perfekt"
 #: assets/client/blocks/order-confirmation-summary.js:1
 msgid "Email:"
 msgstr "E-Mail-Adresse:"
+
+#. translators: %s is product title
+#: src/Blocks/BlockTypes/Reviews/ProductReviewForm.php:71
+#: templates/single-product-reviews.php:77
+msgid "Leave a Reply to %s"
+msgstr "Antworte auf den Kommentar von %s"
 
 #: includes/shortcodes/class-wc-shortcode-my-account.php:143
 #: src/Blocks/BlockTypes/OrderConfirmation/Status.php:147
@@ -44688,14 +44688,6 @@ msgstr "Am meisten Rabatt"
 msgid "Most popular"
 msgstr "Am beliebtesten"
 
-#: includes/admin/reports/class-wc-report-coupon-usage.php:136
-#: includes/admin/reports/class-wc-report-customers.php:173
-#: includes/admin/reports/class-wc-report-sales-by-category.php:120
-#: includes/admin/reports/class-wc-report-sales-by-date.php:582
-#: includes/admin/reports/class-wc-report-sales-by-product.php:147
-msgid "Last 7 days"
-msgstr "Letzte 7 Tage"
-
 #: includes/admin/reports/class-wc-report-coupon-usage.php:135
 #: includes/admin/reports/class-wc-report-customers.php:172
 #: includes/admin/reports/class-wc-report-sales-by-category.php:119
@@ -45128,6 +45120,14 @@ msgstr "Zur letzten Seite"
 #: includes/admin/meta-boxes/views/html-product-data-variations.php:195
 msgid "Go to the next page"
 msgstr "Zur nächsten Seite"
+
+#: includes/admin/reports/class-wc-report-coupon-usage.php:136
+#: includes/admin/reports/class-wc-report-customers.php:173
+#: includes/admin/reports/class-wc-report-sales-by-category.php:120
+#: includes/admin/reports/class-wc-report-sales-by-date.php:582
+#: includes/admin/reports/class-wc-report-sales-by-product.php:147
+msgid "Last 7 days"
+msgstr "Letzte 7 Tage"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:1800
 msgid "Offline Payments"

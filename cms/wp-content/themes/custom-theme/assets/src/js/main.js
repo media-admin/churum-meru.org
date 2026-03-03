@@ -77,3 +77,5 @@ if (document.readyState === 'loading') {
 
 // Theme loaded
 console.log('✨ Custom Theme loaded');
+import initTopHeader from './components/top-header.js';
+initTopHeader();

@@ -468,9 +468,9 @@ function hero_slider_query_shortcode($atts) {
         // Background
         $output .= '<div class="hero-slide__background" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;">';
         $output .= '<picture>';
-        $output .= '<source media="(min-width: 768px)" srcset="' . esc_url($image_desktop) . '">';
-        $output .= '<source media="(max-width: 767px)" srcset="' . esc_url($image_mobile) . '">';
-        $output .= '<img src="' . esc_url($image_desktop) . '" alt="' . esc_attr($title) . '" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">';
+        $output .= '<source media="(min-width: 768px)" srcset="' . esc_url(is_array($image_desktop) ? ($image_desktop["url"] ?? "") : $image_desktop) . '">';
+        $output .= '<source media="(max-width: 767px)" srcset="' . esc_url(is_array($image_mobile) ? ($image_mobile["url"] ?? "") : $image_mobile) . '">';
+        $output .= '<img src="' . esc_url(is_array($image_desktop) ? ($image_desktop["url"] ?? "") : $image_desktop) . '" alt="' . esc_attr($title) . '" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">';
         $output .= '</picture>';
         $output .= '<div class="hero-slide__overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,' . ($overlay_opacity / 100) . ');z-index:1;"></div>';
         $output .= '</div>';

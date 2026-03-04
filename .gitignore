@@ -1,3 +1,1355 @@
+
+Media Lab Starter Kit optimieren
+/
+Asierend auf das ergebis aus dem Projekt „Agency Starter Kit“ möchte ich ausbauend auf die Informationen und Chats daen Kit weiter ausbauen.
+
+Kannst du auf die history zugreifen und kannst mir dabei helfen?
+
+Welche daten und informationen brauchst du für ein optimales ergebnis?
+
+3. März
+
+Erkannte Zugriffsbeschränkung und forderte relevante Projektinformationen an
+Erkannte Zugriffsbeschränkung und forderte relevante Projektinformationen an
+Leider kann ich nicht auf Chats aus anderen Projekten zugreifen – mein Zugriff auf den Chatverlauf ist auf das aktuelle Projekt beschränkt. Das alte Projekt „Agency Starter Kit" ist für mich nicht einsehbar.
+
+Damit wir hier optimal weiterarbeiten können, wäre es am hilfreichsten, wenn du mir folgende Informationen mitgibst:
+
+Das Wichtigste zuerst – teile das bestehende Ergebnis: Kannst du das fertige Starter Kit (als Datei, Code-Snippet oder Text) direkt hier einfügen oder hochladen? Das ist die schnellste Möglichkeit.
+
+Zusätzlich hilfreich wären:
+
+Was wurde gebaut? (z.B. Dokumentenvorlage, Onboarding-Prozess, Angebots-Template, Website-Struktur, Prompt-Bibliothek…)
+Format/Technologie – In welchem Format liegt das Kit vor? (Word, PDF, HTML, Notion, Code…)
+Was funktioniert gut und soll behalten werden?
+Was soll konkret verbessert werden? (z.B. Design, Vollständigkeit, Automatisierung, neue Abschnitte…)
+Zielgruppe des Kits – Für dich intern, für Kunden, für neue Mitarbeiter?
+Deine Agentur – Welche Leistungen bietest du an? (Webdesign, SEO, Ads, Branding…)
+Am einfachsten: lade einfach das bisherige Kit hoch und beschreib mir in 2–3 Sätzen, wohin du damit willst. Dann legen wir direkt los. 🚀
+
+Funktioniert auch ein Zip-File aus einem Guthub repo?
+
+3. März
+
+Bestätigte Machbarkeit von ZIP-Datei-Upload und Extraktion
+Bestätigte Machbarkeit von ZIP-Datei-Upload und Extraktion
+Ja, das funktioniert perfekt! Einfach das ZIP von GitHub herunterladen (Code → Download ZIP) und hier hochladen.
+
+Ich kann das Archiv entpacken, alle Dateien lesen und direkt damit arbeiten. 📁
+
+
+media-lab-starter-kit-main.zip
+zip
+
+Das war der letzte Stand.
+
+Es gab hier ein paar Bugs, die noch gefixt werden müssen. Folgendes sollte über ACF-Felder in einer Agency Core Settings Page im Backend hinzugefügt werden.
+
+Mehrsprachigkeit: Implementierung mit der Möglichkeit, diese im Core Plugin zu aktivieren oder deaktivieren
+Top Header (Position: über Main Header) mit Kontakt-Informationen, der ebenfalls im Core Plugin aktiviert bzw. deaktiviert werden kann und die Daten via Felder ausgefüllt werden können Dabei gibt es Probleme.
+Mehr anzeigen
+3. März
+
+media-lab-starter-kit-main.zip
+zip
+
+Das war der letzte Stand.
+
+Es gab hier ein paar Bugs, die noch gefixt werden müssen. Folgendes sollte über ACF-Felder in einer Agency Core Settings Page im Backend hinzugefügt werden.
+
+Mehrsprachigkeit: Implementierung mit der Möglichkeit, diese im Core Plugin zu aktivieren oder deaktivieren
+Top Header (Position: über Main Header) mit Kontakt-Informationen, der ebenfalls im Core Plugin aktiviert bzw. deaktiviert werden kann und die Daten via Felder ausgefüllt werden können Dabei gibt es Probleme.
+Mehr anzeigen
+3. März
+
+Identifizierte kritischen Bug in ACF-Feldgruppen-Konfiguration und Slug-Mismatch
+Identifizierte kritischen Bug in ACF-Feldgruppen-Konfiguration und Slug-Mismatch
+Ich sehe schon einen kritischen Bug! Lass mich noch mehr analysieren:
+
+
+Identifizierte fünf Bugs und konzipierte systematische Lösungsstrategie
+Identifizierte fünf Bugs und konzipierte systematische Lösungsstrategie
+Jetzt habe ich alles analysiert. Ich habe die Bugs gefunden:
+
+
+Identifizierte mehrere Bugs und plante systematische Fixes für Plugin-Dateien
+Identifizierte mehrere Bugs und plante systematische Fixes für Plugin-Dateien
+Ich habe alle Bugs identifiziert. Jetzt fixe ich alles:
+
+Gefundene Bugs:
+
+Falscher Slug in acf-top-header.php → Location zeigt auf theme-settings statt agency-core-settings
+Doppelte requires in der Hauptdatei (svg-support.php + activity-log.php je 2x)
+Kein Multilanguage-Toggle als ACF-Feld implementiert
+Kein Top-Header-Rendering im Theme header.php
+acf_add_options_page läuft außerhalb des acf/init-Hooks
+
+Copy project to working directory
+Copy project to working directory
+Fix 1: Hauptdatei – doppelte requires entfernen + multilanguage/top-header korrekt laden
+
+
+Datei erstellt, hat einen Befehl ausgeführt
+Datei erstellt, hat einen Befehl ausgeführt
+Fix 2: Neues acf-settings.php – alle ACF-Felder mit korrektem Slug + Multilanguage-Toggle
+
+
+Create new consolidated acf-settings.php
+Create new consolidated acf-settings.php
+Fix 3: multi-language.php – ACF-Toggle-Check einbauen
+
+
+Hat einen Befehl ausgeführt, hat eine Datei bearbeitet
+Hat einen Befehl ausgeführt, hat eine Datei bearbeitet
+Now fix the old instantiation at the bottom of the file (was unconditional):
+
+
+Hat einen Befehl ausgeführt, hat eine Datei bearbeitet
+Hat einen Befehl ausgeführt, hat eine Datei bearbeitet
+Fix 4: header.php – Top Header Template einbauen
+
+
+Add top header rendering before site-header
+Add top header rendering before site-header
+Fix 5: CSS für den Top Header ins Theme
+
+
+5 Befehle ausgeführt, hat eine Datei bearbeitet
+5 Befehle ausgeführt, hat eine Datei bearbeitet
+Fix 6: Altes acf-top-header.php entfernen, Hinweis-Datei hinterlassen
+
+
+Stub out old acf-top-header.php
+Stub out old acf-top-header.php
+Jetzt alles packen und ausgeben:
+
+
+Hat einen Befehl ausgeführt, datei lesen
+Hat einen Befehl ausgeführt, datei lesen
+Alle Bugs sind gefixt. Hier eine Übersicht was geändert wurde:
+
+Behobene Bugs & Änderungen:
+
+Bug 1 – Falscher Options-Page-Slug (kritisch) acf-top-header.php hatte 'value' => 'theme-settings' in der Field-Group-Location, obwohl die Options Page mit dem Slug agency-core-settings registriert wird. → Die Felder tauchten nie im Backend auf. Jetzt korrekter Slug überall.
+
+Bug 2 – Doppelte require_once Statements svg-support.php und activity-log.php wurden je zweimal geladen → Fehlermeldungen über redeclared functions. Beide jetzt nur noch einmal.
+
+Bug 3 – Multilanguage hatte kein ACF-Toggle multi-language.php wurde bedingungslos instanziiert. Jetzt gibt es in den Agency Core Settings ein "Mehrsprachigkeit aktivieren" Toggle. Die Klasse wird nur geladen wenn dieser aktiv ist.
+
+Bug 4 – Top Header wurde nirgends gerendert header.php hatte keinen Code für den Top Header. Jetzt wird er direkt nach wp_body_open() ausgegeben – inkl. Adresse, Öffnungszeiten, Telefon, E-Mail und Social Icons – aber nur wenn top_header_enable in den Settings aktiv ist.
+
+Neu: inc/acf-settings.php Zentralisiert alle ACF-Logik (Options Page + beide Field Groups) in einer Datei, korrekt innerhalb des acf/init-Hooks mit Priority 20.
+
+Neu: _top-header.scss CSS für den Top Header mit allen drei Farbvarianten und Mobile-Verhalten (hide / toggle).
+
+Media lab starter kit fixed
+ZIP 
+Wie verfahre ich am besten mit dem gefixtem ZIP-File? Komplett in lokalen Testsystem zusammenkopieren oder nur die geänderten Files überschreiben?
+
+3. März
+
+Wog die Vor- und Nachteile zweier Implementierungsstrategien ab
+Wog die Vor- und Nachteile zweier Implementierungsstrategien ab
+Nur die geänderten Files überschreiben ist der bessere Weg – das ZIP enthält auch die komplette WordPress-Instanz mit Datenbank-Konfig, Uploads und node_modules, die du nie überschreiben willst.
+
+Die geänderten/neuen Files sind genau diese 6:
+
+cms/wp-content/plugins/media-lab-agency-core/
+  ├── media-lab-agency-core.php          ← überschreiben
+  ├── inc/acf-settings.php               ← NEU, einfach reinkopieren
+  ├── inc/acf-top-header.php             ← überschreiben (ist jetzt ein leerer Stub)
+  └── inc/multi-language.php             ← überschreiben
+
+cms/wp-content/themes/custom-theme/
+  ├── header.php                         ← überschreiben
+  └── assets/src/scss/
+        ├── style.scss                   ← überschreiben
+        └── layout/_top-header.scss      ← NEU, einfach reinkopieren
+Nach dem Kopieren noch kurz npm run build (oder wie auch immer du das SCSS kompilierst) im Theme-Verzeichnis ausführen, damit das neue _top-header.scss ins kompilierte CSS landet. Danach im WordPress-Backend unter Agency Core → Agency Core Settings prüfen ob die Felder für Top Header und Mehrsprachigkeit korrekt erscheinen.
+
+Fast perfekt - es sind nun zwei Einträge "Agency Core" im Backend Menü (an Stelle nummer 2 nach Dashboard und an Stelle nummer 14 nach ACF). Können wir diesen  Menüpunkt in einen zusammenfassen?
+
+3. März
+
+Analysierte Menü-Duplikate und konzipierte Konsolidierungsstrategie
+Analysierte Menü-Duplikate und konzipierte Konsolidierungsstrategie
+Klare Ursache: admin.php registriert via add_menu_page einen eigenen Menüpunkt (Slug: agency-core), und acf-settings.php registriert zusätzlich die ACF Options Page (Slug: agency-core-settings) → zwei Einträge.
+
+Lösung: add_menu_page aus admin.php entfernen, die Plugin-Info als ACF-Message-Felder oben in die Settings-Page integrieren, und den ACF-Slug auf agency-core vereinheitlichen.
+
+
+Remove add_menu_page from admin.php
+Remove add_menu_page from admin.php
+Jetzt den ACF-Slug auf agency-core vereinheitlichen und Plugin-Info als Message-Feld oben einfügen:
+
+
+Unify slug to agency-core and add plugin info message field
+Unify slug to agency-core and add plugin info message field
+Plugin-Info als Message-Feld ganz oben in die Multi-Language Field Group einbauen:
+
+
+Add plugin info message field at top of settings and fix location slugs
+Add plugin info message field at top of settings and fix location slugs
+Jetzt beide Location-Slugs in den Field Groups aktualisieren:
+
+
+2 Befehle ausgeführt
+2 Befehle ausgeführt
+Jetzt ZIP neu packen:
+
+
+Hat einen Befehl ausgeführt, datei lesen
+Hat einen Befehl ausgeführt, datei lesen
+Problem war: admin.php hatte einen eigenen add_menu_page-Call (Slug: agency-core), und acf-settings.php einen separaten ACF Options Page-Call (Slug: agency-core-settings) → zwei Einträge.
+
+Was geändert wurde (diesmal nur 2 Files):
+
+inc/admin.php – add_menu_page und die Callback-Funktion komplett entfernt
+inc/acf-settings.php – Slug auf agency-core vereinheitlicht, Location-Slugs in beiden Field Groups angepasst, Plugin-Info (Version, Status, CPTs, Theme) als Message-Feld oben in die Settings-Page integriert
+Media lab starter kit fixed
+ZIP 
+Die Agency Settings unter Agency Core sind verschwunden, nachdem ich die beiden Files überschrieben habe. Die Unterpunkte "Activity Log" und "Hero Image" sind noch vorhanden. Muss ich einen Cache oder ähnliches löschen?
+
+3. März
+
+Analysierte Slug-Konflikte und Cache-Probleme nach Datei-Austausch
+Analysierte Slug-Konflikte und Cache-Probleme nach Datei-Austausch
+Kein Cache-Problem – lass mich zuerst schauen woher "Activity Log" und "Hero Image" als Untermenüs kommen, das gibt uns den entscheidenden Hinweis:
+
+
+Identifizierte Hook-Timing-Problem bei ACF-Optionsseite-Registrierung
+Identifizierte Hook-Timing-Problem bei ACF-Optionsseite-Registrierung
+Gefunden! Das Problem ist kein Cache. Der User hat in Runde 1 vermutlich media-lab-agency-core.php nicht ersetzt – damit lädt die alte Hauptdatei noch acf-top-header.php (der jetzt nur ein leerer Stub ist) statt das neue acf-settings.php.
+
+Außerdem gibt es ein zweites Problem: acf_add_options_page darf nicht innerhalb von acf/init stehen, sonst ist die Parent-Page zu spät registriert wenn die Sub-Pages von hero-image.php und activity-log.php sie suchen.
+
+
+Analysierte Hook-Prioritäten und Datei-Abhängigkeiten
+Analysierte Hook-Prioritäten und Datei-Abhängigkeiten
+Jetzt erkenne ich das genaue Problem. Zwei Dinge müssen gleichzeitig gefixt werden:
+
+acf_add_options_page darf nicht in acf/init – es muss früher laufen, damit Sub-Pages sich korrekt anhängen können
+acf-top-header.php (der Stub) muss auf acf-settings.php weiterleiten – falls jemand media-lab-agency-core.php aus Runde 1 noch nicht ersetzt hat
+
+Rewrite acf-settings.php with options page outside acf/init
+Rewrite acf-settings.php with options page outside acf/init
+Jetzt den acf-top-header.php-Stub so absichern, dass er acf-settings.php einbindet – falls jemand noch die alte media-lab-agency-core.php hat:
+
+
+Make acf-top-header.php a safe fallback shim
+Make acf-top-header.php a safe fallback shim
+Und das Guard-Define in acf-settings.php oben einfügen:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Was die Ursache war und was jetzt gefixt ist:
+
+Der eigentliche Bug war, dass acf_add_options_page innerhalb von acf/init (Priorität 20) stand. ACF registriert Options Pages intern über WordPress' admin_menu, und wenn der Hook zu spät kommt, kennt ACF die Page beim Abgleich der Field-Group-Locations noch nicht → Felder werden nicht angezeigt.
+
+Zwei Dateien ersetzen (dieselben wie vorhin):
+
+inc/acf-settings.php   ← Options Page jetzt in init-Hook (Priorität 5), Felder weiterhin in acf/init
+inc/acf-top-header.php ← ist jetzt ein Shim der acf-settings.php einbindet,
+                          falls du media-lab-agency-core.php noch nicht ersetzt hast
+Kein Cache leeren nötig – das war ein reines Timing-Problem in der Hook-Reihenfolge.
+
+Media lab starter kit fixed
+ZIP 
+Ich habe die Files wieder ersetzt -> kein Unterschied.
+
+3. März
+
+Untersuchte WordPress-Setup auf Interferenzen und Hook-Timing
+Untersuchte WordPress-Setup auf Interferenzen und Hook-Timing
+Lass mich tiefer graben – ich schau mir alle relevanten Files nochmal genau an:
+
+
+Analysierte Hook-Reihenfolge und identifizierte ACF-Initialisierungsproblem
+Analysierte Hook-Reihenfolge und identifizierte ACF-Initialisierungsproblem
+Das Problem liegt tiefer. acf_add_options_page in init aufzurufen funktioniert nicht zuverlässig – ACF erwartet den Aufruf zwingend innerhalb von acf/init. Gleichzeitig müssen die Sub-Pages (Hero Image, Activity Log) die Parent-Page bereits vorfinden. Die Lösung: alles in acf/init, aber mit sauberer Prioritäten-Reihenfolge.
+
+
+Analysierte Hook-Prioritäten und reorganisierte Registrierungsreihenfolge
+Analysierte Hook-Prioritäten und reorganisierte Registrierungsreihenfolge
+Jetzt ist alles klar. Die korrekte Reihenfolge muss sein:
+
+acf/init Priorität 5 → acf_add_options_page (Parent registrieren)
+acf/init Priorität 10 → hero-image.php registriert Sub-Page (findet Parent bereits)
+acf/init Priorität 20 → unsere Field Groups
+admin_menu → activity-log.php (kommt sowieso nach init, kein Problem)
+
+Rewrite acf-settings.php with correct hook priorities
+Rewrite acf-settings.php with correct hook priorities
+Jetzt noch eine zweite Diagnose-Maßnahme: ich füge dem media-lab-agency-core.php ein Fallback hinzu, das acf-settings.php zusätzlich auf plugins_loaded lädt – damit der acf/init-Hook garantiert registriert wird, egal wann ACF selbst aktiv wird:
+
+
+Durchforstete Timing-Probleme und ACF-Konfiguration systematisch
+Durchforstete Timing-Probleme und ACF-Konfiguration systematisch
+Jetzt gebe ich dem User auch eine klare Diagnose-Option falls es immer noch nicht klappt – ein einzeiliges Debug-Snippet das er temporär einfügen kann:
+
+
+Hat einen Befehl ausgeführt, datei lesen
+Hat einen Befehl ausgeführt, datei lesen
+Was jetzt konkret geändert wurde – nur inc/acf-settings.php:
+
+Der acf_add_options_page-Call war in init-Hook eingebettet, ACF ignoriert das jedoch. Er muss zwingend innerhalb von acf/init laufen. Jetzt ist die Reihenfolge:
+
+acf/init  Priorität  5  →  acf_add_options_page()  ← NEU
+acf/init  Priorität 10  →  hero-image.php (sub-page)
+acf/init  Priorität 20  →  unsere Field Groups
+Falls es danach immer noch nicht klappt, bitte füge diesen Debug-Schnipsel temporär ganz unten in acf-settings.php ein – er zeigt dir im Browser-HTML-Source ob ACF die Options Page überhaupt kennt:
+
+php
+add_action('admin_footer', function () {
+    if (!current_user_can('manage_options')) return;
+    $pages = acf_get_options_pages();
+    echo '<!-- ACF Options Pages: ' . print_r(array_keys((array)$pages), true) . ' -->';
+});
+Wenn agency-core in der Liste auftaucht → Hook-Timing stimmt, Problem liegt woanders. Wenn nicht → ACF PRO / Options Page Addon fehlt oder ist inaktiv.
+
+Media lab starter kit fixed
+ZIP 
+kannst du mir nur die betreffenden Files zur verfügung stellen?
+
+3. März
+
+Erkannt, dass nur geänderte Dateien erforderlich sind
+Erkannt, dass nur geänderte Dateien erforderlich sind
+Beide Files in cms/wp-content/plugins/media-lab-agency-core/inc/ ersetzen – mehr nicht.
+
+Acf settings
+Code · PHP 
+Acf top header
+Code · PHP 
+Nein, es wird nur der Menüpunkt an Position 2 nach Dashboard angezeigt. Auch der Debug-Code wird unter ACF nicht angezeigt
+
+3. März
+
+Diagnostizierte Dateilade-Konflikte und formulierte Klärungsfragen
+Diagnostizierte Dateilade-Konflikte und formulierte Klärungsfragen
+Bevor ich weiter im Dunkeln tappe, brauche ich drei konkrete Infos von dir:
+
+F: Hast du auch media-lab-agency-core.php (die Hauptdatei des Plugins) ersetzt – oder nur die beiden inc/-Files?
+A: Nein, nur die inc/-Files
+
+F: Was steht in der URL wenn du auf 'Agency Core' im Menü klickst?
+A: Etwas anderes
+
+F: Welche ACF-Version ist aktiv?
+A: ACF PRO
+
+3. März
+
+Identifizierte Hauptdatei-Problem und benötigte URL-Details
+Identifizierte Hauptdatei-Problem und benötigte URL-Details
+Die URL wäre noch wichtig – aber der Hauptgrund ist klar: die Hauptdatei wurde nicht ersetzt, deshalb wird acf-settings.php gar nicht geladen.
+
+Die alte media-lab-agency-core.php lädt noch acf-top-header.php (den alten Code), nicht das neue acf-settings.php. Der Shim in acf-top-header.php sollte das abfangen – aber nur wenn media-lab-agency-core.php ihn überhaupt noch einbindet, was ich prüfen muss:
+
+
+Diagnosed missing main plugin file as root cause
+Diagnosed missing main plugin file as root cause
+Unser acf-settings.php wird auf dem Server gar nicht geladen – weil die alte media-lab-agency-core.php auf dem Server acf-top-header.php mit dem Original-Code lädt, nicht unseren Shim (den du ja erst danach ersetzt hast).
+
+Lösung: Jetzt einfach auch media-lab-agency-core.php ersetzen – das ist der einzige sichere Weg.
+
+
+Hat einen Befehl ausgeführt, datei lesen
+Hat einen Befehl ausgeführt, datei lesen
+Diesen File nach cms/wp-content/plugins/media-lab-agency-core/ kopieren – direkt ins Plugin-Root, nicht in inc/. Danach sollten die Settings-Felder erscheinen.
+
+Media lab agency core
+Code · PHP 
+Nein, leider wieder nicht. Die URL, worauf der Backend Menüpunkt "Agency Core" zeigt, lautet https://media-lab-starter-kit.localdev/wp-admin/activity-log
+
+3. März
+
+Identifizierte doppelte Menüregistrierung als Ursache des Problems
+Identifizierte doppelte Menüregistrierung als Ursache des Problems
+Die URL sagt alles. WordPress leitet auf das erste Untermenü um, weil zwei Einträge denselben Slug agency-core registrieren und sich gegenseitig blockieren:
+
+Alte admin.php (noch auf deinem Server) → add_menu_page mit Slug agency-core
+Neue acf-settings.php → acf_add_options_page mit Slug agency-core
+WordPress ignoriert den zweiten und leitet direkt zum ersten Kind-Menü weiter → Activity Log.
+
+Du hast admin.php noch nie ersetzt. Das ist der fehlende File:
+
+
+Hat einen Befehl ausgeführt, datei lesen
+Hat einen Befehl ausgeführt, datei lesen
+Nach cms/wp-content/plugins/media-lab-agency-core/inc/admin.php kopieren. Der add_menu_page-Aufruf ist darin entfernt – damit gibt es nur noch einen einzigen agency-core-Menüpunkt, der von ACF verwaltet wird.
+
+Admin
+Code · PHP 
+Ich habe die Datei überschrieben. Das Ergebnis ist unverändert
+
+3. März
+
+Investigated persistent menu redirect issue and explored diagnostic approaches
+Investigated persistent menu redirect issue and explored diagnostic approaches
+Ich brauche Gewissheit dass die Files wirklich korrekt am Server angekommen sind. Kannst du mir bitte den Inhalt der beiden Files direkt aus deinem lokalen System einfügen oder screenshoten?
+
+Alternativ – füge diesen einzeiligen Debug-Code ganz oben in media-lab-agency-core.php direkt nach der if (!defined('ABSPATH')) Zeile ein:
+
+php
+add_action('plugins_loaded', function() { 
+    error_log('MEDIALAB MAIN FILE LOADED - Version: ' . (defined('MEDIALAB_CORE_VERSION') ? MEDIALAB_CORE_VERSION : 'NOT DEFINED')); 
+}, 1);
+add_action('acf/init', function() { 
+    error_log('MEDIALAB ACF/INIT FIRED - acf_add_options_page exists: ' . (function_exists('acf_add_options_page') ? 'YES' : 'NO'));
+}, 4);
+Dann im WordPress Debug-Log (wp-content/debug.log) nachsehen was ausgegeben wird. Das zeigt uns sofort:
+
+Wird die neue Hauptdatei überhaupt geladen?
+Ist acf_add_options_page zu dem Zeitpunkt verfügbar?
+Was steht im Log?
+
+Admin.php
+
+<?php
+/**
+ * Admin Functions
+ * 
+ * Admin-specific functionality for Agency Core.
+ * 
+ * @package Agency_Core
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Menu registration is handled by ACF options page in inc/acf-settings.php (slug: agency-core)
+
+/**
+ * Add custom columns to CPT admin lists
+ */
+
+// Team columns
+add_filter('manage_team_posts_columns', function($columns) {
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['thumbnail'] = __('Photo', 'agency-core');
+    $new_columns['title'] = $columns['title'];
+    $new_columns['role'] = __('Role', 'agency-core');
+    $new_columns['email'] = __('Email', 'agency-core');
+    $new_columns['date'] = $columns['date'];
+    return $new_columns;
+});
+
+add_action('manage_team_posts_custom_column', function($column, $post_id) {
+    switch ($column) {
+        case 'thumbnail':
+            echo get_the_post_thumbnail($post_id, array(50, 50));
+            break;
+        case 'role':
+            echo esc_html(get_field('role', $post_id));
+            break;
+        case 'email':
+            $email = get_field('email', $post_id);
+            echo $email ? '<a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a>' : '—';
+            break;
+    }
+}, 10, 2);
+
+// Project columns
+add_filter('manage_project_posts_columns', function($columns) {
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['thumbnail'] = __('Image', 'agency-core');
+    $new_columns['title'] = $columns['title'];
+    $new_columns['client'] = __('Client', 'agency-core');
+    $new_columns['project_date'] = __('Project Date', 'agency-core');
+    $new_columns['taxonomy-project_category'] = __('Categories', 'agency-core');
+    $new_columns['date'] = $columns['date'];
+    return $new_columns;
+});
+
+add_action('manage_project_posts_custom_column', function($column, $post_id) {
+    switch ($column) {
+        case 'thumbnail':
+            echo get_the_post_thumbnail($post_id, array(80, 60));
+            break;
+        case 'client':
+            echo esc_html(get_field('client', $post_id));
+            break;
+        case 'project_date':
+            echo esc_html(get_field('project_date', $post_id));
+            break;
+    }
+}, 10, 2);
+
+// Testimonial columns
+add_filter('manage_testimonial_posts_columns', function($columns) {
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['thumbnail'] = __('Photo', 'agency-core');
+    $new_columns['title'] = $columns['title'];
+    $new_columns['author_name'] = __('Author', 'agency-core');
+    $new_columns['company'] = __('Company', 'agency-core');
+    $new_columns['rating'] = __('Rating', 'agency-core');
+    $new_columns['date'] = $columns['date'];
+    return $new_columns;
+});
+
+add_action('manage_testimonial_posts_custom_column', function($column, $post_id) {
+    switch ($column) {
+        case 'thumbnail':
+            $image = get_field('author_image', $post_id);
+            echo $image ? '<img src="' . esc_url($image) . '" width="50" height="50" style="border-radius: 50%;">' : '—';
+            break;
+        case 'author_name':
+            echo esc_html(get_field('author_name', $post_id));
+            break;
+        case 'company':
+            echo esc_html(get_field('company', $post_id));
+            break;
+        case 'rating':
+            $rating = get_field('rating', $post_id);
+            echo $rating ? str_repeat('⭐', (int)$rating) : '—';
+            break;
+    }
+}, 10, 2);
+Mehr anzeigen
+3. März
+
+Investigated redirect anomaly and pinpointed potential plugin conflict
+Investigated redirect anomaly and pinpointed potential plugin conflict
+admin.php ist korrekt – kein add_menu_page mehr drin. Das Problem liegt woanders.
+
+Die URL wp-admin/activity-log (ohne admin.php?page=) ist ungewöhnlich. Kannst du mir bitte noch zwei Files direkt aus deinem lokalen System einfügen, damit ich sehe was wirklich auf dem Server läuft?
+
+plugins/media-lab-agency-core/media-lab-agency-core.php
+plugins/media-lab-agency-core/inc/acf-settings.php
+Außerdem: Gibt es noch ein zweites Plugin media-lab-core (ohne "agency") aktiv? Das könnte ebenfalls einen agency-core Menüpunkt registrieren.
+
+
+<?php /** * ACF Settings Page + All Field Groups * * Hook-Reihenfolge (alle innerhalb acf/init): * Priorität 5 → acf_add_options_page() (Parent muss vor Sub-Pages existieren) * Priorität 10 → hero-image.php registriert seine Sub-Page (default) * Priorität 20 → Field Groups (group_mul
+
+pasted
+
+acf-settings.php
+
+3. März
+
+Diagnosed menu redirect issue and architected native WordPress solution
+Diagnosed menu redirect issue and architected native WordPress solution
+Die acf-settings.php ist korrekt. Das Problem ist ein anderes: WordPress ignoriert redirect => false wenn ein Untermenü-Eintrag (Activity Log) via admin_menu registriert wird – es springt immer zum ersten Kind-Element.
+
+Die zuverlässige Lösung: Eltern-Menü nativ mit add_menu_page registrieren, und die ACF-Settings als erstes Untermenü einhängen. Damit kontrollieren wir die Reihenfolge vollständig.
+
+
+2 Befehle ausgeführt, datei lesen
+2 Befehle ausgeführt, datei lesen
+Was sich geändert hat und warum es jetzt funktionieren sollte:
+
+Das eigentliche Problem war nicht der Code-Inhalt, sondern die WordPress-Logik: Wenn ein Menüpunkt Untermenüs hat, springt WordPress immer zum ersten Kind – redirect => false in ACF wird dabei ignoriert, sobald admin_menu-basierte Sub-Pages (Activity Log) im Spiel sind.
+
+Neue Struktur:
+
+add_menu_page (nativ, Prio 5) → erstellt den Eltern-Eintrag agency-core
+acf_add_options_sub_page (Prio 5 in acf/init) → hängt sich als erstes Untermenü ein, Slug agency-core-settings
+Activity Log und Hero Image folgen danach
+Das Untermenü heißt jetzt "Einstellungen" – der Klick auf "Agency Core" landet direkt dort.
+
+Acf settings
+Code · PHP 
+Es gibt noch einen Plugin-Ordner namens "media-lab-core" - das ist allerdings nicht aktiv.
+
+Nach dem Ersetzen der acf-settings.php werden nun beide Untermenü-Punkte angezeigt.
+
+3. März
+
+Überprüfend, ob ACF-Felder korrekt angezeigt werden
+Überprüfend, ob ACF-Felder korrekt angezeigt werden
+Guter Fortschritt! Werden die ACF-Felder (Top Header, Mehrsprachigkeit) auch angezeigt wenn du auf "Einstellungen" klickst?
+
+Ja
+
+3. März
+
+Verified fix efficacy, probed structural implications
+Verified fix efficacy, probed structural implications
+Perfekt, dann funktioniert alles korrekt! Die Menüstruktur sieht jetzt so aus:
+
+Agency Core
+  ├── Einstellungen      ← ACF-Felder (Top Header, Mehrsprachigkeit)
+  ├── Hero Image
+  └── Activity Log
+Das ist die saubere, gewünschte Struktur. Soll ich als nächstes die header.php nochmal prüfen damit der Top Header auch korrekt im Frontend gerendert wird – oder gibt es andere Punkte die noch optimiert werden sollen?
+
+Zusätzlich erscheint nun noch ein Untermenüpunkt "Agency Core", wo eine leere Seite erscheint. Könen wir diese entfernen?
+
+3. März
+
+Identifizierte WordPress-Standardverhalten und Lösungsansatz
+Identifizierte WordPress-Standardverhalten und Lösungsansatz
+Das ist WordPress-Standardverhalten – wenn man add_menu_page nutzt, wird der Parent automatisch als erstes Untermenü dupliziert. Fix ist eine einzige Zeile:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Nur diese eine Datei ersetzen. Danach sollte die Menüstruktur sauber sein:
+
+Agency Core
+  ├── Einstellungen
+  ├── Hero Image
+  └── Activity Log
+Acf settings
+Code · PHP 
+Das hat leider nichts geändert
+
+3. März
+
+Diagnosierte Prioritätsproblem und erwog Lösungsansatz
+Diagnosierte Prioritätsproblem und erwog Lösungsansatz
+Das remove_submenu_page muss mit einer höheren Priorität laufen – nach allen anderen Registrierungen:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Der remove_submenu_page-Call läuft jetzt in einem eigenen Hook mit Priorität 999 – damit ist sichergestellt dass er nach ACF und allen anderen Plugins ausgeführt wird.
+
+Acf settings
+Code · PHP 
+Yes - super!
+
+3. März
+
+Validated successful system functionality
+Validated successful system functionality
+Die Menüstruktur ist jetzt sauber:
+
+Agency Core
+  ├── Einstellungen      ← ACF-Felder (Top Header, Mehrsprachigkeit)
+  ├── Hero Image
+  └── Activity Log
+Wie möchtest du weitermachen? Soll ich den Top Header im Frontend testen/prüfen, oder gibt es andere Punkte die noch angegangen werden sollen?
+
+Nein, das funktioniert
+
+3. März
+
+Thinking about interpreting an incomplete German statement
+Thinking about interpreting an incomplete German statement
+Was steht als nächstes auf der Liste?
+
+Ich würde gerne den Header mit einem Logo Image statt mit dem Seitennamen ausstatten. Die Möglichkeeit, ein alternatives Logo für Mobile hochzuladen wäre perfekt. Ideal ebenfalls in den Core Settings
+
+3. März
+
+Orchestrierte Logo-Upload-Felder und Header-Integration für Core Settings
+Orchestrierte Logo-Upload-Felder und Header-Integration für Core Settings
+Guter Plan. Ich füge die Logo-Felder in die ACF Settings und passe header.php an:
+
+
+Orchestrierte Logo-Integration mit mobiler Variante in Core-Einstellungen
+Orchestrierte Logo-Integration mit mobiler Variante in Core-Einstellungen
+Ich sehe alles was ich brauche. Beide Files werden jetzt angepasst:
+
+
+Add logo field group to acf-settings.php
+Add logo field group to acf-settings.php
+Jetzt header.php – Logo-Ausgabe mit Desktop/Mobile-Logik:
+
+
+Replace site name with ACF logo in header.php
+Replace site name with ACF logo in header.php
+Jetzt noch das CSS für die Desktop/Mobile-Logo-Umschaltung:
+
+
+2 Befehle ausgeführt, datei lesen
+2 Befehle ausgeführt, datei lesen
+3 Files ersetzen:
+
+File	Pfad
+acf-settings.php	plugins/media-lab-agency-core/inc/
+header.php	themes/custom-theme/
+_header.scss	themes/custom-theme/assets/src/scss/layout/
+Danach npm run build für das SCSS. In den Agency Core Settings erscheint dann eine neue "Logo" Sektion mit vier Feldern: Desktop-Logo, Desktop-Breite, Mobile-Logo und Mobile-Breite. Kein Logo hochgeladen → Fallback auf den Seitennamen.
+
+Acf settings
+Code · PHP 
+Header
+Code · PHP 
+header
+Code · SCSS 
+Perfekt!
+
+09:36
+Was kommt als nächstes?
+
+Es gibt einen Theme Switcher, der Light Mode und Dark Mode wechseln lässt. Aktuell wird die voreingestellte Präferenz des Users nicht berücksichtigt. Kannst du das integrieren?
+
+09:37
+
+Identifizierte Flash-of-Unstyled-Content-Problem und empfahl Inline-Script-Lösung
+Identifizierte Flash-of-Unstyled-Content-Problem und empfahl Inline-Script-Lösung
+Der JS-Code liest prefers-color-scheme bereits – das Problem ist ein FOUC (Flash of Unstyled Content): Die Theme-Klasse wird erst nach dem JS-Load gesetzt, der User sieht kurz den falschen Mode.
+
+Die Lösung ist ein kleines Inline-Script im <head>, das das Theme sofort vor dem Rendern setzt:
+
+
+Add inline theme detection script to head
+Add inline theme detection script to head
+Außerdem speichert setTheme() aktuell die Präferenz immer in localStorage – auch wenn der User gar nichts gewählt hat. Das sollte nur passieren wenn der User aktiv toggled, damit die System-Präferenz weiterhin respektiert wird:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+2 Files ersetzen:
+
+File	Pfad
+header.php	themes/custom-theme/
+theme-switcher.js	themes/custom-theme/assets/src/js/components/
+Dann npm run build. Die zwei Verbesserungen:
+
+FOUC behoben – ein Inline-Script direkt im <head> setzt data-theme noch bevor der Browser das erste Pixel rendert. Kein Flackern mehr.
+
+localStorage-Logik korrigiert – bisher wurde die System-Präferenz sofort in localStorage geschrieben, was dazu führte dass spätere Änderungen der OS-Einstellung ignoriert wurden. Jetzt wird localStorage nur noch beschrieben wenn der User aktiv den Toggle-Button klickt.
+
+Header
+Code · PHP 
+Theme switcher
+JS 
+Wunderbar.
+
+Was ich noch benötige, ist die Möglichkeit, sämtliche vorhandenen CPTs, Seiten und Beiträge per Drag & Drop sortieren zu können - ähnlich, wie es das Plugin "Simple Custom Post Order" bietet
+
+09:47
+
+Analysierte Plugin-Struktur für Drag-&-Drop-Sortierfunktionalität
+Analysierte Plugin-Struktur für Drag-&-Drop-Sortierfunktionalität
+Lass mich zuerst schauen welche CPTs bereits registriert sind:
+
+
+4 Befehle ausgeführt
+4 Befehle ausgeführt
+Gut – viele Queries nutzen bereits menu_order. Ich baue das Drag & Drop direkt ins Plugin als eigenes inc/-File:
+
+
+3 Befehle ausgeführt
+3 Befehle ausgeführt
+Jetzt in die Hauptdatei eintragen:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+4 Files, 2 davon neu:
+
+File	Pfad	Aktion
+media-lab-agency-core.php	plugins/media-lab-agency-core/	ersetzen
+post-order.php	plugins/media-lab-agency-core/inc/	neu
+post-order.js	plugins/media-lab-agency-core/assets/js/	neu (Ordner anlegen)
+post-order.css	plugins/media-lab-agency-core/assets/css/	neu (Ordner anlegen)
+Was es kann:
+
+In jeder Admin-Listenansicht (Posts, Pages, alle CPTs) erscheint ein ⠿ Handle links in der Zeile
+Zeilen per Drag & Drop umsortieren → wird automatisch gespeichert
+Reihenfolge landet in menu_order → Frontend-Queries mit orderby=menu_order greifen sofort
+Feedback-Notice direkt im Backend (Speichern… / Gespeichert / Fehler)
+Kein Plugin-Konflikt, keine externen Abhängigkeiten – jQuery UI Sortable ist in WordPress bereits enthalten
+Post order
+Code · PHP 
+Post order
+JS 
+Post order
+Code · CSS 
+Media lab agency core
+Code · PHP 
+OK, der Handle erscheint im Backend. Zwar oberhalb des Titels - dann kommt ein Zeilenumbruch - aber er ist da. 
+
+Bei den Seiten bleibt die Reihenfolge vom Navigationsmenü, ein Umsortieren ändert die Reihenfolge nicht. Ist das so in Ordnung?
+
+09:55
+
+Analysierte CSS-Problem und klärte erwartetes Verhalten bei Seitenmenü-Sortierung
+Analysierte CSS-Problem und klärte erwartetes Verhalten bei Seitenmenü-Sortierung
+Zur Seiten-Frage: Ja, das ist korrekt so. Das Navigationsmenü ist komplett unabhängig von menu_order – es wird in WordPress unter Design → Menüs separat verwaltet und per Drag & Drop dort sortiert. Die menu_order-Reihenfolge betrifft nur die Reihenfolge in Archiv-Queries und der Admin-Liste, nicht das Navigationsmenü.
+
+Den Handle-Bug (Zeilenumbruch) fixe ich jetzt:
+
+
+Fix drag handle CSS to be inline
+Fix drag handle CSS to be inline
+Das Problem ist aber eigentlich dass der Handle in der falschen Spalte landet. In WP Admin-Listen ist die erste td oft die Checkbox – der Titel ist in einer eigenen Spalte .column-title. Ich fixe das im JS:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Beide Files in plugins/media-lab-agency-core/assets/ ersetzen. Der Handle sitzt jetzt direkt inline vor dem Titel-Link, ohne Zeilenumbruch.
+
+Post order
+JS 
+Post order
+Code · CSS 
+Das hat perfekt funktioniert!
+
+Kannst du auch noch die Funktion implementieren, Seiten, Beiträge und CPTs sowie Taxonomien zu kopieren bzw. duplizieren - wie das Plugin "Yoast Duplicate Post", nur ebenfalls direkt im Core?
+
+09:58
+
+Analysierte bestehende Struktur für Duplikat-Funktion
+Analysierte bestehende Struktur für Duplikat-Funktion
+2 Files:
+
+File	Pfad	Aktion
+duplicate-post.php	plugins/media-lab-agency-core/inc/	neu
+media-lab-agency-core.php	plugins/media-lab-agency-core/	ersetzen
+Was kopiert wird:
+
+Titel (mit „Kopie"-Suffix), Inhalt, Excerpt, Post-Status → immer Entwurf
+Alle Meta-Felder inkl. ACF-Felder
+Taxonomien & Tags
+Featured Image
+Menu Order
+Taxonomy Terms (Kategorien, Tags etc.) bekommen ebenfalls einen „Duplizieren"-Link in ihrer Listenansicht – inkl. Term Meta.
+
+Nach dem Duplizieren erscheint eine Admin-Notice mit direktem Link zum Bearbeiten der Kopie.
+
+Duplicate post
+Code · PHP 
+Media lab agency core
+Code · PHP 
+Entschuldige - und die Sortierfunktion soll bitte ebenfalls für die Taxonomien umgesetzt werden.
+
+09:59
+
+Analysierte Taxonomie-Sortierung und erweiterte Implementierung für beide Dateien
+Analysierte Taxonomie-Sortierung und erweiterte Implementierung für beide Dateien
+Taxonomy Terms haben kein natives menu_order wie Posts – die Reihenfolge wird in Term Meta gespeichert. Ich erweitere beide Files:
+
+
+Append Term Order class to post-order.php
+Append Term Order class to post-order.php
+Jetzt das JS erweitern – Terms haben IDs wie tag-123 statt post-123, und die AJAX-Action ist eine andere:
+
+
+2 Befehle ausgeführt, datei lesen
+2 Befehle ausgeführt, datei lesen
+2 Files ersetzen (beide bereits vorhanden):
+
+File	Pfad
+post-order.php	plugins/media-lab-agency-core/inc/
+post-order.js	plugins/media-lab-agency-core/assets/js/
+Wie es funktioniert: Die Reihenfolge der Terms wird in Term Meta (medialab_term_order) gespeichert, da WordPress kein natives menu_order für Taxonomien kennt. Ein terms_clauses-Filter sorgt dafür, dass Terms in get_terms()-Abfragen automatisch in der gespeicherten Reihenfolge zurückgegeben werden – für alle Shortcodes und Frontend-Queries ohne weiteren Aufwand.
+
+Post order
+Code · PHP 
+Post order
+JS 
+Perfekt - alles funktioniert!
+
+10:02
+Sehr gut! Was steht als Nächstes auf der Liste?
+
+Stichwort SEO - es ist bereits ein eigenes SEO-Plugin unter /plugins/media-lab-seo vorhanden. 
+
+Können wir das um die Möglichkeit erweitern, Redirections zusetzen und Aufrufe zu tracken, damit Klicks, die ins Leere gehen, registriert werden und diesen dann über das Backend einem 301-Ziel zugewiesen werden können - ähnlich dem Plugin "Redirection"?
+
+10:04
+
+Analysierte bestehende SEO-Plugin-Struktur vor Redirect-Implementierung
+Analysierte bestehende SEO-Plugin-Struktur vor Redirect-Implementierung
+Lass mich zuerst das bestehende SEO-Plugin analysieren:
+
+
+Architektierte Redirect-Modul mit Datenbank, 404-Tracking und Admin-Interface
+Architektierte Redirect-Modul mit Datenbank, 404-Tracking und Admin-Interface
+Gut, ich habe alles was ich brauche. Das SEO-Plugin bekommt ein neues inc/redirects.php mit eigenem DB-Table, 404-Tracking und einer vollständigen Backend-UI:
+
+
+3 Befehle ausgeführt
+3 Befehle ausgeführt
+Jetzt in die SEO-Plugin-Hauptdatei eintragen + DB-Tabellen bei Aktivierung anlegen:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+4 Files, 3 davon neu:
+
+File	Pfad	Aktion
+media-lab-seo.php	plugins/media-lab-seo/	ersetzen
+redirects.php	plugins/media-lab-seo/inc/	neu
+redirects.js	plugins/media-lab-seo/assets/js/	neu (Ordner anlegen)
+redirects.css	plugins/media-lab-seo/assets/css/	neu (Ordner anlegen)
+Nach dem Kopieren das Plugin kurz deaktivieren und wieder aktivieren – das triggert den Activation Hook der die zwei DB-Tabellen anlegt.
+
+Was es kann:
+
+Der neue Menüpunkt SEO Toolkit → Redirections hat zwei Tabs:
+
+Redirects – Regeln anlegen (Source, Destination, 301/302/307, Aktiv/Inaktiv), bearbeiten, löschen, Hit-Counter pro Redirect. Wildcards mit * am Ende werden unterstützt (z.B. /blog/* → /news/*)
+404-Log – alle 404-Aufrufe mit URL, Referrer, Anzahl und Zeitstempel. Per Klick auf „→ Redirect anlegen" öffnet sich ein Modal, Ziel-URL eingeben, fertig – der Eintrag verschwindet aus dem Log und ist sofort als aktiver Redirect hinterlegt
+Redirects
+Code · PHP 
+Redirects
+JS 
+Redirects
+Code · CSS 
+Media lab seo
+Code · PHP 
+Alles kopiert.
+
+Leider sehe ich keinen neuen Menüpunkt "SEO Toolkit -> Redirections".
+Der Menüpunkt "SEO-Toolkit" erscheint nach dem Aktivieren des Plugins unter "Einstellungen" und nicht direkt als Haupteintrag im Backend-Menü - vielleicht liegt es daran?
+
+10:11
+
+Identifizierte falschen Hook-Namen in der Skript-Einbindung
+Identifizierte falschen Hook-Namen in der Skript-Einbindung
+Genau das ist das Problem. add_submenu_page mit Parent medialab-seo funktioniert nur wenn der Parent ein Top-Level-Menü ist – unter "Einstellungen" hat er einen anderen internen Hook-Namen. Ich fixe den Enqueue-Check:
+
+
+Fix enqueue hook name for settings submenu
+Fix enqueue hook name for settings submenu
+Und den Parent-Slug für add_submenu_page auf options-general.php setzen – damit hängt sich "Redirections" korrekt unter "Einstellungen" ein, wo "SEO Toolkit" auch sitzt:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Nur redirects.php ersetzen. "Redirections" erscheint dann unter Einstellungen → Redirections – direkt neben "SEO Toolkit".
+
+Redirects
+Code · PHP 
+Cool - läuft!
+
+10:13
+Was kommt als nächstes?
+
+Jetzt zwei E-Mail-Themen:
+1) Ich möchte die Möglichkeit haben, dass im Backend der Mail-Versand konfiguriert werden kann und nicht die WP-Funktion bzw. PHP verwendet wird.
+
+2) Besteht die Möglichkeit, Links auf der kompletten Seite für Spam-Attacken "unsichtbar" bzw. nicht sichtbar zu machen, sie aber dennoch funktionieren?
+
+10:16
+
+Identifizierte zwei E-Mail-Funktionen und analysierte Plugin-Struktur
+Identifizierte zwei E-Mail-Funktionen und analysierte Plugin-Struktur
+Beides machbar. Lass mich kurz den Bestand prüfen:
+
+
+2 Befehle ausgeführt
+2 Befehle ausgeführt
+Beides noch nicht vorhanden. Ich baue jetzt beide Features:
+
+
+2 Befehle ausgeführt
+2 Befehle ausgeführt
+Jetzt die ACF-Felder für beide Features in acf-settings.php eintragen:
+
+
+Add SMTP and obfuscation field groups to acf-settings.php
+Add SMTP and obfuscation field groups to acf-settings.php
+Beide neuen Files in die Hauptdatei eintragen:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+4 Files, 2 davon neu:
+
+File	Pfad	Aktion
+media-lab-agency-core.php	plugins/media-lab-agency-core/	ersetzen
+acf-settings.php	plugins/media-lab-agency-core/inc/	ersetzen
+smtp.php	plugins/media-lab-agency-core/inc/	neu
+email-obfuscation.php	plugins/media-lab-agency-core/inc/	neu
+In den Agency Core Settings gibt es danach zwei neue Sektionen:
+
+E-Mail / SMTP – Host, Port, TLS/SSL, Benutzername, Passwort, Absender-Name & -Adresse, Debug-Modus. Direkt darunter ein "Test-Mail senden"-Button mit Zieladresse – ohne die Seite zu verlassen.
+
+Spam-Schutz / E-Mail Obfuskierung – Aktivieren + Toggle für automatischen Schutz aller mailto:-Links und nackter E-Mail-Adressen im Content. Alternativ manuell per Shortcode [obfuscate_email email="..." label="..."]. Technisch: ROT13-Kodierung in data-Attributen, ein winziges Inline-Script dekodiert beim Laden clientseitig – für Bots komplett unsichtbar, für Besucher transparent.
+
+Smtp
+Code · PHP 
+Email obfuscation
+Code · PHP 
+Acf settings
+Code · PHP 
+Media lab agency core
+Code · PHP 
+Super! 
+
+Ein paar Kleinigkeiten zum Backend-Menüeintrag "Agency Core":
+
+Kannst du die Settings von folgendem Link bei den "Einstellungen" integrieren, damit es keine eigene Seite dafür gibt?
+https://media-lab-starter-kit.localdev/wp-admin/admin.php?page=hero-image-settings
+
+Kannst du die Reihenfolge unter dem Punkt "Agency Core" im Menü ändern von 
+1. Activity Log
+2. Einstellungen
+
+zu 
+
+Einstellungen
+Activity Log
+Mehr anzeigen
+10:28
+
+Identifizierte zwei Aufgaben: Hero-Image-Settings integrieren und Menüreihenfolge umkehren
+Identifizierte zwei Aufgaben: Hero-Image-Settings integrieren und Menüreihenfolge umkehren
+Lass mich zuerst beide Files analysieren:
+
+
+Analysierte Feldgruppen-Integration und Admin-Menü-Prioritäten
+Analysierte Feldgruppen-Integration und Admin-Menü-Prioritäten
+Alles klar. Zwei Änderungen:
+
+1. Hero Image – Sub-Page entfernen, Location auf agency-core-settings umbiegen 2. Reihenfolge – Activity Log mit höherer Priorität registrieren, damit "Einstellungen" zuerst kommt
+
+
+Rekonstruierte unterbrochene Arbeit und plante Menü-Anpassungen
+Rekonstruierte unterbrochene Arbeit und plante Menü-Anpassungen
+Ich hatte bereits mit der Arbeit begonnen – hero-image.php ist schon angepasst. Jetzt noch die Menü-Reihenfolge fixieren:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+2 Files ersetzen:
+
+File	Pfad
+hero-image.php	plugins/media-lab-agency-core/inc/
+activity-log.php	plugins/media-lab-agency-core/inc/
+Danach sollte die Menüstruktur so aussehen:
+
+Agency Core
+  ├── Einstellungen   ← Hero Image Felder jetzt hier integriert
+  └── Activity Log
+Hero image
+Code · PHP 
+Activity log
+Code · PHP 
+Fast perfekt - die Reihenfolge im Backend-Menü unter "Agency Core" lautet noch 1. Activity Log und 2. Einstellungen. Alles andere läuft.
+
+10:34
+
+Analysierte Hook-Prioritäten zur Menüreihenfolge-Korrektur
+Analysierte Hook-Prioritäten zur Menüreihenfolge-Korrektur
+ACF registriert seine Options-Sub-Pages intern auf admin_menu mit Priorität 99 – Activity Log mit Priorität 20 kommt dadurch immer noch davor. Fix: Priorität auf 999:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Nur activity-log.php ersetzen – sollte jetzt passen.
+
+Activity log
+Code · PHP 
+Yes - passt!
+
+10:35
+
+Thinking about interpreting an affirmative response in German
+Thinking about interpreting an affirmative response in German
+Was kommt als Nächstes?
+
+Jetzt noch die "Agency Core Settings" Seite (https://media-lab-starter-kit.localdev/wp-admin/admin.php?page=agency-core-settings) etwas umstrukturieren:
+
+10:36
+
+Überlegungen zur Umstrukturierung der Agency Core Settings-Seite
+Überlegungen zur Umstrukturierung der Agency Core Settings-Seite
+Deine Nachricht scheint abgebrochen zu sein – was soll umstrukturiert werden?
+
+Bereich 1 - Ist: 
+Titel = "Mehrsprachigkeit"
+Content Abschnitt:
+Nach obenNach untenBedienfeld umschalten: Mehrsprachigkeit
+Plugin Status
+Media Lab Agency Core  ·  Version 1.2.0  ● Aktiv
+Custom Post Types: Hero Slides, Team, Projekte, Testimonials, FAQs, Google Maps, Karussell, Services Theme: Media Lab Custom Theme
+Mehrsprachigkeit aktivieren
+Aktiviert Polylang-Integration, Language Switcher Shortcode und String-Übersetzungen.
+JaNein
+
+Bereich 1 - Soll: 
+Titel = "Plugin Status"
+Content Abschnitt:
+Media Lab Agency Core  ·  Version 1.2.0  ● Aktiv
+Custom Post Types: Hero Slides, Team, Projekte, Testimonials, FAQs, Google Maps, Karussell, Services Theme: Media Lab Custom Theme
+
+Letzter Bereich (nach "Spam-Schutz / E-Mail Obfuskierung) - Soll: 
+Titel = "Mehrsprachigkeit"
+Content Abschnitt:
+Mehrsprachigkeit aktivieren
+Aktiviert Polylang-Integration, Language Switcher Shortcode und String-Übersetzungen.
+JaNein
+
+Mehr anzeigen
+10:39
+
+Reorganisierte Feldgruppen: Plugin-Status trennen, Mehrsprachigkeit verschieben
+Reorganisierte Feldgruppen: Plugin-Status trennen, Mehrsprachigkeit verschieben
+Also die Field Group group_multi_language aufteilen – Plugin Status als eigene Gruppe oben, Mehrsprachigkeit als eigene Gruppe ganz unten:
+
+
+Split plugin info and multilanguage into separate field groups
+Split plugin info and multilanguage into separate field groups
+Jetzt Mehrsprachigkeit als eigene Gruppe ganz unten (menu_order 30 – nach Obfuskierung mit 25):
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Nur acf-settings.php ersetzen. Die neue Reihenfolge auf der Settings-Seite:
+
+1.  Plugin Status          (nur Info-Box)
+2.  Logo
+3.  Hero Image
+4.  Top Header
+5.  E-Mail / SMTP
+6.  Spam-Schutz
+7.  Mehrsprachigkeit       (ganz unten)
+Acf settings
+Code · PHP 
+Jawohl -> genau so!
+
+10:41
+Was kommt als Nächstes?
+
+Bei den Seiten, Beiträge und CPTs soll die Möglichkeit geschaffen werden, zusätzlich SEO-relevante Informationen zu hinterlegen, wie Meta Title, Meta Description, etc. 
+
+Ist es klug, dies im Agency Core zu machen, unser SEO Plugin zu erweitern oder schlägst du vor, ein fertiges Tool wie RankMath oder Yoast SEO zu nutzen?
+
+10:43
+
+Evaluierte bestehende SEO-Plugin-Lösung gegen Alternativen
+Evaluierte bestehende SEO-Plugin-Lösung gegen Alternativen
+Lass mich kurz schauen was meta.php im SEO-Plugin bereits kann:
+
+
+Read existing meta.php
+Read existing meta.php
+Klare Empfehlung: das bestehende media-lab-seo Plugin erweitern – aus folgenden Gründen:
+
+Gegen RankMath / Yoast:
+
+Beide würden mit deinem bestehenden SEO-Plugin kollidieren (doppelte Meta-Tags, doppeltes Schema.org, doppelte OG-Tags)
+Massive Plugins mit hunderten Features die du nie brauchst
+Abhängigkeit von externen Updates und Kompatibilität
+Du hast bereits alles Wesentliche selbst gebaut
+Gegen Agency Core:
+
+Separation of Concerns – SEO gehört ins SEO-Plugin, nicht in den Agency Core
+Das SEO-Plugin kann auf jeder WordPress-Installation eingesetzt werden, unabhängig vom Theme/Core
+Für die Erweiterung von media-lab-seo:
+
+meta.php ist bewusst noch leer – als Platzhalter angelegt
+Schema, OG und Twitter Cards sind bereits vorhanden und können auf die neuen Meta-Felder zugreifen
+Saubere Struktur, kein Overhead
+Was ich konkret einbauen würde:
+
+Meta Title + Meta Description als Felder in der Seitenleiste (Post/Page/CPT)
+Fokus-Keyword für Basis-Analyse
+Canonical URL (bei Bedarf überschreiben)
+Robots (index/noindex, follow/nofollow)
+OG Image pro Seite überschreiben
+Live-Vorschau wie der Google-Snippet aussieht (Titel + URL + Description)
+Soll ich das umsetzen?
+
+Ja, wunderbar
+
+10:44
+
+Architected comprehensive SEO meta box solution
+Architected comprehensive SEO meta box solution
+Lass mich zuerst die bestehenden SEO-Files durchsehen damit alles sauber integriert wird:
+
+
+2 Befehle ausgeführt
+2 Befehle ausgeführt
+Jetzt baue ich alles – zuerst meta.php als zentrales Daten-Hub, dann das Meta-Box UI mit SCSS, dann passe ich OG/Twitter/Schema an:
+
+
+3 Befehle ausgeführt
+3 Befehle ausgeführt
+Jetzt OG, Twitter und Schema auf die neuen Helper-Funktionen umstellen:
+
+
+6 Befehle ausgeführt, 2 Dateien bearbeitet, datei lesen
+6 Befehle ausgeführt, 2 Dateien bearbeitet, datei lesen
+5 Files, 2 davon neu:
+
+File	Pfad	Aktion
+meta.php	plugins/media-lab-seo/inc/	ersetzen
+opengraph.php	plugins/media-lab-seo/inc/	ersetzen
+twitter.php	plugins/media-lab-seo/inc/	ersetzen
+meta-box.js	plugins/media-lab-seo/assets/js/	neu (Ordner anlegen)
+meta-box.css	plugins/media-lab-seo/assets/css/	neu (Ordner anlegen)
+In jedem Post/Page/CPT-Editor erscheint danach eine 🔍 SEO Meta-Box mit:
+
+Google Snippet Vorschau – aktualisiert sich live beim Tippen
+Meta Title + Meta Description mit Zeichenzähler (grün/gelb/rot)
+Fokus-Keyword und Canonical URL
+OG Image mit Medienpicker (überschreibt Featured Image für Social)
+Robots – noindex/nofollow mit Warnfarbe bei noindex
+OG-Tags, Twitter Cards und Schema.org greifen automatisch auf die gespeicherten Werte zu.
+
+Meta
+Code · PHP 
+Opengraph
+Code · PHP 
+Twitter
+Code · PHP 
+Meta box
+JS 
+Meta box
+Code · CSS 
+Wahnsinn - das ist genial!
+
+10:49
+Danke! Was kommt als Nächstes auf die Liste?
+
+Da wir eine Digitale Werbeagentur sind und ca. 25-30 Website-Kunden haben, würde ich gerne den Wordpress Admin Login Screen customizen - sozusagen als White Label CMS, damit man sieht, dass eine Seite nicht "von der Stange" ist und das Nutzererlebnis verbessern.
+
+Was schlägst du dazu vor?
+
+10:51
+
+Evaluierte White-Label-Lösungen für WordPress-Admin-Anpassung
+Evaluierte White-Label-Lösungen für WordPress-Admin-Anpassung
+Gute Idee – das ist ein starkes Signal gegenüber Kunden. Mein Vorschlag:
+
+Was sich sinnvoll customizen lässt:
+
+Login-Screen – Logo (statt WordPress-Logo), Hintergrund (Farbe oder Bild), Custom CSS, Seitentitel im Tab
+Admin-Bar & Menü – Farbe, Footer-Text ("Powered by Media Lab" statt WordPress), Admin-Bar-Logo
+Dashboard-Widget – eigenes Widget mit Agentur-Info, Kontaktdaten, Link zum Support
+Browser-Tab – Custom Favicon auch im Backend
+Wo ich das einbauen würde:
+
+Direkt im Agency Core Plugin – mit einer neuen ACF-Gruppe "White Label" in den Settings. Damit kann für jeden Kunden individuell konfiguriert werden:
+
+Agentur-Logo auf dem Login-Screen
+Hintergrundfarbe oder -bild
+Primärfarbe (für Buttons, Links)
+Support-URL und -E-Mail fürs Dashboard-Widget
+Footer-Text
+Was ich NICHT empfehle:
+
+Den WP-Admin komplett umzubauen (zu fragil bei Updates)
+Externe White-Label-Plugins (unnötige Abhängigkeit)
+Das Ergebnis: Jeder Kunde sieht beim Login das Agency-Logo, ein sauberes Design, und im Dashboard eure Kontaktdaten – kein WordPress-Branding nirgends.
+
+Soll ich das so umsetzen?
+
+Ja, das klingt gut. Ich hätte das gerne noch um die Agentur-Kontaktdaten erweitert und die Option, diesen Menüeintrag vor Kunden zu verstecken bzw. nur für bestimmte WP-User anzuzeigen.
+
+10:53
+
+Orchestrierte White-Label-Funktionen mit Agentur-Kontaktdaten und rollenbasierter Sichtbarkeit
+Orchestrierte White-Label-Funktionen mit Agentur-Kontaktdaten und rollenbasierter Sichtbarkeit
+Ich baue das komplett aus – zuerst schaue ich kurz was an Rollen/User-Struktur bereits vorhanden ist:
+
+
+2 Befehle ausgeführt
+2 Befehle ausgeführt
+Jetzt die ACF-Felder in acf-settings.php ergänzen:
+
+
+2 Dateien bearbeitet, 2 Befehle ausgeführt
+2 Dateien bearbeitet, 2 Befehle ausgeführt
+Jetzt in die Hauptdatei eintragen:
+
+
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+Hat eine Datei bearbeitet, hat einen Befehl ausgeführt, datei lesen
+3 Files, 1 davon neu:
+
+File	Pfad	Aktion
+white-label.php	plugins/media-lab-agency-core/inc/	neu
+acf-settings.php	plugins/media-lab-agency-core/inc/	ersetzen
+media-lab-agency-core.php	plugins/media-lab-agency-core/	ersetzen
+In den Agency Core Settings erscheint dann eine neue Sektion "White Label / Agentur-Branding" direkt unterhalb von Plugin Status, mit vier Bereichen:
+
+Login Screen – Logo, Breite, Hintergrundfarbe, Hintergrundbild, Primärfarbe, Browser-Tab-Titel
+Agentur-Branding – Name, Admin-Bar-Logo, Footer-Text
+Kontaktdaten – Begrüßungstext, Telefon, E-Mail, Website (erscheinen als Dashboard-Widget)
+Menü-Sichtbarkeit – Checkboxen für Rollen (Administrator, Editor, Author…) – leer = für alle sichtbar
+White label
+Code · PHP 
+Acf settings
+Code · PHP 
+Media lab agency core
+Code · PHP 
+Perfekt!
+
+11:00
+
+Thinking about interpreting a single affirmative word
+Thinking about interpreting a single affirmative word
+Was kommt als Nächstes?
+
+Die nächsten Schritte sind meiner Meinung nach komplexer - bin auf deine Meinung gespannt.
+Ich möchte folgendes (Reihenfolge ist die bindend):
+* Aktualisieren der .gitignore Datei an den Letztstand
+* Git Commit des Letzstands mit Vergabe einer neuen Version
+* Security Scan und Einschätzung (SWOT-Analyse) inklusive Verbesserungsvorschläge des aktuellen Standes
+* Check und Vereinheitlichung der Design Tokens - diese sind durch die vielen Iterationen nicht mehr konsistent
+* Aufräumen der Media Lab Starter Kit Struktur: Löschen von nicht mehr benötigten Files, Ordnern und Plugins
+
+Mehr anzeigen
+11:05
+
+Evaluierte Komplexität fünf sequenzieller Entwicklungsaufgaben
+Evaluierte Komplexität fünf sequenzieller Entwicklungsaufgaben
+Gute Reihenfolge – macht absolut Sinn. Meine Einschätzung zu jedem Punkt:
+
+1. .gitignore aktualisieren – schnell erledigt, ich schaue mir den aktuellen Stand an und ergänze was fehlt (node_modules, build-Artefakte, lokale Configs, etc.)
+
+2. Git Commit + Versionierung – ich schaue was die aktuelle Version ist, erstelle ein sauberes Changelog und tagge einen neuen Release. Frage vorab: Arbeitest du mit Semantic Versioning (z.B. 1.3.0) oder einem anderen Schema?
+
+3. Security Scan + SWOT – das ist der komplexeste Punkt. Ich scanne alle PHP-Files auf typische Schwachstellen (unvalidierte Inputs, SQL-Injection-Risiken, fehlende Nonces, direkte File-Includes, etc.) und erstelle eine strukturierte SWOT-Analyse mit konkreten Verbesserungsvorschlägen. Das wird ein ausführliches Dokument.
+
+4. Design Tokens vereinheitlichen – ich lese alle SCSS-Files durch, identifiziere Inkonsistenzen (doppelte Variablen, abweichende Werte, veraltete Token) und bringe alles auf einen einheitlichen Stand. Je nach Umfang der Drift kann das aufwendig werden.
+
+5. Aufräumen – ich identifiziere alle Backup-Files (.bak, .backup, .broken), verwaiste Plugins, nicht eingebundene Files und erstelle zuerst eine Liste zur Freigabe, bevor ich lösche.
+
+Soll ich mit Punkt 1 beginnen?
+
+Ja, mit Semantic Versioning
+
+Ja, beginne mit Punkt 1
+
+11:06
+
+Inspizierte Projektstruktur und Versionskontrollkonfiguration
+Inspizierte Projektstruktur und Versionskontrollkonfiguration
+Jetzt habe ich alle nötigen Infos. Die .gitignore braucht folgende Ergänzungen:
+
+Backup-Files (.bak, .bak2, .bak3, .broken, .backup4, *.before)
+.env.staging / .env.production (sensible Daten!)
+playwright-report/ und test-results/
+main.js.backup-error-tracking
+Inaktive Third-Party-Plugins
+assets/dist/ Pfad ist schon drin, aber der Pfad stimmt nicht exakt
+
+2 Befehle ausgeführt, datei lesen
+2 Befehle ausgeführt, datei lesen
+Was neu hinzugekommen ist gegenüber dem alten Stand:
+
+.env.staging / .env.production – waren nicht ignoriert! Sensible SSH-Credentials, DB-Namen, etc. wären im Repo gelandet
+Inaktive Plugins (media-lab-core, media-lab-analytics, media-lab-events, media-lab-project-starter, media-lab-woocommerce) – nicht versionieren bis fertig
+Alle Backup-Varianten (.bak, .bak2, .bak3, .broken, .backup4, etc.)
+main.js.backup-error-tracking – spezifischer Backup-File im Theme
+playwright-report/ + test-results/ – Test-Artefakte gehören nicht ins Repo
+query-monitor/ – Dev-Plugin, nicht für Produktion
+package-lock.json + composer.lock – je nach Workflow diskutierbar, aber für ein Starter Kit sinnvoll zu ignorieren
+/cms/index.php – WP-Core-File
+Wichtiger Hinweis: Die .env.staging und .env.production Files sollten nach dem ersten Commit mit git rm --cached .env.staging .env.production aus dem Git-Index entfernt werden, falls sie bereits getrackt sind.
+
+Bereit für Punkt 2 – Git Commit + Versionierung?
+
+.gitignore
+GITIGNORE 
+
+
+
+
+
+
+Claude ist eine KI und kann Fehler machen. Bitte überprüfe die Antworten.
+· GITIGNORE
+Kopieren
+
 # ============================================
 # WORDPRESS CORE
 # ============================================
@@ -7,9 +1359,10 @@
 /cms/xmlrpc.php
 /cms/readme.html
 /cms/license.txt
+/cms/index.php
 
 # ============================================
-# WORDPRESS CONFIG
+# WORDPRESS CONFIG (sensible Daten!)
 # ============================================
 /cms/wp-config.php
 /cms/wp-config-local.php
@@ -17,27 +1370,41 @@
 /cms/wp-config-production.php
 
 # ============================================
-# CONTENT
+# UPLOADS & GENERIERTER CONTENT
 # ============================================
 /cms/wp-content/uploads/
 /cms/wp-content/upgrade/
 /cms/wp-content/cache/
 /cms/wp-content/w3tc-config/
+/cms/wp-content/advanced-cache.php
+/cms/wp-content/object-cache.php
+/cms/wp-content/db.php
 
 # ============================================
-# PLUGINS - Third Party (ignorieren)
+# PLUGINS – Third Party (via Composer/ZIP installieren)
 # ============================================
 /cms/wp-content/plugins/advanced-custom-fields/
 /cms/wp-content/plugins/advanced-custom-fields-pro/
 /cms/wp-content/plugins/contact-form-7/
 /cms/wp-content/plugins/wordpress-importer/
 /cms/wp-content/plugins/woocommerce/
+/cms/wp-content/plugins/woocommerce-gateway-stripe/
+/cms/wp-content/plugins/woocommerce-paypal-payments/
+/cms/wp-content/plugins/woocommerce-services/
 /cms/wp-content/plugins/better-search-replace/
 /cms/wp-content/plugins/ewww-image-optimizer/
 /cms/wp-content/plugins/wp-fastest-cache/
+/cms/wp-content/plugins/query-monitor/
+
+# Inaktive Plugins (noch nicht fertig entwickelt)
+/cms/wp-content/plugins/media-lab-core/
+/cms/wp-content/plugins/media-lab-analytics/
+/cms/wp-content/plugins/media-lab-events/
+/cms/wp-content/plugins/media-lab-project-starter/
+/cms/wp-content/plugins/media-lab-woocommerce/
 
 # ============================================
-# THEMES
+# THEMES – Standard WP Themes
 # ============================================
 /cms/wp-content/themes/twenty*/
 
@@ -45,45 +1412,97 @@
 # BUILD & DEPENDENCIES
 # ============================================
 node_modules/
-npm-debug.log
-yarn-error.log
-/cms/wp-content/themes/*/assets/dist/
-*.map
+npm-debug.log*
+yarn-error.log*
+yarn.lock
+package-lock.json
 /vendor/
+composer.lock
+
+# Build-Output (wird generiert, nicht versionieren)
+/cms/wp-content/themes/custom-theme/assets/dist/
+*.map
+
+# ============================================
+# BACKUP & TEMP FILES (aus Entwicklungsiterationen)
+# ============================================
+*.bak
+*.bak2
+*.bak3
+*.bak4
+*.backup
+*.backup1
+*.backup2
+*.backup3
+*.backup4
+*.broken
+*.before
+*.orig
+*~ 
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# JS Backup Files
+/cms/wp-content/themes/custom-theme/assets/src/js/main.js.backup-error-tracking
+
+# ============================================
+# UMGEBUNGSVARIABLEN (NIEMALS committen!)
+# ============================================
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+.env.*.local
+
+# ============================================
+# LOGS
+# ============================================
+*.log
+/cms/wp-content/debug.log
+error_log
+php_error.log
+
+# ============================================
+# DATENBANK
+# ============================================
+*.sql
+*.sql.gz
+*.sqlite
+database-backup/
+db-backup/
+
+# ============================================
+# TEST & CI ARTEFAKTE
+# ============================================
+playwright-report/
+test-results/
+/coverage/
+/.nyc_output/
+cypress/screenshots/
+cypress/videos/
 
 # ============================================
 # OS & IDE
 # ============================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 Thumbs.db
-*~
+ehthumbs.db
+Desktop.ini
+
 .idea/
 .vscode/
 *.sublime-project
 *.sublime-workspace
-*.swp
-*.swo
 
 # ============================================
-# LOGS & TEMP
+# LOKALE DEPLOYMENT CONFIG
 # ============================================
-*.log
-/cms/wp-content/debug.log
-*.tmp
-*.temp
-.cache/
-
-# ============================================
-# BACKUPS & DATABASE
-# ============================================
-*.backup
-*-backup/
-*.sql
-*.sql.gz
-docs-backup/
-
-# ============================================
-# ENVIRONMENT
-# ============================================
-.env
-.env.local
+/scripts/deploy-*.js
+deploy-config.local.*

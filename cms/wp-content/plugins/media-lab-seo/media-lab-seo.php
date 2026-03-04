@@ -3,7 +3,7 @@
  * Plugin Name: Media Lab SEO Toolkit
  * Plugin URI: https://github.com/media-admin/media-lab-starter-kit
  * Description: Comprehensive SEO solution. Schema.org markup, Open Graph, Twitter Cards, breadcrumbs, and meta management.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Media Lab
  * Author URI: https://medialab.at
  * Text Domain: media-lab-seo
@@ -34,6 +34,7 @@ function medialab_seo_init() {
     require_once MEDIALAB_SEO_PATH . 'inc/twitter.php';
     require_once MEDIALAB_SEO_PATH . 'inc/meta.php';
     require_once MEDIALAB_SEO_PATH . 'inc/breadcrumbs.php';
+    require_once MEDIALAB_SEO_PATH . 'inc/redirects.php';
 }
 add_action('plugins_loaded', 'medialab_seo_init');
 

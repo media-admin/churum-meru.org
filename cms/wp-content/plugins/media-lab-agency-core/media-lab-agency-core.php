@@ -3,7 +3,7 @@
  * Plugin Name: Media Lab Agency Core
  * Plugin URI: https://github.com/media-admin/media-lab-starter-kit
  * Description: Core functionality for Media Lab agency websites. Provides shortcodes, security features, and admin customizations.
- * Version: 1.1.0
+ * Version: 1.3.0
  * Author: Media Lab
  * Author URI: https://medialab.at
  * Text Domain: media-lab-core
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin Constants
-define('MEDIALAB_CORE_VERSION', '1.1.0');
+define('MEDIALAB_CORE_VERSION', '1.2.0');
 define('MEDIALAB_CORE_FILE', __FILE__);
 define('MEDIALAB_CORE_PATH', plugin_dir_path(__FILE__));
 define('MEDIALAB_CORE_URL', plugin_dir_url(__FILE__));
@@ -29,8 +29,8 @@ define('MEDIALAB_CORE_BASENAME', plugin_basename(__FILE__));
 function medialab_core_init() {
     // Load text domain
     load_plugin_textdomain('media-lab-core', false, dirname(MEDIALAB_CORE_BASENAME) . '/languages');
-    
-    // Load core components
+
+    // Load core components (each file only once)
     require_once MEDIALAB_CORE_PATH . 'inc/shortcodes.php';
     require_once MEDIALAB_CORE_PATH . 'inc/security.php';
     require_once MEDIALAB_CORE_PATH . 'inc/admin.php';
@@ -39,16 +39,31 @@ function medialab_core_init() {
     require_once MEDIALAB_CORE_PATH . 'inc/ajax-load-more.php';
     require_once MEDIALAB_CORE_PATH . 'inc/ajax-filters.php';
     require_once MEDIALAB_CORE_PATH . 'inc/svg-support.php';
-require_once MEDIALAB_CORE_PATH . 'inc/activity-log.php';
-    require_once MEDIALAB_CORE_PATH . 'inc/svg-support.php';
-require_once MEDIALAB_CORE_PATH . 'inc/activity-log.php';
+    require_once MEDIALAB_CORE_PATH . 'inc/activity-log.php';
     require_once MEDIALAB_CORE_PATH . 'inc/hero-image.php';
     require_once MEDIALAB_CORE_PATH . 'inc/notifications-cpt.php';
     require_once MEDIALAB_CORE_PATH . 'inc/notifications-shortcodes.php';
 
-// Multi-Language & Top Header
-require_once __DIR__ . '/inc/multi-language.php';
-require_once __DIR__ . '/inc/acf-top-header.php';
+    // ACF: Options Page + all field groups (Top Header, Multi-Language)
+    require_once MEDIALAB_CORE_PATH . 'inc/acf-settings.php';
+
+    // Multi-Language (checks ACF toggle internally before activating)
+    require_once MEDIALAB_CORE_PATH . 'inc/multi-language.php';
+
+    // Drag & Drop Post Order
+    require_once MEDIALAB_CORE_PATH . 'inc/post-order.php';
+
+    // Duplicate Post / Term
+    require_once MEDIALAB_CORE_PATH . 'inc/duplicate-post.php';
+
+    // SMTP Mailer
+    require_once MEDIALAB_CORE_PATH . 'inc/smtp.php';
+
+    // E-Mail Obfuskierung / Spam-Schutz
+    require_once MEDIALAB_CORE_PATH . 'inc/email-obfuscation.php';
+
+    // White Label / Agentur-Branding
+    require_once MEDIALAB_CORE_PATH . 'inc/white-label.php';
 }
 add_action('plugins_loaded', 'medialab_core_init', 5);
 
@@ -56,7 +71,6 @@ add_action('plugins_loaded', 'medialab_core_init', 5);
  * Activation Hook
  */
 function medialab_core_activate() {
-    // Flush rewrite rules
     flush_rewrite_rules();
 }
 register_activation_hook(__FILE__, 'medialab_core_activate');

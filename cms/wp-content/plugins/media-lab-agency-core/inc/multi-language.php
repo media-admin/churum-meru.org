@@ -1,7 +1,10 @@
 <?php
 /**
  * Multi-Language Support System
- * 
+ *
+ * Only active when "Mehrsprachigkeit aktivieren" is enabled in
+ * Agency Core Settings (ACF option: multilang_enable).
+ *
  * Compatible with Polylang
  * Fallback functions if Polylang not active
  * Custom language switcher
@@ -10,6 +13,26 @@
  */
 
 if (!defined('ABSPATH')) exit;
+
+/**
+ * Boot multi-language only when the ACF toggle is ON.
+ * We hook into init (priority 1) so ACF options are readable,
+ * but still early enough for Polylang hooks to work.
+ */
+add_action('init', function () {
+    // If ACF is not available, skip silently
+    if (!function_exists('get_field')) {
+        return;
+    }
+    // Read the toggle from the options page
+    $enabled = get_field('multilang_enable', 'option');
+    if (!$enabled) {
+        return; // Feature disabled → do nothing
+    }
+    // Instantiate the class
+    global $medialab_multilang;
+    $medialab_multilang = new MediaLab_Multi_Language();
+}, 1);
 
 class MediaLab_Multi_Language {
     
@@ -358,11 +381,11 @@ class MediaLab_Multi_Language {
     }
 }
 
-global $medialab_multilang;
-$medialab_multilang = new MediaLab_Multi_Language();
+// Instantiation is handled by the add_action('init') hook above.
 
 /**
  * Helper Functions
+ * Safe to call even when multilang is disabled — returns graceful fallback.
  */
 
 // Get current language

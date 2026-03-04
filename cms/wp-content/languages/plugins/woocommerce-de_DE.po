@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-02 22:16:42+0000\n"
+"PO-Revision-Date: 2026-03-03 20:29:10+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2978,8 +2978,8 @@ msgstr "&ndash;"
 #: src/Blocks/BlockTypes/Reviews/ProductReviewForm.php:191
 msgid "%d of 5 star"
 msgid_plural "%d of 5 stars"
-msgstr[0] "%d von 5 Sternen"
-msgstr[1] "%d von 5 Sternen"
+msgstr[0] "%d von 5 Sternen"
+msgstr[1] "%d von 5 Sternen"
 
 #: includes/abstracts/abstract-wc-data.php:978
 msgid "Invalid date provided."
@@ -3095,16 +3095,16 @@ msgstr "Einige Details deiner Sendung wurden kürzlich aktualisiert. Dies kann I
 msgid "Here’s the latest info we have:"
 msgstr "Hier sind die neuesten Informationen, die uns vorliegen:"
 
+#: templates/emails/email-fulfillment-details.php:31
+#: templates/emails/plain/email-fulfillment-details.php:25
+msgid "No tracking information available for this fulfillment at the moment."
+msgstr "Für diese Ausführung sind derzeit keine Informationen zur Sendungsverfolgung verfügbar."
+
 #: templates/emails/block/customer-fulfillment-deleted.php:32
 #: templates/emails/customer-fulfillment-deleted.php:32
 #: templates/emails/plain/customer-fulfillment-deleted.php:24
 msgid "We wanted to let you know that one of the previously fulfilled shipments from your order has been removed from our system. This may have been due to a correction or an update in our fulfillment records. Don’t worry — this won’t affect any items you’ve already received."
 msgstr "Wir möchten dir mitteilen, dass eine der zuvor ausgeführten Sendungen aus deiner Bestellung aus unserem System entfernt wurde. Dies ist möglicherweise auf eine Korrektur oder Aktualisierung in unseren Ausführungsprotokollen zurückzuführen. Keine Sorge – dies betrifft keine Artikel, die du bereits erhalten hast."
-
-#: templates/emails/email-fulfillment-details.php:31
-#: templates/emails/plain/email-fulfillment-details.php:25
-msgid "No tracking information available for this fulfillment at the moment."
-msgstr "Für diese Ausführung sind derzeit keine Informationen zur Sendungsverfolgung verfügbar."
 
 #: templates/emails/email-fulfillment-details.php:33
 #: templates/emails/plain/email-fulfillment-details.php:28
@@ -3879,14 +3879,6 @@ msgstr "Diese Funktion steht nicht bei <a href=\"%s\">Warenkorb- und Bezahlen-Bl
 msgid "The provided checkout link was out of date or invalid. No products were added to the cart."
 msgstr "Der angegebene Bezahlen-Link war veraltet oder ungültig. Dem Warenkorb wurden keine Produkte hinzugefügt."
 
-#. translators: %1$s: Product filter name, %2$d: Number of products
-#: src/Blocks/BlockTypes/ProductFilterCheckboxList.php:159
-#: src/Blocks/BlockTypes/ProductFilterChips.php:139
-msgid "%1$s (%2$d product)"
-msgid_plural "%1$s (%2$d products)"
-msgstr[0] "%1$s (%2$d Produkt)"
-msgstr[1] "%1$s (%2$d Produkte)"
-
 #: src/Blocks/BlockTypes/ProductButton.php:178
 #: src/Blocks/BlockTypes/ProductButton.php:367
 msgid "Added to cart"
@@ -3899,6 +3891,14 @@ msgstr "5 Minuten"
 #: src/Admin/Features/MarketingRecommendations/DefaultMarketingRecommendations.php:149
 msgid "Automate Facebook & Instagram marketing with Kliken. Launch ads and schedule a month of posts in 5 minutes—first 5 free! Plans start at just $20/mo."
 msgstr "Automatisiere Facebook- und Instagram-Marketing mit Kliken. Innerhalb von fünf Minuten Werbung veröffentlichen und einen Monat mit Beiträgen planen – die ersten fünf sind kostenlos! Abonnements schon ab 20 USD/Monat."
+
+#. translators: %1$s: Product filter name, %2$d: Number of products
+#: src/Blocks/BlockTypes/ProductFilterCheckboxList.php:159
+#: src/Blocks/BlockTypes/ProductFilterChips.php:139
+msgid "%1$s (%2$d product)"
+msgid_plural "%1$s (%2$d products)"
+msgstr[0] "%1$s (%2$d Produkt)"
+msgstr[1] "%1$s (%2$d Produkte)"
 
 #. translators: 1: price from 2: price to
 #: includes/wc-formatting-functions.php:1393
@@ -14562,6 +14562,11 @@ msgstr "Der Marketingkanal, zu dem dieser Kampagnentyp gehört."
 msgid "The unique identifier for the marketing channel that this campaign belongs to."
 msgstr "Die eindeutige Kennung des Marketingkanals, zu dem diese Kampagne gehört."
 
+#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1839
+#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1906
+msgid "Slug automatically generated from the product name."
+msgstr "Titelform wird automatisch aus dem Produktnamen generiert."
+
 #. translators: 1) is the number of affected actions, 2) is a link to an admin
 #. screen.
 #: packages/action-scheduler/classes/ActionScheduler_AdminView.php:220
@@ -14569,11 +14574,6 @@ msgid "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due action<
 msgid_plural "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due actions</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
 msgstr[0] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktion</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
 msgstr[1] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktionen</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
-
-#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1839
-#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1906
-msgid "Slug automatically generated from the product name."
-msgstr "Titelform wird automatisch aus dem Produktnamen generiert."
 
 #: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1832
 #: src/Internal/RestApi/Routes/V4/Products/Controller.php:1899
@@ -18540,16 +18540,16 @@ msgstr "Ein Link zu einer Produktkategorie."
 msgid "Product Category Link"
 msgstr "Produktkategorie-Link"
 
-#: src/Internal/Admin/CustomerEffortScoreTracks.php:517
-msgid "How easy was it to add a product tag?"
-msgstr "Wie einfach war das Hinzufügen deines Produktschlagworts?"
-
 #. translators: %1$s: Link to WP Mail Logging plugin, %2$s: Link to Email FAQ
 #. support page.
 #: includes/admin/settings/class-wc-settings-emails.php:78
 #: includes/admin/settings/class-wc-settings-emails.php:594
 msgid "To ensure your store&rsquo;s notifications arrive in your and your customers&rsquo; inboxes, we recommend connecting your email address to your domain and setting up a dedicated SMTP server. If something doesn&rsquo;t seem to be sending correctly, install the <a href=\"%1$s\">WP Mail Logging Plugin</a> or check the <a href=\"%2$s\">Email FAQ page</a>."
 msgstr "Um sicherzustellen, dass die Benachrichtigungen deines Shops in deinem Posteingang und denen deiner Kunden ankommen, empfehlen wir dir, deine E-Mail-Adresse mit deiner Domain zu verbinden und einen dedizierten SMTP-Server einzurichten. Sollte etwas nicht korrekt gesendet werden, installiere das <a href=\"%1$s\">WP Mail Logging-Plugin</a> oder lies dir die <a href=\"%2$s\">FAQ-Seite zu E-Mails</a> durch."
+
+#: src/Internal/Admin/CustomerEffortScoreTracks.php:517
+msgid "How easy was it to add a product tag?"
+msgstr "Wie einfach war das Hinzufügen deines Produktschlagworts?"
 
 #: includes/class-wc-post-types.php:380
 msgid "A link to a product."
@@ -22004,13 +22004,13 @@ msgstr "Tutorial ansehen"
 msgid "Changing eCommerce platforms might seem like a big hurdle to overcome, but it is easier than you might think to move your products, customers, and orders to WooCommerce. This article will help you with going through this process."
 msgstr "Der Wechsel der E-Commerce-Plattform mag zunächst als große Hürde erscheinen, es ist aber einfacher als du denkst, deine Produkte, Kunden und Bestellungen zu WooCommerce zu übertragen. Dieser Artikel geleitet dich durch diesen Prozess."
 
-#: src/Internal/Admin/Notes/MigrateFromShopify.php:65
-msgid "Do you want to migrate from Shopify to WooCommerce?"
-msgstr "Möchtest du von Shopify zu WooCommerce migrieren?"
-
 #: src/Internal/Admin/Notes/WooCommerceSubscriptions.php:48
 msgid "WooCommerce Subscriptions allows you to introduce a variety of subscriptions for physical or virtual products and services. Create product-of-the-month clubs, weekly service subscriptions or even yearly software billing packages. Add sign-up fees, offer free trials, or set expiration periods."
 msgstr "WooCommerce-Abonnements ermöglichen dir die Einführung verschiedener Abonnements für physische oder virtuelle Produkte und Dienste. Erstelle monatliche Abonnement-Boxen, wöchentliche Dienstabonnements oder auch Softwarepakete mit jährlicher Abrechnung. Füge Registrierungsgebühren hinzu, biete Gratis-Tests an oder richte Ablauffristen ein."
+
+#: src/Internal/Admin/Notes/MigrateFromShopify.php:65
+msgid "Do you want to migrate from Shopify to WooCommerce?"
+msgstr "Möchtest du von Shopify zu WooCommerce migrieren?"
 
 #: i18n/states.php:1102
 msgid "Taita-Taveta"
@@ -24527,13 +24527,6 @@ msgstr "Über"
 msgid "Migrated action with ID %1$d in %2$s to ID %3$d in %4$s"
 msgstr "Aktion mit ID %1$d in %2$s zu ID %3$d in %4$s migriert"
 
-#. translators: %d: amount of actions
-#: packages/action-scheduler/classes/migration/Runner.php:114
-msgid "Migrating %d action"
-msgid_plural "Migrating %d actions"
-msgstr[0] "%d Aktion wird migriert"
-msgstr[1] "%d Aktionen werden migriert"
-
 #: packages/action-scheduler/classes/migration/Controller.php:183
 msgid "Action Scheduler migration in progress. The list of scheduled actions may be incomplete."
 msgstr "Aktionsplaner-Migration wird durchgeführt. Die Liste der geplanten Aktionen ist möglicherweise unvollständig."
@@ -24547,6 +24540,13 @@ msgstr "Migrierte Quellaktion %s kann nicht entfernt werden"
 #: packages/action-scheduler/classes/ActionScheduler_AdminView.php:273
 msgid "About Action Scheduler %s"
 msgstr "Über den Aktionsplaner %s"
+
+#. translators: %d: amount of actions
+#: packages/action-scheduler/classes/migration/Runner.php:114
+msgid "Migrating %d action"
+msgid_plural "Migrating %d actions"
+msgstr[0] "%d Aktion wird migriert"
+msgstr[1] "%d Aktionen werden migriert"
 
 #: packages/action-scheduler/classes/ActionScheduler_wcSystemStatus.php:113
 msgid "Version:"
@@ -27093,29 +27093,6 @@ msgstr "Änderung für folgende Aktion erfolgreich verarbeitet: %s"
 msgid "Now!"
 msgstr "Jetzt!"
 
-#. translators: %s: amount of time
-#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:174
-msgid "%s second"
-msgid_plural "%s seconds"
-msgstr[0] "%s Sekunde"
-msgstr[1] "%s Sekunden"
-
-#. translators: %s: amount of time
-#. translators: %s is the time duration in minutes
-#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:169
-#: src/Internal/StockNotifications/Emails/CustomerStockNotificationVerifyEmail.php:167
-msgid "%s minute"
-msgid_plural "%s minutes"
-msgstr[0] "%s Minute"
-msgstr[1] "%s Minuten"
-
-#. translators: %s: amount of time
-#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:164
-msgid "%s hour"
-msgid_plural "%s hours"
-msgstr[0] "%s Stunde"
-msgstr[1] "%s Stunden"
-
 #. translators: %s is a number of days.
 #. translators: %s: amount of time
 #: includes/admin/views/html-admin-page-status-report.php:828
@@ -27124,13 +27101,6 @@ msgid "%s day"
 msgid_plural "%s days"
 msgstr[0] "%s Tag"
 msgstr[1] "%s Tage"
-
-#. translators: %s: amount of time
-#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:154
-msgid "%s week"
-msgid_plural "%s weeks"
-msgstr[0] "%s Woche"
-msgstr[1] "%s Wochen"
 
 #. translators: %s: amount of time
 #: packages/action-scheduler/classes/ActionScheduler_ListTable.php:149
@@ -27274,13 +27244,6 @@ msgstr "Anfrage zum Zurücksetzen des Passworts für {site_title}"
 msgid "Action [%1$s] has invalid arguments. It cannot be JSON decoded to an array. $args = %2$s"
 msgstr "Die Aktion [%1$s] hat ungültige Argumente. Sie kann nicht von JSON zu einem Array umgewandelt werden. $args = %2$s"
 
-#. translators: %s: amount of claims
-#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:381
-msgid "Maximum simultaneous queues already in progress (%s queue). No additional queues will begin processing until the current queues are complete."
-msgid_plural "Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete."
-msgstr[0] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlange). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
-msgstr[1] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlangen). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
-
 #. translators: 1: error message 2: filename 3: line
 #: packages/action-scheduler/classes/abstracts/ActionScheduler_Logger.php:183
 msgid "unexpected shutdown: PHP Fatal error %1$s in %2$s on line %3$s"
@@ -27290,6 +27253,13 @@ msgstr "Unerwartete Abschaltung: Fataler PHP-Fehler %1$s in %2$s in Zeile %3$s"
 #: packages/action-scheduler/classes/ActionScheduler_ListTable.php:437
 msgid "Could not process change for action: \"%1$s\" (ID: %2$d). Error: %3$s"
 msgstr "Änderung für folgende Aktion konnte nicht verarbeitet werden: „%1$s“ (ID: %2$d). Fehler: %3$s"
+
+#. translators: %s: amount of claims
+#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:381
+msgid "Maximum simultaneous queues already in progress (%s queue). No additional queues will begin processing until the current queues are complete."
+msgid_plural "Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete."
+msgstr[0] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlange). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
+msgstr[1] "Maximum an gleichzeitigen Warteschlangen bereits in Bearbeitung (%s Warteschlangen). Bis zum Abschluss der aktuellen Warteschlangen werden keine zusätzlichen Warteschlangen verarbeitet."
 
 #. translators: %s: group name(s)
 #. translators: %s is the group name
@@ -27321,6 +27291,36 @@ msgstr "Alle %s"
 #: packages/action-scheduler/classes/ActionScheduler_DataController.php:149
 msgid "Attempting to reduce used memory..."
 msgstr "Es wird versucht, den verwendeten Arbeitsspeicher zu reduzieren …"
+
+#. translators: %s: amount of time
+#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:174
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] "%s Sekunde"
+msgstr[1] "%s Sekunden"
+
+#. translators: %s: amount of time
+#. translators: %s is the time duration in minutes
+#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:169
+#: src/Internal/StockNotifications/Emails/CustomerStockNotificationVerifyEmail.php:167
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] "%s Minute"
+msgstr[1] "%s Minuten"
+
+#. translators: %s: amount of time
+#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:164
+msgid "%s hour"
+msgid_plural "%s hours"
+msgstr[0] "%s Stunde"
+msgstr[1] "%s Stunden"
+
+#. translators: %s: amount of time
+#: packages/action-scheduler/classes/ActionScheduler_ListTable.php:154
+msgid "%s week"
+msgid_plural "%s weeks"
+msgstr[0] "%s Woche"
+msgstr[1] "%s Wochen"
 
 #: includes/rest-api/Controllers/Version3/class-wc-rest-reports-controller.php:67
 msgid "Attributes totals."
@@ -38663,13 +38663,6 @@ msgstr "Hilfe und Support"
 msgid "Invalid post ID."
 msgstr "Die Beitrags-ID ist ungültig."
 
-#: includes/rest-api/Controllers/Version3/class-wc-rest-crud-controller.php:683
-#: includes/rest-api/Controllers/Version3/class-wc-rest-posts-controller.php:694
-#: src/Admin/API/Reports/Stock/Controller.php:469
-#: src/StoreApi/Routes/V1/Products.php:261
-msgid "Limit result set to all items except those of a particular parent ID."
-msgstr "Den Ergebnissatz auf alle Elemente begrenzen, außer denen mit einer bestimmten übergeordneten ID."
-
 #: includes/rest-api/Controllers/Version1/class-wc-rest-customers-v1-controller.php:999
 #: includes/rest-api/Controllers/Version1/class-wc-rest-taxes-v1-controller.php:733
 #: includes/rest-api/Controllers/Version1/class-wc-rest-webhooks-v1-controller.php:744
@@ -38681,6 +38674,13 @@ msgstr "Den Ergebnissatz auf alle Elemente begrenzen, außer denen mit einer bes
 #: src/StoreApi/Routes/V1/Products.php:216
 msgid "Offset the result set by a specific number of items."
 msgstr "Verschiebt den Ergebnissatz um eine bestimmte Elementanzahl."
+
+#: includes/rest-api/Controllers/Version3/class-wc-rest-crud-controller.php:683
+#: includes/rest-api/Controllers/Version3/class-wc-rest-posts-controller.php:694
+#: src/Admin/API/Reports/Stock/Controller.php:469
+#: src/StoreApi/Routes/V1/Products.php:261
+msgid "Limit result set to all items except those of a particular parent ID."
+msgstr "Den Ergebnissatz auf alle Elemente begrenzen, außer denen mit einer bestimmten übergeordneten ID."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-customers-v1-controller.php:1006
 #: includes/rest-api/Controllers/Version1/class-wc-rest-taxes-v1-controller.php:740

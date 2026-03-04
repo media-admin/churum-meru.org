@@ -24,7 +24,7 @@ class MediaLab_Activity_Log {
         $this->table_name = $wpdb->prefix . 'medialab_activity_log';
         
         register_activation_hook(MEDIALAB_CORE_FILE, array($this, 'create_table'));
-        add_action('admin_menu', array($this, 'add_admin_page'));
+        add_action('admin_menu', array($this, 'add_admin_page'), 999);
         
         $this->register_hooks();
     }

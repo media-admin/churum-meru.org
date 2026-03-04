@@ -6,6 +6,36 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.4.0] - 2026-03-04
+
+### custom-theme 1.4.0
+
+#### Performance
+- **Code-Splitting** – 27 Komponenten als Dynamic Imports; werden nur geladen wenn das entsprechende DOM-Element auf der Seite vorhanden ist (`has()` Selektor-Check)
+- **console.log entfernt** – Terser entfernt alle `console.log/info/debug` automatisch in Production
+- **type="module"** – `<script type="module">` statt `defer`; ES-Module sind per Spezifikation immer deferred
+- **Preconnect** – Google Fonts + Maps DNS-Prefetch im `<head>` für schnellere externe Ressourcen
+- **Emoji-Scripts deaktiviert** – WordPress Emoji-JS/CSS (~16KB) komplett entfernt
+- **oEmbed deaktiviert** – REST-Route und Discovery-Links entfernt
+- **WP Head bereinigt** – RSD, WLW Manifest, WP Generator, Shortlink entfernt
+- **Responsive Images** – `medialab_get_thumbnail()` Hilfsfunktion liefert `srcset`, `sizes`, `loading=lazy`, `decoding=async`; ersetzt `get_the_post_thumbnail_url()` in Team, Projects, Testimonials, Services
+
+#### Changed
+- `vite.config.js` – Code-Splitting mit 6 Entry Points, Terser mit `drop_console`, `modern-compiler` SCSS API, Autoprefixer ohne IE 11
+- `enqueue.php` – komplett überarbeitet; `type="module"`, Preconnect, Emoji/oEmbed-Deaktivierung, unnötige WP Head Tags entfernt
+- `functions.php` – gelöschtes `media-lab-project-starter` aus Required-Plugins entfernt; Theme-Version auf 1.4.0
+
+### media-lab-agency-core 1.5.1
+
+#### Added
+- `medialab_get_thumbnail()` – responsive Thumbnail-Hilfsfunktion mit srcset + lazy loading
+- `medialab_the_thumbnail()` – Echo-Wrapper für `medialab_get_thumbnail()`
+
+#### Fixed
+- `shortcodes.php` – 4 Stellen von `get_the_post_thumbnail_url()` auf `medialab_get_thumbnail()` umgestellt (Team, Projects, Testimonials, Services)
+
+---
+
 ## [1.3.0] - 2026-03-04
 
 ### media-lab-agency-core 1.5.0

@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Theme version
-define('CUSTOM_THEME_VERSION', '1.0.0');
+define('CUSTOM_THEME_VERSION', '1.4.0');
 
 /**
  * Check Required Plugins
@@ -21,7 +21,6 @@ define('CUSTOM_THEME_VERSION', '1.0.0');
 function customtheme_check_required_plugins() {
     $required_plugins = array(
         'media-lab-agency-core' => 'Media Lab Agency Core',
-        'media-lab-project-starter' => 'Media Lab Project Starter',
     );
     
     $missing_plugins = array();

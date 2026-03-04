@@ -1406,13 +1406,13 @@ function team_query_shortcode($atts) {
             $email = get_field('email');
             $phone = get_field('phone');
             $social = get_field('social_media');
-            $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+            $thumbnail_img = medialab_get_thumbnail(get_the_ID(), 'medium', ['class' => 'team-member__image']);
             ?>
             
             <div class="team-member" data-animate="fade-in-up">
-                <?php if ($thumbnail) : ?>
+                <?php if ($thumbnail_img) : ?>
                     <div class="team-member__image-wrapper">
-                        <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php the_title(); ?>" class="team-member__image">
+                        <?php echo $thumbnail_img; // phpcs:ignore WordPress.Security.EscapeOutput ?>
                         
                         <?php if ($social || $email) : ?>
                             <div class="team-member__overlay">
@@ -1520,14 +1520,14 @@ function projects_query_shortcode($atts) {
             $client = get_field('client_name');
             $year = get_field('project_year');
             $url = get_field('project_url');
-            $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'large');
+            $thumbnail_img = medialab_get_thumbnail(get_the_ID(), 'large', ['class' => 'project-card__img']);
             $categories = get_the_terms(get_the_ID(), 'project_category');
             ?>
             
             <div class="project-card" data-animate="fade-in-up">
-                <?php if ($thumbnail) : ?>
+                <?php if ($thumbnail_img) : ?>
                     <div class="project-card__image">
-                        <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php the_title(); ?>">
+                        <?php echo $thumbnail_img; // phpcs:ignore WordPress.Security.EscapeOutput ?>
                         <div class="project-card__overlay">
                             <a href="<?php the_permalink(); ?>" class="project-card__link">
                                 <span class="dashicons dashicons-visibility"></span>
@@ -1643,7 +1643,7 @@ function testimonials_query_shortcode($atts) {
                 $company = get_field('company');
                 $role = get_field('role');
                 $rating = get_field('rating');
-                $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'thumbnail');
+                $thumbnail_img = medialab_get_thumbnail(get_the_ID(), 'thumbnail', ['class' => 'testimonial__avatar-img']);
                 ?>
                 
                 <div class="<?php echo $item_class; ?>" data-animate="fade-in-up">
@@ -1746,7 +1746,7 @@ function services_query_shortcode($atts) {
             $price = get_field('price');
             $features = get_field('features');
             $cta = get_field('cta');
-            $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+            $thumbnail_img = medialab_get_thumbnail(get_the_ID(), 'medium', ['class' => 'service-card__img']);
             ?>
             
             <div class="service-card" data-animate="fade-in-up">

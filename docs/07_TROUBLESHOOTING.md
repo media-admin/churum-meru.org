@@ -1,7 +1,7 @@
 # Troubleshooting Guide
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026
+**Version:** 1.5.0  
+**Letzte Aktualisierung:** 2026-03-04
 
 Complete troubleshooting guide for common issues in Media Lab Starter Kit.
 
@@ -43,7 +43,7 @@ cd ..
 ./tests/run-tests.sh
 
 echo "=== Build Check ==="
-ls -lh cms/wp-content/themes/custom-theme/dist/
+ls -lh cms/wp-content/themes/custom-theme/assets/dist/
 ```
 
 ### Check Error Logs
@@ -199,7 +199,7 @@ php -l cms/wp-content/themes/custom-theme/functions.php
 
 1. **Check Dist Folder:**
 ```bash
-ls -lh cms/wp-content/themes/custom-theme/dist/
+ls -lh cms/wp-content/themes/custom-theme/assets/dist/
 
 # Should have:
 # - main-[hash].css
@@ -212,7 +212,7 @@ ls -lh cms/wp-content/themes/custom-theme/dist/
 npm run build
 
 # Check if files created
-ls -lh cms/wp-content/themes/custom-theme/dist/
+ls -lh cms/wp-content/themes/custom-theme/assets/dist/
 ```
 
 3. **Check Enqueue:**
@@ -855,6 +855,159 @@ Tried:
 
 ---
 
+---
+
+## Neue Probleme (v1.5.0)
+
+### AJAX gibt 403 zurück obwohl Nonce korrekt konfiguriert
+
+**Symptom:** Alle AJAX-Requests scheitern mit HTTP 403, Console zeigt `admin-ajax.php: 403`
+
+**Ursache:** `wp_add_inline_script('before')` wird von WordPress bei `type="module"` Scripts silent ignoriert → `window.customTheme` ist `undefined` → Nonce-Feld wird als Leerstring gesendet → `check_ajax_referer()` schlägt fehl.
+
+**Fix:** In `inc/enqueue.php` – Config direkt via `wp_head` ausgeben:
+```php
+function customtheme_output_js_config(): void {
+    echo '<script id="custom-theme-config">window.customTheme = '
+        . wp_json_encode([...])
+        . ';</script>';
+}
+add_action('wp_head', 'customtheme_output_js_config', 1);
+```
+
+---
+
+### Swiper-Slider zeigt kein Styling (CSS fehlt)
+
+**Symptom:** Slider funktioniert, aber ohne Pfeile/Pagination-Styling
+
+**Ursache:** Swiper CSS nicht importiert nachdem CDN-Version entfernt wurde.
+
+**Fix:** In `main.js`:
+```js
+import 'swiper/css/bundle';
+```
+
+---
+
+### Maintenance Mode gesetzt, aber Website noch erreichbar
+
+**Symptom:** `MEDIALAB_MAINTENANCE_MODE = true` in wp-config.php gesetzt, trotzdem keine Wartungsseite
+
+**Ursache:** Eingeloggte Administratoren werden immer durchgelassen (by design). Im Inkognito-Fenster testen.
+
+---
+
+## Neue Probleme (v1.2.0+)
+
+### SCSS: "Undefined variable" beim Build
+
+**Problem:** `Error: Undefined variable. $color-primary`
+
+**Ursache:** `@use '../abstracts' as *;` fehlt am Anfang des Partials.
+
+**Lösung:**
+```scss
+// Am Anfang jedes SCSS-Partials einfügen:
+@use '../abstracts' as *;
+
+// Danach sind alle Tokens und Mixins verfügbar
+.mein-element {
+  color: $color-primary; // ✅
+}
+```
+
+---
+
+### SCSS: "Can't find stylesheet to import"
+
+**Problem:** `Error: Can't find stylesheet to import. @use 'abstracts/variables'`
+
+**Ursache:** `style.scss` referenziert `abstracts/variables` direkt statt über den Index.
+
+**Lösung:** In `style.scss` nur `@use 'abstracts'` (nicht `abstracts/variables`):
+```scss
+// ✅ Korrekt
+@use 'abstracts' as *;
+
+// ❌ Falsch
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
+```
+
+---
+
+### JS: AJAX-Anfrage liefert 429
+
+**Problem:** AJAX-Request gibt HTTP 429 zurück: `"Too many requests. Please try again later."`
+
+**Ursache:** Rate-Limiting greift – zu viele Anfragen pro Minute von derselben IP.
+
+**Limits:**
+- AJAX Search: max. 20 Req / 60 Sekunden
+- AJAX Filter + Load More: max. 30 Req / 60 Sekunden
+
+**Für Entwicklung:** Transients kurz löschen:
+```bash
+cd cms && wp transient delete --all && cd ..
+```
+
+**In Production:** Limit bei Bedarf anpassen in `inc/helpers.php`:
+```php
+medialab_check_rate_limit('ajax_search', 30, 60); // 30 statt 20
+```
+
+---
+
+### JS: Dynamic Import schlägt fehl
+
+**Problem:** Komponente lädt nicht, keine Fehlermeldung
+
+**Ursache:** DOM-Selektor in `main.js` stimmt nicht mit HTML-Klasse überein.
+
+**Lösung:** Selektor in `main.js` prüfen:
+```javascript
+// main.js
+if (has('.meine-klasse')) { // ← muss mit HTML übereinstimmen
+  const { default: MeineKomponente } = await import('./components/meine-komponente');
+}
+```
+
+```html
+<!-- Template -->
+<div class="meine-klasse">...</div>
+```
+
+---
+
+### Build: "Could not resolve entry module"
+
+**Problem:** `Could not resolve entry module "assets/src/js/main.js"`
+
+**Ursache:** `vite.config.js` im falschen Verzeichnis oder falsche Pfade.
+
+**Lösung:** Die Build-Config liegt im **Projekt-Root** (neben `package.json`), nicht im Theme-Ordner. Pfade müssen `path.resolve(__dirname, 'cms/wp-content/...')` verwenden.
+
+---
+
+### SMTP: Test-Mail funktioniert nicht
+
+**Problem:** Test-Mail Button im Backend zeigt Fehler
+
+**Checkliste:**
+1. `MEDIALAB_SMTP_HOST` in `wp-config.php` gesetzt?
+2. Port und Verschlüsselung korrekt? (587/tls oder 465/ssl)
+3. SMTP-Konto aktiv? (Firewall blockiert Port 587?)
+4. Aktiviert: `define('MEDIALAB_SMTP_ENABLED', true);`
+
+**Debug:**
+```php
+// In wp-config.php temporär:
+define('MEDIALAB_SMTP_DEBUG', true); // Zeigt SMTP-Protokoll im Activity Log
+```
+
+---
+
 ## Next Steps
 
 - **Custom Post Types:** [CPT Documentation](08_CUSTOM-POST-TYPES.md)
@@ -867,3 +1020,39 @@ Tried:
 
 **Most issues solved!** 🔧  
 **Next:** [Custom Post Types](08_CUSTOM-POST-TYPES.md) →
+
+---
+
+### Maintenance Mode: Besucher landen nicht auf Wartungsseite
+
+**Symptom:** Maintenance aktiviert, aber Website zeigt sich normal.
+
+**Ursache A:** Nutzer ist als Administrator eingeloggt → Admin-Bypass ist aktiv.
+**Fix:** Ausloggen oder anderen Browser / Inkognito-Modus verwenden.
+
+**Ursache B:** Page-Caching (z.B. WP Rocket) cached die Seite vor dem Maintenance-Hook.
+**Fix:** Cache leeren und Cache für nicht-eingeloggte Nutzer kurzzeitig deaktivieren.
+
+---
+
+### Media Replace: Upload schlägt fehl (413 / max upload size)
+
+**Symptom:** Beim Ersetzen einer Mediendatei erscheint ein 413-Fehler oder die Datei ist zu groß.
+
+**Fix:** PHP-Upload-Limit in `.htaccess` oder `php.ini` erhöhen:
+
+```apache
+# .htaccess
+php_value upload_max_filesize 64M
+php_value post_max_size 64M
+```
+
+---
+
+### 404-Seite zeigt keine Quick-Links
+
+**Symptom:** Der Abschnitt „Vielleicht suchen Sie:" erscheint nicht.
+
+**Ursache:** Kein Menü unter dem Location **Primary Menu** zugewiesen.
+**Fix:** Design → Menüs → Menü erstellen → Position „Primary Menu" zuweisen.
+

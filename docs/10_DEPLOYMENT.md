@@ -1,7 +1,7 @@
 # Deployment Guide
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04
 
 Complete guide for deploying Media Lab Starter Kit to production.
 
@@ -78,28 +78,32 @@ lighthouse https://staging.site.com --view
 cd /path/to/media-lab-starter-kit
 
 # Clean previous builds
-rm -rf cms/wp-content/themes/custom-theme/dist/
+rm -rf cms/wp-content/themes/custom-theme/assets/dist/
 
 # Build assets
 npm run build
 
 # Verify output
-ls -lh cms/wp-content/themes/custom-theme/dist/
-# Should have:
-# - main-[hash].css
-# - main-[hash].js
-# - manifest.json
+ls -lh cms/wp-content/themes/custom-theme/assets/dist/css/
+ls -lh cms/wp-content/themes/custom-theme/assets/dist/js/
+# Sollte zeigen:
+# css/style.css
+# js/main.js
+# js/ajax-filters.js, ajax-search.js, load-more.js, google-maps.js, notifications.js
+# js/chunks/  (automatische Sub-Chunks)
+# manifest.json
 ```
 
-### 2. Optimize Assets
-```bash
-# Images already optimized via Vite
-# CSS already minified
-# JS already minified and tree-shaken
+### 2. Was der Build automatisch macht
+```
+✅ console.log / console.debug entfernt (Terser)
+✅ JS minifiziert + Code-Splitting
+✅ CSS minifiziert + Autoprefixer
+✅ SCSS Tokens aufgelöst
+```
 
-# Optional: Further compress
 npm install -g terser
-terser cms/wp-content/themes/custom-theme/dist/*.js -o output.js -c -m
+terser cms/wp-content/themes/custom-theme/assets/dist/*.js -o output.js -c -m
 ```
 
 ### 3. WordPress Configuration
@@ -114,6 +118,19 @@ define('DISALLOW_FILE_EDIT', true);
 define('DISALLOW_FILE_MODS', false);  // Allow plugin updates
 define('WP_MEMORY_LIMIT', '256M');
 define('WP_MAX_MEMORY_LIMIT', '512M');
+
+// SMTP – Credentials nie in der Datenbank (Security F-05)
+define('MEDIALAB_SMTP_ENABLED',   true);
+define('MEDIALAB_SMTP_HOST',      'smtp.example.com');
+define('MEDIALAB_SMTP_PORT',      587);
+define('MEDIALAB_SMTP_USER',      'noreply@example.com');
+define('MEDIALAB_SMTP_PASS',      'sicheres-passwort');
+define('MEDIALAB_SMTP_ENC',       'tls');
+define('MEDIALAB_SMTP_FROM',      'noreply@example.com');
+define('MEDIALAB_SMTP_FROM_NAME', 'Firmenname');
+
+// Google Maps (falls genutzt)
+// define('GOOGLE_MAPS_API_KEY', 'AIza...');
 ```
 
 ---

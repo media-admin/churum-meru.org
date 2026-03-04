@@ -1,662 +1,255 @@
-# Installation Guide
+# Installationsanleitung
 
-Complete step-by-step installation guide for the WordPress Agency Starter Kit.
-
----
-
-## 📋 Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Local Development Setup](#local-development-setup)
-- [WordPress Installation](#wordpress-installation)
-- [Theme & Plugin Setup](#theme--plugin-setup)
-- [Asset Compilation](#asset-compilation)
-- [Database Configuration](#database-configuration)
-- [Post-Installation](#post-installation)
-- [Troubleshooting](#troubleshooting)
+**Version:** 1.4.0 | **Letzte Aktualisierung:** 2026-03-04
 
 ---
 
-## 🔧 Prerequisites
+## Inhaltsverzeichnis
 
-### Required Software
-
-| Software | Version | Purpose |
-|----------|---------|---------|
-| **PHP** | 8.0+ | WordPress core & plugins |
-| **MySQL/MariaDB** | 5.7+ / 10.3+ | Database |
-| **Node.js** | 18+ | Asset compilation |
-| **npm** | 9+ | Package management |
-| **Composer** | 2.0+ | PHP dependencies |
-| **WP-CLI** | 2.8+ | WordPress management |
-
-### Development Environment
-
-Choose one:
-
-- **Valet** (macOS) - Recommended for Mac users
-- **Local by Flywheel** - Cross-platform GUI
-- **XAMPP** - Windows/Linux
-- **Docker** - Advanced users
-
-### Check Your System
-```bash
-# Check PHP version
-php -v
-# Should show: PHP 8.0.0 or higher
-
-# Check Node version
-node -v
-# Should show: v18.0.0 or higher
-
-# Check npm version
-npm -v
-# Should show: 9.0.0 or higher
-
-# Check Composer
-composer --version
-# Should show: Composer version 2.0.0 or higher
-
-# Check WP-CLI
-wp --version
-# Should show: WP-CLI 2.8.0 or higher
-```
-
-If any are missing, install them first.
+1. [Voraussetzungen](#voraussetzungen)
+2. [Lokale Umgebung (Valet)](#lokale-umgebung-valet)
+3. [WordPress installieren](#wordpress-installieren)
+4. [Plugins & Theme aktivieren](#plugins--theme-aktivieren)
+5. [Assets kompilieren](#assets-kompilieren)
+6. [SMTP konfigurieren](#smtp-konfigurieren)
+7. [Nach der Installation](#nach-der-installation)
+8. [Troubleshooting](#troubleshooting)
 
 ---
 
-## 🚀 Local Development Setup
+## Voraussetzungen
 
-### Option 1: Valet (macOS - Recommended)
-```bash
-# 1. Install Valet (if not already installed)
-composer global require laravel/valet
-valet install
+| Software | Version | Prüfen |
+|---|---|---|
+| PHP | 8.0+ | `php -v` |
+| MySQL / MariaDB | 5.7+ / 10.3+ | `mysql --version` |
+| Node.js | 18+ | `node -v` |
+| npm | 9+ | `npm -v` |
+| Composer | 2.0+ | `composer --version` |
+| WP-CLI | 2.8+ | `wp --version` |
+| Laravel Valet | aktuell | `valet --version` |
 
-# 2. Create project directory
-mkdir -p ~/Sites/your-project
-cd ~/Sites/your-project
-
-# 3. Clone or create project structure
-# (Continue to WordPress Installation)
-```
-
-### Option 2: Local by Flywheel
-
-1. Download [Local](https://localwp.com/)
-2. Install and open Local
-3. Click "Create a new site"
-4. Choose custom environment:
-   - **PHP:** 8.0+
-   - **Web Server:** nginx
-   - **Database:** MySQL 8.0+
-5. Note the site path: `/Users/you/Local Sites/your-site/app/public`
-
-### Option 3: XAMPP
-
-1. Download [XAMPP](https://www.apachefriends.org/)
-2. Install XAMPP
-3. Start Apache and MySQL
-4. Create project in `C:\xampp\htdocs\your-project` (Windows) or `/Applications/XAMPP/htdocs/your-project` (Mac)
+**ACF Pro** – Lizenz erforderlich. Download unter [advancedcustomfields.com](https://www.advancedcustomfields.com/)
 
 ---
 
-## 📦 WordPress Installation
+## Lokale Umgebung (Valet)
 
-### Step 1: Download WordPress
 ```bash
-# Navigate to your project directory
-cd ~/Sites/your-project  # Valet
-# OR
-cd ~/Local\ Sites/your-site/app/public  # Local
-# OR
-cd /Applications/XAMPP/htdocs/your-project  # XAMPP
+# Repository klonen
+git clone https://github.com/media-admin/media-lab-starter-kit.git
+cd media-lab-starter-kit
 
-# Download WordPress
-wp core download --path=cms --locale=de_DE
+# Valet-Link setzen
+valet link
 
-# Or download manually and extract to 'cms' folder
+# Dependencies installieren
+npm install
+composer install
+
+# Erreichbar unter:
+# http://media-lab-starter-kit.test
 ```
 
-### Step 2: Create Database
+---
 
-**Option A: WP-CLI (Recommended)**
-```bash
-# Create database
-wp db create
+## WordPress installieren
 
-# Or with specific name
-mysql -u root -p -e "CREATE DATABASE your_database CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-```
-
-**Option B: phpMyAdmin**
-
-1. Open `http://localhost/phpmyadmin`
-2. Click "Databases"
-3. Enter database name: `your_database`
-4. Collation: `utf8mb4_unicode_ci`
-5. Click "Create"
-
-### Step 3: Configure WordPress
 ```bash
 cd cms
 
-# Create wp-config.php
+# WordPress herunterladen (Deutsch)
+wp core download --locale=de_DE
+
+# Datenbank anlegen
+mysql -u root -e "CREATE DATABASE media_lab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# wp-config.php erstellen
 wp core config \
-  --dbname=your_database \
+  --dbname=media_lab \
   --dbuser=root \
   --dbpass=root \
-  --dbprefix=wp_ \
+  --dbprefix=ml_ \
   --locale=de_DE
 
-# For Valet/Local, dbpass might be 'root' or empty
-# For XAMPP Windows, dbpass is usually empty
-```
-
-### Step 4: Install WordPress
-```bash
-# Install WordPress
+# WordPress installieren
 wp core install \
-  --url=your-site.test \
-  --title="Your Site Title" \
+  --url=media-lab-starter-kit.test \
+  --title="Media Lab Starter Kit" \
   --admin_user=admin \
-  --admin_password=admin123 \
-  --admin_email=admin@example.com
+  --admin_password=SICHERES_PASSWORT_HIER \
+  --admin_email=markus.tritremmel@media-lab.at
 
-# Go back to project root
 cd ..
 ```
 
-**Important:** Change admin password after installation!
+**Wichtig:** Admin-Passwort sofort nach Installation ändern!
 
 ---
 
-## 🎨 Theme & Plugin Setup
+## Plugins & Theme aktivieren
 
-### Step 1: Install Agency Core Plugin
-```bash
-# The Agency Core plugin should be in:
-cms/wp-content/mu-plugins/agency-core/
-
-# Structure:
-cms/wp-content/mu-plugins/
-└── agency-core/
-    ├── agency-core.php
-    ├── inc/
-    │   ├── custom-post-types.php
-    │   ├── acf-fields.php
-    │   ├── shortcodes.php
-    │   ├── ajax-search.php
-    │   ├── ajax-filters.php
-    │   └── ajax-load-more.php
-    └── README.md
-```
-
-**Verify it's active:**
 ```bash
 cd cms
-wp plugin list
-# Should show "agency-core" as "Must Use"
-cd ..
-```
 
-### Step 2: Install Custom Theme
-```bash
-# Theme should be in:
-cms/wp-content/themes/custom-theme/
-
-# Structure:
-cms/wp-content/themes/custom-theme/
-├── functions.php
-├── header.php
-├── footer.php
-├── index.php
-├── search.php
-├── assets/
-│   ├── src/
-│   └── dist/
-└── src/
-    └── inc/
-        └── enqueue.php
-```
-
-**Activate theme:**
-```bash
-cd cms
-wp theme activate custom-theme
-cd ..
-```
-
-### Step 3: Install Advanced Custom Fields Pro
-
-**Option A: Manual Installation**
-
-1. Download ACF Pro from your account
-2. Upload to `cms/wp-content/plugins/advanced-custom-fields-pro/`
-3. Activate:
-```bash
-cd cms
+# ACF Pro manuell hochladen (Lizenz-Download) dann:
 wp plugin activate advanced-custom-fields-pro
-cd ..
-```
 
-**Option B: WP-CLI with License Key**
-```bash
-cd cms
-wp plugin install advanced-custom-fields-pro --activate
-# Enter license key when prompted
-cd ..
-```
+# Media Lab Plugins aktivieren
+wp plugin activate media-lab-agency-core
+wp plugin activate media-lab-seo
 
-### Step 4: Install WooCommerce (Optional)
-```bash
-cd cms
-wp plugin install woocommerce --activate
+# Theme aktivieren
+wp theme activate custom-theme
+
+# Standardinhalte bereinigen
+wp post delete 1 2 --force          # Sample-Post + Sample-Page
+wp comment delete 1 --force         # Sample-Comment
+wp plugin delete hello akismet      # Unnötige Standard-Plugins
+
+# Permalinks setzen
+wp rewrite structure '/%postname%/'
+wp rewrite flush
+
 cd ..
 ```
 
 ---
 
-## 🛠️ Asset Compilation
+## Assets kompilieren
 
-### Step 1: Install Node Dependencies
 ```bash
-# In project root
-npm install
+# Production Build (einmalig für die Installation)
+npm run build
+
+# Verifizieren
+ls cms/wp-content/themes/custom-theme/assets/dist/css/
+ls cms/wp-content/themes/custom-theme/assets/dist/js/
+# Sollte style.css, main.js und die Lazy Chunks zeigen
 ```
 
-This installs:
-- Vite (build tool)
-- SCSS processor
-- JavaScript bundler
-- All dependencies
-
-### Step 2: Build Assets
-
-**For Development (with hot-reload):**
+Für Development mit Hot Reload:
 ```bash
 npm run dev
+# Browser: http://media-lab-starter-kit.test
 ```
-
-Keep this running in a terminal. Changes to SCSS/JS will auto-reload.
-
-**For Production:**
-```bash
-npm run build
-```
-
-This creates optimized files in:
-- `cms/wp-content/themes/custom-theme/assets/dist/css/style.css`
-- `cms/wp-content/themes/custom-theme/assets/dist/js/main.js`
-
-### Step 3: Verify Assets Loaded
-
-1. Visit `http://your-site.test`
-2. Open browser DevTools (F12)
-3. Check Console for:
-```
-   ✅ customTheme loaded: {ajaxUrl: "...", nonce: "..."}
-```
-4. Check Network tab for:
-   - `style.css` (Status: 200)
-   - `main.js` (Status: 200)
 
 ---
 
-## 💾 Database Configuration
+## SMTP konfigurieren
 
-### Import Sample Data (Optional)
+In `cms/wp-config.php` **vor** `/* That's all */` einfügen:
 
-If you have a sample database:
-```bash
-cd cms
-
-# Import SQL file
-wp db import path/to/sample-data.sql
-
-# Search-replace URLs (if needed)
-wp search-replace 'old-url.com' 'your-site.test'
-
-cd ..
-```
-
-### Generate Permalinks
-```bash
-cd cms
-
-# Set permalink structure
-wp rewrite structure '/%postname%/'
-
-# Flush rewrite rules
-wp rewrite flush
-
-cd ..
-```
-
-### Enable Debugging (Development Only)
-
-Edit `cms/wp-config.php`:
 ```php
-// Before "That's all, stop editing!"
-
-// Enable debugging
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', false);
-define('SCRIPT_DEBUG', true);
-
-// Increase memory limit
-define('WP_MEMORY_LIMIT', '256M');
-define('WP_MAX_MEMORY_LIMIT', '512M');
+// SMTP-Konfiguration (Media Lab Agency Core)
+define('MEDIALAB_SMTP_ENABLED',   true);
+define('MEDIALAB_SMTP_HOST',      'smtp.example.com');
+define('MEDIALAB_SMTP_PORT',      587);
+define('MEDIALAB_SMTP_USER',      'user@example.com');
+define('MEDIALAB_SMTP_PASS',      'geheimes-passwort');
+define('MEDIALAB_SMTP_ENC',       'tls');   // tls | ssl | ''
+define('MEDIALAB_SMTP_FROM',      'noreply@example.com');
+define('MEDIALAB_SMTP_FROM_NAME', 'Meine Website');
 ```
+
+Test-Mail im Backend: **Einstellungen → Agency Core → SMTP → Test-Mail senden**
 
 ---
 
-## ✅ Post-Installation
+## Nach der Installation
 
-### Step 1: Verify Installation
+### Checkliste
 
-**Check WordPress:**
 ```bash
 cd cms
-wp core version
+
+# Pluginstatus prüfen
 wp plugin list
+
+# Theme aktiv?
 wp theme list
-cd ..
+
+# Build-Output vorhanden?
+ls ../cms/wp-content/themes/custom-theme/assets/dist/
+
+# WordPress-Version
+wp core version
 ```
 
-**Check Build:**
-```bash
-ls -la cms/wp-content/themes/custom-theme/assets/dist/
-# Should show css/ and js/ directories
-```
+### WordPress-Einstellungen
 
-### Step 2: Create Test Content
-```bash
-cd cms
+1. **Allgemein** → Zeitzone: Europa/Wien, Datumsformat: d.m.Y
+2. **Lesen** → Startseite auf statische Seite setzen
+3. **Agency Core** → SMTP konfigurieren und testen
+4. **ACF** → JSON-Load-Pfad auf Plugin-Ordner zeigen
 
-# Create test pages
-wp post create --post_type=page --post_title='Home' --post_status=publish
-wp post create --post_type=page --post_title='About' --post_status=publish
-wp post create --post_type=page --post_title='Contact' --post_status=publish
+### Debugging aktivieren (nur lokal!)
 
-# Create test job
-wp post create --post_type=job --post_title='Senior Developer' --post_status=publish
-
-# Create test project
-wp post create --post_type=project --post_title='Sample Project' --post_status=publish
-
-cd ..
-```
-
-### Step 3: Configure Settings
-
-**General Settings:**
-```bash
-cd cms
-
-# Set site title and description
-wp option update blogname "Your Site Title"
-wp option update blogdescription "Your Site Description"
-
-# Set timezone
-wp option update timezone_string "Europe/Vienna"
-
-# Set date format
-wp option update date_format "d.m.Y"
-
-cd ..
-```
-
-**Reading Settings:**
-
-1. Go to `Settings → Reading`
-2. Set "Your homepage displays" to "A static page"
-3. Choose Homepage: "Home"
-4. Save Changes
-
-**Permalink Settings:**
-
-1. Go to `Settings → Permalinks`
-2. Choose "Post name" structure
-3. Save Changes
-
-### Step 4: Create Test User
-```bash
-cd cms
-
-# Create editor user
-wp user create editor editor@example.com \
-  --role=editor \
-  --user_pass=editor123 \
-  --display_name="Editor User"
-
-cd ..
-```
-
-### Step 5: Security Hardening
-
-**Delete default content:**
-```bash
-cd cms
-
-# Delete default post
-wp post delete 1 --force
-
-# Delete default comment
-wp comment delete 1 --force
-
-# Delete unused themes (keep custom-theme)
-wp theme delete twentytwentythree twentytwentyfour
-
-# Delete unused plugins
-wp plugin delete hello akismet
-
-cd ..
-```
-
-**Create .htaccess security rules:**
-
-Create `cms/.htaccess`:
-```apache
-# BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
-# END WordPress
-
-# Disable directory browsing
-Options -Indexes
-
-# Protect wp-config.php
-<files wp-config.php>
-order allow,deny
-deny from all
-</files>
-
-# Protect .htaccess
-<files .htaccess>
-order allow,deny
-deny from all
-</files>
+In `cms/wp-config.php`:
+```php
+define('WP_DEBUG',         true);
+define('WP_DEBUG_LOG',     true);
+define('WP_DEBUG_DISPLAY', false);
 ```
 
 ---
 
-## 🧪 Testing Installation
+## Troubleshooting
 
-### Functional Tests
+### Assets laden nicht
 
-- [ ] Homepage loads correctly
-- [ ] Admin dashboard accessible at `/wp-admin`
-- [ ] Theme styles are applied
-- [ ] JavaScript console shows no errors
-- [ ] Custom Post Types appear in admin menu
-- [ ] ACF fields appear when editing posts
-- [ ] Shortcodes work on pages
-- [ ] AJAX search functions
-- [ ] AJAX filters function (if used)
-- [ ] Media uploads work
-- [ ] Permalink structure works
-
-### Performance Tests
 ```bash
-# Check site speed
-curl -o /dev/null -s -w 'Total: %{time_total}s\n' http://your-site.test
-
-# Should be under 1 second for local
-```
-
-### Browser Tests
-
-Test in:
-- [ ] Chrome
-- [ ] Firefox
-- [ ] Safari
-- [ ] Edge
-
-Test on:
-- [ ] Desktop
-- [ ] Tablet (DevTools)
-- [ ] Mobile (DevTools)
-
----
-
-## 🐛 Troubleshooting
-
-### Issue: White Screen of Death
-
-**Cause:** PHP error, memory limit, or plugin conflict
-
-**Solution:**
-```bash
-# Enable debugging
-# Edit cms/wp-config.php, add:
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-
-# Check error log
-tail -f cms/wp-content/debug.log
-```
-
-### Issue: Assets Not Loading
-
-**Cause:** Build not run or permissions issue
-
-**Solution:**
-```bash
-# Rebuild assets
+# Build neu ausführen
 npm run build
 
-# Check file permissions
-chmod -R 755 cms/wp-content/themes/custom-theme/assets/dist
-
-# Clear cache
+# Cache leeren
 cd cms && wp cache flush && cd ..
+
+# Dateiberechtigungen prüfen
+chmod -R 755 cms/wp-content/themes/custom-theme/assets/dist/
 ```
 
-### Issue: Database Connection Error
+### Weißer Bildschirm (WSOD)
 
-**Cause:** Wrong credentials in wp-config.php
+```bash
+# Debug-Log prüfen
+tail -f cms/wp-content/debug.log
 
-**Solution:**
+# Plugin-Konflikte isolieren
+cd cms
+wp plugin deactivate --all
+wp plugin activate media-lab-agency-core
+```
+
+### SCSS-Build-Fehler "Undefined variable"
+
+`@use '../abstracts' as *;` fehlt am Anfang des Partials. Jedes SCSS-Partial muss diese Zeile enthalten um auf Tokens und Mixins zugreifen zu können.
+
+### Permalinks zeigen 404
+
 ```bash
 cd cms
-
-# Test database connection
-wp db check
-
-# If fails, recreate wp-config.php
-wp core config \
-  --dbname=correct_database \
-  --dbuser=correct_user \
-  --dbpass=correct_password \
-  --force
-
-cd ..
+wp rewrite structure '/%postname%/'
+wp rewrite flush --hard
 ```
 
-### Issue: Permalinks Return 404
+### `window.customTheme` ist undefined
 
-**Cause:** .htaccess missing or rewrite rules not flushed
-
-**Solution:**
-```bash
-cd cms
-
-# Flush rewrite rules
-wp rewrite flush
-
-# Regenerate .htaccess
-wp rewrite structure '/%postname%/' --hard
-
-cd ..
-```
-
-### Issue: customTheme is undefined
-
-**Cause:** enqueue.php not loaded or wrong path
-
-**Solution:**
-
-Check `cms/wp-content/themes/custom-theme/functions.php` line 66:
+`enqueue.php` wird nicht geladen. In `functions.php` prüfen:
 ```php
-// Should be:
-require_once get_template_directory() . '/src/inc/enqueue.php';
-// NOT:
 require_once get_template_directory() . '/inc/enqueue.php';
 ```
 
-### Issue: ACF Fields Not Showing
+### ACF-Felder erscheinen nicht
 
-**Cause:** ACF Pro not activated or field group location rules wrong
-
-**Solution:**
 ```bash
 cd cms
-
-# Check if ACF is active
 wp plugin list | grep advanced-custom-fields
-
-# If not active:
+# Falls nicht aktiv:
 wp plugin activate advanced-custom-fields-pro
-
-# Flush rewrite rules
 wp rewrite flush
-
-cd ..
 ```
 
 ---
 
-## 🎯 Next Steps
-
-After successful installation:
-
-1. Read [USAGE.md](./USAGE.md) for basic usage
-2. Read [SHORTCODES.md](./SHORTCODES.md) for available shortcodes
-3. Read [AJAX-FILTERS.md](./AJAX-FILTERS.md) for advanced filtering
-4. Configure your content in WordPress admin
-5. Start building your site!
-
----
-
-## 📞 Support
-
-If you encounter issues not covered here:
-
-1. Check [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
-2. Search [GitHub Issues](https://github.com/your-agency/wordpress-starter-kit/issues)
-3. Contact support: support@your-agency.com
-
----
-
-**Installation complete!** 🎉
-
-You're now ready to start building with the WordPress Agency Starter Kit.
+**Weiter:** [docs/06_DEVELOPMENT.md](06_DEVELOPMENT.md) – Entwicklungs-Guide

@@ -1,464 +1,215 @@
 # Media Lab Starter Kit
 
-**Professional WordPress Agency Framework** - Enterprise-level plugin architecture for scalable client projects.
+**Professional WordPress Agency Framework** – Modulares Plugin-System für skalierbare Kundenprojekte.
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/media-admin/media-lab-starter-kit/releases)
+[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](CHANGELOG.md)
 [![PHP](https://img.shields.io/badge/PHP-8.0+-purple.svg)](https://php.net)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0+-blue.svg)](https://wordpress.org)
-[![Tests](https://img.shields.io/badge/tests-23%2F23%20passing-brightgreen.svg)](#testing)
+[![License](https://img.shields.io/badge/license-proprietary-red.svg)](#lizenz)
 
 ---
 
-## 🎯 Overview
+## Übersicht
 
-Complete WordPress starter kit with modular plugin architecture designed for agency workflows. Built for maintainability, scalability, and rapid client deployment.
+Vollständiges WordPress-Starter-Kit mit modularer Plugin-Architektur für Agentur-Workflows. Entwickelt für Wartbarkeit, Sicherheit und schnelles Client-Deployment.
 
-### Key Features
+### Architektur-Prinzip
 
-- ✅ **Modular Plugin System** - Separate concerns (Framework, Content, Analytics, SEO)
-- ✅ **Reusable Core** - Deploy framework across multiple projects
-- ✅ **Client-Ready** - Duplicate and customize per client
-- ✅ **Fully Tested** - 23 automated tests, 100% passing
-- ✅ **Production-Ready** - Used in live client projects
-
----
-
-## 📦 Plugin Architecture
-
-### 1. Media Lab Agency Core `v1.1.0`
-
-**Framework & Feature Library** - Reusable across all projects
-
-#### Features
-- **44 Shortcodes**: Hero Slider, Accordion, Stats, Testimonials, Modal, Tabs, Carousel, FAQ, Timeline, Video Player, and more
-- **AJAX Features**: Search, Load More, Post Filters
-- **Security**: Enhanced security features
-- **Admin Customizations**: Dashboard improvements
-- **Helper Functions**: Utility functions for theme development
-
-#### Installation
-```bash
-# Already included in starter kit
-wp plugin activate media-lab-agency-core
 ```
-
-#### Usage
-```php
-// In templates or content
-[accordion]
-  [accordion_item title="Title"]Content[/accordion_item]
-[/accordion]
-
-[hero_slider]
-  [hero_slide title="Slide 1"]Content[/hero_slide]
-[/hero_slider]
-
-[stats number="1000" label="Projects" icon="check"]
+media-lab-agency-core   →  Wiederverwendbares Framework (nie modifizieren)
+media-lab-seo           →  SEO-Toolkit (pro Projekt aktivieren + konfigurieren)
+custom-theme            →  Präsentationsebene (pro Projekt anpassen)
 ```
 
 ---
 
-### 2. Media Lab Project Starter `v1.0.0`
+## Plugins & Versionen
 
-**Content Structure** - Duplicate per client, customize as needed
+### media-lab-agency-core `v1.5.1`
 
-#### Features
-- **9 Custom Post Types**: Team, Project, Job, Service, Testimonial, FAQ, Google Map, Hero Slide, Carousel
-- **7 Custom Taxonomies**: Project Category, Service Category, FAQ Category, Carousel Category, Job Category, Job Type, Job Location
-- **11 ACF Field Groups**: 65 custom fields (JSON format for version control)
-- **ACF Configuration**: Automatic JSON load/save paths
+Framework-Plugin – wird **unverändert** auf allen Projekten eingesetzt.
 
-#### Installation
-```bash
-wp plugin activate media-lab-project-starter
-```
+**Features:**
+- 44 Shortcodes: Hero Slider, Accordion, Stats, Testimonials, Modal, Tabs, Carousel, FAQ, Timeline, Video Player, Team, Projects, Services u.v.m.
+- AJAX-Features: Search, Load More, Post-Filter mit Rate-Limiting (30 Req/min)
+- Security: SVG-Sanitizer (Allowlist, DOMDocument), IP-Anonymisierung (DSGVO, 90 Tage)
+- Admin: Drag & Drop Post/Term-Order, Duplicate Post/Term, SMTP-Mailer, White-Label
+- Helper: `medialab_get_thumbnail()` für responsive Bilder mit srcset + lazy loading
 
-#### Customization for Clients
-```bash
-# Duplicate plugin for new client
-cp -r media-lab-project-starter/ client-name-project/
+### media-lab-seo `v1.1.0`
 
-# Update plugin header in client-name-project.php
-# Customize CPTs and ACF fields as needed
-```
+SEO-Toolkit – pro Projekt aktivieren und konfigurieren.
 
-#### Usage
-```php
-// Query custom post type
-$team = new WP_Query([
-    'post_type' => 'team',
-    'posts_per_page' => 6
-]);
+**Features:** Schema.org JSON-LD, Open Graph Tags, Twitter Cards, Canonical URLs, Breadcrumbs
 
-// Get ACF field
-$job_location = get_field('job_location');
-```
+### custom-theme `v1.4.0`
+
+Präsentationsebene – enthält keine Business-Logik.
+
+**Features:**
+- Vite Build-System mit Code-Splitting (27 Dynamic-Import-Komponenten)
+- SCSS mit Design-Tokens, `@use`/`@forward` (Dart Sass 2.0+ kompatibel)
+- JS: nur geladen wenn DOM-Element vorhanden (Dynamic Imports)
+- Performance: Emoji/oEmbed deaktiviert, WP Head bereinigt, Responsive Images
+- Security: HTTP-Header in `.htaccess` (X-Frame-Options, X-Content-Type-Options, etc.)
 
 ---
 
-### 3. Media Lab Analytics `v1.0.0`
+## Schnellstart
 
-**Tracking & Analytics** - Centralized analytics management
+### Voraussetzungen
 
-#### Features
-- **Google Analytics 4**: Easy GA4 integration
-- **Google Tag Manager**: GTM container support
-- **Facebook Pixel**: FB tracking integration
-- **Custom Events**: Track custom interactions
-- **Auto-Tracking**: Form submissions, WooCommerce events
-- **Privacy**: GDPR-friendly, role-based exclusion
-
-#### Installation
-```bash
-wp plugin activate media-lab-analytics
-```
-
-#### Configuration
-Navigate to **Settings → Analytics** and add your tracking IDs:
-- Google Analytics 4 ID (Format: `G-XXXXXXXXXX`)
-- Google Tag Manager ID (Format: `GTM-XXXXXXX`)
-- Facebook Pixel ID (Format: `XXXXXXXXXXXXXXX`)
-
-#### Custom Events
-```php
-// Track button click
-do_action('medialab_track_event', 'button_click', [
-    'button_name' => 'Download Brochure',
-    'button_location' => 'homepage'
-]);
-
-// Track video play
-do_action('medialab_track_event', 'video_play', [
-    'video_title' => 'Product Demo',
-    'video_duration' => '02:30'
-]);
-```
-
-#### Auto-Tracked Events
-- Form submissions (all forms)
-- WooCommerce: Add to Cart, Purchase
-- Custom events via action hook
-
----
-
-### 4. Media Lab SEO Toolkit `v1.0.0`
-
-**SEO Optimization** - Comprehensive SEO solution
-
-#### Features
-- **Schema.org Markup**: Automatic JSON-LD structured data
-- **Open Graph Tags**: Facebook, LinkedIn sharing optimization
-- **Twitter Cards**: Enhanced Twitter previews
-- **Canonical URLs**: Prevent duplicate content
-- **Meta Management**: Title and description optimization
-- **Breadcrumbs**: Automatic breadcrumb navigation
-
-#### Installation
-```bash
-wp plugin activate media-lab-seo
-```
-
-#### Configuration
-Navigate to **Settings → SEO Toolkit**:
-- Enable/disable features individually
-- Configure site name
-- Add Twitter username
-- Set default social image (1200x630px recommended)
-
-#### Schema Types Supported
-- **Organization**: Company information (homepage)
-- **WebSite**: Site-wide data with SearchAction
-- **Article**: Blog posts with author, dates, images
-- **Product**: WooCommerce products with pricing
-- **BreadcrumbList**: Navigation hierarchy
-
-#### Breadcrumbs Usage
-```php
-// In your theme template
-if (function_exists('medialab_seo_breadcrumbs')) {
-    medialab_seo_breadcrumbs([
-        'separator' => ' › ',
-        'home_title' => 'Home',
-        'wrapper_class' => 'breadcrumbs'
-    ]);
-}
-```
-
----
-
-## 🚀 Quick Start
-
-### Requirements
-- PHP 8.0+
-- WordPress 6.0+
-- Advanced Custom Fields PRO (for Project Starter)
+| Software | Version |
+|---|---|
+| PHP | 8.0+ |
+| MySQL / MariaDB | 5.7+ / 10.3+ |
+| Node.js | 18+ |
+| npm | 9+ |
+| Composer | 2.0+ |
+| WP-CLI | 2.8+ |
 
 ### Installation
 
-1. **Clone Repository**
 ```bash
+# 1. Repository klonen
 git clone https://github.com/media-admin/media-lab-starter-kit.git
 cd media-lab-starter-kit
-```
 
-2. **Install Dependencies**
-```bash
+# 2. Dependencies
 npm install
 composer install
-```
 
-3. **Activate Plugins**
-```bash
+# 3. WordPress (Valet-Beispiel)
 cd cms
-wp plugin activate media-lab-agency-core
-wp plugin activate media-lab-project-starter
-wp plugin activate media-lab-analytics
-wp plugin activate media-lab-seo
-```
+wp core download --locale=de_DE
+wp core config --dbname=media_lab --dbuser=root --dbpass=root
+wp core install \
+  --url=media-lab-starter-kit.test \
+  --title="Media Lab" \
+  --admin_user=admin \
+  --admin_password=SICHERES_PASSWORT \
+  --admin_email=admin@media-lab.at
 
-4. **Activate Theme**
-```bash
+# 4. Plugins & Theme aktivieren
+wp plugin activate media-lab-agency-core media-lab-seo advanced-custom-fields-pro
 wp theme activate custom-theme
-```
+cd ..
 
-5. **Build Assets**
-```bash
+# 5. Assets bauen
 npm run build
-# or for development
-npm run dev
 ```
+
+Vollständige Anleitung: [docs/02_INSTALLATION.md](docs/02_INSTALLATION.md)
 
 ---
 
-## 🧪 Testing
+## Build-System
 
-Run automated test suite:
 ```bash
-./tests/run-tests.sh
+npm run dev        # Development mit Hot Reload
+npm run build      # Production Build
+npm run watch      # Watch ohne Dev-Server
 ```
 
-**Test Coverage:**
-- ✅ Plugin activation (4 plugins)
-- ✅ Shortcode registration (4 shortcodes)
-- ✅ Custom Post Types (3 CPTs)
-- ✅ ACF functionality (3 tests)
-- ✅ Theme activation
-- ✅ AJAX actions (3 tests)
-- ✅ Analytics settings (2 tests)
-- ✅ SEO functionality (3 tests)
-
-**Total: 23 tests, 100% passing**
-
----
-
-## 🎨 Theme Structure
+**Build-Output:**
 ```
-custom-theme/
-├── assets/
-│   ├── scss/           # SCSS with design tokens
-│   └── js/             # JavaScript modules (24 components)
-├── dist/               # Compiled assets (Vite)
-├── inc/
-│   ├── enqueue.php     # Asset loading
-│   ├── helpers.php     # Theme helpers
-│   └── walker-nav-menu.php
-├── template-parts/     # Reusable components
-├── functions.php       # Theme setup (118 lines)
-└── style.css           # Theme header
+assets/dist/
+├── css/style.css          # Alle Styles (eine Datei)
+├── js/main.js             # Kern-Bundle
+├── js/ajax-filters.js     # Lazy Chunk
+├── js/ajax-search.js      # Lazy Chunk
+├── js/load-more.js        # Lazy Chunk
+├── js/google-maps.js      # Lazy Chunk
+├── js/notifications.js    # Lazy Chunk
+└── js/chunks/             # Automatische Vite-Chunks
 ```
 
 ---
 
-## 🔧 Development
+## SMTP-Konfiguration
 
-### Build System
-- **Vite** for fast asset compilation
-- **SCSS** with design tokens
-- **Hot Module Replacement** in development
+SMTP-Credentials in `cms/wp-config.php` definieren – **nie** in der Datenbank speichern:
 
-### Commands
-```bash
-npm run dev          # Development with HMR
-npm run build        # Production build
-npm run preview      # Preview production build
-```
-
-### Code Quality
-- Manual development (no automated tools)
-- WordPress best practices
-- Modular architecture
-- Version controlled (Git)
-
----
-
-## 📋 For New Client Projects
-
-### Setup New Client
-
-1. **Duplicate Project Plugin**
-```bash
-cp -r cms/wp-content/plugins/media-lab-project-starter/ \
-      cms/wp-content/plugins/client-name-project/
-```
-
-2. **Update Plugin Header**
-Edit `client-name-project.php`:
 ```php
-/**
- * Plugin Name: Client Name Project
- * Description: Custom content structure for Client Name
- */
+define('MEDIALAB_SMTP_ENABLED',   true);
+define('MEDIALAB_SMTP_HOST',      'smtp.example.com');
+define('MEDIALAB_SMTP_PORT',      587);
+define('MEDIALAB_SMTP_USER',      'user@example.com');
+define('MEDIALAB_SMTP_PASS',      'geheimes-passwort');
+define('MEDIALAB_SMTP_ENC',       'tls');
+define('MEDIALAB_SMTP_FROM',      'noreply@example.com');
+define('MEDIALAB_SMTP_FROM_NAME', 'Meine Website');
 ```
 
-3. **Customize**
-- Modify CPTs as needed
-- Adjust ACF fields
-- Update taxonomies
+---
 
-4. **Activate**
+## Neues Kundenprojekt
+
 ```bash
-wp plugin activate client-name-project
+./scripts/setup-project.sh
 ```
 
-### Core Plugin
-**Never modify** - use across all projects unchanged
+Fragt nach Projekt-Name, Theme-Slug, Plugin-Slug und Text-Domain und benennt automatisch um.
 
-### Analytics & SEO Plugins
-Activate per project, configure tracking IDs per client
+Vollständige Anleitung: [docs/10_DEPLOYMENT.md](docs/10_DEPLOYMENT.md)
 
 ---
 
-## 📊 Architecture Benefits
+## Projektstruktur
 
-### Separation of Concerns
-- **Core Plugin**: Reusable framework features
-- **Project Plugin**: Client-specific business logic
-- **Theme**: Presentation layer only
-
-### Maintainability
-- Clear boundaries between components
-- Easy to update/replace individual parts
-- No code duplication
-
-### Scalability
-- Core Plugin: Use across all projects
-- Project Plugin: Duplicate per client
-- Theme: Swap without losing functionality
-
-### Version Control
-- ACF Fields in JSON (merge-friendly)
-- Modular commits
-- Clear change history
-
----
-
-## 🏗️ Project Structure
 ```
 media-lab-starter-kit/
 ├── cms/
 │   └── wp-content/
 │       ├── plugins/
-│       │   ├── media-lab-agency-core/
-│       │   ├── media-lab-project-starter/
-│       │   ├── media-lab-analytics/
-│       │   └── media-lab-seo/
-│       ├── themes/
-│       │   └── custom-theme/
-│       └── mu-plugins/
-├── tests/
-│   ├── run-tests.sh
-│   └── README.md
-├── node_modules/
-├── package.json
+│       │   ├── media-lab-agency-core/     # Framework v1.5.1
+│       │   └── media-lab-seo/             # SEO-Toolkit v1.1.0
+│       └── themes/
+│           └── custom-theme/              # Theme v1.4.0
+│               ├── assets/src/scss/       # SCSS + Design-Tokens
+│               ├── assets/src/js/         # 27 JS-Komponenten
+│               ├── assets/dist/           # Build-Output (nicht committen)
+│               └── inc/                   # PHP-Helpers
+├── docs/                                  # Dokumentation
+├── scripts/                               # Deploy-Scripts
+├── tests/                                 # Playwright E2E
 ├── vite.config.js
-└── README.md
+├── package.json
+└── CHANGELOG.md
 ```
 
 ---
 
-## 📖 Documentation
+## Dokumentation
 
-- **Plugin READMEs**: Each plugin includes detailed documentation
-- **Testing Guide**: `tests/README.md`
-- **Change Log**: `CHANGELOG.md`
-- **Deployment**: `DEPLOYMENT.md`
-
----
-
-## 🔄 Updates & Maintenance
-
-### Update Core Plugin
-Updates automatically apply to all projects using the plugin.
-
-### Update Project Plugin
-1. Make changes to master copy
-2. Git pull on client sites
-3. Or manually sync changes
-
-### Theme Updates
-Theme updates independent of plugins - functionality preserved.
+| Dokument | Inhalt |
+|---|---|
+| [docs/02_INSTALLATION.md](docs/02_INSTALLATION.md) | Vollständige Installationsanleitung |
+| [docs/04_SHORTCODES.md](docs/04_SHORTCODES.md) | Shortcode-Referenz |
+| [docs/05_AJAX-FEATURES.md](docs/05_AJAX-FEATURES.md) | AJAX Search, Filter, Load More |
+| [docs/06_DEVELOPMENT.md](docs/06_DEVELOPMENT.md) | Entwicklungs-Guide |
+| [docs/07_TROUBLESHOOTING.md](docs/07_TROUBLESHOOTING.md) | Fehlerbehebung |
+| [docs/10_DEPLOYMENT.md](docs/10_DEPLOYMENT.md) | Neues Kundenprojekt deployen |
+| [CHANGELOG.md](CHANGELOG.md) | Versionshistorie |
+| [WORKFLOW.md](WORKFLOW.md) | Git-Workflow & Branching |
 
 ---
 
-## 🤝 Contributing
+## Versionshistorie
 
-This is a private agency starter kit. For team members:
+| Version | Schwerpunkt |
+|---|---|
+| v1.4.0 | Performance: Code-Splitting, Lazy Loading, WP-Cleanup, Responsive Images |
+| v1.3.0 | Security: Rate-Limiting, SMTP Credentials, Inline-Nonce, HTTP-Header |
+| v1.2.0 | Security Hoch: SVG-Sanitizer, DSGVO/IP + Design-Tokens + Sass-Migration |
+| v1.1.0 | Features: Top Header, Dark Mode, SMTP, Drag & Drop, Duplicate Post |
 
-1. Create feature branch
-2. Make changes
-3. Run tests: `./tests/run-tests.sh`
-4. Create pull request
-
----
-
-## 📜 License
-
-Proprietary - Media Lab Tritremmel GmbH
+Vollständiger Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
-## 🆘 Support
+## Lizenz
 
-- **Issues**: GitHub Issues
-- **Email**: markus.tritremmel@media-lab.at
-- **Website**: https://www.media-lab.at
-
----
-
-## 📈 Changelog
-
-### v1.2.0 (2026-02-16)
-- ✅ Added Media Lab Analytics Plugin
-- ✅ Added Media Lab SEO Toolkit Plugin
-- ✅ 23 automated tests (100% passing)
-- ✅ Complete cleanup (removed backups)
-
-### v1.1.0 (2026-02-16)
-- ✅ Plugin architecture migration
-- ✅ Core Plugin with 44 shortcodes + AJAX
-- ✅ Project Plugin with CPTs + ACF
-- ✅ Theme cleanup (118 lines)
-- ✅ 16 automated tests
-
-### v1.0.0
-- Initial plugin architecture
-- Theme with Vite build system
-- SCSS design tokens
-- 24 JavaScript components
-
----
-
-**Built with ❤️ by Media Lab Tritremmel GmbH**
-
-## 🚀 Neues Projekt starten
-```bash
-./scripts/setup-project.sh
-```
-
-Fragt nach:
-- Projekt Name (z.B. "Stadtwirt Berndorf")
-- Theme Slug (z.B. "stadtwirt-theme")
-- Plugin Slug (z.B. "stadtwirt-plugin")
-- Text Domain (z.B. "stadtwirt")
-
-Benennt automatisch Theme + Plugin um.
+Proprietär – Media Lab Tritremmel GmbH  
+Kontakt: [markus.tritremmel@media-lab.at](mailto:markus.tritremmel@media-lab.at)  
+Website: [www.media-lab.at](https://www.media-lab.at)

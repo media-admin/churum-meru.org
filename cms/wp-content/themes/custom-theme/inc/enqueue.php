@@ -47,24 +47,29 @@ function customtheme_enqueue_assets() {
         );
     }
 
-    // ── Inline Config (vor main.js) ───────────────────────────────────────────
-    wp_add_inline_script(
-        'custom-theme-script',
-        'window.customTheme = ' . wp_json_encode(array(
-            'ajaxUrl'          => admin_url('admin-ajax.php'),
-            'nonce'            => wp_create_nonce('custom-theme-nonce'),
-            'searchNonce'      => wp_create_nonce('agency_search_nonce'),
-            'loadMoreNonce'    => wp_create_nonce('agency_load_more_nonce'),
-            'filtersNonce'     => wp_create_nonce('ajax_filters_nonce'),
-            'googleMapsApiKey' => defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : '',
-            'themePath'        => get_template_directory_uri(),
-            'homeUrl'          => home_url('/'),
-            'isDebug'          => defined('WP_DEBUG') && WP_DEBUG,
-        )) . ';',
-        'before'
-    );
 }
 add_action('wp_enqueue_scripts', 'customtheme_enqueue_assets');
+
+// ─── JS-Config im <head> ──────────────────────────────────────────────────────
+// wp_add_inline_script('before') wird bei type="module"-Scripts von WordPress
+// manchmal silent ignoriert → stattdessen direkt via wp_head ausgeben.
+function customtheme_output_js_config() {
+    $config = array(
+        'ajaxUrl'          => admin_url('admin-ajax.php'),
+        'nonce'            => wp_create_nonce('custom-theme-nonce'),
+        'searchNonce'      => wp_create_nonce('agency_search_nonce'),
+        'loadMoreNonce'    => wp_create_nonce('agency_load_more_nonce'),
+        'filtersNonce'     => wp_create_nonce('ajax_filters_nonce'),
+        'googleMapsApiKey' => defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : '',
+        'themePath'        => get_template_directory_uri(),
+        'homeUrl'          => home_url('/'),
+        'isDebug'          => defined('WP_DEBUG') && WP_DEBUG,
+    );
+    echo '<script id="custom-theme-config">window.customTheme = '
+        . wp_json_encode($config)
+        . ';</script>' . "\n";
+}
+add_action('wp_head', 'customtheme_output_js_config', 1);
 
 // ─── type="module" für main.js ────────────────────────────────────────────────
 // ES-Module sind per Spezifikation immer deferred – kein extra defer nötig.

@@ -1,63 +1,61 @@
 /**
  * Main Entry Point
  * Media Lab Starter Kit – Custom Theme
- *
- * Strategie:
- *  - Kern-Komponenten: synchron geladen (immer benötigt)
- *  - Schwere Komponenten: Dynamic Import (nur wenn DOM-Element vorhanden)
  */
 
-// CSS
+// CSS (inkl. Swiper)
 import '../scss/style.scss';
+import 'swiper/css/bundle';
 
-// Sentry (nur in Production, wird via Vite-Env gesteuert)
+// Sentry (nur in Production)
 if (import.meta.env.PROD) {
   import('./utils/sentry').then(({ initSentry }) => initSentry());
 }
 
-// ─── Kern-Komponenten (immer geladen) ───────────────────────────────────────
-import Navigation     from './components/navigation';
-import DarkMode       from './components/theme-switcher';
-import CookieNotice   from './components/cookie-notice';
-import BackToTop      from './components/back-to-top';
-import Notifications  from './components/notifications';
-import initTopHeader  from './components/top-header';
+// ─── Kern-Komponenten (immer geladen) ────────────────────────────────────────
+import Navigation    from './components/navigation';
+import DarkMode      from './components/theme-switcher';
+import CookieNotice  from './components/cookie-notice';
+import BackToTop     from './components/back-to-top';
+import Notifications from './components/notifications';
+import initTopHeader from './components/top-header';
 
-// ─── Helfer ─────────────────────────────────────────────────────────────────
+// ─── Helfer ──────────────────────────────────────────────────────────────────
+// Fehler immer sichtbar – nie still schlucken
 const safeInit = (name, initFn) => {
   try { initFn(); }
-  catch (err) {
-    if (import.meta.env.DEV) console.error(`[${name}]`, err);
-  }
+  catch (err) { console.error(`[${name}] Initialisierungsfehler:`, err); }
 };
 
 // Prüft ob ein CSS-Selektor im DOM existiert
 const has = (selector) => !!document.querySelector(selector);
 
-// ─── Initialisierung ────────────────────────────────────────────────────────
+// ─── Initialisierung ─────────────────────────────────────────────────────────
 const initApp = async () => {
 
   // Kern (immer)
-  safeInit('Navigation',   () => new Navigation());
-  safeInit('DarkMode',     () => new DarkMode());
-  safeInit('CookieNotice', () => new CookieNotice());
-  safeInit('BackToTop',    () => new BackToTop());
-  safeInit('Notifications',() => new Notifications());
-  safeInit('TopHeader',    () => initTopHeader());
+  safeInit('Navigation',    () => new Navigation());
+  safeInit('DarkMode',      () => new DarkMode());
+  safeInit('CookieNotice',  () => new CookieNotice());
+  safeInit('BackToTop',     () => new BackToTop());
+  safeInit('Notifications', () => new Notifications());
+  safeInit('TopHeader',     () => initTopHeader());
 
-  // ── Lazy: nur wenn DOM-Element vorhanden ──────────────────────────────────
+  // ── Lazy: nur laden wenn DOM-Element vorhanden ────────────────────────────
 
   if (has('.accordion, [data-accordion]')) {
     const { default: Accordion } = await import('./components/accordion');
     safeInit('Accordion', () => new Accordion());
   }
 
-  if (has('.hero-slider, .swiper')) {
+  // Hero Slider: Klasse aus PHP → .hero-slider.swiper
+  if (has('.hero-slider')) {
     const { default: HeroSlider } = await import('./components/hero-slider');
     safeInit('HeroSlider', () => new HeroSlider());
   }
 
-  if (has('.testimonials-slider')) {
+  // Testimonials: Klasse aus PHP → .testimonials--slider.swiper
+  if (has('.testimonials--slider')) {
     const { default: TestimonialsSlider } = await import('./components/testimonials-slider');
     safeInit('TestimonialsSlider', () => new TestimonialsSlider());
   }
@@ -67,8 +65,10 @@ const initApp = async () => {
     safeInit('LogoCarousel', () => new LogoCarousel());
   }
 
+  // Carousel: Klasse aus PHP → .carousel.swiper
   if (has('.carousel')) {
-    await import('./components/carousel');
+    const { default: Carousel } = await import('./components/carousel');
+    safeInit('Carousel', () => new Carousel());
   }
 
   if (has('.lightbox, [data-lightbox]')) {
@@ -115,17 +115,20 @@ const initApp = async () => {
     safeInit('ScrollAnimations', () => new ScrollAnimations());
   }
 
-  // ── Schwere Features: separater Chunk ─────────────────────────────────────
+  // ── AJAX / Schwere Features ───────────────────────────────────────────────
 
-  if (has('.ajax-search, [data-ajax-search]')) {
+  // AJAX Search: Klasse aus PHP → .ajax-search
+  if (has('.ajax-search')) {
     await import('./components/ajax-search');
   }
 
-  if (has('.load-more, [data-load-more]')) {
+  // Load More: Klasse aus PHP → .posts-load-more
+  if (has('.posts-load-more')) {
     await import('./components/load-more');
   }
 
-  if (has('.ajax-filters, [data-filters]')) {
+  // AJAX Filters: Klasse aus PHP → .ajax-filters
+  if (has('.ajax-filters')) {
     const { default: AjaxFilters } = await import('./components/ajax-filters');
     safeInit('AjaxFilters', () => new AjaxFilters());
   }

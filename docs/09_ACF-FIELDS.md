@@ -1,8 +1,8 @@
 # ACF Fields Reference
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026  
-**Plugin:** Media Lab Project Starter v1.0.0
+**Version:** 1.5.0  
+**Letzte Aktualisierung:** 2026-03-04  
+**Plugin:** Media Lab Project Starter v1.0.0 (optional)
 
 Complete reference for all 11 ACF Field Groups (65 custom fields).
 
@@ -37,7 +37,7 @@ Advanced Custom Fields (ACF) extends WordPress with custom fields for posts, pag
 
 All field groups are stored as JSON files for version control:
 ```
-media-lab-project-starter/acf-json/
+cms/wp-content/plugins/media-lab-project-starter/acf-json/
 ├── group_team_member.json
 ├── group_project.json
 ├── group_job.json
@@ -590,7 +590,7 @@ foreach ($fields as $name => $value) {
 
 All field groups automatically save to:
 ```
-cms/wp-content/plugins/media-lab-project-starter/acf-json/
+cms/wp-content/plugins/cms/wp-content/plugins/media-lab-project-starter/acf-json/
 ```
 
 ### Syncing Fields
@@ -605,7 +605,7 @@ If JSON and database are out of sync:
 ### Version Control
 ```bash
 # Track field changes
-git add cms/wp-content/plugins/media-lab-project-starter/acf-json/*.json
+git add cms/wp-content/plugins/cms/wp-content/plugins/media-lab-project-starter/acf-json/*.json
 git commit -m "Update: ACF field groups"
 ```
 
@@ -625,6 +625,32 @@ Paste code → Import
 
 ---
 
+## 12. Maintenance Mode Settings
+
+**Field Group:** `group_maintenance`  
+**Options Page:** Agency Core → Einstellungen → Maintenance Mode  
+**Plugin:** media-lab-agency-core
+
+| Field | Name | Typ | Beschreibung |
+|---|---|---|---|
+| Maintenance Mode aktivieren | `maintenance_enabled` | true_false | Aktiviert 503-Seite für alle Besucher |
+| Überschrift | `maintenance_headline` | text | H1 der Wartungsseite |
+| Nachricht | `maintenance_message` | textarea | Text für Besucher (HTML erlaubt) |
+| Voraussichtliches Ende | `maintenance_date` | text | Freitext, z.B. "15. März 2026, 10:00 Uhr" |
+| Logo | `maintenance_logo` | image | Leer = Site-Name als Text |
+| Browser-Tab Titel | `maintenance_title` | text | Leer = automatisch aus Site-Name |
+
+**Admin-Bypass:** Eingeloggte Administratoren werden automatisch durchgelassen und sehen einen Hinweis in der Admin-Bar.
+
+**Notfall-Fallback** (ohne Backend-Zugang):
+```php
+// wp-config.php
+define('MEDIALAB_MAINTENANCE_MODE', true);
+```
+
+
+---
+
 ## Next Steps
 
 - **Custom Post Types:** [CPT Documentation](08_CUSTOM-POST-TYPES.md)
@@ -633,5 +659,5 @@ Paste code → Import
 
 ---
 
-**65 fields ready!** 🎨  
+**72 fields ready!** 🎨  
 **Next:** [Deployment Guide](10_DEPLOYMENT.md) →

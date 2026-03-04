@@ -1,8 +1,8 @@
 # Shortcodes Reference
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026  
-**Plugin:** Media Lab Agency Core v1.1.0
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04  
+**Plugin:** Media Lab Agency Core v1.5.1
 
 Complete reference for all 44 shortcodes provided by the Core Plugin.
 

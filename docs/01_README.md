@@ -1,7 +1,7 @@
 # Media Lab Starter Kit - Internal Documentation
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026  
+**Version:** 1.5.0  
+**Last Updated:** March 4, 2026  
 **Architecture:** Modular Plugin System
 
 ---
@@ -18,7 +18,7 @@
 | 6 | [Development](06_DEVELOPMENT.md) | Development workflow | ✅ Updated |
 | 7 | [Troubleshooting](07_TROUBLESHOOTING.md) | Common issues | ✅ Updated |
 | 8 | [Custom Post Types](08_CUSTOM-POST-TYPES.md) | 9 CPTs reference | ✅ Updated |
-| 9 | [ACF Fields](09_ACF-FIELDS.md) | 11 field groups | ✅ Updated |
+| 9 | [ACF Fields](09_ACF-FIELDS.md) | 12 field groups | ✅ Updated |
 | 10 | [Deployment](10_DEPLOYMENT.md) | Production deploy | ✅ Updated |
 | 11 | [Testing](11_TESTING.md) | Test suite (23 tests) | ✅ New |
 | 12 | [Analytics](12_ANALYTICS.md) | Analytics plugin | ✅ New |
@@ -26,17 +26,17 @@
 
 ---
 
-## 🏗️ Architecture v1.2.0
+## 🏗️ Architecture v1.5.0
 
 ### Plugin System Overview
 ```
 WordPress Installation
 │
 ├── 📦 Regular Plugins
-│   ├── media-lab-agency-core/      v1.1.0 (Framework)
+│   ├── media-lab-agency-core/      v1.5.3 (Framework)
 │   ├── media-lab-project-starter/  v1.0.0 (Content Structure)
 │   ├── media-lab-analytics/        v1.0.0 (Tracking)
-│   └── media-lab-seo/              v1.0.0 (SEO)
+│   └── media-lab-seo/              v1.1.1 (SEO)
 │
 ├── 🎨 Theme
 │   └── custom-theme/               (Presentation Layer)
@@ -45,7 +45,7 @@ WordPress Installation
     └── System-level plugins
 ```
 
-### What Changed in v1.2.0
+### What Changed in v1.5.0
 
 **From:** Monolithic MU-plugin structure  
 **To:** Modular plugin architecture
@@ -81,16 +81,16 @@ WordPress Installation
 
 ## 📊 System Status
 
-**Current Version:** v1.2.0  
+**Current Version:** v1.5.0  
 **Test Coverage:** 23/23 tests passing (100%)  
 **PHP Version:** 8.0+  
 **WordPress Version:** 6.0+  
 
 **Active Plugins:**
-- ✅ Media Lab Agency Core v1.1.0
+- ✅ Media Lab Agency Core v1.5.3
 - ✅ Media Lab Project Starter v1.0.0
 - ✅ Media Lab Analytics v1.0.0
-- ✅ Media Lab SEO v1.0.0
+- ✅ Media Lab SEO v1.1.1
 
 ---
 
@@ -199,12 +199,26 @@ wp transient delete --all
 
 ## 📈 Changelog
 
+### v1.5.0 (2026-03-04)
+- ✅ 404-Seite mit Suchformular + Navigationslinks
+- ✅ Maintenance Mode (503, ACF-konfigurierbar, Admin-Bypass)
+- ✅ Footer Navigation
+- ✅ Media Replace (Attachment-ID bleibt erhalten)
+- ✅ Security F-04 – redirects.php Open Redirect + SQL abgesichert
+- ✅ AJAX Bugfixes (Swiper lokal, wp_head Nonce, Selektoren)
+- ✅ Alle Docs aktualisiert
+
+### v1.4.0 (2026-02-26)
+- ✅ Dynamic Imports / Code-Splitting
+- ✅ Rate-Limiting AJAX
+- ✅ SVG-Upload Sanitizer
+- ✅ SMTP via wp-config.php
+- ✅ HTTP-Security-Headers
+
 ### v1.2.0 (2026-02-16)
-- ✅ Added Analytics Plugin (GA4, GTM, FB Pixel)
-- ✅ Added SEO Plugin (Schema, OG, Twitter)
-- ✅ Expanded test suite (23 tests)
-- ✅ Complete codebase cleanup
-- ✅ Updated all documentation
+- ✅ Analytics Plugin (GA4, GTM, FB Pixel)
+- ✅ SEO Plugin (Schema, OG, Twitter)
+- ✅ Modular Plugin-Architektur
 
 ### v1.1.0 (2026-02-16)
 - ✅ Plugin architecture migration

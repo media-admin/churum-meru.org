@@ -1,8 +1,8 @@
 # Custom Post Types Reference
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026  
-**Plugin:** Media Lab Project Starter v1.0.0
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04  
+**Plugin:** Media Lab Project Starter v1.0.0 (optional)
 
 Complete reference for all 9 Custom Post Types provided by the Project Starter plugin.
 
@@ -33,10 +33,15 @@ Custom Post Types (CPTs) extend WordPress beyond posts and pages, allowing you t
 
 ### Provided By
 
-All CPTs are provided by **Media Lab Project Starter Plugin**:
+All CPTs are provided by **Media Lab Project Starter Plugin** (optional – im Repo vorhanden, pro Projekt aktivierbar):
 ```
-media-lab-project-starter/inc/custom-post-types.php
+cms/wp-content/plugins/media-lab-project-starter/inc/custom-post-types.php
 ```
+
+> **Hinweis:** Das Plugin ist nicht im Standard-Setup aktiviert. Für neue Projekte aktivieren via:
+> ```bash
+> cd cms && wp plugin activate media-lab-project-starter
+> ```
 
 ### Available CPTs
 

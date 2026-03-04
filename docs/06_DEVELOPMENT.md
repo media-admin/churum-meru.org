@@ -1,831 +1,482 @@
 # Development Guide
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026
-
-Comprehensive development guide for the Media Lab Starter Kit.
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04
 
 ---
 
-## Table of Contents
+## Inhaltsverzeichnis
 
-1. [Development Setup](#development-setup)
-2. [Build System](#build-system)
-3. [Development Workflow](#development-workflow)
-4. [Plugin Development](#plugin-development)
-5. [Theme Development](#theme-development)
-6. [JavaScript Development](#javascript-development)
-7. [SCSS Development](#scss-development)
-8. [Git Workflow](#git-workflow)
-9. [Testing](#testing)
-10. [Best Practices](#best-practices)
+1. [Setup](#setup)
+2. [Build-System](#build-system)
+3. [SCSS-Architektur](#scss-architektur)
+4. [JavaScript-Architektur](#javascript-architektur)
+5. [PHP-Entwicklung](#php-entwicklung)
+6. [Git-Workflow](#git-workflow)
+7. [Best Practices](#best-practices)
+8. [Debugging](#debugging)
 
 ---
 
-## Development Setup
+## Setup
 
-### Prerequisites
+### Voraussetzungen prüfen
+
 ```bash
-# Check versions
-php -v        # 8.0+
-node -v       # 16+
-npm -v        # 8+
-composer -v   # 2.0+
-git --version # 2.0+
+php -v      # 8.0+
+node -v     # 18+
+npm -v      # 9+
+composer -v # 2.0+
+git --version
 ```
 
-### Local Environment
+### Lokale Umgebung (Valet)
 
-**Laravel Valet (macOS):**
 ```bash
 cd ~/Valet-Umgebung/media-lab-starter-kit
 valet link
-# Access: http://media-lab-starter-kit.test
+# Erreichbar unter: http://media-lab-starter-kit.test
 ```
 
-**Environment Variables:**
-```bash
-# In .env (create if needed)
-WP_ENV=development
-WP_DEBUG=true
-WP_DEBUG_LOG=true
-WP_DEBUG_DISPLAY=false
+### wp-config.php für Development
+
+```php
+define('WP_DEBUG',         true);
+define('WP_DEBUG_LOG',     true);
+define('WP_DEBUG_DISPLAY', false);
+define('SCRIPT_DEBUG',     true);
+define('WP_MEMORY_LIMIT',  '256M');
 ```
-
-### IDE Setup
-
-**VS Code (Recommended):**
-```json
-// .vscode/settings.json
-{
-  "editor.tabSize": 4,
-  "editor.insertSpaces": true,
-  "files.associations": {
-    "*.php": "php"
-  },
-  "intelephense.environment.phpVersion": "8.0.0"
-}
-```
-
-**Extensions:**
-- PHP Intelephense
-- ESLint
-- Prettier
-- Volar (for Vue if needed)
 
 ---
 
-## Build System
+## Build-System
 
-### Vite Configuration
+### Vite-Konfiguration
 
-Build system uses **Vite 4** for fast development and optimized production builds.
+Die Build-Config liegt im **Projekt-Root** (`vite.config.js`), nicht im Theme-Ordner.
 
-**Config File:** `vite.config.js`
-```javascript
-import { defineConfig } from 'vite';
-import path from 'path';
+**Entry Points:**
+```
+assets/src/js/main.js             → dist/js/main.js       (Kern)
+assets/src/js/components/
+  ajax-filters.js                 → dist/js/ajax-filters.js
+  ajax-search.js                  → dist/js/ajax-search.js
+  load-more.js                    → dist/js/load-more.js
+  google-maps.js                  → dist/js/google-maps.js
+  notifications.js                → dist/js/notifications.js
+```
 
-export default defineConfig({
-  build: {
-    manifest: true,
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'cms/wp-content/themes/custom-theme/assets/js/main.js')
-      }
-    },
-    outDir: path.resolve(__dirname, 'cms/wp-content/themes/custom-theme/dist')
-  },
-  server: {
-    origin: 'http://media-lab-starter-kit.test'
+**Befehle:**
+
+```bash
+npm run dev      # Hot Reload (Valet-URL: media-lab-starter-kit.test)
+npm run build    # Production: minifiziert, console.log entfernt
+npm run watch    # Watch ohne Dev-Server
+```
+
+**Was `npm run build` macht:**
+- Terser: entfernt alle `console.log`, `console.info`, `console.debug`, `debugger`
+- SCSS: Autoprefixer, komprimiert zu einer `style.css`
+- JS: Code-Splitting in 6 Chunks + dynamische Sub-Chunks
+- Output: `assets/dist/` (nicht in Git committen)
+
+### Legacy-Warning unterdrücken
+
+Die Warning `[legacy-js-api]` kommt von Vite intern und ist kein eigener Code – sie verschwindet sobald Vite intern auf die neue Sass-API umstellt. Kein Handlungsbedarf.
+
+---
+
+## SCSS-Architektur
+
+### Ordnerstruktur
+
+```
+assets/src/scss/
+├── abstracts/
+│   ├── _index.scss        ← @forward Entry Point (nicht direkt bearbeiten)
+│   ├── _variables.scss    ← Alle Design-Tokens
+│   └── _mixins.scss       ← Alle Mixins
+├── base/
+│   ├── _reset.scss
+│   ├── _typography.scss
+│   ├── _global.scss
+│   └── _grid-fix.scss
+├── components/            ← 35 Partials
+├── layout/
+│   ├── _header.scss
+│   ├── _footer.scss
+│   ├── _navigation.scss
+│   ├── _grid.scss
+│   └── _top-header.scss
+├── templates/
+│   ├── _page-builder.scss
+│   └── _search-results.scss
+├── utilities/
+│   ├── _animations.scss
+│   └── _helpers.scss
+├── woocommerce/
+│   └── _woocommerce.scss
+└── style.scss             ← Haupt-Entry
+```
+
+### @use / @forward System
+
+Alle Partials importieren Tokens und Mixins selbst – kein globaler Import nötig:
+
+```scss
+// Jedes Partial beginnt mit:
+@use '../abstracts' as *;
+
+// Damit sind alle Tokens und Mixins ohne Namespace verfügbar:
+color: $color-primary;
+@include respond-to('md') { ... }
+```
+
+`abstracts/_index.scss` leitet weiter – nur `_variables.scss` und `_mixins.scss` enthalten echten Code.
+
+### Neue Komponente erstellen
+
+```scss
+// components/_meine-komponente.scss
+@use '../abstracts' as *;
+
+.meine-komponente {
+  color: $color-primary;
+  padding: $spacing-md;
+
+  @include respond-to('md') {
+    padding: $spacing-lg;
   }
-});
-```
-
-### Build Commands
-
-**Development Mode:**
-```bash
-npm run dev
-```
-- Hot Module Replacement (HMR)
-- Source maps enabled
-- Fast rebuilds
-- Watch mode active
-
-**Production Build:**
-```bash
-npm run build
-```
-- Minified assets
-- Optimized bundles
-- Tree shaking
-- Hash-based filenames
-
-**Preview Production:**
-```bash
-npm run preview
-```
-
-### Asset Structure
-```
-cms/wp-content/themes/custom-theme/
-├── assets/
-│   ├── scss/
-│   │   ├── main.scss          (Entry point)
-│   │   ├── _variables.scss    (Design tokens)
-│   │   ├── _mixins.scss       (Reusable mixins)
-│   │   ├── base/              (Reset, typography)
-│   │   ├── components/        (Buttons, cards, etc)
-│   │   ├── layout/            (Grid, header, footer)
-│   │   └── utilities/         (Helpers)
-│   │
-│   └── js/
-│       ├── main.js            (Entry point)
-│       ├── modules/           (Feature modules)
-│       │   ├── accordion.js
-│       │   ├── modal.js
-│       │   ├── slider.js
-│       │   └── ... (24 modules)
-│       └── utils/             (Utilities)
-│
-└── dist/                      (Compiled output)
-    ├── main-[hash].css
-    ├── main-[hash].js
-    └── manifest.json
-```
-
----
-
-## Development Workflow
-
-### Daily Workflow
-
-**1. Start Development Server:**
-```bash
-cd /path/to/media-lab-starter-kit
-npm run dev
-```
-
-**2. Make Changes:**
-- Edit SCSS files in `assets/scss/`
-- Edit JS files in `assets/js/`
-- Edit PHP files in theme/plugins
-
-**3. Test Changes:**
-- HMR updates automatically
-- Check browser console
-- Test responsive design
-
-**4. Commit Changes:**
-```bash
-git add .
-git commit -m "Feature: Description"
-git push
-```
-
-### Feature Development
-
-**1. Create Feature Branch:**
-```bash
-git checkout -b feature/new-feature
-```
-
-**2. Develop Feature:**
-- Write code
-- Test thoroughly
-- Update documentation
-
-**3. Run Tests:**
-```bash
-./tests/run-tests.sh
-```
-
-**4. Merge to Main:**
-```bash
-git checkout main
-git merge feature/new-feature
-git push
-```
-
----
-
-## Plugin Development
-
-### Creating New Plugin
-
-**1. Plugin Structure:**
-```bash
-mkdir -p cms/wp-content/plugins/my-plugin/inc
-
-cd cms/wp-content/plugins/my-plugin
-```
-
-**2. Main Plugin File:**
-```php
-<?php
-/**
- * Plugin Name: My Plugin
- * Version: 1.0.0
- * Author: Your Name
- * Requires PHP: 8.0
- */
-
-if (!defined('ABSPATH')) exit;
-
-define('MY_PLUGIN_VERSION', '1.0.0');
-define('MY_PLUGIN_PATH', plugin_dir_path(__FILE__));
-
-// Load components
-require_once MY_PLUGIN_PATH . 'inc/functions.php';
-
-// Initialization
-function my_plugin_init() {
-    // Plugin initialization
 }
-add_action('plugins_loaded', 'my_plugin_init');
 ```
 
-**3. Activation Hook:**
-```php
-register_activation_hook(__FILE__, function() {
-    // Set default options
-    add_option('my_plugin_version', MY_PLUGIN_VERSION);
-    
-    // Flush rewrite rules
-    flush_rewrite_rules();
+Dann in `style.scss` einbinden:
+```scss
+@use 'components/meine-komponente';
+```
+
+### Design-Tokens (Auswahl)
+
+```scss
+// Farben
+$color-primary        #e00000
+$color-secondary      #1a1a2e
+$color-success        #0a8754
+$color-warning        #f59e0b
+$color-error          #dc2626
+
+// Spacing
+$spacing-xs   0.25rem
+$spacing-sm   0.5rem
+$spacing-md   1rem
+$spacing-lg   1.5rem
+$spacing-xl   2rem
+$spacing-2xl  3rem
+
+// Breakpoints
+$breakpoint-sm   480px
+$breakpoint-md   768px
+$breakpoint-lg   1024px
+$breakpoint-xl   1280px
+
+// Vorkompilierte Farbvarianten (statt darken/lighten)
+$color-primary-dark       #cc0000
+$color-primary-darker     #b20000
+$color-warning-light-bg   #fdebce
+```
+
+---
+
+## JavaScript-Architektur
+
+### Dynamic Import Prinzip
+
+Kein Modul wird geladen bevor geprüft wurde ob das DOM-Element existiert:
+
+```javascript
+// main.js – Kern-Komponenten (immer geladen)
+import Navigation from './components/navigation';
+new Navigation();
+
+// Lazy – nur wenn Element auf der Seite vorhanden
+if (document.querySelector('.accordion')) {
+  const { default: Accordion } = await import('./components/accordion');
+  new Accordion();
+}
+```
+
+### Neue Komponente erstellen
+
+**1. Komponenten-File:**
+```javascript
+// assets/src/js/components/meine-komponente.js
+
+export default class MeineKomponente {
+  constructor() {
+    this.elements = document.querySelectorAll('.meine-komponente');
+    if (!this.elements.length) return;
+    this.init();
+  }
+
+  init() {
+    this.elements.forEach(el => {
+      el.addEventListener('click', this.handleClick.bind(this));
+    });
+  }
+
+  handleClick(e) {
+    // Logik
+  }
+}
+```
+
+**2. In main.js registrieren:**
+```javascript
+if (has('.meine-komponente')) {
+  const { default: MeineKomponente } = await import('./components/meine-komponente');
+  safeInit('MeineKomponente', () => new MeineKomponente());
+}
+```
+
+### AJAX-Pattern
+
+```javascript
+const response = await fetch(window.customTheme.ajaxUrl, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: new URLSearchParams({
+    action: 'meine_action',
+    nonce:  window.customTheme.nonce,
+    data:   JSON.stringify(payload),
+  }),
 });
+
+const result = await response.json();
+if (!result.success) throw new Error(result.data);
 ```
 
-### Modifying Existing Plugins
+### `window.customTheme` Objekt
 
-**Core Plugin (Don't Modify):**
-- Use hooks and filters instead
-- Create separate plugin for modifications
+Wird via `wp_localize_script` in `enqueue.php` gesetzt:
 
-**Project Plugin (Modify for Clients):**
-- Duplicate first
-- Rename and customize
-- Update plugin header
+```javascript
+window.customTheme = {
+  ajaxUrl:          '/wp-admin/admin-ajax.php',
+  nonce:            '...',
+  searchNonce:      '...',
+  loadMoreNonce:    '...',
+  filtersNonce:     '...',
+  googleMapsApiKey: '...',
+  themePath:        '/wp-content/themes/custom-theme',
+  homeUrl:          'https://example.com/',
+  isDebug:          false,
+}
+```
 
-**Example - Add Custom CPT:**
+---
+
+## PHP-Entwicklung
+
+### Plugin-Struktur
+
+Das `media-lab-agency-core` Plugin wird **nie direkt modifiziert**. Erweiterungen via WordPress-Hooks:
+
 ```php
-// In inc/custom-post-types.php
-register_post_type('custom_type', [
-    'label' => 'Custom Type',
-    'public' => true,
-    'supports' => ['title', 'editor', 'thumbnail'],
-    'has_archive' => true,
-    'rewrite' => ['slug' => 'custom-type']
+// Im Theme oder separatem Plugin
+add_filter('medialab_shortcode_output', function($output, $tag) {
+    // Output anpassen
+    return $output;
+}, 10, 2);
+```
+
+### Responsive Thumbnail
+
+Statt `get_the_post_thumbnail_url()` immer `medialab_get_thumbnail()` verwenden:
+
+```php
+// ❌ Alt – nur URL, kein srcset, kein lazy
+$url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+echo '<img src="' . esc_url($url) . '" alt="">';
+
+// ✅ Neu – srcset, sizes, loading=lazy, decoding=async
+echo medialab_get_thumbnail(get_the_ID(), 'medium', [
+    'class' => 'mein-bild',
+    'alt'   => 'Beschreibung',  // optional, sonst aus Attachment-Meta
 ]);
 ```
 
----
+### Output-Escaping (Pflicht)
 
-## Theme Development
-
-### Theme Structure
-```
-custom-theme/
-├── functions.php           (118 lines - keep minimal)
-├── style.css              (Theme header)
-├── index.php              (Main template)
-├── header.php             (Site header)
-├── footer.php             (Site footer)
-├── singular.php           (Single posts/pages)
-├── archive.php            (Archives)
-│
-├── template-parts/        (Reusable components)
-│   ├── content.php
-│   ├── content-post.php
-│   └── ...
-│
-├── inc/                   (Theme functions)
-│   ├── enqueue.php        (Asset loading)
-│   ├── helpers.php        (Helper functions)
-│   └── walker-nav-menu.php
-│
-└── assets/                (Source files)
-    ├── scss/
-    └── js/
-```
-
-### Theme Functions
-
-**Keep functions.php Minimal:**
 ```php
-<?php
-// Theme setup
-function customtheme_setup() {
-    add_theme_support('post-thumbnails');
-    register_nav_menus([
-        'primary' => 'Primary Menu'
-    ]);
-}
-add_action('after_setup_theme', 'customtheme_setup');
-
-// Load assets
-require_once get_template_directory() . '/inc/enqueue.php';
-
-// Check required plugins
-function customtheme_check_required_plugins() {
-    $required = [
-        'media-lab-agency-core',
-        'media-lab-project-starter'
-    ];
-    // Check logic...
-}
+echo esc_html($text);           // Allgemeiner Text
+echo esc_attr($attribute);      // HTML-Attribute
+echo esc_url($url);             // URLs
+echo wp_kses_post($html);       // HTML mit erlaubten Tags
+echo esc_js($js_string);        // Inline-JS-Strings
 ```
 
-### Template Hierarchy
-```
-page.php              → Page template
-single.php            → Single post
-archive.php           → Archive pages
-singular.php          → Single any post type
-index.php             → Fallback
-```
+### Rate-Limiting für AJAX
 
-**Custom Templates:**
 ```php
-<?php
-/**
- * Template Name: Full Width
- */
-get_header();
-// Template content
-get_footer();
+function mein_ajax_handler() {
+    // Rate-Limiting: max. 20 Anfragen / 60 Sekunden pro IP
+    if (!medialab_check_rate_limit('meine_action', 20, 60)) {
+        wp_send_json_error(['message' => 'Too many requests.'], 429);
+    }
+
+    check_ajax_referer('mein_nonce', 'nonce');
+    // ...
+}
+add_action('wp_ajax_nopriv_meine_action', 'mein_ajax_handler');
 ```
+
+### Bild-Größen (Theme)
+
+Registriert in `functions.php`:
+
+| Slug | Breite | Höhe | Crop |
+|---|---|---|---|
+| `custom-thumbnail` | 400px | 300px | ✓ |
+| `custom-medium` | 800px | 600px | ✓ |
+| `custom-large` | 1200px | 900px | ✓ |
 
 ---
 
-## JavaScript Development
+## Git-Workflow
 
-### Module System
+### Branches
 
-All JavaScript is modular using ES6 modules.
-
-**Entry Point:** `assets/js/main.js`
-```javascript
-// Import modules
-import { initAccordion } from './modules/accordion';
-import { initModal } from './modules/modal';
-import { initSlider } from './modules/slider';
-
-// DOM Ready
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // Initialize components
-    initAccordion();
-    initModal();
-    initSlider();
-    
-    // More initializations...
-});
+```
+main          →  Produktionsstand
+feature/*     →  Neue Features
+fix/*         →  Bugfixes
+hotfix/*      →  Kritische Fixes auf main
 ```
 
-### Creating New Module
+### Commit-Konvention
 
-**1. Create Module File:**
-```javascript
-// assets/js/modules/my-feature.js
-
-export function initMyFeature() {
-    const elements = document.querySelectorAll('.my-feature');
-    
-    if (!elements.length) return;
-    
-    elements.forEach(element => {
-        element.addEventListener('click', handleClick);
-    });
-}
-
-function handleClick(e) {
-    // Handle click
-}
+```
+release: v1.4.0          →  Neues Release
+feat: kurze Beschreibung →  Neues Feature
+fix: kurze Beschreibung  →  Bugfix
+refactor: ...            →  Refactoring ohne Feature-Änderung
+security: ...            →  Security-Fix
+chore: ...               →  Kein Code-Change (Deps, Cleanup)
+docs: ...                →  Nur Dokumentation
 ```
 
-**2. Import in main.js:**
-```javascript
-import { initMyFeature } from './modules/my-feature';
+### Release-Prozess
 
-document.addEventListener('DOMContentLoaded', () => {
-    initMyFeature();
-});
-```
-
-### Error Handling
-```javascript
-// Wrap in try-catch
-export function initComponent() {
-    try {
-        // Component logic
-    } catch (error) {
-        console.error('Component initialization failed:', error);
-    }
-}
-```
-
-### AJAX Requests
-```javascript
-// Standard AJAX pattern
-async function fetchData(action, data) {
-    try {
-        const formData = new FormData();
-        formData.append('action', action);
-        
-        Object.entries(data).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
-        
-        const response = await fetch(ajaxurl, {
-            method: 'POST',
-            body: formData
-        });
-        
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        
-        return await response.json();
-        
-    } catch (error) {
-        console.error('AJAX Error:', error);
-        return null;
-    }
-}
-```
-
----
-
-## SCSS Development
-
-### File Structure
-```
-assets/scss/
-├── main.scss              (Entry - imports all)
-├── _variables.scss        (Design tokens)
-├── _mixins.scss          (Reusable mixins)
-│
-├── base/
-│   ├── _reset.scss       (CSS reset)
-│   ├── _typography.scss  (Fonts, headings)
-│   └── _global.scss      (Global styles)
-│
-├── components/
-│   ├── _buttons.scss
-│   ├── _cards.scss
-│   ├── _forms.scss
-│   └── ...
-│
-├── layout/
-│   ├── _grid.scss
-│   ├── _header.scss
-│   ├── _footer.scss
-│   └── _sidebar.scss
-│
-└── utilities/
-    ├── _helpers.scss
-    └── _spacing.scss
-```
-
-### Design Tokens
-
-**Variables:** `_variables.scss`
-```scss
-// Colors
-$primary: #007bff;
-$secondary: #6c757d;
-$success: #28a745;
-$danger: #dc3545;
-
-// Spacing
-$spacing-unit: 1rem;
-$spacing-xs: $spacing-unit * 0.5;   // 0.5rem
-$spacing-sm: $spacing-unit;          // 1rem
-$spacing-md: $spacing-unit * 2;      // 2rem
-$spacing-lg: $spacing-unit * 3;      // 3rem
-
-// Typography
-$font-family-base: 'Inter', sans-serif;
-$font-size-base: 1rem;
-$line-height-base: 1.5;
-
-// Breakpoints
-$breakpoint-sm: 576px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 992px;
-$breakpoint-xl: 1200px;
-```
-
-### Mixins
-
-**Common Mixins:** `_mixins.scss`
-```scss
-// Responsive breakpoints
-@mixin respond-to($breakpoint) {
-    @media (min-width: $breakpoint) {
-        @content;
-    }
-}
-
-// Flexbox center
-@mixin flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-// Transition
-@mixin transition($property: all, $duration: 0.3s) {
-    transition: $property $duration ease;
-}
-```
-
-### Component Styling
-```scss
-// components/_buttons.scss
-.btn {
-    display: inline-block;
-    padding: $spacing-sm $spacing-md;
-    font-family: $font-family-base;
-    font-size: $font-size-base;
-    border-radius: 4px;
-    @include transition(background-color);
-    
-    &:hover {
-        opacity: 0.9;
-    }
-    
-    &--primary {
-        background: $primary;
-        color: white;
-    }
-    
-    &--large {
-        padding: $spacing-md $spacing-lg;
-        font-size: 1.25rem;
-    }
-}
-```
-
----
-
-## Git Workflow
-
-### Branch Strategy
-```
-main              → Production-ready code
-develop           → Integration branch
-feature/*         → New features
-fix/*             → Bug fixes
-hotfix/*          → Emergency fixes
-```
-
-### Commit Messages
-
-**Format:**
-```
-Type: Brief description
-
-Detailed explanation (optional)
-
-- Change 1
-- Change 2
-```
-
-**Types:**
-- `Add:` New feature
-- `Update:` Modify existing
-- `Fix:` Bug fix
-- `Docs:` Documentation
-- `Style:` Formatting
-- `Refactor:` Code restructure
-- `Test:` Add tests
-- `Cleanup:` Remove code
-
-**Examples:**
 ```bash
-git commit -m "Add: Hero slider shortcode"
-git commit -m "Fix: Modal close button not working"
-git commit -m "Update: Improve search performance"
-```
+# 1. Versionen bumpen
+#    - package.json
+#    - cms/wp-content/themes/custom-theme/style.css
+#    - cms/wp-content/plugins/media-lab-agency-core/media-lab-agency-core.php
 
-### Common Commands
-```bash
-# Status
-git status
-git log --oneline -5
+# 2. CHANGELOG.md aktualisieren
 
-# Branch
-git checkout -b feature/name
-git branch -d feature/name
+# 3. Build testen
+npm run build
 
-# Stage & Commit
-git add .
-git commit -m "Message"
-
-# Push
-git push origin branch-name
-
-# Pull
-git pull origin main
-
-# Merge
-git checkout main
-git merge feature/name
-```
-
----
-
-## Testing
-
-### Run Test Suite
-```bash
-cd /path/to/media-lab-starter-kit
-./tests/run-tests.sh
-```
-
-**Expected Output:**
-```
-✅ All tests passed!
-Passed: 23
-Failed: 0
-Total: 23
-```
-
-### Manual Testing
-
-**1. Plugin Functionality:**
-```bash
-# Verify plugins active
-wp plugin list --status=active
-
-# Check shortcodes
-wp eval 'global $shortcode_tags; echo count($shortcode_tags);'
-
-# Check CPTs
-wp post-type list
-```
-
-**2. Frontend Testing:**
-- Load homepage
-- Check console (no errors)
-- Test responsive design
-- Test all shortcodes
-- Test AJAX features
-
-**3. Performance Testing:**
-```bash
-# Run Lighthouse
-npm install -g lighthouse
-lighthouse http://media-lab-starter-kit.test --view
+# 4. Commit + Tag
+git add -A
+git commit -m "release: vX.Y.Z"
+git tag -a vX.Y.Z -m "Version X.Y.Z"
+git push origin main --follow-tags
 ```
 
 ---
 
 ## Best Practices
 
-### PHP
-```php
-// ✅ Good
-function prefix_function_name() {
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-    
-    $data = get_option('my_option');
-    // Process data...
+### SCSS
+
+```scss
+// ✅ BEM-Naming
+.card {
+  &__header { ... }
+  &__body   { ... }
+  &--featured { border: 2px solid $color-gold; }
 }
 
-// ❌ Bad
-function myFunction() {  // No prefix
-    $data = $_GET['data'];  // No sanitization
-    echo $data;  // No escaping
-}
+// ✅ Tokens statt Hardcoding
+color: $color-primary;        // nie: color: #e00000;
+padding: $spacing-md;         // nie: padding: 16px;
+
+// ✅ Mixins für Breakpoints
+@include respond-to('md') { ... }   // nie: @media (min-width: 768px)
+
+// ❌ Keine darken()/lighten() – stattdessen vorkompilierte Tokens
+color: $color-primary-dark;   // statt: darken($color-primary, 10%)
 ```
 
 ### JavaScript
+
 ```javascript
-// ✅ Good
-async function fetchData() {
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
-}
+// ✅ DOM-Check vor Initialisierung
+if (!document.querySelector('.mein-element')) return;
 
-// ❌ Bad
-function fetchData() {
-    fetch(url).then(r => r.json()).then(d => {
-        // Nested promises, no error handling
-    });
-}
+// ✅ customTheme für AJAX-URLs/Nonces
+fetch(window.customTheme.ajaxUrl, { ... })
+
+// ✅ console.log nur mit Debug-Flag (wird in Production von Terser entfernt)
+if (window.customTheme?.isDebug) console.log('Debug:', data);
 ```
 
-### SCSS
-```scss
-// ✅ Good - BEM naming
-.card {
-    &__header {
-        font-size: 1.5rem;
-    }
-    
-    &__body {
-        padding: 1rem;
-    }
-    
-    &--featured {
-        border: 2px solid gold;
-    }
-}
+### PHP Security
 
-// ❌ Bad - Deep nesting
-.card {
-    .header {
-        .title {
-            .text {
-                font-size: 1.5rem;  // Too nested
-            }
-        }
-    }
-}
-```
-
-### Security
 ```php
-// Always sanitize input
-$value = sanitize_text_field($_POST['field']);
+// ✅ Input immer sanitieren
+$value = sanitize_text_field($_POST['field'] ?? '');
 
-// Always escape output
+// ✅ Output immer escapen
 echo esc_html($value);
-echo esc_url($url);
-echo esc_attr($attribute);
 
-// Check capabilities
-if (!current_user_can('edit_posts')) {
-    wp_die('Unauthorized');
-}
+// ✅ Nonce bei jedem AJAX-Handler prüfen
+check_ajax_referer('nonce_action', 'nonce');
 
-// Verify nonces
-if (!wp_verify_nonce($_POST['nonce'], 'action_name')) {
-    wp_die('Invalid nonce');
-}
+// ✅ Capabilities prüfen
+if (!current_user_can('manage_options')) wp_die();
+
+// ✅ ABSPATH-Guard in jedem PHP-File
+if (!defined('ABSPATH')) exit;
 ```
 
 ---
 
 ## Debugging
 
-### Enable Debug Mode
-```php
-// wp-config.php
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', false);
-define('SCRIPT_DEBUG', true);
-```
+### PHP
 
-### View Logs
 ```bash
-# Debug log
+# Debug-Log verfolgen
 tail -f cms/wp-content/debug.log
 
-# PHP error log
-tail -f /path/to/php-error.log
-
-# Valet log (macOS)
+# Valet-Log
 tail -f ~/.valet/Log/nginx-error.log
 ```
 
-### Browser DevTools
+### JavaScript
+
 ```javascript
-// Console debugging
-console.log('Value:', value);
-console.table(array);
-console.error('Error:', error);
+// In Development (wird in Production entfernt)
+console.log('State:', someValue);
+console.table(arrayData);
+```
 
-// Breakpoints
-debugger;  // Pauses execution
+### SCSS Build-Fehler
 
-// Network monitoring
-// DevTools → Network tab
-// Filter: XHR, JS, CSS
+```bash
+# Typische Fehler:
+# "Undefined variable" → @use '../abstracts' as * fehlt im Partial
+# "Can't find stylesheet" → File existiert nicht oder Pfad falsch
+# "darken() deprecated" → $color-primary-dark Token verwenden
+
+# Build mit Details
+npm run build 2>&1 | head -50
 ```
 
 ---
 
-## Next Steps
-
-- **Troubleshooting:** [Troubleshooting Guide](07_TROUBLESHOOTING.md)
-- **Custom Post Types:** [CPT Documentation](08_CUSTOM-POST-TYPES.md)
-- **Testing:** [Testing Guide](11_TESTING.md)
-
----
-
-**Happy coding!** 💻  
-**Next:** [Troubleshooting](07_TROUBLESHOOTING.md) →
+**Weiter:** [docs/07_TROUBLESHOOTING.md](07_TROUBLESHOOTING.md)

@@ -1,8 +1,11 @@
 # Analytics Documentation
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026  
-**Plugin:** Media Lab Analytics v1.0.0
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04  
+**Plugin:** Media Lab Analytics v1.0.0 *(optional – im Repo vorhanden)*
+
+> **Hinweis:** Das Analytics-Plugin ist nicht im Standard-Setup aktiviert.  
+> Aktivieren via: `cd cms && wp plugin activate media-lab-analytics`
 
 Complete guide for the Analytics plugin.
 

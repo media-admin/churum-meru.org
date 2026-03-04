@@ -1,8 +1,8 @@
 # AJAX Features Documentation
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026  
-**Plugin:** Media Lab Agency Core v1.1.0
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04  
+**Plugin:** Media Lab Agency Core v1.5.1
 
 Professional AJAX filtering and loading system for dynamic content.
 
@@ -42,11 +42,23 @@ media-lab-agency-core/inc/
 
 ### WordPress Actions
 
-Three AJAX actions registered:
+Drei AJAX Actions registriert (öffentlich + eingeloggt):
 ```php
-'agency_search'       // Live search
-'agency_load_more'    // Load more posts
-'ajax_filter_posts'   // Filter posts
+'agency_search'       // Live-Suche        (max. 20 Req/60s pro IP)
+'agency_load_more'    // Load More         (max. 30 Req/60s pro IP)
+'ajax_filter_posts'   // Post-Filter       (max. 30 Req/60s pro IP)
+```
+
+### Rate-Limiting
+
+Alle drei Endpunkte sind durch Transient-basiertes Rate-Limiting geschützt (Security F-03).  
+Bei Überschreitung: HTTP 429 mit `{"success": false, "data": {"message": "Too many requests..."}}`
+
+Um Rate-Limiting in eigenen AJAX-Handlern zu nutzen:
+```php
+if (!medialab_check_rate_limit('meine_action', 20, 60)) {
+    wp_send_json_error(['message' => 'Too many requests. Please try again later.'], 429);
+}
 ```
 
 ---

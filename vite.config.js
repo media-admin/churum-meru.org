@@ -24,13 +24,8 @@ export default defineConfig({
 
     rollupOptions: {
       input: {
-        main:          path.resolve(themeDir, 'assets/src/js/main.js'),
-        // Lazy-Chunks – nur geladen wenn DOM-Element vorhanden
-        ajaxFilters:   path.resolve(themeDir, 'assets/src/js/components/ajax-filters.js'),
-        ajaxSearch:    path.resolve(themeDir, 'assets/src/js/components/ajax-search.js'),
-        loadMore:      path.resolve(themeDir, 'assets/src/js/components/load-more.js'),
-        googleMaps:    path.resolve(themeDir, 'assets/src/js/components/google-maps.js'),
-        notifications: path.resolve(themeDir, 'assets/src/js/components/notifications.js'),
+        // Einziger Entry Point – alle anderen Komponenten via Dynamic Import
+        main: path.resolve(themeDir, 'assets/src/js/main.js'),
       },
       output: {
         entryFileNames: 'js/[name].js',

@@ -1,8 +1,8 @@
 # SEO Documentation
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026  
-**Plugin:** Media Lab SEO Toolkit v1.0.0
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04  
+**Plugin:** Media Lab SEO Toolkit v1.1.0
 
 Complete guide for the SEO plugin with Schema.org, Open Graph, and Twitter Cards.
 

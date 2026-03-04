@@ -1,7 +1,7 @@
 # Testing Guide
 
-**Version:** 1.2.0  
-**Last Updated:** February 16, 2026
+**Version:** 1.4.0  
+**Letzte Aktualisierung:** 2026-03-04
 
 Complete guide for testing Media Lab Starter Kit.
 
@@ -77,8 +77,8 @@ Running Smoke Tests...
 
 📦 Plugin Tests:
 Testing: Core Plugin Active... ✅ PASS
-Testing: Project Plugin Active... ✅ PASS
-Testing: Analytics Plugin Active... ✅ PASS
+# media-lab-project-starter ist optional
+# media-lab-analytics ist optional
 Testing: SEO Plugin Active... ✅ PASS
 
 🔖 Shortcode Tests:
@@ -407,21 +407,21 @@ run_test "Posts Exist" "wp eval '\$count = wp_count_posts(\"post\"); exit(\$coun
 
 ### Page Speed
 ```bash
-# Install Lighthouse
+# Via npm Script (empfohlen)
+npm run lighthouse
+
+# Oder direkt mit Lighthouse CLI
 npm install -g lighthouse
-
-# Test homepage
 lighthouse http://media-lab-starter-kit.test --view
-
-# Test specific pages
-lighthouse http://media-lab-starter-kit.test/about --view
 ```
 
-**Target Scores:**
+**Zielwerte:**
 - Performance: 90+
 - Accessibility: 90+
 - Best Practices: 90+
 - SEO: 90+
+
+> **Tipp nach v1.4.0:** Code-Splitting und Dynamic Imports verbessern den Performance-Score deutlich da weniger JS beim initialen Laden übertragen wird.
 
 ### Load Testing
 

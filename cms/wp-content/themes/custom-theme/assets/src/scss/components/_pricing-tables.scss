@@ -194,7 +194,7 @@
       box-shadow: $shadow-md;
       
       &:hover {
-        background: darken($color-primary, 10%);
+        background: $color-primary-dark;
         transform: translateY(-2px);
         box-shadow: $shadow-lg;
       }
@@ -353,7 +353,7 @@
     color: $color-white;
     
     &:hover {
-      background: darken($color-primary, 10%);
+      background: $color-primary-dark;
     }
   }
   

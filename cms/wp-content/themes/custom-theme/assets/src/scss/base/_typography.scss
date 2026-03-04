@@ -54,7 +54,7 @@ a {
   transition: color $transition-fast;
   
   &:hover {
-    color: darken($color-primary, 15%);
+    color: $color-primary-darker;
     
   }
 }

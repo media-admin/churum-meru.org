@@ -54,7 +54,7 @@
     position: relative;
     padding-bottom: 66.67%; // 3:2 aspect ratio
     overflow: hidden;
-    background: #000;
+    background: $color-black;
     
     img {
       position: absolute;

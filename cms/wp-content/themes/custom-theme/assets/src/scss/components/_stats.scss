@@ -142,11 +142,11 @@
   
   &--warning {
     .stat__number {
-      color: darken($color-warning, 10%);
+      color: $color-warning-dark;
     }
     
     .stat__icon .dashicons {
-      color: darken($color-warning, 10%);
+      color: $color-warning-dark;
     }
   }
   

@@ -125,7 +125,7 @@
         transition: background $transition-base;
         
         &:hover {
-          background: darken($color-primary, 10%);
+          background: $color-primary-dark;
         }
       }
       
@@ -151,7 +151,7 @@
         &.wpcf7-mail-sent-ok {
           background: rgba($color-error, 0.1); // 10% Opacity statt lighten
           border: 1px solid $color-success;
-          color: darken($color-success, 20%);
+          color: $color-success-dark;
         }
       }
     }

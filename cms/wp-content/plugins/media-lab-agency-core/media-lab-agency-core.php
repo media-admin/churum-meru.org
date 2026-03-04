@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin Constants
-define('MEDIALAB_CORE_VERSION', '1.2.0');
+define('MEDIALAB_CORE_VERSION', '1.3.0');
 define('MEDIALAB_CORE_FILE', __FILE__);
 define('MEDIALAB_CORE_PATH', plugin_dir_path(__FILE__));
 define('MEDIALAB_CORE_URL', plugin_dir_url(__FILE__));
@@ -80,5 +80,10 @@ register_activation_hook(__FILE__, 'medialab_core_activate');
  */
 function medialab_core_deactivate() {
     flush_rewrite_rules();
+    // Cron-Job für IP-Anonymisierung entfernen
+    $timestamp = wp_next_scheduled('medialab_anonymize_ip_addresses');
+    if ($timestamp) {
+        wp_unschedule_event($timestamp, 'medialab_anonymize_ip_addresses');
+    }
 }
 register_deactivation_hook(__FILE__, 'medialab_core_deactivate');

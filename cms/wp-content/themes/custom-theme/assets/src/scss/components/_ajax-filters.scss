@@ -629,7 +629,7 @@
     transition: $transition-base;
     
     &:hover {
-      background: darken($color-primary, 10%);
+      background: $color-primary-dark;
     }
     
     svg {
@@ -866,7 +866,7 @@
     transition: $transition-base;
     
     &:hover {
-      background: darken($color-primary, 10%);
+      background: $color-primary-dark;
     }
   }
   

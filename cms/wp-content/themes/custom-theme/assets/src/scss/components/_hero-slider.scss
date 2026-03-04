@@ -82,13 +82,13 @@ html, body {
 }
 
 .hero-slide__title {
-  font-size: 32px;
+  font-size: $font-size-4xl;
   font-weight: 700;
   margin-bottom: 1rem;
   line-height: 1.2;
   
   @media (min-width: 768px) {
-    font-size: 56px;
+    font-size: $font-size-7xl;
   }
 }
 
@@ -109,15 +109,15 @@ html, body {
 .hero-slide__button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background: #667eea;
+  background: $color-hero-gradient;
   color: white;
   text-decoration: none;
   border-radius: 0.5rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: $transition-base;
   
   &:hover {
-    background: darken(#667eea, 10%);
+    background: $color-hero-gradient-dark;
     transform: translateY(-2px);
   }
 }
@@ -127,16 +127,16 @@ html, body {
 .swiper-button-next {
   width: 50px !important;
   height: 50px !important;
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: rgba($color-white, 0.2) !important;
   border-radius: 50% !important;
   color: white !important;
   
   &::after {
-    font-size: 20px !important;
+    font-size: $font-size-xl !important;
   }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.3) !important;
+    background: rgba($color-white, 0.3) !important;
   }
 }
 
@@ -148,16 +148,16 @@ html, body {
 .swiper-pagination-bullet {
   width: 12px !important;
   height: 12px !important;
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: rgba($color-white, 0.5) !important;
   opacity: 1 !important;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.7) !important;
+    background: rgba($color-white, 0.7) !important;
   }
 }
 
 .swiper-pagination-bullet-active {
-  background: #667eea !important;
+  background: $color-hero-gradient !important;
   width: 32px !important;
   border-radius: 6px !important;
 }
@@ -169,7 +169,7 @@ html, body {
   }
   
   .hero-slide__title {
-    font-size: 28px;
+    font-size: $font-size-3xl;
   }
   
   .hero-slider__button--prev,
@@ -193,7 +193,7 @@ html, body {
 }
 
 .hero-slide__title {
-  font-size: 32px;
+  font-size: $font-size-4xl;
   font-weight: 700;
   margin-bottom: 1rem;
   line-height: 1.2;
@@ -201,6 +201,6 @@ html, body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   
   @media (min-width: 768px) {
-    font-size: 56px;
+    font-size: $font-size-7xl;
   }
 }

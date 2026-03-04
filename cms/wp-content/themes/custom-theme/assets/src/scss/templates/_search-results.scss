@@ -75,7 +75,7 @@
     z-index: 2;
     
     &:hover {
-        background: darken($color-primary, 10%);
+        background: $color-primary-dark;
         transform: translateY(-50%) scale(1.05);
     }
     
@@ -240,7 +240,7 @@
   }
   
   &--job {
-    border-left-color: #8b5cf6; // Purple
+    border-left-color: $color-purple;
   }
   
   &__thumbnail {
@@ -312,8 +312,8 @@
     }
     
     .search-result--job & {
-      background: rgba(#8b5cf6, 0.1);
-      color: #8b5cf6;
+      background: rgba($color-purple, 0.1);
+      color: $color-purple;
     }
   }
   

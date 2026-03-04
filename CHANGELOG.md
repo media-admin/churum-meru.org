@@ -6,6 +6,34 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.2.0] - 2026-03-04
+
+### media-lab-agency-core 1.4.0
+
+#### Security
+- **SVG Sanitizer** – `MediaLab_SVG_Sanitizer` ersetzt unsichere Regex-Bereinigung; vollständige Allowlist für Tags und Attribute; entfernt `<script>`, `<foreignObject>`, `<animate>`, externe `<use href>`, alle `on*`-Handler, `javascript:`- und `data:`-URLs via DOMDocument; SVG-Upload auf Administratoren beschränkt
+- **IP-Adressen (DSGVO)** – `get_client_ip()` prüft Cloudflare-, nginx-Proxy- und X-Forwarded-For-Header korrekt; akzeptiert nur öffentliche IPs (kein Spoofing via Private Range); WP-Cron anonymisiert IPs automatisch nach 90 Tagen (IPv4: letztes Oktett → 0, IPv6: letzte 5 Gruppen → 0); Cron wird bei Plugin-Deaktivierung sauber entfernt
+
+#### Fixed
+- Deaktivierungs-Hook bereinigt nun auch den IP-Anonymisierungs-Cron-Job
+
+### custom-theme 1.2.0
+
+#### Changed
+- **Design Tokens** – `$color-gray-100`, `$container-max-width`, `$color-woo-danger` als fehlende Tokens ergänzt; 12 vorkompilierte Farbvarianten (`$color-primary-dark`, `$color-warning-light-bg` etc.) als Ersatz für deprecated `darken()`/`lighten()`-Funktionen
+- **Token-Bereinigung** – alle hardcodierten Hex-Werte in 10 SCSS-Files durch Design Tokens ersetzt (`_notification.scss`, `_notifications.scss`, `_testimonials.scss`, `_video-player.scss`, `_cpt-grids.scss`, `_search-results.scss`, `_woocommerce.scss`, `layout/_top-header.scss`)
+- **Top Header** – `components/_top-header.scss` (Duplikat) gelöscht; `layout/_top-header.scss` als einzige Quelle; alle Werte auf Tokens umgestellt
+- **Sass Module System** – Migration von `@import` auf `@use`/`@forward`; `abstracts/_index.scss` als zentraler Einstiegspunkt; alle 46 SCSS-Partials deklarieren ihre Abhängigkeiten selbst via `@use '../abstracts' as *`; keine Deprecation Warnings mehr
+
+### Projekt
+
+#### Removed
+- Backup-Files entfernt: `shortcodes.php.bak*`, `multi-language.php.backup4`, `media-lab-agency-core.php.before-ajax`, `wizard.php.bak`, `acf-fields.php.DISABLED`
+- `lighthouse-report.html` aus Repository entfernt
+- Inaktives Plugin `media-lab-core` (Vorgänger von `media-lab-agency-core`) gelöscht
+
+---
+
 ## [1.1.0] - 2026-03-04
 
 ### media-lab-agency-core 1.3.0

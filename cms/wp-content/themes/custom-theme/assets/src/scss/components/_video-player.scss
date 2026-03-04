@@ -1,3 +1,5 @@
+@use '../abstracts' as *;
+
 // Video Player Component
 .video-player {
   margin: $spacing-8 0;

@@ -1,42 +1,68 @@
-// ==========================================================================
-// Mixins
-// ==========================================================================
+// =============================================================================
+// MIXINS
+// Media Lab Starter Kit
+// Version: 1.1.0 – 2026-03-04
+//
+// WICHTIG: Breakpoints kommen aus _variables.scss ($breakpoint-*).
+// Nie Pixel-Werte hardcoden – immer die Variablen verwenden.
+// =============================================================================
 
-// Responsive Breakpoints Mixin
+@use 'variables' as *;
+
+// ─────────────────────────────────────────────────────────────────
+// RESPONSIVE BREAKPOINTS
+// Orientierung: mobile-first (min-width)
+//
+// Verwendung:
+//   @include respond-to('md') { font-size: 18px; }
+//
+// Breakpoint-Tabelle:
+//   xs  →  375px  Mobile
+//   sm  →  576px  Mobile Landscape
+//   md  →  768px  Tablet
+//   lg  →  992px  Tablet Landscape
+//   xl  → 1200px  Desktop
+//   2xl → 1440px  Large Desktop
+// ─────────────────────────────────────────────────────────────────
+
 @mixin respond-to($breakpoint) {
   @if $breakpoint == 'xs' {
-    @media (min-width: 0) {
-      @content;
-    }
-  }
-  @else if $breakpoint == 'sm' {
-    @media (min-width: 640px) {
-      @content;
-    }
-  }
-  @else if $breakpoint == 'md' {
-    @media (min-width: 768px) {
-      @content;
-    }
-  }
-  @else if $breakpoint == 'lg' {
-    @media (min-width: 1024px) {
-      @content;
-    }
-  }
-  @else if $breakpoint == 'xl' {
-    @media (min-width: 1280px) {
-      @content;
-    }
-  }
-  @else if $breakpoint == '2xl' {
-    @media (min-width: 1536px) {
-      @content;
-    }
+    @media (min-width: $breakpoint-xs) { @content; }
+  } @else if $breakpoint == 'sm' {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: $breakpoint-xl) { @content; }
+  } @else if $breakpoint == '2xl' {
+    @media (min-width: $breakpoint-2xl) { @content; }
+  } @else {
+    @warn "respond-to(): unbekannter Breakpoint '#{$breakpoint}'. Erlaubt: xs, sm, md, lg, xl, 2xl";
   }
 }
 
-// Container
+// Max-width Variante (Desktop-first, bei Bedarf)
+@mixin respond-below($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (max-width: #{$breakpoint-sm - 1}) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (max-width: #{$breakpoint-md - 1}) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (max-width: #{$breakpoint-lg - 1}) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (max-width: #{$breakpoint-xl - 1}) { @content; }
+  } @else {
+    @warn "respond-below(): unbekannter Breakpoint '#{$breakpoint}'.";
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────
+// LAYOUT
+// ─────────────────────────────────────────────────────────────────
+
 @mixin container {
   max-width: $container-width;
   margin-left: auto;
@@ -45,7 +71,21 @@
   padding-right: $container-padding;
 }
 
-// Flexbox
+@mixin section-padding {
+  padding-top: $spacing-xl;
+  padding-bottom: $spacing-xl;
+
+  @include respond-to('lg') {
+    padding-top: $spacing-2xl;
+    padding-bottom: $spacing-2xl;
+  }
+}
+
+
+// ─────────────────────────────────────────────────────────────────
+// FLEXBOX
+// ─────────────────────────────────────────────────────────────────
+
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -58,14 +98,22 @@
   justify-content: space-between;
 }
 
-// Text Truncate
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+
+// ─────────────────────────────────────────────────────────────────
+// TYPOGRAPHY
+// ─────────────────────────────────────────────────────────────────
+
 @mixin truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-// Line Clamp
 @mixin line-clamp($lines: 2) {
   display: -webkit-box;
   -webkit-line-clamp: $lines;
@@ -73,7 +121,46 @@
   overflow: hidden;
 }
 
-// Aspect Ratio
+
+// ─────────────────────────────────────────────────────────────────
+// VISUALS
+// ─────────────────────────────────────────────────────────────────
+
 @mixin aspect-ratio($width, $height) {
   aspect-ratio: #{$width} / #{$height};
+}
+
+// Card-Basis-Styles (wiederverwendbar)
+@mixin card-base {
+  background: $color-card-bg;
+  border-radius: $radius-base;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+}
+
+// Overlay (z.B. für Hover-Effekte auf Bildern)
+@mixin overlay($color: $color-primary, $opacity: 0.85) {
+  position: absolute;
+  inset: 0;
+  background: rgba($color, $opacity);
+  transition: $transition-base;
+}
+
+// Focus-Ring (Accessibility)
+@mixin focus-ring($color: $color-primary) {
+  &:focus-visible {
+    outline: 2px solid $color;
+    outline-offset: 2px;
+  }
+}
+
+// Smooth Transition (verkürzte Schreibweise)
+@mixin transition($props: all, $duration: 0.3s, $easing: ease) {
+  transition: $props $duration $easing;
 }

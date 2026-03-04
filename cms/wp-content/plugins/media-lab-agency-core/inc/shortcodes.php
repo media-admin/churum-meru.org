@@ -2037,7 +2037,7 @@ function ajax_search_shortcode($atts) {
                     class="ajax-search__input" 
                     placeholder="<?php echo esc_attr($atts['placeholder']); ?>"
                     autocomplete="off"
-                    value="<?php echo get_search_query(); ?>"
+                    value="<?php echo esc_attr( get_search_query() ); ?>"
                 >
                 
                 <!-- Submit Button -->
@@ -2224,7 +2224,7 @@ function posts_load_more_render_template($template) {
  */
 function posts_load_more_template_card() {
     ?>
-    <article class="post-card" data-post-id="<?php echo get_the_ID(); ?>">
+    <article class="post-card" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>">
         <?php if (has_post_thumbnail()) : ?>
             <div class="post-card__thumbnail">
                 <a href="<?php the_permalink(); ?>">
@@ -2239,7 +2239,7 @@ function posts_load_more_template_card() {
             </h3>
             
             <div class="post-card__meta">
-                <span class="post-card__date"><?php echo get_the_date('d.m.Y'); ?></span>
+                <span class="post-card__date"><?php echo esc_html( get_the_date('d.m.Y') ); ?></span>
             </div>
             
             <div class="post-card__excerpt">
@@ -2264,7 +2264,7 @@ function posts_load_more_template_team() {
     $role = get_field('role');
     $email = get_field('email');
     ?>
-    <div class="team-card" data-post-id="<?php echo get_the_ID(); ?>">
+    <div class="team-card" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>">
         <?php if (has_post_thumbnail()) : ?>
             <div class="team-card__image">
                 <?php the_post_thumbnail('medium'); ?>
@@ -2295,7 +2295,7 @@ function posts_load_more_template_project() {
     $client = get_field('client');
     $project_date = get_field('project_date');
     ?>
-    <article class="project-card" data-post-id="<?php echo get_the_ID(); ?>">
+    <article class="project-card" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>">
         <?php if (has_post_thumbnail()) : ?>
             <div class="project-card__image">
                 <a href="<?php the_permalink(); ?>">
@@ -2326,14 +2326,14 @@ function posts_load_more_template_project() {
  */
 function posts_load_more_template_list() {
     ?>
-    <article class="post-list-item" data-post-id="<?php echo get_the_ID(); ?>">
+    <article class="post-list-item" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>">
         <div class="post-list-item__content">
             <h3 class="post-list-item__title">
                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
             </h3>
             
             <div class="post-list-item__meta">
-                <span class="post-list-item__date"><?php echo get_the_date('d.m.Y'); ?></span>
+                <span class="post-list-item__date"><?php echo esc_html( get_the_date('d.m.Y') ); ?></span>
             </div>
             
             <div class="post-list-item__excerpt">

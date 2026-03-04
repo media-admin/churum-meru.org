@@ -6,6 +6,27 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.3.0] - 2026-03-04
+
+### media-lab-agency-core 1.5.0
+
+#### Security
+- **F-03 Rate-Limiting** – `medialab_check_rate_limit()` in `helpers.php`; alle drei öffentlichen AJAX-Endpunkte geschützt: Filter/Load-More max. 30 Req/60s, Search max. 20 Req/60s pro IP; Transient-basiert, kein externer Service nötig
+- **F-05 SMTP Credentials** – `get_options()` liest zuerst `wp-config.php`-Konstanten (`MEDIALAB_SMTP_HOST`, `_PORT`, `_USER`, `_PASS`, `_ENC`, `_FROM`, `_FROM_NAME`, `_ENABLED`); Passwort landet nie mehr in der Datenbank wenn Konstanten gesetzt sind; ACF bleibt als Fallback
+- **F-06 Inline-Nonce** – Nonce wird sicher via `wp_localize_script()` übergeben; `<script>`-Tag aus ACF Message Field entfernt; neues `assets/js/smtp-test.js` übernimmt den AJAX-Call
+- **F-08 Output-Escaping** – `esc_attr()` für alle `data-post-id`- und Search-Input-Ausgaben; `esc_html()` für alle Datumsausgaben in `shortcodes.php`
+
+#### Added
+- `assets/js/smtp-test.js` – separates Admin-Script für SMTP Test-Mail Funktion
+
+### Projekt
+
+#### Fixed
+- **F-07 Security HTTP-Header** – `X-Frame-Options`, `X-Content-Type-Options`, `X-XSS-Protection`, `Referrer-Policy`, `Permissions-Policy` in `cms/.htaccess` ergänzt; Header-Block steht vor `# BEGIN WordPress` um Überschreiben zu verhindern
+- **F-09 ABSPATH-Guards** – bereits vollständig vorhanden, kein Fix nötig
+
+---
+
 ## [1.2.0] - 2026-03-04
 
 ### media-lab-agency-core 1.4.0

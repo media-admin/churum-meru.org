@@ -85,28 +85,9 @@
   }
   
   &__button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    background: $color-primary;
-    color: $color-white;
-    border: none;
-    border-radius: $radius-full;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    cursor: pointer;
-    transition: $transition-base;
-    
-    &:hover {
-      background: $color-primary-dark;
-      transform: translateY(-2px);
-      box-shadow: $shadow-lg;
-    }
-    
-    &:active {
-      transform: translateY(0);
-    }
+    @include btn-base;
+    @include btn-primary;
+    @include btn-lg;
   }
   
   &__privacy {

@@ -1,7 +1,7 @@
 # Media Lab Starter Kit - Internal Documentation
 
-**Version:** 1.5.0  
-**Last Updated:** March 4, 2026  
+**Version:** 1.6.0  
+**Last Updated:** March 6, 2026  
 **Architecture:** Modular Plugin System
 
 ---
@@ -33,7 +33,7 @@
 WordPress Installation
 │
 ├── 📦 Regular Plugins
-│   ├── media-lab-agency-core/      v1.5.3 (Framework)
+│   ├── media-lab-agency-core/      v1.5.4 (Framework)
 │   ├── media-lab-project-starter/  v1.0.0 (Content Structure)
 │   ├── media-lab-analytics/        v1.0.0 (Tracking)
 │   └── media-lab-seo/              v1.1.1 (SEO)
@@ -87,7 +87,7 @@ WordPress Installation
 **WordPress Version:** 6.0+  
 
 **Active Plugins:**
-- ✅ Media Lab Agency Core v1.5.3
+- ✅ Media Lab Agency Core v1.5.4
 - ✅ Media Lab Project Starter v1.0.0
 - ✅ Media Lab Analytics v1.0.0
 - ✅ Media Lab SEO v1.1.1
@@ -198,6 +198,13 @@ wp transient delete --all
 ---
 
 ## 📈 Changelog
+
+### v1.6.0 (2026-03-06)
+- ✅ Cookie Consent Manager (Banner, Modal, Floating Button 🍪)
+- ✅ Code-Snippet-Verwaltung im Backend (Head + Body pro Kategorie)
+- ✅ Button-System zentralisiert (Mixins + globale .btn-Klassen)
+- ✅ 7 SCSS-Komponenten auf @include btn-* umgestellt
+- ✅ Alle Docs aktualisiert
 
 ### v1.5.0 (2026-03-04)
 - ✅ 404-Seite mit Suchformular + Navigationslinks

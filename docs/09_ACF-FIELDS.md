@@ -1,6 +1,6 @@
 # ACF Fields Reference
 
-**Version:** 1.5.0  
+**Version:** 1.6.0  
 **Letzte Aktualisierung:** 2026-03-04  
 **Plugin:** Media Lab Project Starter v1.0.0 (optional)
 
@@ -651,6 +651,61 @@ define('MEDIALAB_MAINTENANCE_MODE', true);
 
 ---
 
+## 13. Cookie Consent Settings
+
+**Field Group:** `group_cookie_consent`  
+**Options Page:** Agency Core → Einstellungen → Cookie Consent  
+**Plugin:** media-lab-agency-core
+
+### Allgemein
+
+| Field | Name | Typ | Beschreibung |
+|---|---|---|---|
+| Consent-Version | `cc_version` | text | Erhöhen erzwingt erneute Zustimmung aller Besucher |
+| Datenschutz-URL | `cc_privacy_url` | text | Pfad zur Datenschutzerklärung |
+| Datenschutz Link-Text | `cc_privacy_label` | text | Linktext im Banner |
+
+### Banner-Texte
+
+| Field | Name | Typ |
+|---|---|---|
+| Titel | `cc_banner_title` | text |
+| Text | `cc_banner_text` | textarea |
+| Button „Alle akzeptieren" | `cc_accept_all` | text |
+| Button „Einstellungen" | `cc_settings_btn` | text |
+| Button „Ablehnen" | `cc_decline_all` | text |
+
+### Modal-Texte
+
+| Field | Name | Typ |
+|---|---|---|
+| Modal Titel | `cc_modal_title` | text |
+| Einleitungstext | `cc_modal_intro` | textarea |
+| Button „Auswahl speichern" | `cc_save_btn` | text |
+
+### Kategorien (Bezeichnungen)
+
+| Field | Name |
+|---|---|
+| Notwendig – Bezeichnung/Beschreibung | `cc_cat_necessary_label` / `cc_cat_necessary_desc` |
+| Statistik – Bezeichnung/Beschreibung | `cc_cat_statistics_label` / `cc_cat_statistics_desc` |
+| Marketing – Bezeichnung/Beschreibung | `cc_cat_marketing_label` / `cc_cat_marketing_desc` |
+| Komfort – Bezeichnung/Beschreibung | `cc_cat_comfort_label` / `cc_cat_comfort_desc` |
+
+### Code-Snippets
+
+Pro Kategorie je ein Head- und Body-Code Feld. Snippets werden nach Consent des Besuchers automatisch injiziert. Notwendige Snippets werden **immer** geladen.
+
+| Field | Name | Typ | Wann geladen |
+|---|---|---|---|
+| Notwendig – Head/Body | `cc_snippet_necessary_head/body` | textarea | Immer |
+| Statistik – Head/Body | `cc_snippet_statistics_head/body` | textarea | Nach Consent |
+| Marketing – Head/Body | `cc_snippet_marketing_head/body` | textarea | Nach Consent |
+| Komfort – Head/Body | `cc_snippet_comfort_head/body` | textarea | Nach Consent |
+
+
+---
+
 ## Next Steps
 
 - **Custom Post Types:** [CPT Documentation](08_CUSTOM-POST-TYPES.md)
@@ -659,5 +714,5 @@ define('MEDIALAB_MAINTENANCE_MODE', true);
 
 ---
 
-**72 fields ready!** 🎨  
+**92 fields ready!** 🎨  
 **Next:** [Deployment Guide](10_DEPLOYMENT.md) →

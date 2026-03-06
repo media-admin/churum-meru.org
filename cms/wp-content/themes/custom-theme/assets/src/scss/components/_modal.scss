@@ -117,18 +117,9 @@
       }
       
       input[type="submit"] {
-        background: $color-primary;
-        color: $color-white;
-        border: none;
-        padding: $spacing-2 $spacing-4;
-        border-radius: $radius-sm;
-        cursor: pointer;
-        font-weight: 600;
-        transition: background $transition-base;
-        
-        &:hover {
-          background: $color-primary-dark;
-        }
+        @include btn-base;
+        @include btn-primary;
+        @include btn-sm;
       }
       
       // Validation Fehler

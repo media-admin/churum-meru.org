@@ -1,6 +1,6 @@
 # Development Guide
 
-**Version:** 1.4.0  
+**Version:** 1.6.0  
 **Letzte Aktualisierung:** 2026-03-04
 
 ---
@@ -155,6 +155,44 @@ Dann in `style.scss` einbinden:
 ```scss
 @use 'components/meine-komponente';
 ```
+
+### Button-System
+
+Buttons werden zentral über Mixins in `abstracts/_mixins.scss` gesteuert.
+
+**In HTML** (direkte Klassen):
+```html
+<button class="btn btn--primary">Primär</button>
+<button class="btn btn--outline">Outline</button>
+<button class="btn btn--ghost">Ghost</button>
+<a href="#" class="btn btn--primary btn--lg">Groß</a>
+<button class="btn btn--outline btn--sm">Klein</button>
+<button class="btn btn--primary btn--full">Volle Breite</button>
+```
+
+**In SCSS-Komponenten** (für BEM-Elemente):
+```scss
+.meine-komponente__button {
+    @include btn-base;      // Basis: display, padding, border-radius, transition …
+    @include btn-primary;   // Farbe: Primary filled
+    // @include btn-outline; // Farbe: Outline
+    // @include btn-ghost;   // Farbe: dezent
+    // @include btn-sm;      // Größe: klein
+    // @include btn-lg;      // Größe: groß
+}
+```
+
+| Mixin | Beschreibung |
+|---|---|
+| `btn-base` | Pflicht-Basis: layout, cursor, transition, focus-ring |
+| `btn-primary` | Filled, Primärfarbe |
+| `btn-outline` | Umrandet, Primärfarbe |
+| `btn-ghost` | Dezent, Border-Farbe |
+| `btn-sm` | Kleinere Größe |
+| `btn-lg` | Größere Größe |
+
+**Niemals** duplizierte Button-Styles in Komponenten schreiben – immer `@include` verwenden.
+
 
 ### Design-Tokens (Auswahl)
 

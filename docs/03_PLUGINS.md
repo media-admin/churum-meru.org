@@ -1,6 +1,6 @@
 # Plugin-Dokumentation
 
-**Version:** 1.5.0 | **Letzte Aktualisierung:** 2026-03-04
+**Version:** 1.6.0 | **Letzte Aktualisierung:** 2026-03-06
 
 ---
 
@@ -8,13 +8,13 @@
 
 | Plugin | Version | Zweck | Modifizierbar? |
 |---|---|---|---|
-| media-lab-agency-core | 1.5.3 | Framework + Features | ❌ Nie |
+| media-lab-agency-core | 1.5.4 | Framework + Features | ❌ Nie |
 | media-lab-seo | 1.1.1 | SEO-Toolkit | ✅ Konfigurierbar |
 | advanced-custom-fields-pro | aktuell | Custom Fields | ✅ Konfigurierbar |
 
 ---
 
-## media-lab-agency-core `v1.5.3`
+## media-lab-agency-core `v1.5.4`
 
 **Datei:** `cms/wp-content/plugins/media-lab-agency-core/media-lab-agency-core.php`
 
@@ -38,6 +38,7 @@ Dieses Plugin wird **unverändert auf allen Projekten eingesetzt**. Nie direkt m
 | `assets/js/smtp-test.js` | SMTP Test-Mail Admin-Script |
 | `inc/maintenance.php` | Maintenance Mode (503, Admin-Bypass, ACF-konfigurierbar) |
 | `inc/media-replace.php` | Medien ersetzen ohne Plugin-Verlust der Attachment-ID |
+| `inc/cookie-consent.php` | Cookie Consent Manager (Banner, Modal, Snippets, ACF-konfigurierbar) |
 
 ### SMTP-Konfiguration
 
@@ -91,6 +92,47 @@ Ermöglicht das Ersetzen von Mediendateien ohne Verlust der Attachment-ID oder V
 - Attachment-ID, URL und alle Verwendungen im Content bleiben unverändert
 - MIME-Typ wird aktualisiert wenn sich der Dateityp ändert
 - Eintrag im Activity Log
+
+### Cookie Consent Manager
+
+Aktivierung: automatisch aktiv. Konfiguration unter **Agency Core → Einstellungen → Cookie Consent**.
+
+**Features:**
+- Banner mit „Alle akzeptieren" / „Einstellungen" / „Ablehnen"
+- Settings Modal mit Toggle pro Kategorie
+- Floating Button 🍪 (immer sichtbar, unten links) öffnet Modal jederzeit
+- 4 Kategorien: Notwendig (immer aktiv), Statistik, Marketing, Komfort
+- Consent gespeichert als JSON in `localStorage` inkl. Version + Timestamp
+
+**Code-Snippets im Backend verwalten:**
+
+Unter **Cookie Consent → Code-Snippets** können pro Kategorie Head- und Body-Code eingetragen werden:
+
+| Kategorie | Wann geladen | Typische Dienste |
+|---|---|---|
+| Notwendig | Immer (kein Consent nötig) | Eigene Consent-APIs, DSGVO-Chat |
+| Statistik | Nach Zustimmung | GA4, Matomo, Hotjar |
+| Marketing | Nach Zustimmung | Meta Pixel, Google Ads, LinkedIn Insight |
+| Komfort | Nach Zustimmung | YouTube API, Google Maps JS |
+
+**Public JS-API:**
+```javascript
+// Consent prüfen
+window.CookieConsent.hasConsent('statistics'); // → true/false
+
+// Modal programmatisch öffnen
+window.CookieConsent.openSettings();
+
+// Auf Consent-Änderungen reagieren
+document.addEventListener('cookies:changed', (e) => {
+    if (e.detail.statistics) { /* GA4 aktivieren */ }
+    if (e.detail.marketing)  { /* Pixel aktivieren */ }
+});
+```
+
+**Consent-Version erhöhen** (erzwingt erneute Zustimmung bei allen Besuchern):
+Unter *Cookie Consent → Consent-Version* die Zahl erhöhen.
+
 
 ### Security-Features
 

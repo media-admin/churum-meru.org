@@ -109,19 +109,19 @@ html, body {
 }
 
 .hero-slide__button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: $color-hero-gradient;
-  color: white;
-  text-decoration: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  transition: $transition-base;
-  
+  // Basis-Styles aus globalem Mixin, Hero-Farbe überschreibt Primary
+  @include btn-base;
+  background:   $color-hero-gradient;
+  border-color: $color-hero-gradient;
+  color:        $color-white;
+
   &:hover {
-    background: $color-hero-gradient-dark;
-    transform: translateY(-2px);
+    background:   $color-hero-gradient-dark;
+    border-color: $color-hero-gradient-dark;
+    transform:    translateY(-2px);
+    box-shadow:   $shadow-lg;
   }
+  &:active { transform: translateY(0); }
 }
 
 // Navigation - Swiper Standard Klassen

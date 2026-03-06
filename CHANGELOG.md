@@ -6,6 +6,54 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.6.0] - 2026-03-06
+
+### media-lab-agency-core 1.5.4
+
+#### Added
+- **Cookie Consent Manager** – `inc/cookie-consent.php` neu
+  - Banner mit „Alle akzeptieren" / „Einstellungen" / „Ablehnen"
+  - Settings Modal mit Toggle-Switch pro Kategorie
+  - Floating Button 🍪 (bottom-left, immer sichtbar) öffnet Modal jederzeit
+  - 4 Kategorien: Notwendig (required), Statistik, Marketing, Komfort
+  - Consent als JSON in `localStorage` mit Version + Timestamp
+  - HTTP 503-konformes Verhalten: kein retroaktives Tracking
+- **Snippet-Verwaltung im Backend** – Head- + Body-Code pro Kategorie via ACF
+  - Notwendige Snippets werden immer geladen (kein Consent nötig)
+  - Statistik/Marketing/Komfort werden nach Consent injiziert
+  - Script-Tags korrekt via `createElement` ausgeführt (nicht innerHTML)
+  - Dedup-Schutz via ID verhindert doppeltes Laden
+- **ACF Field Group** `group_cookie_consent` – 20 Felder
+  - Alle Texte + Kategorienbezeichnungen konfigurierbar
+  - Consent-Version-Feld: erhöhen erzwingt erneute Zustimmung
+
+#### Fixed
+- `is_admin()` Guard in `output_config()` – PHP-Config nur im Frontend
+- Leere ACF `message`-Felder (`label => ''`) übergaben `null` an `wp_json_encode` → Deprecated-Warnings in `functions.php` behoben
+
+### custom-theme 1.6.0
+
+#### Added
+- **Globales Button-System** – `components/_buttons.scss`
+  - Klassen: `.btn`, `.btn--primary`, `.btn--outline`, `.btn--ghost`, `.btn--secondary`
+  - Größen: `.btn--sm`, `.btn--lg`, `.btn--full`
+- **Button Mixins** – `abstracts/_mixins.scss`
+  - `@mixin btn-base` – Basis-Layout, Transition, Focus-Ring
+  - `@mixin btn-primary`, `btn-outline`, `btn-ghost` – Farbvarianten
+  - `@mixin btn-sm`, `btn-lg` – Größenvarianten
+
+#### Changed / Refactored
+- **7 Komponenten** auf `@include btn-*` umgestellt – keine duplizierten Button-Blöcke mehr:
+  `_load-more.scss`, `_google-maps.scss`, `_contact-form-7.scss`, `_modal.scss`, `_pricing-tables.scss`, `_ajax-filters.scss`, `_hero-slider.scss`
+- Cookie Consent Banner/Modal nutzen globale `.btn`-Klassen direkt via HTML
+
+#### Fixed
+- `cookie-modal` hatte `display: flex` auch im `[hidden]`-Zustand → Backdrop blockierte alle Banner-Button-Klicks
+- Doppelte Instanziierung von `CookieConsent` (Modul + `main.js`) behoben
+- Doppelter `export default` in `cookie-notice.js` entfernt (Rollup Build-Fehler)
+
+---
+
 ## [1.4.0] - 2026-03-04
 
 ### custom-theme 1.4.0
@@ -164,3 +212,53 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 - Projektinitialisierung
 - Git Repository Setup
 - Vite Build System
+
+## [1.4.1] – 2026-03-04
+
+### Security
+
+**media-lab-seo 1.1.1:**
+- fix(security): F-04 – Wildcard-Query in `redirects.php` auf `$wpdb->prepare()` + `esc_like()` umgestellt
+- fix(security): Open Redirect via Wildcard-Suffix – `$_SERVER['REQUEST_URI']` Suffix wird nun auf Path-Traversal (`../`) und Protocol-Injection (`//`) geprüft und bereinigt
+- fix(security): 404-Log – URL und Referrer auf 512 Zeichen begrenzt (DB-Flooding)
+- fix(security): `$_SERVER['REQUEST_URI']` via `wp_parse_url()` + `substr()` sanitiert
+
+## [1.5.0] – 2026-03-04
+
+### Added
+
+**Theme – 404.php:**
+- Neue 404-Seite mit großer animierter Zahl, Suchformular und Navigationslinks aus dem Hauptmenü
+- SCSS-Komponente `pages/_404.scss` mit Dark Mode Support und responsivem Layout
+
+**media-lab-agency-core 1.5.2:**
+- Maintenance Mode (`inc/maintenance.php`) – 503-Header, Admin-Bypass, ACF-konfigurierbar
+  - Toggle in Agency Core → Einstellungen → Maintenance Mode
+  - Konfigurierbar: Überschrift, Nachricht, Datum, Logo, Browser-Titel
+  - Eingeloggte Admins sehen die normale Site + orangenen Admin-Bar-Indikator
+  - Fallback via `define('MEDIALAB_MAINTENANCE_MODE', true)` in wp-config.php
+
+## [1.5.0] – Release 2026-03-04
+
+### Versionen
+- custom-theme: 1.5.0
+- agency-core: 1.5.2
+- media-lab-seo: 1.1.1
+
+### Zusammenfassung
+Bugfixes (AJAX, Swiper, Selektoren), Security F-04, 404-Seite, Maintenance Mode, Footer Navigation.
+
+## [1.5.1] – 2026-03-04
+
+### Added
+**media-lab-agency-core 1.5.3:**
+- feat: Media Replace (`inc/media-replace.php`) – Mediendateien ersetzen ohne Verlust der Attachment-ID
+  - Button in Attachment-Detailseite + Medien-Listenansicht
+  - Thumbnails werden automatisch neu generiert
+  - Optionaler Dateiname-Erhalt, MIME-Typ-Update, Activity-Log-Integration
+
+### Docs
+- 01_README.md: neue Features ergänzt
+- 03_PLUGINS.md: Media Replace + Maintenance Mode dokumentiert, Versionen aktualisiert
+- 07_TROUBLESHOOTING.md: 3 neue Einträge (Maintenance, Media Replace, 404)
+- Alle 13 Docs auf v1.5.0 / 2026-03-04 aktualisiert

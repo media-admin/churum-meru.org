@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-03 20:29:10+0000\n"
+"PO-Revision-Date: 2026-03-08 21:18:37+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -32364,10 +32364,6 @@ msgstr "Aktualisiert"
 msgid "Deleted"
 msgstr "Gelöscht"
 
-#: includes/cli/class-wc-cli-rest-command.php:157
-msgid "Trashed"
-msgstr "Entfernt"
-
 #: includes/class-wc-product-external.php:137
 msgid "External products cannot be backordered."
 msgstr "Externe Produkte können nicht nachbestellt werden."
@@ -32400,6 +32396,10 @@ msgstr "Kein Schema-Titel für %s gefunden, REST-Kommando Registrierung überspr
 #: includes/cli/class-wc-cli-rest-command.php:358
 msgid "Make sure to include the --user flag with an account that has permissions for this action."
 msgstr "Stelle sicher, die --user Markierung mit einem Konto zu benutzen, das zu dieser Aktion berechtigt ist."
+
+#: includes/cli/class-wc-cli-rest-command.php:157
+msgid "Trashed"
+msgstr "Im Papierkorb"
 
 #. translators: %s: attribute name
 #: includes/class-wc-post-types.php:262
@@ -34973,7 +34973,7 @@ msgstr "Madagaskar-Ariary"
 
 #: includes/wc-core-functions.php:600
 msgid "Mauritanian ouguiya"
-msgstr "Mauritanischer Ouguiya"
+msgstr "Mauretanischer Ouguiya"
 
 #: includes/wc-core-functions.php:549
 msgid "Euro"

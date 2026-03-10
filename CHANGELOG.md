@@ -37,6 +37,87 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.17.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.13.0 (unverändert)
+- agency-core: 1.6.0
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – Gutenberg Custom Blocks (8 Blöcke)
+
+**Architektur:**
+- ACF Blocks (PHP-Rendering, kein Build-Step): Hero, Testimonial, Team-Mitglied, Logo-Leiste, Logo-Slider
+- Native Blocks (JS/block.json via Vite): CTA-Banner, Accordion/FAQ, Icon+Text
+- Alle Blöcke unter Gutenberg-Kategorie `design`
+
+**`inc/blocks.php`** (neu) – zentrale Registrierung:
+- `medialab_register_acf_blocks()` – ACF-Blöcke via `acf/init`
+- `medialab_register_native_blocks()` – Native Blöcke via `init`
+- `medialab_enqueue_block_editor_assets()` – Editor-CSS + blocks.js
+- `medialab_enqueue_block_frontend_assets()` – Frontend-CSS, Accordion-JS, Logo-Slider-JS (je nur bei `has_block()`)
+
+**ACF Blocks:**
+- `blocks/hero/` – Hintergrundbild, Overlay, Kicker, Titel, Subtitle, 2× CTA-Button, Höhe (full/large/medium), Ausrichtung (left/center/right)
+- `blocks/testimonial/` – Zitat, Name, Rolle, Bild, Sterne-Rating (1–5), Stil (card/minimal/centered)
+- `blocks/team-member/` – Foto, Name, Rolle, Bio, E-Mail, LinkedIn, Xing, Instagram
+- `blocks/logo-grid/` – Repeater: Logo + Link, Spalten (3–6), Graustufen-Toggle
+- `blocks/logo-slider/` – Repeater: Logo + Link, Swiper Autoplay/Loop/Speed, Graustufen
+
+**Native Blocks (JS/block.json):**
+- `blocks/cta-banner/` – RichText Titel + Text, Button-URL, Button-Stil, Hintergrundfarbe (primary/dark/light/white), Align (full/wide)
+- `blocks/accordion/` – RichText Titel, Allow-Multiple Toggle; Frontend: natives `<details>/<summary>` + ARIA
+- `blocks/icon-text/` – Icon (Emoji/Dashicon), Farbe, Layout (top/left), RichText Titel + Text
+
+**`assets/src/js/blocks.js`** – Native Block Registrierungen (kein JSX, wp.element.createElement)
+**`assets/src/js/block-accordion.js`** – Frontend Accordion: ARIA, Multi-Toggle, schließt andere Items
+**`assets/src/js/block-logo-slider.js`** – Swiper-Init aus data-swiper Attribut
+**`assets/src/scss/blocks.scss`** – vollständiges Block-CSS (CSS Custom Properties, Responsive)
+
+**`vite.config.js`** – neue Entry Points:
+- `plugin-blocks` → `plugins/media-lab-agency-core/assets/dist/js/blocks.js`
+- `plugin-block-accordion` → `.../block-accordion.js`
+- `plugin-block-logo-slider` → `.../block-logo-slider.js`
+
+---
+
+## [1.16.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.13.0
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – WooCommerce E-Mail-Templates
+
+**Template-Overrides** (`woocommerce/emails/`):
+- `email-header.php` – Custom Header: Logo/Markenname, Primärfarbe, E-Mail-Betreff-Zeile
+- `email-footer.php` – Custom Footer: Links (Datenschutz, Impressum, Kontakt), Footer-Text
+- `email-styles.php` – Inline-CSS: Typografie, Bestelltabelle, Adress-Boxen, Button, Responsive
+- `customer-processing-order.php` – Bestellbestätigung mit Info-Box + „Bestellung ansehen" CTA
+- `customer-completed-order.php` – Abgeschlossen-Mail mit optionalem Bewertungs-CTA
+- `customer-invoice.php` – Rechnung/Zahlungsaufforderung (zahlen oder ansehen, je nach Status)
+- `customer-new-account.php` – Willkommens-Mail mit Zugangsdaten-Box + „Zum Kundenkonto" CTA
+- `customer-reset-password.php` – Passwort-Reset mit sicherem Link-Button + Ablauf-Hinweis
+
+**`inc/woocommerce-emails.php`** (neu) – globale Konfiguration:
+- `woocommerce_email_content_type` → HTML erzwingen
+- `wp_mail_from_name` / `wp_mail_from` → Absender aus WC-Einstellungen
+- `woocommerce_email_styles` → Theme-CSS aus `email-styles.php` einbinden
+- `customtheme_init_email_colors()` → WC-Farboptionen bei Theme-Aktivierung initialisieren
+- `woocommerce_email_before_order_table` → Admin-Bestelllink in Admin-Benachrichtigung
+- Betreff-Prefix via Filter `customtheme_email_prefix_subject`
+
+**Konfigurierbare Filter:**
+- `customtheme_email_primary_color` – Primärfarbe (Standard: WC-Option)
+- `customtheme_email_logo_url` – Logo-URL (Standard: WC-Option)
+- `customtheme_email_footer_links` – Footer-Link-Array
+- `customtheme_email_show_review_cta` – Bewertungs-CTA in Abgeschlossen-Mail (bool)
+- `customtheme_email_prefix_subject` – Site-Name-Prefix im Betreff (bool, Standard: false)
+- `customtheme_email_content_type` – Content-Type (Standard: text/html)
+
+---
+
 ## [1.15.0] - 2026-03-10
 
 ### Versionen
@@ -174,6 +255,87 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 - **`field_btt_enabled`** (true_false, default: 1) – Back-to-Top Button
 - **`field_scroll_progress_enabled`** (true_false, default: 0) – Scroll Progress Bar
   → beide in Logo / Globale Einstellungen unter „UI-Features"
+
+---
+
+## [1.17.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.13.0 (unverändert)
+- agency-core: 1.6.0
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – Gutenberg Custom Blocks (8 Blöcke)
+
+**Architektur:**
+- ACF Blocks (PHP-Rendering, kein Build-Step): Hero, Testimonial, Team-Mitglied, Logo-Leiste, Logo-Slider
+- Native Blocks (JS/block.json via Vite): CTA-Banner, Accordion/FAQ, Icon+Text
+- Alle Blöcke unter Gutenberg-Kategorie `design`
+
+**`inc/blocks.php`** (neu) – zentrale Registrierung:
+- `medialab_register_acf_blocks()` – ACF-Blöcke via `acf/init`
+- `medialab_register_native_blocks()` – Native Blöcke via `init`
+- `medialab_enqueue_block_editor_assets()` – Editor-CSS + blocks.js
+- `medialab_enqueue_block_frontend_assets()` – Frontend-CSS, Accordion-JS, Logo-Slider-JS (je nur bei `has_block()`)
+
+**ACF Blocks:**
+- `blocks/hero/` – Hintergrundbild, Overlay, Kicker, Titel, Subtitle, 2× CTA-Button, Höhe (full/large/medium), Ausrichtung (left/center/right)
+- `blocks/testimonial/` – Zitat, Name, Rolle, Bild, Sterne-Rating (1–5), Stil (card/minimal/centered)
+- `blocks/team-member/` – Foto, Name, Rolle, Bio, E-Mail, LinkedIn, Xing, Instagram
+- `blocks/logo-grid/` – Repeater: Logo + Link, Spalten (3–6), Graustufen-Toggle
+- `blocks/logo-slider/` – Repeater: Logo + Link, Swiper Autoplay/Loop/Speed, Graustufen
+
+**Native Blocks (JS/block.json):**
+- `blocks/cta-banner/` – RichText Titel + Text, Button-URL, Button-Stil, Hintergrundfarbe (primary/dark/light/white), Align (full/wide)
+- `blocks/accordion/` – RichText Titel, Allow-Multiple Toggle; Frontend: natives `<details>/<summary>` + ARIA
+- `blocks/icon-text/` – Icon (Emoji/Dashicon), Farbe, Layout (top/left), RichText Titel + Text
+
+**`assets/src/js/blocks.js`** – Native Block Registrierungen (kein JSX, wp.element.createElement)
+**`assets/src/js/block-accordion.js`** – Frontend Accordion: ARIA, Multi-Toggle, schließt andere Items
+**`assets/src/js/block-logo-slider.js`** – Swiper-Init aus data-swiper Attribut
+**`assets/src/scss/blocks.scss`** – vollständiges Block-CSS (CSS Custom Properties, Responsive)
+
+**`vite.config.js`** – neue Entry Points:
+- `plugin-blocks` → `plugins/media-lab-agency-core/assets/dist/js/blocks.js`
+- `plugin-block-accordion` → `.../block-accordion.js`
+- `plugin-block-logo-slider` → `.../block-logo-slider.js`
+
+---
+
+## [1.16.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.13.0
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – WooCommerce E-Mail-Templates
+
+**Template-Overrides** (`woocommerce/emails/`):
+- `email-header.php` – Custom Header: Logo/Markenname, Primärfarbe, E-Mail-Betreff-Zeile
+- `email-footer.php` – Custom Footer: Links (Datenschutz, Impressum, Kontakt), Footer-Text
+- `email-styles.php` – Inline-CSS: Typografie, Bestelltabelle, Adress-Boxen, Button, Responsive
+- `customer-processing-order.php` – Bestellbestätigung mit Info-Box + „Bestellung ansehen" CTA
+- `customer-completed-order.php` – Abgeschlossen-Mail mit optionalem Bewertungs-CTA
+- `customer-invoice.php` – Rechnung/Zahlungsaufforderung (zahlen oder ansehen, je nach Status)
+- `customer-new-account.php` – Willkommens-Mail mit Zugangsdaten-Box + „Zum Kundenkonto" CTA
+- `customer-reset-password.php` – Passwort-Reset mit sicherem Link-Button + Ablauf-Hinweis
+
+**`inc/woocommerce-emails.php`** (neu) – globale Konfiguration:
+- `woocommerce_email_content_type` → HTML erzwingen
+- `wp_mail_from_name` / `wp_mail_from` → Absender aus WC-Einstellungen
+- `woocommerce_email_styles` → Theme-CSS aus `email-styles.php` einbinden
+- `customtheme_init_email_colors()` → WC-Farboptionen bei Theme-Aktivierung initialisieren
+- `woocommerce_email_before_order_table` → Admin-Bestelllink in Admin-Benachrichtigung
+- Betreff-Prefix via Filter `customtheme_email_prefix_subject`
+
+**Konfigurierbare Filter:**
+- `customtheme_email_primary_color` – Primärfarbe (Standard: WC-Option)
+- `customtheme_email_logo_url` – Logo-URL (Standard: WC-Option)
+- `customtheme_email_footer_links` – Footer-Link-Array
+- `customtheme_email_show_review_cta` – Bewertungs-CTA in Abgeschlossen-Mail (bool)
+- `customtheme_email_prefix_subject` – Site-Name-Prefix im Betreff (bool, Standard: false)
+- `customtheme_email_content_type` – Content-Type (Standard: text/html)
 
 ---
 
@@ -349,6 +511,87 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   - `each()` → alle Treffer sind `foreach()` (kein Deprecated)
   - Implicitly nullable → `?string`/`?int` bereits korrekt
   - `FILTER_SANITIZE_STRING` → nicht verwendet
+
+---
+
+## [1.17.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.13.0 (unverändert)
+- agency-core: 1.6.0
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – Gutenberg Custom Blocks (8 Blöcke)
+
+**Architektur:**
+- ACF Blocks (PHP-Rendering, kein Build-Step): Hero, Testimonial, Team-Mitglied, Logo-Leiste, Logo-Slider
+- Native Blocks (JS/block.json via Vite): CTA-Banner, Accordion/FAQ, Icon+Text
+- Alle Blöcke unter Gutenberg-Kategorie `design`
+
+**`inc/blocks.php`** (neu) – zentrale Registrierung:
+- `medialab_register_acf_blocks()` – ACF-Blöcke via `acf/init`
+- `medialab_register_native_blocks()` – Native Blöcke via `init`
+- `medialab_enqueue_block_editor_assets()` – Editor-CSS + blocks.js
+- `medialab_enqueue_block_frontend_assets()` – Frontend-CSS, Accordion-JS, Logo-Slider-JS (je nur bei `has_block()`)
+
+**ACF Blocks:**
+- `blocks/hero/` – Hintergrundbild, Overlay, Kicker, Titel, Subtitle, 2× CTA-Button, Höhe (full/large/medium), Ausrichtung (left/center/right)
+- `blocks/testimonial/` – Zitat, Name, Rolle, Bild, Sterne-Rating (1–5), Stil (card/minimal/centered)
+- `blocks/team-member/` – Foto, Name, Rolle, Bio, E-Mail, LinkedIn, Xing, Instagram
+- `blocks/logo-grid/` – Repeater: Logo + Link, Spalten (3–6), Graustufen-Toggle
+- `blocks/logo-slider/` – Repeater: Logo + Link, Swiper Autoplay/Loop/Speed, Graustufen
+
+**Native Blocks (JS/block.json):**
+- `blocks/cta-banner/` – RichText Titel + Text, Button-URL, Button-Stil, Hintergrundfarbe (primary/dark/light/white), Align (full/wide)
+- `blocks/accordion/` – RichText Titel, Allow-Multiple Toggle; Frontend: natives `<details>/<summary>` + ARIA
+- `blocks/icon-text/` – Icon (Emoji/Dashicon), Farbe, Layout (top/left), RichText Titel + Text
+
+**`assets/src/js/blocks.js`** – Native Block Registrierungen (kein JSX, wp.element.createElement)
+**`assets/src/js/block-accordion.js`** – Frontend Accordion: ARIA, Multi-Toggle, schließt andere Items
+**`assets/src/js/block-logo-slider.js`** – Swiper-Init aus data-swiper Attribut
+**`assets/src/scss/blocks.scss`** – vollständiges Block-CSS (CSS Custom Properties, Responsive)
+
+**`vite.config.js`** – neue Entry Points:
+- `plugin-blocks` → `plugins/media-lab-agency-core/assets/dist/js/blocks.js`
+- `plugin-block-accordion` → `.../block-accordion.js`
+- `plugin-block-logo-slider` → `.../block-logo-slider.js`
+
+---
+
+## [1.16.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.13.0
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – WooCommerce E-Mail-Templates
+
+**Template-Overrides** (`woocommerce/emails/`):
+- `email-header.php` – Custom Header: Logo/Markenname, Primärfarbe, E-Mail-Betreff-Zeile
+- `email-footer.php` – Custom Footer: Links (Datenschutz, Impressum, Kontakt), Footer-Text
+- `email-styles.php` – Inline-CSS: Typografie, Bestelltabelle, Adress-Boxen, Button, Responsive
+- `customer-processing-order.php` – Bestellbestätigung mit Info-Box + „Bestellung ansehen" CTA
+- `customer-completed-order.php` – Abgeschlossen-Mail mit optionalem Bewertungs-CTA
+- `customer-invoice.php` – Rechnung/Zahlungsaufforderung (zahlen oder ansehen, je nach Status)
+- `customer-new-account.php` – Willkommens-Mail mit Zugangsdaten-Box + „Zum Kundenkonto" CTA
+- `customer-reset-password.php` – Passwort-Reset mit sicherem Link-Button + Ablauf-Hinweis
+
+**`inc/woocommerce-emails.php`** (neu) – globale Konfiguration:
+- `woocommerce_email_content_type` → HTML erzwingen
+- `wp_mail_from_name` / `wp_mail_from` → Absender aus WC-Einstellungen
+- `woocommerce_email_styles` → Theme-CSS aus `email-styles.php` einbinden
+- `customtheme_init_email_colors()` → WC-Farboptionen bei Theme-Aktivierung initialisieren
+- `woocommerce_email_before_order_table` → Admin-Bestelllink in Admin-Benachrichtigung
+- Betreff-Prefix via Filter `customtheme_email_prefix_subject`
+
+**Konfigurierbare Filter:**
+- `customtheme_email_primary_color` – Primärfarbe (Standard: WC-Option)
+- `customtheme_email_logo_url` – Logo-URL (Standard: WC-Option)
+- `customtheme_email_footer_links` – Footer-Link-Array
+- `customtheme_email_show_review_cta` – Bewertungs-CTA in Abgeschlossen-Mail (bool)
+- `customtheme_email_prefix_subject` – Site-Name-Prefix im Betreff (bool, Standard: false)
+- `customtheme_email_content_type` – Content-Type (Standard: text/html)
 
 ---
 

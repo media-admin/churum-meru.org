@@ -820,6 +820,106 @@ Pro Kategorie je ein Head- und Body-Code Feld. Snippets werden nach Consent des 
 
 ---
 
+## Gutenberg Block Field Groups (v1.17.0)
+
+ACF-Feldgruppen für die 5 ACF-basierten Gutenberg Blocks.  
+**Regelwerk:** Jeweils `Block == medialab/{block-slug}`.
+
+---
+
+### Hero Block
+
+**Field Group:** `group_block_hero`  
+**Regel:** Block == `medialab/hero`
+
+| Feld | Name | Typ | Standard | Beschreibung |
+|---|---|---|---|---|
+| Hintergrundbild | `hero_bg_image` | image | – | Vollformat-Hintergrundbild |
+| Overlay-Deckkraft | `hero_overlay` | number | 40 | 0–100, wird in CSS-Opacity umgerechnet |
+| Kicker | `hero_kicker` | text | – | Kleiner Text oberhalb des Titels (optional) |
+| Titel | `hero_title` | text | – | Hauptüberschrift (Fallback: Seitentitel) |
+| Untertitel | `hero_subtitle` | textarea | – | Beschreibungstext unterhalb des Titels |
+| Button 1 Text | `hero_cta_text` | text | – | Primärer CTA-Button (optional) |
+| Button 1 URL | `hero_cta_url` | url | – | Ziel-URL Button 1 |
+| Button 1 Stil | `hero_cta_style` | select | `primary` | `primary` / `secondary` / `outline` |
+| Button 2 Text | `hero_cta2_text` | text | – | Sekundärer Button (optional) |
+| Button 2 URL | `hero_cta2_url` | url | – | Ziel-URL Button 2 |
+| Höhe | `hero_height` | select | `large` | `full` (100vh) / `large` (70vh) / `medium` (50vh) |
+| Ausrichtung | `hero_content_align` | select | `center` | `left` / `center` / `right` |
+
+---
+
+### Testimonial Block
+
+**Field Group:** `group_block_testimonial`  
+**Regel:** Block == `medialab/testimonial`
+
+| Feld | Name | Typ | Standard | Beschreibung |
+|---|---|---|---|---|
+| Zitat | `testimonial_quote` | textarea | – | Zitattext (Pflichtfeld) |
+| Name | `testimonial_name` | text | – | Name der Person |
+| Rolle | `testimonial_role` | text | – | Berufsbezeichnung / Unternehmen |
+| Foto | `testimonial_image` | image | – | Porträtfoto (48×48 thumbnail) |
+| Bewertung | `testimonial_rating` | number | – | Sterne 1–5 (0 / leer = ausblenden) |
+| Stil | `testimonial_style` | select | `card` | `card` / `minimal` / `centered` |
+
+---
+
+### Team-Mitglied Block
+
+**Field Group:** `group_block_team_member`  
+**Regel:** Block == `medialab/team-member`
+
+| Feld | Name | Typ | Standard | Beschreibung |
+|---|---|---|---|---|
+| Foto | `team_image` | image | – | Porträtfoto (medium-Größe) |
+| Name | `team_name` | text | – | Vollständiger Name |
+| Rolle | `team_role` | text | – | Berufsbezeichnung |
+| Bio | `team_bio` | textarea | – | Kurzbeschreibung (optional) |
+| E-Mail | `team_email` | email | – | Wird antispambot-geschützt ausgegeben |
+| LinkedIn | `team_linkedin` | url | – | Profil-URL |
+| Xing | `team_xing` | url | – | Profil-URL |
+| Instagram | `team_instagram` | url | – | Profil-URL |
+
+---
+
+### Logo-Leiste Block
+
+**Field Group:** `group_block_logo_grid`  
+**Regel:** Block == `medialab/logo-grid`
+
+| Feld | Name | Typ | Standard | Beschreibung |
+|---|---|---|---|---|
+| Überschrift | `logo_grid_title` | text | – | Kleiner Label-Text über den Logos (optional) |
+| Spalten | `logo_grid_columns` | select | `4` | `3` / `4` / `5` / `6` |
+| Graustufen | `logo_grid_grayscale` | true_false | 1 | Logos grau, farbig bei Hover |
+| **Logos** | `logo_grid_logos` | repeater | – | Wiederholungsgruppe |
+| → Logo | `logo_image` | image | – | Logo-Bild (max-height: 60px) |
+| → URL | `logo_url` | url | – | Verlinkung (optional) |
+| → Alt-Text | `logo_alt` | text | – | Fallback: Datei-Alt-Text |
+
+---
+
+### Logo-Slider Block
+
+**Field Group:** `group_block_logo_slider`  
+**Regel:** Block == `medialab/logo-slider`
+
+| Feld | Name | Typ | Standard | Beschreibung |
+|---|---|---|---|---|
+| Überschrift | `logo_slider_title` | text | – | Label-Text über dem Slider (optional) |
+| Autoplay | `logo_slider_autoplay` | true_false | 1 | Automatisches Scrollen |
+| Loop | `logo_slider_loop` | true_false | 1 | Endlos-Schleife |
+| Geschwindigkeit | `logo_slider_speed` | number | 3000 | Scroll-Geschwindigkeit in ms |
+| Graustufen | `logo_slider_grayscale` | true_false | 1 | Logos grau, farbig bei Hover |
+| **Logos** | `logo_slider_logos` | repeater | – | Wiederholungsgruppe |
+| → Logo | `logo_image` | image | – | Logo-Bild (max-height: 50px) |
+| → URL | `logo_url` | url | – | Verlinkung (optional) |
+| → Alt-Text | `logo_alt` | text | – | Fallback: Datei-Alt-Text |
+
+
+---
+
 ## Next Steps
 
 - **Custom Post Types:** [CPT Documentation](08_CUSTOM-POST-TYPES.md)
@@ -828,5 +928,5 @@ Pro Kategorie je ein Head- und Body-Code Feld. Snippets werden nach Consent des 
 
 ---
 
-**115 fields ready!** 🎨  
+**163 fields ready!** 🎨  
 **Next:** [Deployment Guide](10_DEPLOYMENT.md) →

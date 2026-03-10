@@ -1,7 +1,6 @@
 # Development Guide
 
-**Version:** 1.11.1  
-**Letzte Aktualisierung:** 2026-03-09
+**Version:** 1.14.0 | **Letzte Aktualisierung:** 2026-03-10
 
 ---
 
@@ -50,13 +49,43 @@ define('WP_MEMORY_LIMIT',  '256M');
 
 ---
 
+## Projektstruktur (Root)
+
+```
+media-lab-starter-kit/
+├── bin/
+│   ├── setup.sh            ← One-Click-Setup (Bash/WP-CLI)
+│   ├── setup.php           ← Browser-Setup (Hosting ohne SSH)
+│   └── setup.example.yml   ← Config-Template
+├── cms/                    ← WordPress-Installation
+│   └── wp-content/
+│       ├── themes/custom-theme/
+│       └── plugins/media-lab-*/
+├── docs/                   ← Dokumentation
+├── package.json            ← npm / Vite Build
+├── vite.config.js
+└── CHANGELOG.md
+```
+
+> `bin/` enthält ausschließlich Entwickler-Werkzeuge und ist **kein Teil von WordPress**.  
+> `setup.php` muss für den Einsatz temporär in `/cms` hochgeladen werden (siehe [Deployment](10_DEPLOYMENT.md)).
+
+---
+
 ## Build-System
 
 ### Vite-Konfiguration
 
-Die Build-Config liegt im **Projekt-Root** (`vite.config.js`), nicht im Theme-Ordner.
+Seit v1.17.0 gibt es **zwei separate Vite-Configs** im Projekt-Root:
 
-**Entry Points:**
+| Datei | Zuständig für | Output |
+|---|---|---|
+| `vite.config.js` | Theme-Assets | `themes/custom-theme/assets/dist/` |
+| `vite.config.blocks.js` | Plugin Gutenberg Blocks | `plugins/media-lab-agency-core/assets/dist/` |
+
+> **Hintergrund:** Vite unterstützt keinen Array-Export in der Config (nur Rollup direkt). Zwei separate Configs + ein npm-Script das beide aufruft ist der offizielle Workaround.
+
+**Entry Points – Theme (`vite.config.js`):**
 ```
 assets/src/js/main.js             → dist/js/main.js       (Kern)
 assets/src/js/components/
@@ -67,23 +96,33 @@ assets/src/js/components/
   notifications.js                → dist/js/notifications.js
 ```
 
+**Entry Points – Blocks (`vite.config.blocks.js`):**
+```
+assets/src/js/blocks.js           → dist/js/blocks.js           (Native Block Registrierungen)
+assets/src/js/block-accordion.js  → dist/js/block-accordion.js  (Accordion Frontend)
+assets/src/js/block-logo-slider.js→ dist/js/block-logo-slider.js(Swiper Init)
+assets/src/scss/blocks.scss       → dist/css/blocks-scss.css     (Block Styles)
+```
+
 **Befehle:**
 
 ```bash
-npm run dev      # Hot Reload (Valet-URL: media-lab-starter-kit.test)
-npm run build    # Production: minifiziert, console.log entfernt
-npm run watch    # Watch ohne Dev-Server
+npm run dev            # Hot Reload (Valet-URL: media-lab-starter-kit.test)
+npm run build          # Production: beide Configs nacheinander
+npm run build:theme    # Nur Theme-Assets
+npm run build:blocks   # Nur Plugin-Block-Assets
+npm run watch          # Watch: beide Configs parallel
 ```
 
 **Was `npm run build` macht:**
-- Terser: entfernt alle `console.log`, `console.info`, `console.debug`, `debugger`
-- SCSS: Autoprefixer, komprimiert zu einer `style.css`
-- JS: Code-Splitting in 6 Chunks + dynamische Sub-Chunks
-- Output: `assets/dist/` (nicht in Git committen)
+- Build 1 (Theme): Terser, Autoprefixer, SCSS → eine `style.css`, JS-Chunks
+- Build 2 (Blocks): Native Block JS + SCSS → `plugins/.../assets/dist/`
+- Beide: `console.log`, `console.info`, `console.debug`, `debugger` entfernt
+- Output: jeweiliger `assets/dist/` Ordner (nicht in Git committen)
 
 ### Legacy-Warning unterdrücken
 
-Die Warning `[legacy-js-api]` kommt von Vite intern und ist kein eigener Code – sie verschwindet sobald Vite intern auf die neue Sass-API umstellt. Kein Handlungsbedarf.
+Die Warning `[legacy-js-api]` kommt von Vite intern – kein Handlungsbedarf.
 
 ---
 

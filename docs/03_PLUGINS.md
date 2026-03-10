@@ -41,6 +41,45 @@ Dieses Plugin wird **unverändert auf allen Projekten eingesetzt**. Nie direkt m
 | `inc/cookie-consent.php` | Cookie Consent Manager (Banner, Modal, Toggle-Integration, Snippet-Verwaltung) |
 | `inc/hcaptcha.php` | hCaptcha Integration – CF7, WP-Login, WooCommerce (kein Plugin nötig) |
 | `inc/hero-image.php` | Hero Image – Subtitle, zwei Buttons (primary/outline/ghost), Höhe, Ausrichtung, Opacity |
+| `inc/blocks.php` | Gutenberg Custom Blocks – Registrierung aller 8 Blöcke (ACF + Native), conditional Asset-Loading |
+
+### Gutenberg Custom Blocks
+
+Aktivierung: automatisch aktiv sobald `inc/blocks.php` geladen ist. Alle Blöcke erscheinen unter **Design** im Gutenberg-Editor.
+
+**Übersicht:**
+
+| Block | Typ | Slug | Besonderheit |
+|---|---|---|---|
+| Hero | ACF | `medialab/hero` | Bild, Overlay, Kicker, Titel, Subtitle, 2× CTA, Höhe, Ausrichtung |
+| Testimonial | ACF | `medialab/testimonial` | Zitat, Name, Rolle, Bild, Sterne 1–5, Stil (card/minimal/centered) |
+| Team-Mitglied | ACF | `medialab/team-member` | Foto, Name, Rolle, Bio, LinkedIn/Xing/Instagram/E-Mail |
+| Logo-Leiste | ACF | `medialab/logo-grid` | Repeater, 3–6 Spalten, Graustufen-Toggle |
+| Logo-Slider | ACF | `medialab/logo-slider` | Swiper, Autoplay, Loop, Geschwindigkeit, Graustufen |
+| CTA-Banner | Native | `medialab/cta-banner` | RichText, Button-URL, 4 Hintergrundfarben, align full/wide |
+| Accordion/FAQ | Native | `medialab/accordion` | `<details>/<summary>`, ARIA, allow-multiple Toggle |
+| Icon + Text | Native | `medialab/icon-text` | Emoji/Dashicon, Farbe, Layout top/left |
+
+**ACF Blocks** – PHP-Rendering, kein Build-Step. Felder über ACF-Feldgruppen pflegen.
+Jeder Block hat eine `render.php` und eine `block.json` unter `blocks/{name}/`.
+
+**Native Blocks** – JS/block.json via Vite-Build (`vite.config.blocks.js`).
+Source: `assets/src/js/blocks.js` → Build: `assets/dist/js/blocks.js`.
+
+**Asset-Loading (conditional):**
+```php
+// Accordion-JS nur wenn Block auf der Seite
+if ( has_block( 'medialab/accordion' ) ) { wp_enqueue_script('medialab-accordion', ...); }
+
+// Swiper nur wenn Logo-Slider auf der Seite
+if ( has_block( 'medialab/logo-slider' ) ) { wp_enqueue_script('swiper', ...); }
+```
+
+**Neuen Block hinzufügen:**
+1. Ordner `blocks/{name}/` anlegen
+2. `block.json` + `render.php` (ACF) oder `edit.js`-Eintrag in `blocks.js` (Native) erstellen
+3. Block-Slug in `medialab_register_acf_blocks()` oder `medialab_register_native_blocks()` eintragen
+
 
 ### SMTP-Konfiguration
 

@@ -1,7 +1,7 @@
 # Media Lab Starter Kit - Internal Documentation
 
-**Version:** 1.13.0  
-**Last Updated:** March 9, 2026  
+**Version:** 1.17.0  
+**Last Updated:** March 10, 2026  
 **Architecture:** Modular Plugin System
 
 ---
@@ -26,14 +26,14 @@
 
 ---
 
-## 🏗️ Architecture v1.11.1
+## 🏗️ Architecture v1.17.0
 
 ### Plugin System Overview
 ```
 WordPress Installation
 │
 ├── 📦 Regular Plugins
-│   ├── media-lab-agency-core/      v1.6.0 (Framework)
+│   ├── media-lab-agency-core/      v1.6.0 (Framework + Blocks)
 │   ├── media-lab-project-starter/  v1.0.0 (Content Structure)
 │   ├── media-lab-analytics/        v1.0.0 (Tracking)
 │   └── media-lab-seo/              v1.1.1 (SEO)
@@ -45,7 +45,7 @@ WordPress Installation
     └── System-level plugins
 ```
 
-### What Changed in v1.11.1
+### What Changed in v1.17.0
 
 **Highlights seit v1.7.0:**
 - ✅ single.php + archive.php Templates (Post-Card Komponente)
@@ -56,6 +56,10 @@ WordPress Installation
 - ✅ PHP 8.1 Deprecated-Warnings behoben (ACF message-Felder)
 - ✅ hCaptcha Integration (CF7, WP-Login, WooCommerce)
 - ✅ Back-to-Top Button + Scroll Progress Bar (ACF-gesteuert)
+- ✅ GA4 + Matomo Analytics-Adapter (v1.13.0)
+- ✅ Core Web Vitals Performance-Optimierungen / Lighthouse CI (v1.15.0)
+- ✅ WooCommerce E-Mail-Templates (8 Templates, vollständig filterbar) (v1.16.0)
+- ✅ **Gutenberg Custom Blocks – 8 Blöcke (ACF + Native) (v1.17.0)**
 
 ---
 
@@ -73,15 +77,15 @@ WordPress Installation
 3. [ACF Fields](09_ACF-FIELDS.md) - Custom fields
 
 ### For New Client Setup
-1. [Deployment](10_DEPLOYMENT.md) - Production setup
-2. [Analytics](12_ANALYTICS.md) - Configure tracking
-3. [SEO](13_SEO.md) - SEO configuration
+1. **One-Click-Setup:** `bash bin/setup.sh` – Domain, Theme, DB-Präfix, Admin in einem Schritt
+2. [Deployment](10_DEPLOYMENT.md) - Vollständige Deployment-Anleitung
+3. [SEO](13_SEO.md) - GSC, GA4/Matomo, Report-Mailer konfigurieren
 
 ---
 
 ## 📊 System Status
 
-**Current Version:** v1.11.1  
+**Current Version:** v1.14.0  
 **Test Coverage:** 23/23 tests passing (100%)  
 **PHP Version:** 8.0+  
 **WordPress Version:** 6.0+  

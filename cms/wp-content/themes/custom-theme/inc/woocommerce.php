@@ -9,6 +9,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Gesamte Datei nur laden wenn WooCommerce aktiv ist
+if ( ! class_exists( 'WooCommerce' ) ) return;
+
 /**
  * Disable default WooCommerce styles
  */

@@ -84,6 +84,7 @@ $optional_components = array(
     'walker-nav-menu.php',
     'helpers.php',
     'woocommerce.php',
+    'woocommerce-emails.php',
 );
 
 foreach ($optional_components as $component) {

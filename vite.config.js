@@ -14,7 +14,7 @@ try {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const themeDir = path.resolve(__dirname, 'cms/wp-content/themes/custom-theme');
+const themeDir  = path.resolve(__dirname, 'cms/wp-content/themes/custom-theme');
 
 export default defineConfig({
   root: path.resolve(themeDir, 'assets'),
@@ -24,41 +24,32 @@ export default defineConfig({
     liveReload([
       'cms/wp-content/themes/custom-theme/**/*.php',
     ]),
-    // Brotli-Kompression (.br) – wird von Nginx/Apache mit mod_brotli ausgeliefert
     ...(compression ? [compression({ algorithm: 'brotliCompress', exclude: [/\.(br|gz)$/] })] : []),
-    // Gzip-Kompression (.gz) – Fallback für Server ohne Brotli
     ...(compression ? [compression({ algorithm: 'gzip',           exclude: [/\.(br|gz)$/] })] : []),
   ],
 
   build: {
-    outDir: path.resolve(themeDir, 'assets/dist'),
+    outDir:      path.resolve(themeDir, 'assets/dist'),
     emptyOutDir: true,
 
     rollupOptions: {
       input: {
-        // Einziger Entry Point – alle anderen Komponenten via Dynamic Import
         main: path.resolve(themeDir, 'assets/src/js/main.js'),
       },
       output: {
         entryFileNames: 'js/[name].js',
         chunkFileNames: 'js/chunks/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name?.endsWith('.css')) {
-            return 'css/style.css';
-          }
-          if (/\.(png|jpe?g|svg|gif|webp)$/.test(assetInfo.name ?? '')) {
-            return 'images/[name][extname]';
-          }
+          if (assetInfo.name?.endsWith('.css')) return 'css/style.css';
+          if (/\.(png|jpe?g|svg|gif|webp)$/.test(assetInfo.name ?? '')) return 'images/[name][extname]';
           return 'assets/[name][extname]';
         },
       },
     },
 
-    manifest: true,
-    cssCodeSplit: false,
+    manifest:              true,
+    cssCodeSplit:          false,
     chunkSizeWarningLimit: 200,
-
-    // console.log + debugger in Production entfernen
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -74,17 +65,12 @@ export default defineConfig({
     port: 3000,
     strictPort: true,
     cors: true,
-    hmr: {
-      host: 'localhost',
-      port: 3000,
-    },
+    hmr: { host: 'localhost', port: 3000 },
   },
 
   css: {
     preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler', // Unterdrückt legacy-js-api Warning
-      },
+      scss: { api: 'modern-compiler' },
     },
     postcss: {
       plugins: [

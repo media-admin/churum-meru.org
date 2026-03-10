@@ -4,6 +4,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import autoprefixer from 'autoprefixer';
 
+// Compression (Brotli + Gzip) – graceful fallback wenn nicht installiert
+// Installation: npm install -D vite-plugin-compression2
+let compression = null;
+try {
+    const mod = await import('vite-plugin-compression2');
+    compression = mod.compression ?? mod.default;
+} catch (e) { /* not installed */ }
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const themeDir = path.resolve(__dirname, 'cms/wp-content/themes/custom-theme');
@@ -16,6 +24,10 @@ export default defineConfig({
     liveReload([
       'cms/wp-content/themes/custom-theme/**/*.php',
     ]),
+    // Brotli-Kompression (.br) – wird von Nginx/Apache mit mod_brotli ausgeliefert
+    ...(compression ? [compression({ algorithm: 'brotliCompress', exclude: [/\.(br|gz)$/] })] : []),
+    // Gzip-Kompression (.gz) – Fallback für Server ohne Brotli
+    ...(compression ? [compression({ algorithm: 'gzip',           exclude: [/\.(br|gz)$/] })] : []),
   ],
 
   build: {

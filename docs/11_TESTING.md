@@ -1,5 +1,7 @@
 # Testing Guide
 
+**Version:** 1.15.0 | **Letzte Aktualisierung:** 2026-03-10
+
 **Version:** 1.13.0  
 **Letzte Aktualisierung:** 2026-03-09
 
@@ -549,23 +551,96 @@ run_test "Posts Exist" "wp eval '\$count = wp_count_posts(\"post\"); exit(\$coun
 
 ## Performance Testing
 
-### Page Speed
+### Core Web Vitals – Zielwerte
+
+Google bewertet nach 3 Stufen: **Good · Needs Improvement · Poor**.
+Das Starter Kit zielt auf „Good" in allen Metriken.
+
+| Metrik | Bedeutung | ✅ Good | ⚠️ Needs | ❌ Poor | Unser Ziel |
+|---|---|---|---|---|---|
+| **LCP** | Largest Contentful Paint | ≤ 2.5s | ≤ 4.0s | > 4.0s | **≤ 2.5s** |
+| **CLS** | Cumulative Layout Shift | ≤ 0.10 | ≤ 0.25 | > 0.25 | **≤ 0.10** |
+| **INP** | Interaction to Next Paint | ≤ 200ms | ≤ 500ms | > 500ms | **≤ 200ms** |
+| **FCP** | First Contentful Paint | ≤ 1.8s | ≤ 3.0s | > 3.0s | **≤ 1.8s** |
+| **TBT** | Total Blocking Time (INP-Proxy) | ≤ 200ms | ≤ 600ms | > 600ms | **≤ 200ms** |
+| **TTI** | Time to Interactive | ≤ 3.8s | ≤ 7.3s | > 7.3s | **≤ 3.8s** |
+
+> **Hinweis:** INP ersetzt FID als Core Web Vital seit März 2024.  
+> Lighthouse misst INP indirekt als TBT (Total Blocking Time).
+
+### Lighthouse Score-Ziele
+
+| Kategorie | Ziel |
+|---|---|
+| Performance | ≥ 90 |
+| Accessibility | ≥ 95 |
+| Best Practices | ≥ 95 |
+| SEO | ≥ 95 |
+
+### Ressourcen-Budgets
+
+| Ressource | Budget |
+|---|---|
+| HTML-Dokument | ≤ 50 KB |
+| CSS gesamt | ≤ 80 KB |
+| JS gesamt | ≤ 200 KB |
+| Bilder pro Seite | ≤ 400 KB |
+| Fonts | ≤ 100 KB |
+| **Gesamt** | **≤ 900 KB** |
+| Script-Requests | ≤ 8 |
+| Drittanbieter-Requests | ≤ 8 |
+
+### Lighthouse ausführen
+
 ```bash
-# Via npm Script (empfohlen)
+# Via npm (empfohlen – nutzt lighthouserc.js)
 npm run lighthouse
 
-# Oder direkt mit Lighthouse CLI
-npm install -g lighthouse
-lighthouse http://media-lab-starter-kit.test --view
+# Einzelne URL testen
+lighthouse https://media-lab-starter-kit.localdev/ \
+  --preset=desktop \
+  --only-categories=performance,accessibility,best-practices,seo \
+  --view
+
+# Mobile (strenger – Google-Standard für CWV)
+lighthouse https://media-lab-starter-kit.localdev/ \
+  --form-factor=mobile \
+  --view
 ```
 
-**Zielwerte:**
-- Performance: 90+
-- Accessibility: 90+
-- Best Practices: 90+
-- SEO: 90+
+### Core Web Vitals im Browser messen
 
-> **Tipp nach v1.4.0:** Code-Splitting und Dynamic Imports verbessern den Performance-Score deutlich da weniger JS beim initialen Laden übertragen wird.
+```bash
+# Chrome DevTools: Lighthouse Tab → Mobile → „Messung starten"
+# → zeigt LCP, CLS, TBT direkt mit Einschätzung
+
+# Google Search Console (reale Nutzerdaten, ~28 Tage)
+# → Search Console → Core Web Vitals → URL-Gruppe
+# → CrUX-Daten (Chrome User Experience Report)
+
+# PageSpeed Insights (Kombination aus Lab + Field Data)
+# https://pagespeed.web.dev/
+```
+
+### Typische CWV-Probleme und Ursachen
+
+**LCP zu hoch:**
+- Hero-Bild nicht preloaded → `customtheme_lcp_image_url` Filter prüfen
+- Critical CSS fehlt → `assets/dist/css/critical.css` anlegen
+- Langsamer Server / TTFB > 600ms → Caching, Hosting prüfen
+
+**CLS > 0.10:**
+- Bilder ohne `width`/`height` → `inc/performance.php` ist aktiv, ACF-Bilder prüfen
+- Fonts ohne `display:swap` → Google Fonts URL prüfen, self-hosted Fonts preloaden
+- Ads / Embeds ohne reservierten Platz → `.ratio`-Wrapper verwenden
+
+**INP > 200ms (TBT > 200ms):**
+- Plugin-Scripts blockieren Main Thread → `customtheme_defer_scripts` Filter erweitern
+- Schwere Event-Handler → Performance-Profiler in Chrome DevTools nutzen
+- WordPress Admin-Bar im Frontend → nur für eingeloggte Nutzer, kein Einfluss auf CWV
+
+> **Tipp:** Code-Splitting und Dynamic Imports (seit v1.4.0) sowie `defer` auf  
+> Plugin-Scripts (seit v1.15.0) verbessern TBT/INP deutlich.
 
 ### Load Testing
 

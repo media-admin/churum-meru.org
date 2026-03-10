@@ -37,6 +37,103 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.15.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.12.0
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – Core Web Vitals Performance-Optimierungen
+
+**`inc/performance.php`** (neu) – zentrales Performance-Modul:
+
+**LCP (Largest Contentful Paint):**
+- `customtheme_preload_lcp_image()` – `<link rel="preload" fetchpriority="high">` für Hero-Bild (ACF-Feld → Featured Image → Filter)
+- Responsive Preload: `imagesrcset` + `imagesizes` im Preload-Tag
+- `customtheme_fetchpriority_first_image()` – `fetchpriority="high" loading="eager"` auf erstem Content-Bild (für Seiten ohne Hero)
+- `customtheme_inline_critical_css()` – inline Critical CSS aus `assets/dist/css/critical.css` (wenn vorhanden)
+- `customtheme_nonblocking_css()` – Haupt-CSS auf `media="print"` + onload-Swap (non-blocking, wenn critical.css vorhanden)
+
+**CLS (Cumulative Layout Shift):**
+- `customtheme_enforce_image_dimensions()` – erzwingt `width`/`height` auf allen `wp_get_attachment_image()`-Bildern
+- `customtheme_add_image_dimensions_to_content()` – ergänzt `width`/`height` in `the_content`-Bildern
+- `customtheme_fonts_display_swap()` – fügt `display=swap` zu Google Fonts URLs hinzu
+- `customtheme_preload_fonts()` – `<link rel="preload">` für self-hosted Fonts (via Filter `customtheme_preload_fonts`)
+
+**INP (Interaction to Next Paint):**
+- `customtheme_defer_scripts()` – `defer` auf CF7, WooCommerce-Frontend und weitere Plugin-Scripts
+- Filter: `customtheme_defer_scripts` (erweitern) + `customtheme_exclude_defer_scripts` (ausschließen)
+- Heartbeat-Interval im Frontend: 15s → 60s
+- `rest_output_link_wp_head` + `wp_oembed_add_host_js` aus wp_head entfernt
+
+**Responsive Images:**
+- `customtheme_webp_picture_element()` – `<picture>` + `<source type="image/webp">` (opt-in via Filter `customtheme_enable_picture_webp`)
+- `max_srcset_image_width` erweitert: 1600 → 2560px (Retina)
+- Lazy Loading für alle Thumbnails via `wp_lazy_loading_enabled`
+- LCP-Bild bekommt `loading="eager"` (kein Lazy Loading)
+
+**`inc/enqueue.php`** – Preconnect-Optimierung:
+- Google Fonts Preconnect nur noch aktiv wenn tatsächlich eine Google Fonts URL eingebunden ist
+
+**`vite.config.js`** – Brotli/Gzip Precompression:
+- `vite-plugin-compression2` eingebunden (graceful fallback wenn nicht installiert)
+- Brotli: `.br`-Dateien neben jedem Asset
+- Gzip: `.gz`-Dateien als Fallback
+- Installation: `npm install -D vite-plugin-compression2`
+
+**`assets/src/scss/utilities/_helpers.scss`** – Aspect Ratio Utilities:
+- `.ratio` Container-Klasse mit Varianten: `--16-9`, `--4-3`, `--3-2`, `--1-1`, `--9-16`, `--hero`, `--custom`
+- `.aspect-video`, `.aspect-square`, `.aspect-photo` für direkte Verwendung auf `<img>`/`<video>`
+- `.object-cover`, `.object-contain`, `.object-fill`, `.object-top/center/bottom`
+
+**`functions.php`:**
+- `performance.php` als fester require eingebunden
+
+---
+
+## [1.14.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.11.0 (unverändert)
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – One-Click-Setup Script
+
+**`bin/setup.sh`** – Bash/WP-CLI Setup (interaktiv + Config-File-Modus):
+- Interaktiver Modus: geführte Eingabe aller Parameter
+- Config-File-Modus: `--config bin/setup.yml` für automatisierten Einsatz
+- `--dry-run`: zeigt alle Änderungen ohne sie auszuführen
+- Schritt 1: Backup (DB-Export + wp-config.php)
+- Schritt 2: Domain setzen (siteurl + home via WP-CLI)
+- Schritt 3: DB-Präfix ändern (RENAME TABLE + usermeta/options Keys)
+- Schritt 4: Search/Replace alte → neue Domain (--all-tables)
+- Schritt 5: Admin-User anlegen oder Passwort aktualisieren
+- Schritt 6: Theme kopieren + umbenennen (style.css, Text Domain in PHP)
+- Schritt 7: Plugin-Prefix `medialab_` → Kundenpräfix (PHP + JS + DB)
+- Schritt 8: Rewrite Rules flush, WP_DEBUG deaktivieren
+- Farbiger Output, Log-File unter `bin/.setup.log`
+
+**`bin/setup.php`** – Browser-Setup (für Hosting ohne SSH):
+- Gleiches Feature-Set wie setup.sh
+- Absicherung via Token-Parameter (`?token=GEHEIM`)
+- Lock-File nach Setup (`bin/.setup-complete`) verhindert doppeltes Ausführen
+- Dark-Mode UI mit Collapsible-Sektionen
+- Admin-Zugangsdaten werden nach dem Setup angezeigt
+- Serialisierungssichere Search/Replace-Implementierung
+- Sicherheitshinweis: Datei nach Setup sofort löschen
+
+**`bin/setup.example.yml`** – Config-Template:
+- Vollständig kommentiert, alle Parameter dokumentiert
+- Als `setup.yml` kopieren + anpassen
+- `setup.yml` ist in `.gitignore` (keine Kundendaten im Repo)
+
+**`bin/.gitignore`**:
+- `setup.yml`, `.setup.log`, `.backups/`, `.setup-complete` ausgeschlossen
+
+---
+
 ## [1.13.0] - 2026-03-09
 
 ### custom-theme 1.13.0
@@ -80,6 +177,139 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.15.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.12.0
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – Core Web Vitals Performance-Optimierungen
+
+**`inc/performance.php`** (neu) – zentrales Performance-Modul:
+
+**LCP (Largest Contentful Paint):**
+- `customtheme_preload_lcp_image()` – `<link rel="preload" fetchpriority="high">` für Hero-Bild (ACF-Feld → Featured Image → Filter)
+- Responsive Preload: `imagesrcset` + `imagesizes` im Preload-Tag
+- `customtheme_fetchpriority_first_image()` – `fetchpriority="high" loading="eager"` auf erstem Content-Bild (für Seiten ohne Hero)
+- `customtheme_inline_critical_css()` – inline Critical CSS aus `assets/dist/css/critical.css` (wenn vorhanden)
+- `customtheme_nonblocking_css()` – Haupt-CSS auf `media="print"` + onload-Swap (non-blocking, wenn critical.css vorhanden)
+
+**CLS (Cumulative Layout Shift):**
+- `customtheme_enforce_image_dimensions()` – erzwingt `width`/`height` auf allen `wp_get_attachment_image()`-Bildern
+- `customtheme_add_image_dimensions_to_content()` – ergänzt `width`/`height` in `the_content`-Bildern
+- `customtheme_fonts_display_swap()` – fügt `display=swap` zu Google Fonts URLs hinzu
+- `customtheme_preload_fonts()` – `<link rel="preload">` für self-hosted Fonts (via Filter `customtheme_preload_fonts`)
+
+**INP (Interaction to Next Paint):**
+- `customtheme_defer_scripts()` – `defer` auf CF7, WooCommerce-Frontend und weitere Plugin-Scripts
+- Filter: `customtheme_defer_scripts` (erweitern) + `customtheme_exclude_defer_scripts` (ausschließen)
+- Heartbeat-Interval im Frontend: 15s → 60s
+- `rest_output_link_wp_head` + `wp_oembed_add_host_js` aus wp_head entfernt
+
+**Responsive Images:**
+- `customtheme_webp_picture_element()` – `<picture>` + `<source type="image/webp">` (opt-in via Filter `customtheme_enable_picture_webp`)
+- `max_srcset_image_width` erweitert: 1600 → 2560px (Retina)
+- Lazy Loading für alle Thumbnails via `wp_lazy_loading_enabled`
+- LCP-Bild bekommt `loading="eager"` (kein Lazy Loading)
+
+**`inc/enqueue.php`** – Preconnect-Optimierung:
+- Google Fonts Preconnect nur noch aktiv wenn tatsächlich eine Google Fonts URL eingebunden ist
+
+**`vite.config.js`** – Brotli/Gzip Precompression:
+- `vite-plugin-compression2` eingebunden (graceful fallback wenn nicht installiert)
+- Brotli: `.br`-Dateien neben jedem Asset
+- Gzip: `.gz`-Dateien als Fallback
+- Installation: `npm install -D vite-plugin-compression2`
+
+**`assets/src/scss/utilities/_helpers.scss`** – Aspect Ratio Utilities:
+- `.ratio` Container-Klasse mit Varianten: `--16-9`, `--4-3`, `--3-2`, `--1-1`, `--9-16`, `--hero`, `--custom`
+- `.aspect-video`, `.aspect-square`, `.aspect-photo` für direkte Verwendung auf `<img>`/`<video>`
+- `.object-cover`, `.object-contain`, `.object-fill`, `.object-top/center/bottom`
+
+**`functions.php`:**
+- `performance.php` als fester require eingebunden
+
+---
+
+## [1.14.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.11.0 (unverändert)
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – One-Click-Setup Script
+
+**`bin/setup.sh`** – Bash/WP-CLI Setup (interaktiv + Config-File-Modus):
+- Interaktiver Modus: geführte Eingabe aller Parameter
+- Config-File-Modus: `--config bin/setup.yml` für automatisierten Einsatz
+- `--dry-run`: zeigt alle Änderungen ohne sie auszuführen
+- Schritt 1: Backup (DB-Export + wp-config.php)
+- Schritt 2: Domain setzen (siteurl + home via WP-CLI)
+- Schritt 3: DB-Präfix ändern (RENAME TABLE + usermeta/options Keys)
+- Schritt 4: Search/Replace alte → neue Domain (--all-tables)
+- Schritt 5: Admin-User anlegen oder Passwort aktualisieren
+- Schritt 6: Theme kopieren + umbenennen (style.css, Text Domain in PHP)
+- Schritt 7: Plugin-Prefix `medialab_` → Kundenpräfix (PHP + JS + DB)
+- Schritt 8: Rewrite Rules flush, WP_DEBUG deaktivieren
+- Farbiger Output, Log-File unter `bin/.setup.log`
+
+**`bin/setup.php`** – Browser-Setup (für Hosting ohne SSH):
+- Gleiches Feature-Set wie setup.sh
+- Absicherung via Token-Parameter (`?token=GEHEIM`)
+- Lock-File nach Setup (`bin/.setup-complete`) verhindert doppeltes Ausführen
+- Dark-Mode UI mit Collapsible-Sektionen
+- Admin-Zugangsdaten werden nach dem Setup angezeigt
+- Serialisierungssichere Search/Replace-Implementierung
+- Sicherheitshinweis: Datei nach Setup sofort löschen
+
+**`bin/setup.example.yml`** – Config-Template:
+- Vollständig kommentiert, alle Parameter dokumentiert
+- Als `setup.yml` kopieren + anpassen
+- `setup.yml` ist in `.gitignore` (keine Kundendaten im Repo)
+
+**`bin/.gitignore`**:
+- `setup.yml`, `.setup.log`, `.backups/`, `.setup-complete` ausgeschlossen
+
+---
+
+## [1.13.0] - 2026-03-10
+
+### media-lab-seo 1.3.0
+
+#### Added
+- **`inc/adapter-ga4.php`** – Google Analytics 4 Adapter:
+  - Authentifizierung via Service Account JWT (RS256) – kein zweiter OAuth-Flow
+  - `get_overview()`: Pageviews, Sessions, Nutzer, Bounce Rate
+  - `get_top_sources()`: Top Traffic-Quellen (Channel Groups)
+  - Access-Token via Transient gecacht; automatische Erneuerung
+  - `flush_cache()` static method
+
+- **`inc/adapter-matomo.php`** – Matomo Adapter:
+  - Verbindet beliebige selbst-gehostete Matomo-Instanz
+  - `get_overview()`: Pageviews, Besuche, Unique Visitors, Bounce Rate
+  - `get_top_sources()`: Referrer-Typen
+  - `test_connection()`: Liefert Site-Name + URL zur Verifikation
+  - Filter `medialab_matomo_sslverify` für lokale Dev-Umgebungen
+
+- **`inc/analytics-adapter.php`** – Auto-Detection erweitert:
+  - Priorität: Externer Filter → GA4 → Matomo → Stub
+  - `medialab_analytics_active_provider()` → gibt 'ga4', 'matomo' oder '' zurück
+
+#### Changed
+- **`inc/seo-dashboard.php`** – Einstellungen erweitert:
+  - GA4-Sektion: Property ID + Service Account JSON (mit "JSON gespeichert"-Badge)
+  - Matomo-Sektion: URL + Site ID + Token + Verbindungstest-Button
+  - Trennlinie mit Label zwischen GSC/Report und Analytics-Sektionen
+  - Aktiver-Adapter-Badge zeigt den konfigurierten Anbieter
+  - AJAX `medialab_test_matomo`: testet Matomo-Verbindung on-the-fly
+  - Speichern-Handler sichert GA4 + Matomo-Werte und leert Adapter-Cache
+- **`assets/js/seo-dashboard.js`** – Matomo-Verbindungstest AJAX
+- **`assets/css/seo-dashboard.css`** – `.ml-settings-divider` + `.ml-settings-active-badge`
+
+---
+
 ## [1.12.0] - 2026-03-09
 
 ### media-lab-agency-core 1.6.0
@@ -119,6 +349,184 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   - `each()` → alle Treffer sind `foreach()` (kein Deprecated)
   - Implicitly nullable → `?string`/`?int` bereits korrekt
   - `FILTER_SANITIZE_STRING` → nicht verwendet
+
+---
+
+## [1.15.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.12.0
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – Core Web Vitals Performance-Optimierungen
+
+**`inc/performance.php`** (neu) – zentrales Performance-Modul:
+
+**LCP (Largest Contentful Paint):**
+- `customtheme_preload_lcp_image()` – `<link rel="preload" fetchpriority="high">` für Hero-Bild (ACF-Feld → Featured Image → Filter)
+- Responsive Preload: `imagesrcset` + `imagesizes` im Preload-Tag
+- `customtheme_fetchpriority_first_image()` – `fetchpriority="high" loading="eager"` auf erstem Content-Bild (für Seiten ohne Hero)
+- `customtheme_inline_critical_css()` – inline Critical CSS aus `assets/dist/css/critical.css` (wenn vorhanden)
+- `customtheme_nonblocking_css()` – Haupt-CSS auf `media="print"` + onload-Swap (non-blocking, wenn critical.css vorhanden)
+
+**CLS (Cumulative Layout Shift):**
+- `customtheme_enforce_image_dimensions()` – erzwingt `width`/`height` auf allen `wp_get_attachment_image()`-Bildern
+- `customtheme_add_image_dimensions_to_content()` – ergänzt `width`/`height` in `the_content`-Bildern
+- `customtheme_fonts_display_swap()` – fügt `display=swap` zu Google Fonts URLs hinzu
+- `customtheme_preload_fonts()` – `<link rel="preload">` für self-hosted Fonts (via Filter `customtheme_preload_fonts`)
+
+**INP (Interaction to Next Paint):**
+- `customtheme_defer_scripts()` – `defer` auf CF7, WooCommerce-Frontend und weitere Plugin-Scripts
+- Filter: `customtheme_defer_scripts` (erweitern) + `customtheme_exclude_defer_scripts` (ausschließen)
+- Heartbeat-Interval im Frontend: 15s → 60s
+- `rest_output_link_wp_head` + `wp_oembed_add_host_js` aus wp_head entfernt
+
+**Responsive Images:**
+- `customtheme_webp_picture_element()` – `<picture>` + `<source type="image/webp">` (opt-in via Filter `customtheme_enable_picture_webp`)
+- `max_srcset_image_width` erweitert: 1600 → 2560px (Retina)
+- Lazy Loading für alle Thumbnails via `wp_lazy_loading_enabled`
+- LCP-Bild bekommt `loading="eager"` (kein Lazy Loading)
+
+**`inc/enqueue.php`** – Preconnect-Optimierung:
+- Google Fonts Preconnect nur noch aktiv wenn tatsächlich eine Google Fonts URL eingebunden ist
+
+**`vite.config.js`** – Brotli/Gzip Precompression:
+- `vite-plugin-compression2` eingebunden (graceful fallback wenn nicht installiert)
+- Brotli: `.br`-Dateien neben jedem Asset
+- Gzip: `.gz`-Dateien als Fallback
+- Installation: `npm install -D vite-plugin-compression2`
+
+**`assets/src/scss/utilities/_helpers.scss`** – Aspect Ratio Utilities:
+- `.ratio` Container-Klasse mit Varianten: `--16-9`, `--4-3`, `--3-2`, `--1-1`, `--9-16`, `--hero`, `--custom`
+- `.aspect-video`, `.aspect-square`, `.aspect-photo` für direkte Verwendung auf `<img>`/`<video>`
+- `.object-cover`, `.object-contain`, `.object-fill`, `.object-top/center/bottom`
+
+**`functions.php`:**
+- `performance.php` als fester require eingebunden
+
+---
+
+## [1.14.0] - 2026-03-10
+
+### Versionen
+- custom-theme: 1.11.0 (unverändert)
+- agency-core: 1.5.4 (unverändert)
+- media-lab-seo: 1.3.0 (unverändert)
+
+### Added – One-Click-Setup Script
+
+**`bin/setup.sh`** – Bash/WP-CLI Setup (interaktiv + Config-File-Modus):
+- Interaktiver Modus: geführte Eingabe aller Parameter
+- Config-File-Modus: `--config bin/setup.yml` für automatisierten Einsatz
+- `--dry-run`: zeigt alle Änderungen ohne sie auszuführen
+- Schritt 1: Backup (DB-Export + wp-config.php)
+- Schritt 2: Domain setzen (siteurl + home via WP-CLI)
+- Schritt 3: DB-Präfix ändern (RENAME TABLE + usermeta/options Keys)
+- Schritt 4: Search/Replace alte → neue Domain (--all-tables)
+- Schritt 5: Admin-User anlegen oder Passwort aktualisieren
+- Schritt 6: Theme kopieren + umbenennen (style.css, Text Domain in PHP)
+- Schritt 7: Plugin-Prefix `medialab_` → Kundenpräfix (PHP + JS + DB)
+- Schritt 8: Rewrite Rules flush, WP_DEBUG deaktivieren
+- Farbiger Output, Log-File unter `bin/.setup.log`
+
+**`bin/setup.php`** – Browser-Setup (für Hosting ohne SSH):
+- Gleiches Feature-Set wie setup.sh
+- Absicherung via Token-Parameter (`?token=GEHEIM`)
+- Lock-File nach Setup (`bin/.setup-complete`) verhindert doppeltes Ausführen
+- Dark-Mode UI mit Collapsible-Sektionen
+- Admin-Zugangsdaten werden nach dem Setup angezeigt
+- Serialisierungssichere Search/Replace-Implementierung
+- Sicherheitshinweis: Datei nach Setup sofort löschen
+
+**`bin/setup.example.yml`** – Config-Template:
+- Vollständig kommentiert, alle Parameter dokumentiert
+- Als `setup.yml` kopieren + anpassen
+- `setup.yml` ist in `.gitignore` (keine Kundendaten im Repo)
+
+**`bin/.gitignore`**:
+- `setup.yml`, `.setup.log`, `.backups/`, `.setup-complete` ausgeschlossen
+
+---
+
+## [1.13.0] - 2026-03-10
+
+### media-lab-seo 1.3.0
+
+#### Added
+- **`inc/adapter-ga4.php`** – Google Analytics 4 Adapter:
+  - Authentifizierung via Service Account JWT (RS256) – kein zweiter OAuth-Flow
+  - `get_overview()`: Pageviews, Sessions, Nutzer, Bounce Rate
+  - `get_top_sources()`: Top Traffic-Quellen (Channel Groups)
+  - Access-Token via Transient gecacht; automatische Erneuerung
+  - `flush_cache()` static method
+
+- **`inc/adapter-matomo.php`** – Matomo Adapter:
+  - Verbindet beliebige selbst-gehostete Matomo-Instanz
+  - `get_overview()`: Pageviews, Besuche, Unique Visitors, Bounce Rate
+  - `get_top_sources()`: Referrer-Typen
+  - `test_connection()`: Liefert Site-Name + URL zur Verifikation
+  - Filter `medialab_matomo_sslverify` für lokale Dev-Umgebungen
+
+- **`inc/analytics-adapter.php`** – Auto-Detection erweitert:
+  - Priorität: Externer Filter → GA4 → Matomo → Stub
+  - `medialab_analytics_active_provider()` → gibt 'ga4', 'matomo' oder '' zurück
+
+#### Changed
+- **`inc/seo-dashboard.php`** – Einstellungen erweitert:
+  - GA4-Sektion: Property ID + Service Account JSON (mit "JSON gespeichert"-Badge)
+  - Matomo-Sektion: URL + Site ID + Token + Verbindungstest-Button
+  - Trennlinie mit Label zwischen GSC/Report und Analytics-Sektionen
+  - Aktiver-Adapter-Badge zeigt den konfigurierten Anbieter
+  - AJAX `medialab_test_matomo`: testet Matomo-Verbindung on-the-fly
+  - Speichern-Handler sichert GA4 + Matomo-Werte und leert Adapter-Cache
+- **`assets/js/seo-dashboard.js`** – Matomo-Verbindungstest AJAX
+- **`assets/css/seo-dashboard.css`** – `.ml-settings-divider` + `.ml-settings-active-badge`
+
+---
+
+## [1.12.0] - 2026-03-10
+
+### media-lab-seo 1.2.0
+
+#### Added
+- **`inc/gsc-api.php`** – Google Search Console API-Integration:
+  - OAuth2-Flow (Authorization Code + Refresh Token)
+  - Tokens in `wp_options` gespeichert; automatische Erneuerung bei Ablauf
+  - `medialab_gsc_get_dashboard_data()` – aggregierte Daten (28 Tage + Vorperiode)
+  - `medialab_gsc_get_top_keywords()` + `medialab_gsc_get_top_pages()` – Top 10 je
+  - Transient-Cache (1h) für alle API-Antworten; manuell löschbar
+  - `medialab_gsc_list_properties()` – verifizierte Properties abrufen
+
+- **`inc/analytics-adapter.php`** – Pluggbarer Analytics-Adapter:
+  - `MediaLab_Analytics_Stub` als Standard (gibt 0-Werte zurück)
+  - Filter `medialab_analytics_adapter` für GA4 / Matomo / Plausible
+  - Dokumentiertes Interface für eigene Adapter
+
+- **`inc/seo-dashboard.php`** – SEO Dashboard:
+  - Admin-Seite unter `Media Lab SEO → 📊 Dashboard`
+  - WordPress Dashboard-Widget (Mini-KPIs 2×2)
+  - KPI-Kacheln: Klicks, Impressionen, CTR, Ø Position mit Delta zur Vorperiode
+  - Tabellen: Top 10 Keywords + Top 10 Seiten
+  - OAuth-Callback-Handler, Disconnect-Action
+  - Einstellungsformular: GSC-Credentials + Report-Optionen
+  - AJAX: Cache-Flush-Button, Test-Report-Button
+
+- **`inc/seo-report-template.php`** – HTML-Mail-Template:
+  - Inline-CSS, kompatibel mit Gmail / Outlook / Apple Mail
+  - KPI-Kacheln mit Delta-Farben (grün/rot)
+  - Top-Keywords- und Top-Seiten-Tabellen (je 8 Zeilen)
+  - Positions-Badges farbcodiert (≤3 grün, ≤10 gelb, >10 rot)
+  - CTA-Button zum WordPress-Dashboard
+
+- **`inc/seo-report-mailer.php`** – Wöchentlicher Report-Versand:
+  - WP-Cron-Event `medialab_seo_weekly_report` (Intervall: weekly)
+  - Konfigurierbarer Versandtag (Mo–So) + Uhrzeit
+  - Absender-Name und -E-Mail konfigurierbar
+  - Log des letzten Versands in `wp_options`
+
+- **`assets/css/seo-dashboard.css`** – Dashboard-Styling (Admin)
+- **`assets/js/seo-dashboard.js`** – AJAX-Aktionen (Cache-Flush, Test-Mail)
 
 ---
 

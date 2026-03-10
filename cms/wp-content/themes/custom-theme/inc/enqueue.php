@@ -83,9 +83,24 @@ add_filter('script_loader_tag', 'customtheme_add_module_type', 10, 3);
 
 // ─── Preconnect / DNS-Prefetch ─────────────────────────────────────────────────
 function customtheme_add_preconnect() {
-    // Google Fonts (falls im Theme genutzt)
-    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    // Google Fonts – Preconnect nur wenn tatsächlich eine Google Fonts URL
+    // enqueued ist (verhindert unnötige Verbindungen wenn self-hosted).
+    global $wp_styles;
+    $uses_google_fonts = false;
+    if ( ! empty( $wp_styles->queue ) ) {
+        foreach ( $wp_styles->queue as $handle ) {
+            $src = $wp_styles->registered[ $handle ]->src ?? '';
+            if ( str_contains( (string) $src, 'fonts.googleapis.com' ) ) {
+                $uses_google_fonts = true;
+                break;
+            }
+        }
+    }
+
+    if ( $uses_google_fonts ) {
+        echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+        echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    }
 
     // Google Maps API (nur wenn API-Key gesetzt)
     if (defined('GOOGLE_MAPS_API_KEY') && GOOGLE_MAPS_API_KEY) {

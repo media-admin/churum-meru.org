@@ -1,6 +1,6 @@
 # Plugin-Dokumentation
 
-**Version:** 1.13.0 | **Letzte Aktualisierung:** 2026-03-09
+**Version:** 1.13.0 | **Letzte Aktualisierung:** 2026-03-10
 
 ---
 
@@ -9,7 +9,7 @@
 | Plugin | Version | Zweck | Modifizierbar? |
 |---|---|---|---|
 | media-lab-agency-core | 1.6.0 | Framework + Features | ❌ Nie |
-| media-lab-seo | 1.1.1 | SEO-Toolkit | ✅ Konfigurierbar |
+| media-lab-seo | 1.3.0 | SEO-Toolkit + Dashboard + Reports | ✅ Konfigurierbar |
 | advanced-custom-fields-pro | aktuell | Custom Fields | ✅ Konfigurierbar |
 
 ---
@@ -257,11 +257,30 @@ Konfiguration unter **Agency Core → Hero Image**.
 - `ghost` → komplett transparent
 
 
-## media-lab-seo `v1.1.1`
+## media-lab-seo `v1.3.0`
 
 **Datei:** `cms/wp-content/plugins/media-lab-seo/media-lab-seo.php`
 
-Pro Projekt aktivieren und konfigurieren unter **Einstellungen → SEO Toolkit**.
+Pro Projekt aktivieren und konfigurieren unter **Media Lab SEO → ⚙️ Einstellungen**.
+
+**Neue Module seit v1.2.0 / v1.3.0:**
+
+| Modul | Datei | Beschreibung |
+|---|---|---|
+| GSC API | `inc/gsc-api.php` | OAuth2, Token-Management, Datenabruf |
+| Analytics-Adapter | `inc/analytics-adapter.php` | GA4 / Matomo / Eigene Implementierung |
+| GA4 Adapter | `inc/adapter-ga4.php` | Service Account JWT, Data API |
+| Matomo Adapter | `inc/adapter-matomo.php` | Reporting API, Verbindungstest |
+| SEO Dashboard | `inc/seo-dashboard.php` | Admin-Seite + WP-Dashboard-Widget |
+| Report Template | `inc/seo-report-template.php` | HTML-Mail Inline-CSS |
+| Report Mailer | `inc/seo-report-mailer.php` | WP-Cron wöchentlich |
+
+**Menü-Struktur:**
+```
+Media Lab SEO
+├── ⚙️ Einstellungen    → Schema, OG, Twitter, Weiterleitungen
+└── 📊 Dashboard        → GSC-KPIs, Analytics, Report-Konfiguration
+```
 
 ### Features
 

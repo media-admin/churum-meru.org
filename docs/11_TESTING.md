@@ -1,7 +1,7 @@
 # Testing Guide
 
-**Version:** 1.4.0  
-**Letzte Aktualisierung:** 2026-03-04
+**Version:** 1.13.0  
+**Letzte Aktualisierung:** 2026-03-09
 
 Complete guide for testing Media Lab Starter Kit.
 
@@ -28,7 +28,7 @@ Complete guide for testing Media Lab Starter Kit.
 The Media Lab Starter Kit uses automated tests to ensure reliability and prevent regressions.
 
 **Test Coverage:**
-- 23 automated tests
+- 35 automated tests
 - 100% passing requirement
 - Covers plugins, theme, and integrations
 
@@ -55,8 +55,8 @@ media-lab-starter-kit/
 ```bash
 #!/bin/bash
 # Automated test suite
-# Tests: 23 total
-# Categories: Plugins, Shortcodes, CPTs, ACF, AJAX, Analytics, SEO
+# Tests: 35 total
+# Categories: Plugins, Shortcodes, CPTs, ACF, AJAX, Analytics, SEO, UI-Features, hCaptcha
 ```
 
 ### Quick Run
@@ -236,6 +236,150 @@ run_test "SEO Schema Hook" "wp eval 'exit(has_action(\"wp_head\", \"medialab_seo
 ```
 
 ---
+
+---
+
+## Neue Testfälle (v1.7.0–v1.13.0)
+
+### 9. Hero Image Tests (3 Tests)
+
+```bash
+echo "🦸 Hero Image Tests:"
+run_test "Hero Image Function Exists" \
+  "wp eval 'exit(function_exists("media_lab_get_hero_image") ? 0 : 1);'"
+
+run_test "Hero ACF Field Group Registered" \
+  "wp eval 'exit(function_exists("acf_get_field_group") && acf_get_field_group("group_hero_image") ? 0 : 1);'"
+
+run_test "Hero Options Page Registered" \
+  "wp eval 'global $admin_page_hooks; exit(isset($admin_page_hooks["agency-core-hero"]) ? 0 : 1);'"
+```
+
+**Manuell prüfen:**
+- [ ] Hero Image auf einer Seite gesetzt → wird im Frontend angezeigt
+- [ ] `hero_image_height = xl` → Klasse `.hero-image--xl` am Element
+- [ ] `hero_btn1_text` gesetzt → Button sichtbar mit korrektem Link
+- [ ] Hero + Breadcrumbs: Breadcrumbs erscheinen unterhalb des Hero
+
+---
+
+### 10. Breadcrumbs Tests (2 Tests)
+
+```bash
+echo "🍞 Breadcrumbs Tests:"
+run_test "Breadcrumb Function Exists" \
+  "wp eval 'exit(function_exists("media_lab_breadcrumbs") ? 0 : 1);'"
+
+run_test "Breadcrumb Template Part Exists" \
+  "test -f cms/wp-content/themes/custom-theme/template-parts/components/breadcrumbs.php"
+```
+
+**Manuell prüfen:**
+- [ ] Auf Einzelseite: Home → Kategorie → Seitenname
+- [ ] Schema.org JSON-LD im `<head>` vorhanden
+- [ ] Auf Startseite: keine Breadcrumbs
+
+---
+
+### 11. hCaptcha Tests (3 Tests)
+
+```bash
+echo "🤖 hCaptcha Tests:"
+run_test "hCaptcha Module Loaded" \
+  "wp eval 'exit(function_exists("medialab_hcaptcha_active") ? 0 : 1);'"
+
+run_test "hCaptcha Verify Function Exists" \
+  "wp eval 'exit(function_exists("medialab_hcaptcha_verify") ? 0 : 1);'"
+
+run_test "hCaptcha CF7 Hook Registered" \
+  "wp eval 'exit(has_filter("wpcf7_form_elements") ? 0 : 1);'"
+```
+
+**Manuell prüfen (mit Test-Keys):**
+- Site Key: `10000000-ffff-ffff-ffff-000000000001`
+- Secret Key: `0x0000000000000000000000000000000000000000`
+- [ ] Widget erscheint im CF7-Formular
+- [ ] Formular nicht absendbar ohne CAPTCHA
+- [ ] Widget erscheint auf wp-login.php
+
+---
+
+### 12. Back-to-Top Tests (2 Tests)
+
+```bash
+echo "⬆️ Back-to-Top Tests:"
+run_test "Back-to-Top Template in Footer" \
+  "grep -q 'back-to-top' cms/wp-content/themes/custom-theme/footer.php"
+
+run_test "Back-to-Top JS exists" \
+  "test -f cms/wp-content/themes/custom-theme/assets/src/js/components/back-to-top.js"
+```
+
+**Manuell prüfen (Playwright `back-to-top.spec.js`):**
+- [ ] Button initial nicht sichtbar (opacity: 0)
+- [ ] Nach 300px Scroll: Button eingeblendet
+- [ ] Klick → smooth scroll nach oben
+- [ ] Keyboard: Enter/Space funktioniert
+- [ ] `btt_enabled = 0` in ACF → kein Button im HTML
+
+---
+
+### 13. Scroll Progress Tests (2 Tests)
+
+```bash
+echo "📊 Scroll Progress Tests:"
+run_test "Scroll Progress SCSS exists" \
+  "test -f cms/wp-content/themes/custom-theme/assets/src/scss/components/_scroll-progress.scss"
+
+run_test "Scroll Progress JS exists" \
+  "test -f cms/wp-content/themes/custom-theme/assets/src/js/components/scroll-progress.js"
+```
+
+**Manuell prüfen:**
+- [ ] Auf `single.php` mit `scroll_progress_enabled = 1`: Linie sichtbar
+- [ ] Linie wächst beim Scrollen proportional
+- [ ] Auf normaler Seite (`page.php`): keine Linie
+- [ ] `aria-valuenow` im HTML aktualisiert sich beim Scrollen
+
+---
+
+### 14. WooCommerce Styling Tests (1 Test)
+
+```bash
+echo "🛒 WooCommerce Tests:"
+run_test "WooCommerce SCSS exists" \
+  "test -f cms/wp-content/themes/custom-theme/assets/src/scss/woocommerce/_woocommerce.scss"
+```
+
+**Manuell prüfen:**
+- [ ] Shop-Grid: 3 Spalten Desktop → 2 Tablet → 1 Mobile
+- [ ] Produktkarte: Hover-Effekt (translateY + Shadow)
+- [ ] Sale-Badge sichtbar
+- [ ] Checkout: 2-Spalten-Layout
+- [ ] Dark Mode: alle Farben über Custom Properties, kein weiß hardcoded
+
+---
+
+### Frontend Checkliste (aktualisiert)
+
+Ergänzung zur bestehenden Checkliste:
+
+**UI-Features:**
+- [ ] Back-to-Top Button: erscheint nach 300px, animiert smooth
+- [ ] Scroll Progress Bar: nur auf `single.php`, Fortschritt korrekt
+- [ ] Dark Mode: Back-to-Top + Progress Bar korrekt in dunklem Theme
+
+**Templates:**
+- [ ] `single.php`: Autor-Box, Post-Navigation, Tags, Lesezeit
+- [ ] `archive.php`: Post-Grid, Pagination, leerer Zustand
+- [ ] `search.php`: Ergebnisse mit Post-Type-Label, leerer Zustand
+- [ ] `404.php`: Quick-Links vorhanden (Primary Menu zugewiesen?)
+
+**Formulare:**
+- [ ] CF7: hCaptcha-Widget vor Submit-Button (wenn aktiviert)
+- [ ] CF7: Fehler-Styling (`wpcf7-not-valid`)
+- [ ] CF7 Layouts: `cf7-grid-2`, `cf7-card`, `cf7-minimal`
+
 
 ## Running Tests
 
@@ -565,6 +709,104 @@ junit2html test-results.xml test-results.html
 ```
 
 ---
+
+---
+
+## Visual Regression Testing (BackstopJS)
+
+Visual Regression Testing erkennt **unbeabsichtigte visuelle Änderungen** durch Pixel-Vergleich von Screenshots vor und nach einer Code-Änderung.
+
+### Setup
+
+```bash
+# Einmalig installieren
+npm install
+
+# Referenz-Screenshots erstellen (Baseline)
+npm run vrt:ref
+```
+
+Referenz-Screenshots werden unter `backstop_data/bitmaps_reference/` gespeichert und **in Git committed** – sie sind der Vergleichs-Standard.
+
+---
+
+### Workflow
+
+```
+Änderung am CSS/PHP/JS machen
+         ↓
+  npm run build
+         ↓
+  npm run vrt:test      ← vergleicht aktuellen Stand mit Baseline
+         ↓
+     Diffs prüfen       ← npm run vrt:report öffnet Browser
+         ↓
+  Absichtlich?  ─── ja ──→  npm run vrt:approve  (neue Baseline)
+       │
+      nein
+       ↓
+    Bug fixen
+```
+
+---
+
+### Befehle
+
+| Befehl | Beschreibung |
+|---|---|
+| `npm run vrt:ref` | Referenz-Screenshots erstellen (Baseline setzen) |
+| `npm run vrt:test` | Aktuellen Stand mit Baseline vergleichen |
+| `npm run vrt:approve` | Aktuelle Screenshots als neue Baseline übernehmen |
+| `npm run vrt:report` | HTML-Report im Browser öffnen |
+
+---
+
+### Konfigurierte Szenarien (14)
+
+| Szenario | Viewports | Beschreibung |
+|---|---|---|
+| Homepage | alle 4 | Startseite vollständig |
+| Einzelbeitrag | alle 4 | `single.php` mit Leseinhalt |
+| Archiv | alle 4 | `archive.php` Post-Grid |
+| Suche – mit Ergebnissen | alle 4 | `?s=beispiel` |
+| Suche – leer | alle 4 | Kein Treffer |
+| 404-Seite | alle 4 | Fehlerseite |
+| Navigation Flyout | Desktop | Hover-State Dropdown |
+| Back-to-Top sichtbar | alle 4 | Nach `scrollToSelector: footer` |
+| Scroll Progress Bar | alle 4 | Element-Screenshot |
+| Hero Image | alle 4 | Element-Screenshot |
+| Cookie Banner | alle 4 | Erster Besuch (leere Cookies) |
+| WooCommerce Shop | alle 4 | Produkt-Grid |
+| WooCommerce Einzelprodukt | alle 4 | Produktdetail |
+| Dark Mode | alle 4 | Homepage in dunklem Theme |
+
+**Viewports:** mobile (375px), tablet (768px), desktop (1280px), wide (1440px)
+
+---
+
+### Hinweise
+
+**Toleranz (`misMatchThreshold`):**
+- `0.1` – streng (z.B. 404, leere Suche – statische Seiten)
+- `0.2` – Standard (die meisten Szenarien)
+- `0.3` – locker (z.B. Navigation-Hover, Hero mit Bild)
+
+**Animationen:** Der `onReady`-Hook friert alle CSS-Transitions und Animationen ein → keine flackernden Screenshots.
+
+**Dark Mode:** Szenario `setDarkMode.js` aktiviert `data-theme="dark"` via JS vor dem Screenshot.
+
+**Cookie Banner:** Das Cookie-Szenario übergibt leere Cookies (`cookies_empty.json`), damit der Banner immer erscheint.
+
+---
+
+### Erste Einrichtung auf neuem Projekt
+
+1. URLs in `backstop.json` anpassen (lokale `.localdev`-Domain)
+2. Echte Seiten-Slugs eintragen (Beitrag, Produkt, Kategorie)
+3. Baseline erstellen: `npm run vrt:ref`
+4. Kontrolle: `npm run vrt:report` – alle Szenarien grün?
+5. Committen: `git add backstop_data/bitmaps_reference/ && git commit`
+
 
 ## Debugging Failed Tests
 

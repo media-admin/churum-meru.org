@@ -1,711 +1,432 @@
-# SEO Documentation
+# SEO Dokumentation
 
-**Version:** 1.4.0  
-**Letzte Aktualisierung:** 2026-03-04  
-**Plugin:** Media Lab SEO Toolkit v1.1.0
-
-Complete guide for the SEO plugin with Schema.org, Open Graph, and Twitter Cards.
+**Version:** 1.13.0 | **Letzte Aktualisierung:** 2026-03-10
+**Plugin:** `media-lab-seo` v1.3.0
 
 ---
 
-## Table of Contents
+## Inhaltsverzeichnis
 
-1. [Overview](#overview)
-2. [Installation](#installation)
-3. [Schema.org Markup](#schemaorg-markup)
-4. [Open Graph Tags](#open-graph-tags)
-5. [Twitter Cards](#twitter-cards)
-6. [Breadcrumbs](#breadcrumbs)
-7. [Canonical URLs](#canonical-urls)
-8. [Testing & Validation](#testing--validation)
-9. [Troubleshooting](#troubleshooting)
-
----
-
-## Overview
-
-### What is Media Lab SEO?
-
-Comprehensive SEO plugin that provides:
-- Schema.org structured data
-- Open Graph tags (Facebook/LinkedIn)
-- Twitter Cards
-- Canonical URLs
-- Breadcrumbs
-- Meta management
-
-### Features
-
-✅ **Schema.org** - 5 schema types  
-✅ **Open Graph** - Social sharing  
-✅ **Twitter Cards** - Rich Twitter previews  
-✅ **Breadcrumbs** - Navigation hierarchy  
-✅ **Canonical** - Prevent duplicate content  
-✅ **Lightweight** - No bloat
+1. [Übersicht](#übersicht)
+2. [Installation & Menü](#installation--menü)
+3. [SEO Dashboard](#seo-dashboard)
+4. [Google Search Console (GSC)](#google-search-console-gsc)
+5. [Analytics-Adapter](#analytics-adapter)
+6. [Wöchentlicher Report-Mailer](#wöchentlicher-report-mailer)
+7. [Schema.org Markup](#schemaorg-markup)
+8. [Open Graph Tags](#open-graph-tags)
+9. [Twitter Cards](#twitter-cards)
+10. [Breadcrumbs](#breadcrumbs)
+11. [Weiterleitungen](#weiterleitungen)
+12. [Troubleshooting](#troubleshooting)
 
 ---
 
-## Installation
+## Übersicht
 
-### 1. Activate Plugin
+`media-lab-seo` ist das zentrale SEO-Plugin des Starter Kits. Es deckt ab:
+
+| Modul | Beschreibung | Seit |
+|---|---|---|
+| Schema.org | Strukturierte Daten (JSON-LD) | v1.0.0 |
+| Open Graph | Social Sharing (Facebook, LinkedIn) | v1.0.0 |
+| Twitter Cards | Rich Previews auf Twitter/X | v1.0.0 |
+| Breadcrumbs | Navigation + Schema.org BreadcrumbList | v1.0.0 |
+| Canonical URLs | Duplicate Content Prevention | v1.0.0 |
+| Weiterleitungen | 301/302-Manager im Backend | v1.0.0 |
+| SEO Dashboard | GSC-KPIs im WordPress-Backend | v1.2.0 |
+| GSC API | Google Search Console OAuth2-Anbindung | v1.2.0 |
+| Report-Mailer | Wöchentlicher HTML-Report per E-Mail | v1.2.0 |
+| GA4 Adapter | Google Analytics 4 Data API | v1.3.0 |
+| Matomo Adapter | Matomo Reporting API | v1.3.0 |
+
+---
+
+## Installation & Menü
+
+### Plugin aktivieren
+
 ```bash
 wp plugin activate media-lab-seo
 ```
 
-### 2. Configure Settings
+### Menü-Struktur
 
-**Admin:** Settings → SEO Toolkit
+Nach der Aktivierung erscheint ein eigener Top-Level-Menüpunkt in der WordPress-Sidebar:
+
 ```
-✅ Enable SEO Features
-✅ Schema.org Markup
-✅ Open Graph Tags
-✅ Twitter Cards
-
-Site Name: Your Company Name
-Twitter Username: @yourhandle
-Default Social Image: https://yoursite.com/og-image.jpg
+Media Lab SEO
+├── ⚙️ Einstellungen    → Markup-Einstellungen (Schema, OG, Twitter)
+└── 📊 Dashboard        → GSC-KPIs, Analytics, Report-Konfiguration
 ```
 
-### 3. Verify Installation
+> **Hinweis:** In älteren Versionen (< v1.3.0) war der Eintrag unter
+> „Einstellungen → SEO Toolkit" zu finden. Seit v1.3.0 ist er ein eigener Menüpunkt.
+
+---
+
+## SEO Dashboard
+
+### Wo zu finden
+
+**WordPress Admin → Media Lab SEO → 📊 Dashboard**
+
+Zusätzlich erscheint ein **Widget auf der WordPress-Übersichtsseite** (`/wp-admin/`) mit den 4 wichtigsten KPIs auf einen Blick.
+
+### Was angezeigt wird
+
+Nach erfolgreicher GSC-Verbindung zeigt das Dashboard:
+
+**KPI-Kacheln** (letzte 28 Tage vs. Vorperiode):
+- Klicks
+- Impressionen
+- Ø CTR
+- Ø Position
+
+Jede Kachel zeigt den prozentualen Delta-Wert zur Vorperiode (grün = besser, rot = schlechter).
+
+**Tabellen:**
+- Top 10 Keywords (Klicks, Impressionen, CTR, Position)
+- Top 10 Seiten (Klicks, Impressionen, CTR, Position)
+
+### Cache
+
+Alle GSC-Daten werden **1 Stunde gecacht** (WordPress Transients). Per „🔄 Cache leeren"-Button kann der Cache manuell geleert werden.
+
+---
+
+## Google Search Console (GSC)
+
+### Voraussetzungen
+
+1. Projekt in der **Google Cloud Console** (https://console.cloud.google.com/)
+2. **Search Console API** aktivieren
+3. **OAuth2-Zugangsdaten** erstellen (Typ: Webanwendung)
+4. Autorisierte Redirect-URI eintragen (wird im Dashboard angezeigt)
+
+### Einrichtung Schritt für Schritt
+
+**1. Google Cloud Console**
+```
+Neues Projekt → APIs & Dienste → Bibliothek
+→ „Google Search Console API" aktivieren
+
+APIs & Dienste → Anmeldedaten → + Anmeldedaten erstellen
+→ OAuth-Client-ID → Webanwendung
+→ Autorisierte Weiterleitungs-URIs:
+   https://deine-domain.at/wp-admin/admin.php?page=medialab-seo-dashboard&gsc_oauth=callback
+→ Client-ID und Client-Secret kopieren
+```
+
+**2. WordPress Backend**
+```
+Media Lab SEO → Dashboard → Einstellungen
+→ Client ID:     1234567890-xxx.apps.googleusercontent.com
+→ Client Secret: ••••••••••
+→ Property URL:  https://deine-domain.at/
+   (exakt wie in GSC eingetragen, z.B. https://example.at/ oder sc-domain:example.at)
+→ Einstellungen speichern
+```
+
+**3. Verbinden**
+```
+Media Lab SEO → Dashboard
+→ „Mit Google verbinden →" klicken
+→ Google-Konto auswählen + Zugriff erlauben
+→ Weiterleitung zurück zum Dashboard
+→ Daten werden automatisch geladen
+```
+
+### Verbindung trennen
+
+Im Dashboard oben rechts: **„Verbindung trennen"** – löscht alle gespeicherten Tokens und leert den Cache.
+
+### Technische Details
+
+```
+Authentifizierung:  OAuth2 Authorization Code Flow
+Token-Speicherung:  wp_options (medialab_gsc_refresh_token, medialab_gsc_access_token)
+Token-Erneuerung:   Automatisch 5 Minuten vor Ablauf
+Cache:              WordPress Transients, TTL: 1 Stunde
+GSC-Verzögerung:    ~3 Tage (wird automatisch berücksichtigt)
+```
+
+### Verfügbare PHP-Funktionen
+
+```php
+// Verbindungsstatus
+medialab_gsc_is_configured();  // Client ID + Secret + Property URL gesetzt?
+medialab_gsc_is_connected();   // Refresh Token vorhanden?
+
+// Daten abrufen
+$data = medialab_gsc_get_dashboard_data();
+// Rückgabe: [
+//   'current'  => ['clicks', 'impressions', 'ctr', 'position'],
+//   'previous' => ['clicks', 'impressions', 'ctr', 'position'],
+//   'keywords' => [['keyword', 'clicks', 'impressions', 'ctr', 'position'], ...],
+//   'pages'    => [['url', 'clicks', 'impressions', 'ctr', 'position'], ...],
+//   'period'   => ['start' => 'Y-m-d', 'end' => 'Y-m-d'],
+//   'error'    => null | string,
+// ]
+
+medialab_gsc_get_top_keywords(10);   // Top 10 Keywords
+medialab_gsc_get_top_pages(10);      // Top 10 Seiten
+medialab_gsc_flush_cache();          // Cache leeren
+```
+
+---
+
+## Analytics-Adapter
+
+### Konzept
+
+Pluggbare Schnittstelle für Pageview- und Traffic-Daten. Nur ein Adapter ist gleichzeitig aktiv.
+
+**Priorität (Auto-Detection):**
+1. Externer Filter `medialab_analytics_adapter`
+2. GA4 – wenn Property ID + Service Account JSON konfiguriert
+3. Matomo – wenn URL + Site ID + Token konfiguriert
+4. Stub – kein Adapter konfiguriert (0-Werte)
+
+---
+
+### Google Analytics 4 (GA4)
+
+#### Voraussetzungen
+
+- **Google Analytics Data API** in der Cloud Console aktivieren
+- Service Account erstellen → **JSON-Key** herunterladen
+- In GA4: Verwaltung → Kontozugriff → Service-Account-E-Mail als **Betrachter** hinzufügen
+
+> Kein zweiter OAuth-Flow – Authentifizierung via JWT (RS256).
+
+#### Einrichtung
+
+```
+Media Lab SEO → Dashboard → Einstellungen → Google Analytics 4
+
+Property ID:           123456789
+                       (numerische ID, nicht G-XXXXXXXX)
+                       GA4 → Verwaltung → Property-Einstellungen
+
+Service Account JSON:  Inhalt der JSON-Key-Datei einfügen
+                       → Einstellungen speichern
+```
+
+---
+
+### Matomo
+
+#### Einrichtung
+
+```
+Media Lab SEO → Dashboard → Einstellungen → Matomo
+
+Matomo URL:    https://matomo.example.at/
+Site ID:       1   (Matomo → Verwaltung → Websites)
+API-Token:     ••••  (Matomo → Persönliche Einstellungen → API-Token)
+→ Einstellungen speichern
+→ „🔌 Verbindung testen" klicken
+```
+
+#### Dev-Umgebung (kein SSL)
+
+```php
+add_filter( 'medialab_matomo_sslverify', '__return_false' );
+```
+
+---
+
+### Eigenen Adapter implementieren
+
+```php
+add_filter( 'medialab_analytics_adapter', function() {
+    return new class {
+        public function is_configured(): bool { return true; }
+        public function get_label(): string { return 'Mein Anbieter'; }
+        public function get_overview( string $start, string $end ): array {
+            return [ 'pageviews' => 0, 'sessions' => 0, 'users' => 0, 'bounce_rate' => 0.0 ];
+        }
+        public function get_top_sources( int $limit = 5 ): array { return []; }
+    };
+} );
+```
+
+---
+
+## Wöchentlicher Report-Mailer
+
+### Konfiguration
+
+```
+Media Lab SEO → Dashboard → Einstellungen → Wöchentlicher SEO-Report
+
+✅ Wöchentlichen Report senden
+Empfänger:      kunde@beispiel.at
+Absender Name:  Media Lab Agentur
+Absender Mail:  seo@agentur.at
+Versandtag:     Montag
+Uhrzeit:        08:00
+→ Einstellungen speichern
+```
+
+### Report-Inhalt
+
+HTML-Mail (Inline-CSS, kompatibel mit Gmail, Outlook, Apple Mail):
+
+- KPI-Kacheln mit Δ-Farben (grün = besser, rot = schlechter)
+- Top 8 Keywords mit Positions-Badges (≤3 grün · ≤10 gelb · >10 rot)
+- Top 8 Seiten mit Klicks und Position
+- CTA-Button → WordPress-Dashboard
+
+**Betreff:** `SEO Report: Seitenname · 01.03. – 28.03.2026`
+
+### Test-Mail senden
+
+```
+Media Lab SEO → Dashboard → „📧 Test-Report jetzt senden"
+```
+
+### WP-CLI
+
 ```bash
-curl -sL https://yoursite.com/ | grep -E "schema.org|og:|twitter:"
+# Report sofort auslösen
+wp cron event run medialab_seo_weekly_report
+
+# Nächsten geplanten Versand anzeigen
+wp cron event list | grep medialab
 ```
 
 ---
 
 ## Schema.org Markup
 
-### What is Schema.org?
+| Typ | Seite |
+|---|---|
+| `Organization` | Startseite |
+| `WebSite` | Alle Seiten (inkl. `SearchAction`) |
+| `Article` | Einzelne Posts |
+| `Product` | WooCommerce-Produkte |
+| `BreadcrumbList` | Alle Unterseiten |
 
-Structured data that helps search engines understand your content.
-
-**Benefits:**
-- Rich snippets in search results
-- Better click-through rates
-- Voice search optimization
-- Knowledge graph inclusion
-
-### Schema Types Supported
-
-#### 1. Organization (Homepage)
-
-**Automatically added to homepage:**
-```json
-{
-  "@type": "Organization",
-  "@id": "https://yoursite.com/#organization",
-  "name": "Your Company Name",
-  "url": "https://yoursite.com/",
-  "logo": "https://yoursite.com/logo.png"
-}
-```
-
-**Logo:** Uses WordPress Site Logo (Customizer → Site Identity)
-
-#### 2. WebSite (Site-wide)
-
-**Added to all pages:**
-```json
-{
-  "@type": "WebSite",
-  "@id": "https://yoursite.com/#website",
-  "url": "https://yoursite.com/",
-  "name": "Your Company Name",
-  "description": "Site tagline",
-  "publisher": {
-    "@id": "https://yoursite.com/#organization"
-  },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "https://yoursite.com/?s={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
-}
-```
-
-**SearchAction:** Enables site search in Google
-
-#### 3. Article (Blog Posts)
-
-**Added to single posts:**
-```json
-{
-  "@type": "Article",
-  "headline": "Post Title",
-  "description": "Post excerpt",
-  "image": "https://yoursite.com/featured-image.jpg",
-  "datePublished": "2026-02-16T10:00:00+00:00",
-  "dateModified": "2026-02-16T15:30:00+00:00",
-  "author": {
-    "@type": "Person",
-    "name": "Author Name"
-  },
-  "publisher": {
-    "@id": "https://yoursite.com/#organization"
-  }
-}
-```
-
-#### 4. Product (WooCommerce)
-
-**Added to WooCommerce products:**
-```json
-{
-  "@type": "Product",
-  "name": "Product Name",
-  "description": "Product description",
-  "image": "https://yoursite.com/product-image.jpg",
-  "sku": "SKU123",
-  "offers": {
-    "@type": "Offer",
-    "price": "99.99",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock",
-    "url": "https://yoursite.com/product/"
-  }
-}
-```
-
-#### 5. BreadcrumbList (Navigation)
-
-**Added to all non-homepage pages:**
-```json
-{
-  "@type": "BreadcrumbList",
-  "@id": "#breadcrumb",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://yoursite.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Blog",
-      "item": "https://yoursite.com/blog/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Post Title",
-      "item": "https://yoursite.com/blog/post-title/"
-    }
-  ]
-}
-```
-
-### Output Format
-
-**JSON-LD in <head>:**
 ```html
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@graph": [
-    { ... Organization ... },
-    { ... WebSite ... },
-    { ... Article ... },
-    { ... BreadcrumbList ... }
-  ]
+  "@graph": [ { "@type": "Organization", ... }, ... ]
 }
 </script>
+```
+
+**Eigene Typen ergänzen:**
+```php
+add_filter( 'medialab_seo_schema_types', function( $types, $post ) {
+    if ( $post->post_type === 'event' ) {
+        $types[] = [ '@type' => 'Event', 'name' => get_the_title( $post ), ... ];
+    }
+    return $types;
+}, 10, 2 );
 ```
 
 ---
 
 ## Open Graph Tags
 
-### What is Open Graph?
+Automatisch auf allen Seiten – Bild: Featured Image → Default Social Image.
 
-Meta tags for rich social sharing on Facebook, LinkedIn, etc.
-
-**Example:**
 ```html
-<meta property="og:title" content="Page Title">
-<meta property="og:description" content="Page description">
-<meta property="og:image" content="https://yoursite.com/image.jpg">
-<meta property="og:url" content="https://yoursite.com/page/">
+<meta property="og:title"       content="Seitentitel">
+<meta property="og:description" content="Beschreibung">
+<meta property="og:image"       content="https://.../bild.jpg">
+<meta property="og:url"         content="https://...">
 ```
 
-### Tags Generated
-
-**All Pages:**
-- `og:site_name` - Site name
-- `og:type` - website or article
-- `og:url` - Current page URL
-- `og:title` - Page title
-- `og:description` - Page excerpt/description
-- `og:locale` - Site language
-
-**With Images:**
-- `og:image` - Featured image or default
-- `og:image:width` - Image width
-- `og:image:height` - Image height
-
-### Image Requirements
-
-**Recommended Size:** 1200x630px
-
-**Set Default Image:**
-```
-Settings → SEO Toolkit
-Default Social Image: Upload 1200x630px image
-```
-
-**Per-Post Image:**
-- Uses Featured Image if available
-- Falls back to default image
-
-### Preview
-
-**Facebook Debugger:**
-- https://developers.facebook.com/tools/debug/
-- Enter your URL
-- Check preview
-
-**LinkedIn Post Inspector:**
-- https://www.linkedin.com/post-inspector/
-- Enter your URL
-- Check preview
+**Empfohlene Bildgröße:** 1200×630px | **Testen:** https://developers.facebook.com/tools/debug/
 
 ---
 
 ## Twitter Cards
 
-### What are Twitter Cards?
-
-Meta tags for rich previews on Twitter.
-
-**Types:**
-- `summary` - Small image + text
-- `summary_large_image` - Large image + text
-
-### Tags Generated
 ```html
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@yourhandle">
-<meta name="twitter:title" content="Page Title">
-<meta name="twitter:description" content="Page description">
-<meta name="twitter:image" content="https://yoursite.com/image.jpg">
+<meta name="twitter:card"  content="summary_large_image">
+<meta name="twitter:title" content="Seitentitel">
+<meta name="twitter:image" content="https://.../bild.jpg">
 ```
 
-### Configuration
+**Konfiguration:** Media Lab SEO → ⚙️ Einstellungen → Twitter Username
 
-**Set Twitter Username:**
-```
-Settings → SEO Toolkit
-Twitter Username: @yourhandle
-```
-
-**Card Type:**
-- With featured image: `summary_large_image`
-- Without image: `summary`
-
-### Preview
-
-**Twitter Card Validator:**
-- https://cards-dev.twitter.com/validator
-- Enter your URL
-- Check preview
+**Testen:** https://cards-dev.twitter.com/validator
 
 ---
 
 ## Breadcrumbs
 
-### What are Breadcrumbs?
-
-Navigation hierarchy showing page location.
-
-**Example:**
-```
-Home › Blog › Category › Post Title
-```
-
-### Usage in Templates
 ```php
-<?php
-if (function_exists('medialab_seo_breadcrumbs')) {
-    medialab_seo_breadcrumbs();
+// In Templates
+if ( function_exists( 'medialab_seo_breadcrumbs' ) ) {
+    medialab_seo_breadcrumbs( [
+        'separator'     => ' › ',
+        'home_title'    => 'Home',
+        'wrapper_class' => 'breadcrumbs',
+    ] );
 }
-?>
-```
-
-### Customization
-```php
-<?php
-medialab_seo_breadcrumbs([
-    'separator' => ' › ',           // Separator between items
-    'home_title' => 'Home',        // Home link text
-    'wrapper_class' => 'breadcrumbs', // Wrapper CSS class
-    'item_class' => 'breadcrumb-item', // Item CSS class
-    'show_current' => true         // Show current page
-]);
-?>
-```
-
-### Styling
-```css
-.breadcrumbs {
-    padding: 1rem 0;
-    font-size: 0.875rem;
-}
-
-.breadcrumb-list {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.breadcrumb-item {
-    display: flex;
-    align-items: center;
-}
-
-.breadcrumb-item a {
-    color: #666;
-    text-decoration: none;
-}
-
-.breadcrumb-item a:hover {
-    color: #333;
-    text-decoration: underline;
-}
-
-.breadcrumb-item.current {
-    color: #333;
-    font-weight: 500;
-}
-
-.separator {
-    margin: 0 0.5rem;
-    color: #999;
-}
-```
-
-### Hierarchy Examples
-
-**Blog Post:**
-```
-Home › Blog › Post Title
-```
-
-**Page with Parent:**
-```
-Home › About › Team › John Doe
-```
-
-**Custom Post Type:**
-```
-Home › Projects › Web Design › Project Name
-```
-
-**Archive:**
-```
-Home › Projects
 ```
 
 ---
 
-## Canonical URLs
+## Weiterleitungen
 
-### What are Canonical URLs?
+**Media Lab SEO → ⚙️ Einstellungen → Redirects**
 
-`<link rel="canonical">` tells search engines the preferred URL for a page.
-
-**Prevents duplicate content issues.**
-
-### Automatic Generation
-
-**Homepage:**
-```html
-<link rel="canonical" href="https://yoursite.com/">
-```
-
-**Single Post/Page:**
-```html
-<link rel="canonical" href="https://yoursite.com/page/">
-```
-
-**Archives:**
-```html
-<link rel="canonical" href="https://yoursite.com/category/name/">
-```
-
-### WordPress Default Removed
-
-Plugin removes default WordPress canonical:
-```php
-remove_action('wp_head', 'rel_canonical');
-```
-
-Uses custom implementation for better control.
-
----
-
-## Testing & Validation
-
-### Google Rich Results Test
-
-**Test Schema.org:**
-- https://search.google.com/test/rich-results
-- Enter your URL
-- Check for errors
-
-**Common Errors:**
-- Missing required field
-- Invalid date format
-- Invalid image URL
-
-### Facebook Debugger
-
-**Test Open Graph:**
-- https://developers.facebook.com/tools/debug/
-- Enter URL
-- Check preview
-- Click "Scrape Again" to refresh
-
-### Twitter Card Validator
-
-**Test Twitter Cards:**
-- https://cards-dev.twitter.com/validator
-- Enter URL
-- Check preview
-
-### Schema.org Validator
-
-**Validate JSON-LD:**
-- https://validator.schema.org/
-- Paste schema JSON
-- Check for errors
-
-### Browser DevTools
-
-**Inspect Meta Tags:**
-```
-1. Right-click → View Page Source
-2. Search for: "og:" or "twitter:" or "schema.org"
-3. Verify all tags present
-```
+- 301 (permanent) und 302 (temporär)
+- Wildcard-Pfade unterstützt
+- Import/Export als CSV
 
 ---
 
 ## Troubleshooting
 
-### Schema Not Appearing
+### Dashboard zeigt keine Daten
 
-**1. Check Plugin Active:**
+1. Verbindung prüfen: `Media Lab SEO → Dashboard` – zeigt es „Mit Google verbinden"?
+2. Property URL exakt prüfen (mit trailing slash, z.B. `https://example.at/`)
+3. GSC-Verzögerung: Neue Websites haben ~3 Tage Verzögerung
+4. Cache leeren: „🔄 Cache leeren"-Button
+
+### Report-Mail kommt nicht an
+
 ```bash
-wp plugin is-active media-lab-seo
+wp eval "wp_mail('test@example.at', 'Test', 'Test');"
+wp cron event list | grep medialab
+wp option get medialab_report_last_sent
 ```
 
-**2. Check Settings:**
+### GA4: „Token-Anfrage fehlgeschlagen"
+
+- JSON-Key vollständig? (inkl. `private_key`)
+- Service-Account-E-Mail in GA4 als Betrachter hinzugefügt?
+- `Google Analytics Data API` in Cloud Console aktiviert?
+
+### Matomo: „Site nicht gefunden"
+
+- Site ID korrekt (Zahl aus Matomo → Websites)?
+- API-Token hat Lesezugriff auf diese Site?
+
+### PHP Deprecated-Warnings (`strpos null`)
+
+Behoben in v1.3.0. Plugin deaktivieren und neu aktivieren, Cache leeren.
+
+### Menüpunkt nicht sichtbar
+
 ```bash
-wp option get medialab_seo_enabled
-wp option get medialab_seo_schema_enabled
-```
-
-**3. Check Output:**
-```bash
-curl -sL https://yoursite.com/ | grep "schema.org"
-```
-
-**4. Clear Cache:**
-```bash
-wp cache flush
-```
-
-### Open Graph Not Working
-
-**1. Check HTML:**
-```bash
-curl -sL https://yoursite.com/ | grep "og:"
-```
-
-**2. Scrape Again:**
-- Go to Facebook Debugger
-- Click "Scrape Again"
-- Facebook caches for 24h
-
-**3. Check Image:**
-- Minimum 200x200px
-- Maximum 8MB
-- JPG or PNG format
-
-### Twitter Cards Not Showing
-
-**1. Validate Card:**
-- https://cards-dev.twitter.com/validator
-- Check for errors
-
-**2. Wait for Approval:**
-- Twitter may need to approve domain
-- Can take 1-2 weeks for new domains
-
-**3. Check Image Size:**
-- 2:1 ratio recommended
-- 1200x600px ideal
-
-### Breadcrumbs Not Showing
-
-**1. Check Function Call:**
-```php
-// In template
-<?php
-if (function_exists('medialab_seo_breadcrumbs')) {
-    medialab_seo_breadcrumbs();
-} else {
-    echo 'Function not found';
-}
-?>
-```
-
-**2. Check Plugin Active:**
-```bash
-wp plugin is-active media-lab-seo
+wp plugin deactivate media-lab-seo && wp plugin activate media-lab-seo
 ```
 
 ---
 
-## Best Practices
+## Weiterführende Docs
 
-### Images
-
-**Social Sharing:**
-- Size: 1200x630px
-- Format: JPG or PNG
-- File size: < 1MB
-- Quality: High
-
-### Meta Descriptions
-
-**Length:**
-- 150-160 characters ideal
-- Too short: Not descriptive
-- Too long: Gets cut off
-
-**Content:**
-- Unique per page
-- Include keywords
-- Call to action
-
-### Schema.org
-
-**Don't:**
-- Add false information
-- Spam keywords
-- Hide data from users
-
-**Do:**
-- Be accurate
-- Keep updated
-- Test regularly
-
-### Titles
-
-**Format:**
-- Post: "Post Title | Site Name"
-- Page: "Page Title | Site Name"
-- Homepage: "Site Name | Tagline"
-
-**Length:**
-- 50-60 characters
-- Include primary keyword
-- Make it compelling
-
----
-
-## Advanced Configuration
-
-### Custom Schema Types
-```php
-// Add custom schema type
-add_filter('medialab_seo_schema_types', function($types, $post) {
-    if ($post->post_type === 'event') {
-        $types[] = [
-            '@type' => 'Event',
-            'name' => get_the_title($post),
-            'startDate' => get_field('event_date', $post),
-            'location' => [
-                '@type' => 'Place',
-                'name' => get_field('event_location', $post)
-            ]
-        ];
-    }
-    return $types;
-}, 10, 2);
-```
-
-### Disable on Specific Pages
-```php
-// Disable SEO on specific pages
-add_filter('medialab_seo_should_output', function($should, $post_id) {
-    // Don't output on page ID 123
-    if ($post_id === 123) {
-        return false;
-    }
-    return $should;
-}, 10, 2);
-```
-
-### Custom OG Image
-```php
-// Custom OG image per post
-add_filter('medialab_seo_og_image', function($image, $post_id) {
-    $custom_image = get_field('custom_og_image', $post_id);
-    return $custom_image ?: $image;
-}, 10, 2);
-```
-
----
-
-## Monitoring
-
-### Google Search Console
-
-**Setup:**
-1. Go to: https://search.google.com/search-console
-2. Add property
-3. Verify ownership
-4. Submit sitemap
-
-**Monitor:**
-- Coverage errors
-- Mobile usability
-- Core Web Vitals
-- Rich results
-
-### Regular Checks
-
-**Weekly:**
-- Check Google Search Console for errors
-- Test rich results on new content
-
-**Monthly:**
-- Review schema coverage
-- Update default images if needed
-- Check social preview on new pages
-
-**Quarterly:**
-- Full SEO audit
-- Update schema.org implementation
-- Review and update meta descriptions
-
----
-
-## Next Steps
-
-- **Testing:** [Testing Guide](11_TESTING.md)
-- **Analytics:** [Analytics Documentation](12_ANALYTICS.md)
-- **Deployment:** [Deployment Guide](10_DEPLOYMENT.md)
-
----
-
-**SEO optimized!** 🚀  
-**Complete documentation available in `/docs`!** 📚
+- [Analytics-Dokumentation](12_ANALYTICS.md)
+- [Plugin-Übersicht](03_PLUGINS.md)
+- [ACF-Felder](09_ACF-FIELDS.md)
+- [Deployment](10_DEPLOYMENT.md)

@@ -1,7 +1,7 @@
 # Troubleshooting Guide
 
-**Version:** 1.5.0  
-**Letzte Aktualisierung:** 2026-03-04
+**Version:** 1.13.0  
+**Letzte Aktualisierung:** 2026-03-09
 
 Complete troubleshooting guide for common issues in Media Lab Starter Kit.
 
@@ -1007,6 +1007,183 @@ define('MEDIALAB_SMTP_DEBUG', true); // Zeigt SMTP-Protokoll im Activity Log
 ```
 
 ---
+
+---
+
+## Neue Probleme (v1.7.0–v1.13.0)
+
+### Navigation: 4. Ebene erscheint nicht
+
+**Symptom:** Flyout-Menü zeigt nur 3 Ebenen, obwohl Menüstruktur tiefer ist.
+
+**Ursache:** `wp_nav_menu()` in `header.php` hatte `depth: 3` gesetzt.
+
+**Fix:** In `header.php` → `depth: 4` (oder `0` für unbegrenzt).
+
+---
+
+### Cookie Consent: Banner erscheint nach Reload erneut
+
+**Symptom:** Banner wird nach Einstellung immer wieder angezeigt.
+
+**Ursache A:** `localStorage` ist im Browser deaktiviert oder blockiert (z.B. privater Modus in Safari).
+
+**Ursache B:** `cc_version` in ACF wurde erhöht → erzwingt erneute Zustimmung (by design).
+
+**Fix für Entwicklung:** In Browser-DevTools → Application → LocalStorage → `ml_cookie_consent` löschen.
+
+---
+
+### Cookie Consent: Code-Snippets werden nicht injiziert
+
+**Symptom:** GA4 / FB Pixel läuft nicht obwohl Nutzer zugestimmt hat.
+
+**Checkliste:**
+1. Snippets unter Agency Core → Cookie Consent → Code-Snippets eingetragen?
+2. `<script>` Tags korrekt? (kein `<noscript>` in Head-Feld)
+3. Browser-Konsole: Fehler beim Parsen des `<script>`-Blocks?
+4. Einwilligung tatsächlich für die Kategorie erteilt? → `localStorage.ml_cookie_consent` prüfen.
+
+---
+
+### Hero Image: Fehlt auf einer Seite obwohl gesetzt
+
+**Symptom:** ACF-Feld `hero_image` gesetzt, aber kein Hero sichtbar.
+
+**Ursache A:** `hero_enabled` in den globalen Einstellungen ist deaktiviert.
+
+**Ursache B:** Seite hat kein gültiges `featured_image` und `hero_image` ist leer → `media_lab_get_hero_image()` gibt `null` zurück.
+
+**Debug:**
+```php
+// In page.php temporär:
+$hero = media_lab_get_hero_image();
+var_dump($hero);
+```
+
+---
+
+### Breadcrumbs: „Fatal error: Cannot redeclare"
+
+**Symptom:** `Fatal error: Cannot redeclare media_lab_breadcrumb_get_term_parents()`
+
+**Ursache:** `breadcrumbs.php` wurde doppelt geladen (z.B. via MU-Plugin und Plugin gleichzeitig).
+
+**Fix:** Alle privaten Hilfsfunktionen in `breadcrumbs.php` sind mit `function_exists()`-Guard geschützt (seit v1.1.1). Falls Fehler weiterhin auftritt: prüfen ob eine alte Version der Datei noch aktiv ist.
+
+---
+
+### ACF: PHP 8.1 Deprecated-Warnings bei `strpos(null)`
+
+**Symptom:** `Deprecated: strpos(): Passing null to parameter #1 ($haystack)` in `wp-includes/functions.php`
+
+**Ursache:** ACF-Felder vom Typ `message` ohne `'label'`-Key liefern intern `null`.
+
+**Fix:** Allen `message`-Feldern `'label' => ''` hinzufügen (seit v1.11.1 behoben).
+
+**Wenn Warnings nach Update noch erscheinen:** PHP OPcache leeren:
+```bash
+valet restart
+# oder:
+brew services restart php
+```
+
+---
+
+### hCaptcha: Widget erscheint nicht im CF7-Formular
+
+**Symptom:** hCaptcha aktiviert, Site-Key eingetragen, aber kein Widget sichtbar.
+
+**Checkliste:**
+1. `hcaptcha_cf7` in ACF auf `true` gesetzt?
+2. `hcaptcha_site_key` **und** `hcaptcha_secret_key` ausgefüllt?
+3. `hcaptcha-api` Script im HTML-Source? (`Cmd+U` im Browser → nach `js.hcaptcha.com` suchen)
+4. Browser-Konsole: CORS- oder Netzwerkfehler?
+5. Seite über `https://` erreichbar? (hCaptcha erfordert HTTPS)
+
+**Lokal testen:** hCaptcha bietet Test-Keys für Entwicklung:
+- Site Key: `10000000-ffff-ffff-ffff-000000000001`
+- Secret Key: `0x0000000000000000000000000000000000000000`
+
+---
+
+### hCaptcha: Formular wird trotz falschem CAPTCHA abgeschickt
+
+**Symptom:** CF7-Formular sendet durch, obwohl CAPTCHA nicht ausgefüllt.
+
+**Ursache:** `wpcf7_validate` Hook greift nur bei aktivem CF7. Prüfen ob CF7 in der aktuellen Version den Hook unterstützt.
+
+**Debug:**
+```php
+// In hcaptcha.php temporär:
+add_filter('wpcf7_validate', function($result, $tags) {
+    error_log('hCaptcha Token: ' . ($_POST['h-captcha-response'] ?? 'LEER'));
+    // ...
+}, 10, 2);
+```
+
+---
+
+### Back-to-Top: Button nicht sichtbar obwohl aktiviert
+
+**Symptom:** `btt_enabled = 1` in ACF, aber kein Button im Frontend.
+
+**Ursache A:** Build nicht aktualisiert nach PHP-Änderung → `npm run build` ausführen.
+
+**Ursache B:** `footer.php` der alten Version im Einsatz → `footer.php` ersetzen.
+
+**Ursache C:** ACF nicht aktiv → `function_exists('get_field')` gibt `false` zurück → Fallback: Button wird nicht gerendert.
+
+**Debug:** Im Browser-Devtools HTML inspizieren → Button-Element vorhanden?
+
+---
+
+### Scroll Progress Bar: Linie springt oder bleibt bei 0%
+
+**Symptom:** Progress-Bar zeigt 0% oder bewegt sich nicht.
+
+**Ursache A:** Seite ist nicht `single.php` → Bedingung in `header.php`: `is_single()`.
+
+**Ursache B:** `scroll_progress_enabled` in ACF nicht gesetzt.
+
+**Ursache C:** Page-Höhe entspricht Viewport-Höhe (kein Scroll möglich) → `scrollHeight - clientHeight = 0`.
+
+---
+
+### Build: „Top-level await not available"
+
+**Symptom:** `npm run build` scheitert mit `Top-level await is not available in the configured target environment`
+
+**Ursache:** `await import()` innerhalb von `async`-Funktion wird von esbuild für das eingestellte Browser-Target nicht unterstützt.
+
+**Fix:** Komponente als statischen `import` am Dateianfang von `main.js` eintragen:
+```js
+// ❌ Verursacht Fehler:
+const { default: Foo } = await import('./components/foo');
+
+// ✅ Korrekt (statischer Import):
+import Foo from './components/foo';
+// Dann bedingt initialisieren:
+if (has('.foo')) safeInit('Foo', () => new Foo());
+```
+
+---
+
+### Build: „BrowserTracing is not exported"
+
+**Symptom:** `"BrowserTracing" is not exported by "@sentry/browser"`
+
+**Ursache:** Sentry v8 hat die API geändert.
+
+**Fix:** In `utils/sentry.js`:
+```js
+// ❌ Alt:
+new Sentry.BrowserTracing({ ... })
+
+// ✅ Neu:
+Sentry.browserTracingIntegration({ ... })
+```
+
 
 ## Next Steps
 

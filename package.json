@@ -1,6 +1,6 @@
 {
   "name": "custom-wordpress-theme",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "type": "module",
   "description": "Custom WordPress Theme from Figma",
   "scripts": {
@@ -17,6 +17,10 @@
     "test:accessibility": "playwright test tests/e2e/accessibility.spec.js",
     "test:performance": "playwright test tests/e2e/performance.spec.js",
     "test:visual": "playwright test tests/e2e/visual-regression.spec.js",
+    "vrt:ref": "backstop reference --config=backstop.json",
+    "vrt:test": "backstop test --config=backstop.json",
+    "vrt:approve": "backstop approve --config=backstop.json",
+    "vrt:report": "backstop openReport --config=backstop.json",
     "lighthouse": "lhci autorun",
     "test:all": "npm run test && npm run lighthouse",
     "deploy:staging": "npm run build:staging && node scripts/deploy-staging.js",
@@ -36,7 +40,8 @@
     "postcss-cli": "^11.0.1",
     "sass": "^1.70.0",
     "vite": "^5.0.12",
-    "vite-plugin-live-reload": "^3.0.5"
+    "vite-plugin-live-reload": "^3.0.5",
+    "backstopjs": "^6.3.25"
   },
   "dependencies": {
     "alpinejs": "^3.13.5",

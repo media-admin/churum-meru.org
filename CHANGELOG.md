@@ -6,6 +6,37 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.13.1] - 2026-03-09
+
+### Dokumentation & Testing
+
+#### Added
+- **`07_TROUBLESHOOTING.md`** – aktualisiert auf v1.13.0:
+  - Navigation 4-Ebenen, Cookie Consent (Banner + Code-Snippets)
+  - Hero Image, Breadcrumbs, hCaptcha (Widget + Validierung)
+  - Back-to-Top, Scroll Progress Bar
+  - Build-Fehler: Top-level await, BrowserTracing
+  - PHP Deprecated-Warnings (ACF message-Felder)
+- **`11_TESTING.md`** – aktualisiert auf v1.13.0:
+  - Neue Testfälle: Hero Image (3), Breadcrumbs (2), hCaptcha (3),
+    Back-to-Top (2), Scroll Progress (2), WooCommerce (1) → 35 Tests total
+  - Manuelle Checklisten für alle Features
+  - **BackstopJS Visual Regression Testing** – vollständige Einrichtung:
+    14 Szenarien, 4 Viewports, Dark-Mode-Test, Cookie-Banner-Test
+- **`backstop.json`** – neue Konfigurationsdatei für Visual Regression Tests
+- **`backstop_data/engine_scripts/`** – Playwright-Hooks:
+  `onBefore.js` (State-Reset), `onReady.js` (Animationen einfrieren),
+  `setDarkMode.js` (Dark-Mode-Aktivierung)
+
+#### Changed
+- **`package.json`** – neue npm Scripts:
+  `vrt:ref`, `vrt:test`, `vrt:approve`, `vrt:report`
+  + `backstopjs` als devDependency (`^6.3.25`)
+- **`.gitignore`** – BackstopJS Test-Ausgaben ausgeschlossen
+  (nur `bitmaps_reference` wird committed)
+
+---
+
 ## [1.13.0] - 2026-03-09
 
 ### custom-theme 1.13.0

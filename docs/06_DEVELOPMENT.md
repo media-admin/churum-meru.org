@@ -1,7 +1,7 @@
 # Development Guide
 
-**Version:** 1.7.1  
-**Letzte Aktualisierung:** 2026-03-06
+**Version:** 1.11.1  
+**Letzte Aktualisierung:** 2026-03-09
 
 ---
 
@@ -192,6 +192,140 @@ Buttons werden zentral über Mixins in `abstracts/_mixins.scss` gesteuert.
 | `btn-lg` | Größere Größe |
 
 **Niemals** duplizierte Button-Styles in Komponenten schreiben – immer `@include` verwenden.
+
+
+### Contact Form 7
+
+Styling-Komponente für CF7 – keine PHP-Abhängigkeiten, rein SCSS.
+
+**Layout-Helfer** (als Wrapper im CF7-Editor eintragen):
+
+| Klasse | Funktion |
+|---|---|
+| `cf7-grid-2` | 2-spaltig ab 768px |
+| `cf7-grid-3` | 3-spaltig ab 1024px |
+| `cf7-inline` | Inline-Zeile (Newsletter) |
+| `cf7-full` | Volle Breite innerhalb Grid |
+
+**Varianten** (am `.wpcf7` Element):
+
+| Klasse | Beschreibung |
+|---|---|
+| `wpcf7-card` | Card-Optik (weißer Hintergrund, Schatten, Border-Radius) |
+| `wpcf7-minimal` | Underline-Felder ohne Rahmen |
+
+**Feldtypen:** text, email, tel, url, number, date, time, search, select, textarea, file, checkbox, radio, acceptance (DSGVO)
+
+**Response-Klassen:** `wpcf7-mail-sent-ok` / `wpcf7-validation-errors` / `wpcf7-mail-sent-ng` / `wpcf7-aborted` / `wpcf7-spam-blocked` / `wpcf7-acceptance-missing`
+
+**Dark Mode:** läuft vollständig über CSS Custom Properties – kein separater `@media`-Block.
+
+
+### Hero Image
+
+Vollständige Sektion: ACF-Felder (Plugin) + Template Part (Theme) + SCSS-Komponente.
+
+**Einbindung:**
+```php
+// In page.php, single.php usw.
+get_template_part('template-parts/hero-image');
+
+// Mit Post-ID override
+set_query_var('hero_args', ['post_id' => 42]);
+get_template_part('template-parts/hero-image');
+```
+
+**ACF-Felder pro Seite** (Sidebar, conditional logic):
+
+| Feld | Typ | Beschreibung |
+|---|---|---|
+| `hero_image_show` | true/false | Hero ein-/ausblenden |
+| `hero_image_desktop` | image | Bild Desktop (Fallback: global) |
+| `hero_image_mobile` | image | Bild Mobile (optional) |
+| `hero_image_title` | text | Titel (Fallback: Post-Titel) |
+| `hero_image_subtitle` | textarea | Untertitel (optional) |
+| `hero_btn1_text/url/style` | text/link/select | Button 1 (optional) |
+| `hero_btn2_text/url/style` | text/link/select | Button 2 (nur wenn Btn 1 gesetzt) |
+| `hero_image_align` | select | `left` / `center` / `right` (Fallback: global) |
+| `hero_image_height` | select | `sm` / `md` / `lg` / `xl` (Fallback: global) |
+| `hero_image_vpos` | select | `bottom` / `middle` / `top` |
+| `hero_image_opacity` | range 0–90 | Overlay (Fallback: global) |
+
+**Globale Einstellungen** (Options-Seite → Hero Image):
+`hero_fallback_desktop`, `hero_fallback_mobile`, `hero_overlay_opacity`, `hero_default_height`, `hero_default_align`
+
+**CSS-Klassen (automatisch gesetzt):**
+```
+.hero-image--sm/md/lg/xl      Höhe
+.hero-image--align-left/center/right
+.hero-image--vpos-bottom/middle/top
+```
+
+**Buttons auf dem Hero:**
+Buttons nutzen `.btn--light` als Modifier – automatisch angepasst für Kontrast auf dunklem Hintergrund:
+- `btn--primary btn--light` → weißer Button, roter Text
+- `btn--outline btn--light` → weißer Rahmen/Text, bei Hover: weißer Button
+- `btn--ghost btn--light` → transparenter weißer Text
+
+
+### Breadcrumbs
+
+Eigenständige Implementierung im SEO-Plugin (`media-lab-seo/inc/breadcrumbs.php`), Ausgabe über Template-Part im Theme. Schema.org `BreadcrumbList` JSON-LD wird automatisch ausgegeben.
+
+**Im Template verwenden:**
+```php
+// Einfach
+<?php get_template_part('template-parts/components/breadcrumbs'); ?>
+
+// Mit Optionen
+<?php
+set_query_var('breadcrumbs_args', ['separator' => '/']);
+get_template_part('template-parts/components/breadcrumbs');
+?>
+
+// Direkt
+<?php medialab_breadcrumbs(['show_home' => true, 'home_label' => 'Start']); ?>
+```
+
+**Alle Optionen:**
+
+| Option | Typ | Default | Beschreibung |
+|---|---|---|---|
+| `separator` | string | `›` | Trennzeichen zwischen Ebenen |
+| `show_home` | bool | `true` | Startseite als erstes Element |
+| `home_label` | string | `Start` | Label der Startseite |
+| `show_current` | bool | `true` | Aktuelle Seite anzeigen |
+| `container` | string | `nav` | HTML-Wrapper: `nav`, `div`, `ol` |
+| `class` | string | `breadcrumbs` | CSS-Basisklasse |
+| `schema` | bool | `true` | Schema.org JSON-LD ausgeben |
+
+**SCSS-Varianten:**
+```html
+<!-- Standard -->
+<nav class="breadcrumbs"> … </nav>
+
+<!-- Auf dunklem Hintergrund (Hero etc.) -->
+<nav class="breadcrumbs breadcrumbs--light"> … </nav>
+
+<!-- Kleinere Schrift -->
+<nav class="breadcrumbs breadcrumbs--compact"> … </nav>
+
+<!-- Zentriert -->
+<nav class="breadcrumbs breadcrumbs--centered"> … </nav>
+
+<!-- Volle Breite mit Hintergrundbalken (direkt unter Header) -->
+<nav class="breadcrumbs breadcrumbs--bar"> … </nav>
+```
+
+**Unterstützte Seitentypen:** Startseite (keine Ausgabe), 404, Suche, Seiten, Beiträge (inkl. Kategorie-Pfad), Custom Post Types (inkl. Archive-Link), Taxonomien, Datum-Archive, Autor-Archive.
+
+**Filter:**
+```php
+// HTML nachbearbeiten
+add_filter('medialab_breadcrumbs_html', function($html, $crumbs, $args) {
+    return $html;
+}, 10, 3);
+```
 
 
 ### Toggle – 3-State Switch
@@ -631,6 +765,89 @@ if (!current_user_can('manage_options')) wp_die();
 // ✅ ABSPATH-Guard in jedem PHP-File
 if (!defined('ABSPATH')) exit;
 ```
+
+---
+
+## PHP-Templates
+
+### single.php
+
+Einzelbeitrag-Template mit folgenden Bereichen:
+
+- **Kategorie-Badges** – alle zugewiesenen Kategorien als klickbare Pills
+- **Meta-Zeile** – Avatar, Autor, Datum, automatisch berechnete Lesezeit (200 Wörter/min)
+- **Featured Image** – wird unterdrückt wenn Hero Image aktiv ist (`media_lab_get_hero_image()`)
+- **Entry-Content** – vollständige Typografie (h2–h4, Blockquote, Code/Pre, Tabellen, Bilder)
+- **Tags-Footer** – Tag-Pills mit Hover-State
+- **Autor-Box** – Avatar + Bio, erscheint nur wenn Autor eine Beschreibung hat
+- **Post-Navigation** – Prev/Next als Cards mit 2-Zeilen-Clamp
+- **Kommentare** – Standard-WordPress `comments_template()`
+
+### archive.php
+
+Gilt für Kategorie-, Tag-, Autor-, Datum- und CPT-Archive.
+
+- Archiv-Header: Badge (Kategorie/Tag-Präfix automatisch extrahiert), Beschreibung, Ergebnis-Zähler
+- Post-Grid: 3-spaltig → 2 ab 1024px → 1 ab 600px
+- Pagination via `paginate_links()` → `.archive-pagination` Styles
+
+### template-parts/components/post-card.php
+
+Wiederverwendbare Post-Card, nutzbar auf zwei Wegen:
+
+```php
+// Im Loop (global $post gesetzt):
+get_template_part('template-parts/components/post-card');
+
+// Mit explizitem Post-Objekt (außerhalb des Loops):
+set_query_var('post_card_post', $post_object);
+get_template_part('template-parts/components/post-card');
+
+// Horizontale Variante:
+set_query_var('post_card_variant', 'horizontal');
+get_template_part('template-parts/components/post-card');
+```
+
+### search.php
+
+- `get_search_form()` statt Shortcode
+- Post-Type-Label dynamisch via `get_post_type_object()`
+- Leer-Zustand mit SVG-Icon, erneutem Suchformular, Home-Link
+- Pagination wiederverwendet `.archive-pagination`
+
+### 404.php
+
+- Große `404`-Zahl als dekorativer Hintergrund (opacity: 0.08)
+- CTA-Buttons (Home + Zurück)
+- WordPress Standard-Suchformular
+- Top-Level Menüpunkte als Quick-Links (max. 6, nur wenn Menü `primary` existiert)
+
+---
+
+## WooCommerce Styling
+
+Die Datei `assets/src/scss/woocommerce/_woocommerce.scss` deckt alle WooCommerce-Seiten ab.
+
+### Abgedeckte Bereiche
+
+| Bereich | Klassen/Selektoren |
+|---|---|
+| Notices | `.woocommerce-message`, `.woocommerce-error`, `.woocommerce-info` |
+| Shop-Grid | `.woocommerce ul.products`, `li.product` |
+| Einzelprodukt | `.single-product div.product`, `.woocommerce-tabs` |
+| Warenkorb | `.woocommerce-cart table.shop_table`, `.cart_totals` |
+| Checkout | `.woocommerce-checkout .col2-set`, `#payment` |
+| Mein Konto | `.woocommerce-MyAccount-navigation`, `.woocommerce-Addresses` |
+| Formulare | `.woocommerce form .form-row` (inkl. Validation-States) |
+| Pagination | `nav.woocommerce-pagination` (gleiche Optik wie `.archive-pagination`) |
+
+### Strategie
+
+- `!important` **nur** wo WooCommerce Inline-Styles überschrieben werden müssen (Shop-Grid, Produktkarte)
+- Alle Buttons via `@include btn-base` + `@include btn-primary/outline`
+- `var(--color-card-bg)` statt `$color-white` → Dark-Mode-Support
+- Post-Type-Farbstreifen in Suchergebnissen: post=primary, product=success, job=purple
+
 
 ---
 

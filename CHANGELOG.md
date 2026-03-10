@@ -6,6 +6,165 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.11.1] - 2026-03-09
+
+### media-lab-agency-core 1.5.5
+
+#### Fixed
+- **PHP Deprecated-Warnings (PHP 8.1+)** – ACF `message`-Felder ohne `'label'`-Key:
+  ACF verarbeitet alle Felder intern über `wp_json_encode()`. Fehlendes `label`
+  liefert `null`, was in PHP 8.1+ `strpos(null, ...)` Deprecated-Warnings auslöst.
+  Behoben durch `'label' => ''` in 6 Feldern:
+  - `acf-settings.php`: Plugin-Status-Info, SMTP Test-Mail, Obfuscate-Email Info,
+    Polylang Voraussetzung, Wartungsmodus Hinweis (5 Felder)
+  - `cookie-consent.php`: Code-Snippets Heading (1 Feld)
+
+  Weitere PHP 8.x Patterns geprüft – keine Probleme gefunden:
+  - `each()` → alle Treffer sind `foreach()` (kein Deprecated)
+  - Implicitly nullable → `?string`/`?int` bereits korrekt
+  - `FILTER_SANITIZE_STRING` → nicht verwendet
+
+---
+
+## [1.11.0] - 2026-03-09
+
+### custom-theme 1.11.0
+
+#### Changed
+- **`_woocommerce.scss`** – vollständige Neufassung (1022 → vollständig):
+  - **WC-Notices**: `woocommerce-message/error/info` mit `::before`-Icon, alle via Custom Properties
+  - **Shop-Grid**: 3-spaltig, 2 ab 1024px, 1 ab 600px; `var(--color-card-bg)` statt `$color-white`
+  - **Produktkarte**: Sale-Badge, Bild-Hover-Zoom, Preis mit `$color-primary`, Button via `@include btn-*`
+  - **Einzelprodukt**: Gallery-Thumbnails, Preis, Mengen-Input, Add-to-Cart, Produkt-Meta, Tabs, Bewertungen, Verwandte Produkte
+  - **Warenkorb**: `shop_table`, Coupon-Zeile, Update-Button, `cart_totals` inkl. Checkout-CTA, leerer Warenkorb
+  - **Checkout**: `col2-set` Grid, Bestellübersicht, Bezahlmethoden, `place_order`-Button
+  - **Mein Konto**: `MyAccount-navigation`, Bestellliste, Adress-Boxen 2-spaltig
+  - **WC-Formularfelder**: `form-row`, `form-row-first/last`, Validation States, Select Custom-Pfeil
+  - **Shop-Ordering + Result-Count**, **WC-Pagination**
+
+  Fixes: `$color-white` → `var(--color-card-bg)`, `color: red` → `$color-primary`,
+  `$color-woo-danger` → `$color-error`, minimaler `!important`-Einsatz
+
+---
+
+## [1.10.1] - 2026-03-09
+
+### custom-theme 1.10.1
+
+#### Changed
+- **`search.php`** – überarbeitet:
+  - `get_search_form()` statt `do_shortcode('[ajax_search]')`
+  - Breadcrumbs-Integration
+  - Post-Type Label via `get_post_type_object()` (dynamisch, kein hardcoded Array)
+  - Pagination via `paginate_links()` → nutzt `.archive-pagination` Styles
+  - Leer-Zustand mit SVG-Icon, Text, Formular, Home-Link
+- **`_search-results.scss`** – vollständige Neufassung:
+  - `var(--color-card-bg)` statt `$color-white` → Dark-Mode-Kompatibilität
+  - Post-Type Farbstreifen (post/page/product/project/service/job)
+  - `.search-empty` Leer-Zustand mit Icon
+  - Suchformular-Styles für `get_search_form()` Output
+- **`_page-404.scss`** – doppeltes `@use '../abstracts'` entfernt
+
+---
+
+## [1.10.0] - 2026-03-09
+
+### custom-theme 1.10.0
+
+#### Added
+- **`single.php`**: Kategorie-Badges, Meta-Zeile (Avatar, Autor, Datum, Lesezeit),
+  Featured Image (nur ohne Hero), vollständige Entry-Content-Typografie,
+  Tags-Footer, Autor-Box, Prev/Next-Navigation, Kommentare-Integration
+- **`archive.php`**: Archiv-Header mit Badge, Beschreibung + Ergebnis-Zähler,
+  3-spaltiges Post-Grid, paginate_links(), Leere-Zustand
+- **`template-parts/components/post-card.php`**: Wiederverwendbare Post-Card,
+  nutzbar im Loop und via `set_query_var('post_card_post', $post)`,
+  Variante `horizontal` via `set_query_var('post_card_variant', 'horizontal')`
+- **`assets/src/scss/templates/_single.scss`**: Layout, Header, Entry-Content,
+  Author-Box, Post-Nav
+- **`assets/src/scss/templates/_archive.scss`**: Archive-Header, `.post-grid`,
+  `.post-card` (mit CSS Custom Properties), Pagination
+
+#### Changed
+- **`_cards.scss`**: `.post-card` in `_archive.scss` verschoben,
+  `$color-white` → `var(--color-card-bg)` für Dark-Mode-Kompatibilität,
+  Datei auf generische `.card`-Basis reduziert
+- **`style.scss`**: `@use templates/single` + `@use templates/archive` registriert
+
+---
+
+## [1.9.1] - 2026-03-09
+
+### custom-theme 1.9.1
+
+#### Changed
+- **`_contact-form-7.scss`** – vollständige Neufassung:
+  - `%field-base` Placeholder → DRY, alle Felder erben gemeinsame Basis
+  - `height: 48px` für alle Inputs und Select → einheitliche Höhe
+  - `:hover` State auf Felder (border-color: text-muted)
+  - `accent-color: $color-primary` für native Checkboxen / Radio
+  - Select-Pfeil: neutrales Grau statt hardcoded `#667eea`
+  - `wpcf7-not-valid`: zusätzlich box-shadow Fokusring
+  - Response-Output: flex mit `::before` Icon, alle CF7-Klassen abgedeckt (`wpcf7-acceptance-missing`, `wpcf7-aborted`)
+  - `submitting`-State am Form verhindert Mehrfach-Submit
+  - `@keyframes cf7-spin` (kein globaler Namenskonflikt mehr)
+  - Dark Mode: kein eigener `@media`-Block, läuft über CSS Custom Properties
+  - Layout: `cf7-grid-2`, `cf7-grid-3`, `cf7-inline`, `cf7-full`
+  - Variante `wpcf7-card` mit `$shadow-lg`, Variante `wpcf7-minimal` (Underline)
+
+---
+
+## [1.9.0] - 2026-03-09
+
+### media-lab-agency-core
+
+#### Changed
+- **`inc/hero-image.php`** – erweiterte ACF-Felder:
+  - Neue Post-Felder: `hero_image_subtitle`, `hero_btn1/2_text/url/style`, `hero_image_align`, `hero_image_height`, `hero_image_vpos`, `hero_image_opacity` (per-post override)
+  - Neue globale Felder: `hero_default_height`, `hero_default_align`
+  - Conditional Logic: Felder nur sichtbar wenn Hero aktiv / Btn1 gesetzt
+  - `media_lab_get_hero_image()`: gibt alle neuen Felder zurück
+
+### custom-theme 1.9.0
+
+#### Changed
+- **`template-parts/hero-image.php`** – Untertitel, zwei Buttons mit `btn--light` Modifier, CSS-Klassen für Varianten
+- **`_hero-image.scss`** – Höhenvarianten (sm/md/lg/xl via clamp), Textausrichtung, Vertikalposition, `btn--light` für alle drei Button-Stile
+
+### Docs
+- `06_DEVELOPMENT.md`: Hero Image Sektion (ACF-Felder Tabelle, CSS-Klassen, Buttons)
+
+---
+
+## [1.8.0] - 2026-03-06
+
+### media-lab-seo
+
+#### Added
+- **Breadcrumbs** (`inc/breadcrumbs.php`) – vollständige Eigenimplementierung
+  - `medialab_breadcrumbs($args)` – alle Seitentypen: Seiten, Beiträge, CPTs, Taxonomien, Archive, Suche, 404
+  - Blog-Seite als Zwischenebene, primäre Kategorie (tiefster Term), Eltern-Seiten
+  - Schema.org `BreadcrumbList` JSON-LD (opt-out möglich)
+  - Filter `medialab_breadcrumbs_html`
+  - Konfiguierbar: separator, show_home, home_label, show_current, container, class, schema
+
+### custom-theme 1.8.0
+
+#### Added
+- **`template-parts/components/breadcrumbs.php`** – Template Part für `get_template_part()`
+- **`components/_breadcrumbs.scss`** – Varianten: `--light`, `--compact`, `--centered`, `--bar`
+  - Mobile: langer Titel mit `text-overflow: ellipsis` abgeschnitten
+
+#### Changed
+- **`page.php`**: Breadcrumbs nach Hero-Image eingefügt
+- **`footer.php`**: Footer-Nav `depth: 1` → `depth: 4`
+- **`style.scss`**: `@use 'components/breadcrumbs'` registriert
+
+### Docs
+- `06_DEVELOPMENT.md`: Breadcrumbs-Sektion (Optionen-Tabelle, Varianten, Filter)
+
+---
+
 ## [1.7.2] - 2026-03-06
 
 ### custom-theme 1.7.2

@@ -1,7 +1,7 @@
 # Media Lab Starter Kit - Internal Documentation
 
-**Version:** 1.7.0  
-**Last Updated:** March 6, 2026  
+**Version:** 1.11.1  
+**Last Updated:** March 9, 2026  
 **Architecture:** Modular Plugin System
 
 ---
@@ -18,7 +18,7 @@
 | 6 | [Development](06_DEVELOPMENT.md) | Development workflow | ✅ Updated |
 | 7 | [Troubleshooting](07_TROUBLESHOOTING.md) | Common issues | ✅ Updated |
 | 8 | [Custom Post Types](08_CUSTOM-POST-TYPES.md) | 9 CPTs reference | ✅ Updated |
-| 9 | [ACF Fields](09_ACF-FIELDS.md) | 12 field groups | ✅ Updated |
+| 9 | [ACF Fields](09_ACF-FIELDS.md) | Field groups reference | ✅ Updated |
 | 10 | [Deployment](10_DEPLOYMENT.md) | Production deploy | ✅ Updated |
 | 11 | [Testing](11_TESTING.md) | Test suite (23 tests) | ✅ New |
 | 12 | [Analytics](12_ANALYTICS.md) | Analytics plugin | ✅ New |
@@ -26,14 +26,14 @@
 
 ---
 
-## 🏗️ Architecture v1.5.0
+## 🏗️ Architecture v1.11.1
 
 ### Plugin System Overview
 ```
 WordPress Installation
 │
 ├── 📦 Regular Plugins
-│   ├── media-lab-agency-core/      v1.5.4 (Framework)
+│   ├── media-lab-agency-core/      v1.5.5 (Framework)
 │   ├── media-lab-project-starter/  v1.0.0 (Content Structure)
 │   ├── media-lab-analytics/        v1.0.0 (Tracking)
 │   └── media-lab-seo/              v1.1.1 (SEO)
@@ -45,17 +45,15 @@ WordPress Installation
     └── System-level plugins
 ```
 
-### What Changed in v1.5.0
+### What Changed in v1.11.1
 
-**From:** Monolithic MU-plugin structure  
-**To:** Modular plugin architecture
-
-**Benefits:**
-- ✅ Separation of concerns
-- ✅ Reusable core framework
-- ✅ Client-specific customization
-- ✅ Independent updates
-- ✅ Better version control
+**Highlights seit v1.7.0:**
+- ✅ single.php + archive.php Templates (Post-Card Komponente)
+- ✅ search.php + 404.php fertiggestellt
+- ✅ WooCommerce Basis-Styling (Shop, Produkt, Warenkorb, Checkout, Konto)
+- ✅ Contact Form 7 Styling vollständig überarbeitet
+- ✅ Hero Image: Subtitle, Buttons, Höhen-/Ausrichtungs-Varianten
+- ✅ PHP 8.1 Deprecated-Warnings behoben (ACF message-Felder)
 
 ---
 
@@ -81,7 +79,7 @@ WordPress Installation
 
 ## 📊 System Status
 
-**Current Version:** v1.5.0  
+**Current Version:** v1.11.1  
 **Test Coverage:** 23/23 tests passing (100%)  
 **PHP Version:** 8.0+  
 **WordPress Version:** 6.0+  

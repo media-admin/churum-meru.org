@@ -33,7 +33,7 @@
                     'container'      => 'nav',
                     'container_class'=> 'site-footer__nav footer-nav',
                     'container_aria_label' => 'Footer Navigation',
-                    'depth'          => 1,
+                    'depth'          => 4,
                     'fallback_cb'    => false,
                 ));
             endif;

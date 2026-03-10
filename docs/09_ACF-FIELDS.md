@@ -1,7 +1,7 @@
 # ACF Fields Reference
 
-**Version:** 1.7.0  
-**Letzte Aktualisierung:** 2026-03-06  
+**Version:** 1.11.1  
+**Letzte Aktualisierung:** 2026-03-09  
 **Plugin:** Media Lab Project Starter v1.0.0 (optional)
 
 Complete reference for all ACF Field Groups: 11 CPT Field Groups (JSON, 65 custom fields) + 10 Options Sub-Pages (PHP, 92 custom fields).
@@ -644,6 +644,71 @@ Das Agency Core Plugin registriert 10 separate Unterseiten unter **Agency Core**
 
 > **Hinweis:** Gespeicherte Feldwerte bleiben bei einer Slug-Änderung erhalten, da ACF Options-Werte nach dem Feld-`name` (nicht nach dem Page-Slug) in der Datenbank gespeichert werden.
 
+## 14. Hero Image Settings
+
+**Field Group:** `group_hero_global` + `group_hero_image`  
+**Options Page:** Agency Core → Hero Image / Globale Einstellungen  
+**Plugin:** media-lab-agency-core (v1.9.0+)
+
+### Globale Einstellungen (`group_hero_global`)
+
+| Field | Name | Typ | Optionen | Beschreibung |
+|---|---|---|---|---|
+| Hero aktivieren | `hero_enabled` | true_false | – | Schaltet Hero-System global ein |
+| Standard-Höhe | `hero_default_height` | select | `sm` / `md` / `lg` / `xl` | Fallback wenn Post kein Feld setzt |
+| Standard-Ausrichtung | `hero_default_align` | select | `left` / `center` / `right` | Fallback für Textausrichtung |
+| Standard-Opacity | `hero_default_opacity` | range | 0–100 | Abdunkelung des Hintergrundbildes |
+
+### Per-Post-Felder (`group_hero_image`)
+
+Erscheinen auf allen Beitragstypen (Posts, Pages, CPTs).
+
+| Field | Name | Typ | Optionen / Hinweis |
+|---|---|---|---|
+| Hero Image | `hero_image` | image | Hintergrundbild des Hero-Bereichs |
+| Untertitel | `hero_image_subtitle` | text | Optionaler Text unter dem Seitentitel |
+| Button 1 Text | `hero_btn1_text` | text | Leer = Button wird nicht gerendert |
+| Button 1 URL | `hero_btn1_url` | url | – |
+| Button 1 Stil | `hero_btn1_style` | select | `primary` / `outline` / `ghost` |
+| Button 2 Text | `hero_btn2_text` | text | Optionaler zweiter Button |
+| Button 2 URL | `hero_btn2_url` | url | – |
+| Button 2 Stil | `hero_btn2_style` | select | `primary` / `outline` / `ghost` |
+| Ausrichtung | `hero_image_align` | select | `left` / `center` / `right` |
+| Höhe | `hero_image_height` | select | `sm` (300px) / `md` (450px) / `lg` (600px) / `xl` (100vh) |
+| Vertikale Position | `hero_image_vpos` | select | `top` / `middle` / `bottom` |
+| Bild-Opacity | `hero_image_opacity` | range | 0–100, überschreibt globale Einstellung |
+
+### Template-Einbindung
+
+```php
+// In page.php, single.php etc. – automatisch via header.php
+// Oder manuell:
+$hero = media_lab_get_hero_image(); // gibt Array oder null zurück
+if ($hero) {
+    get_template_part('template-parts/hero-image');
+}
+```
+
+### CSS-Klassen am `.hero-image`-Element
+
+| Klasse | Quelle |
+|---|---|
+| `.hero-image--sm/md/lg/xl` | `hero_image_height` |
+| `.hero-image--align-left/center/right` | `hero_image_align` |
+| `.hero-image--vpos-top/middle/bottom` | `hero_image_vpos` |
+
+### Button-Stil `.btn--light`
+
+Alle Hero-Buttons erhalten automatisch `.btn--light` als Modifier für helle Darstellung auf dunklem Hero-Hintergrund:
+
+| `hero_btnX_style` | Resultierende Klassen |
+|---|---|
+| `primary` | `.btn .btn--primary .btn--light` |
+| `outline` | `.btn .btn--outline .btn--light` |
+| `ghost` | `.btn .btn--ghost .btn--light` |
+
+---
+
 ## 12. Maintenance Mode Settings
 
 **Field Group:** `group_maintenance`  
@@ -733,5 +798,5 @@ Pro Kategorie je ein Head- und Body-Code Feld. Snippets werden nach Consent des 
 
 ---
 
-**92 fields ready!** 🎨  
+**104 fields ready!** 🎨  
 **Next:** [Deployment Guide](10_DEPLOYMENT.md) →

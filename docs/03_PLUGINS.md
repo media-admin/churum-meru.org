@@ -1,6 +1,6 @@
 # Plugin-Dokumentation
 
-**Version:** 1.6.0 | **Letzte Aktualisierung:** 2026-03-06
+**Version:** 1.11.1 | **Letzte Aktualisierung:** 2026-03-09
 
 ---
 
@@ -8,13 +8,13 @@
 
 | Plugin | Version | Zweck | Modifizierbar? |
 |---|---|---|---|
-| media-lab-agency-core | 1.5.4 | Framework + Features | ❌ Nie |
+| media-lab-agency-core | 1.5.5 | Framework + Features | ❌ Nie |
 | media-lab-seo | 1.1.1 | SEO-Toolkit | ✅ Konfigurierbar |
 | advanced-custom-fields-pro | aktuell | Custom Fields | ✅ Konfigurierbar |
 
 ---
 
-## media-lab-agency-core `v1.5.4`
+## media-lab-agency-core `v1.5.5`
 
 **Datei:** `cms/wp-content/plugins/media-lab-agency-core/media-lab-agency-core.php`
 
@@ -38,7 +38,8 @@ Dieses Plugin wird **unverändert auf allen Projekten eingesetzt**. Nie direkt m
 | `assets/js/smtp-test.js` | SMTP Test-Mail Admin-Script |
 | `inc/maintenance.php` | Maintenance Mode (503, Admin-Bypass, ACF-konfigurierbar) |
 | `inc/media-replace.php` | Medien ersetzen ohne Plugin-Verlust der Attachment-ID |
-| `inc/cookie-consent.php` | Cookie Consent Manager (Banner, Modal, Snippets, ACF-konfigurierbar) |
+| `inc/cookie-consent.php` | Cookie Consent Manager (Banner, Modal, Toggle-Integration, Snippet-Verwaltung) |
+| `inc/hero-image.php` | Hero Image – Subtitle, zwei Buttons (primary/outline/ghost), Höhe, Ausrichtung, Opacity |
 
 ### SMTP-Konfiguration
 
@@ -154,6 +155,48 @@ if (!medialab_check_rate_limit('meine_action', 20, 60)) {
 ```
 
 ---
+
+
+### Hero Image
+
+Konfiguration unter **Agency Core → Hero Image**.
+
+**Neue Felder (v1.9.0):**
+
+| Feld | Key | Typ | Beschreibung |
+|---|---|---|---|
+| Untertitel | `hero_image_subtitle` | text | Optionaler Untertitel unter dem Seitentitel |
+| Button 1 Text | `hero_btn1_text` | text | Beschriftung des ersten Buttons |
+| Button 1 URL | `hero_btn1_url` | url | Ziel des ersten Buttons |
+| Button 1 Stil | `hero_btn1_style` | select | `primary` / `outline` / `ghost` |
+| Button 2 Text | `hero_btn2_text` | text | Zweiter optionaler Button |
+| Button 2 URL | `hero_btn2_url` | url | Ziel des zweiten Buttons |
+| Button 2 Stil | `hero_btn2_style` | select | `primary` / `outline` / `ghost` |
+| Ausrichtung | `hero_image_align` | select | `left` / `center` / `right` |
+| Höhe | `hero_image_height` | select | `sm` / `md` / `lg` / `xl` |
+| Vertikale Position | `hero_image_vpos` | select | `top` / `middle` / `bottom` |
+| Bild-Opacity | `hero_image_opacity` | range | 0–100, überschreibt globale Einstellung |
+
+**Globale Felder (Options):**
+
+| Feld | Key | Beschreibung |
+|---|---|---|
+| Standard-Höhe | `hero_default_height` | Fallback wenn per-Post-Feld leer |
+| Standard-Ausrichtung | `hero_default_align` | Fallback für Textausrichtung |
+
+**CSS-Klassen am Hero-Element:**
+
+```
+.hero-image--sm / --md / --lg / --xl          Höhe
+.hero-image--align-left / --center / --right  Textausrichtung
+.hero-image--vpos-top / --middle / --bottom   Vertikale Bildposition
+```
+
+**Button-Varianten `.btn--light`:**
+- `primary` → weißer Button mit Primärfarbe-Text
+- `outline` → transparenter Button mit weißem Rand
+- `ghost` → komplett transparent
+
 
 ## media-lab-seo `v1.1.1`
 

@@ -19,6 +19,20 @@
 <?php wp_body_open(); ?>
 
 <?php
+// ── Scroll Progress Bar ───────────────────────────────────────────────────
+// Nur auf Einzelbeitrags-Seiten (single.php), per ACF ein-/ausschaltbar
+if ( function_exists('get_field') && get_field('scroll_progress_enabled', 'option') && is_single() ) : ?>
+<div
+    class="scroll-progress"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuenow="0"
+    aria-label="<?php esc_attr_e('Lesefortschritt', 'custom-theme'); ?>"
+></div>
+<?php endif; ?>
+
+<?php
 /**
  * Top Header (über dem Main Header)
  * Wird nur ausgegeben, wenn in Agency Core Settings aktiviert.
@@ -150,7 +164,7 @@ if (function_exists('get_field') && get_field('top_header_enable', 'option')) :
                 'container' => false,
                 'menu_class' => '',
                 'fallback_cb' => false,
-                'depth' => 3, // 3 levels
+                'depth' => 4, // 4 levels
             ));
             ?>
         </div>
@@ -170,7 +184,7 @@ if (function_exists('get_field') && get_field('top_header_enable', 'option')) :
         'container' => false,
         'menu_class' => '',
         'fallback_cb' => false,
-        'depth' => 3,
+        'depth' => 4,
     ));
     ?>
 </div>

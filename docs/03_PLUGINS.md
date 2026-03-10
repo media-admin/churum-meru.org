@@ -1,6 +1,6 @@
 # Plugin-Dokumentation
 
-**Version:** 1.12.0 | **Letzte Aktualisierung:** 2026-03-09
+**Version:** 1.13.0 | **Letzte Aktualisierung:** 2026-03-09
 
 ---
 
@@ -156,6 +156,26 @@ if (!medialab_check_rate_limit('meine_action', 20, 60)) {
 ```
 
 ---
+
+
+### UI-Features (Logo / Globale Einstellungen)
+
+Zwei optionale UI-Komponenten werden über ACF zentral gesteuert:
+
+| Feld | Name | Standard | Beschreibung |
+|---|---|---|---|
+| Back-to-Top Button | `btt_enabled` | ✅ An | Einblend-Button zum Seitenanfang nach 300px Scroll |
+| Scroll Progress Bar | `scroll_progress_enabled` | ❌ Aus | Fortschrittslinie oben – nur auf `single.php` |
+
+**Back-to-Top Button** (`footer.php` → `back-to-top.js` → `_back-to-top.scss`):
+- SVG-Chevron, Hover-Animation, Keyboard-Support (Enter/Space)
+- Nur im DOM wenn `btt_enabled = 1` → JS initialisiert nur wenn Element vorhanden
+
+**Scroll Progress Bar** (`header.php` → `scroll-progress.js` → `_scroll-progress.scss`):
+- 3px Linie, Farbe `$color-primary`, Glow-Dot am rechten Ende
+- CSS Custom Property `--scroll-progress`, per `requestAnimationFrame` aktualisiert
+- ARIA `role="progressbar"` + `aria-valuenow`
+- Nur auf `is_single()` + nur wenn `scroll_progress_enabled = 1`
 
 
 ### hCaptcha

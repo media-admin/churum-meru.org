@@ -1,6 +1,6 @@
 # Media Lab Starter Kit - Internal Documentation
 
-**Version:** 1.12.0  
+**Version:** 1.13.0  
 **Last Updated:** March 9, 2026  
 **Architecture:** Modular Plugin System
 
@@ -55,6 +55,7 @@ WordPress Installation
 - ✅ Hero Image: Subtitle, Buttons, Höhen-/Ausrichtungs-Varianten
 - ✅ PHP 8.1 Deprecated-Warnings behoben (ACF message-Felder)
 - ✅ hCaptcha Integration (CF7, WP-Login, WooCommerce)
+- ✅ Back-to-Top Button + Scroll Progress Bar (ACF-gesteuert)
 
 ---
 

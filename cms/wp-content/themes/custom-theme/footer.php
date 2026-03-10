@@ -53,6 +53,20 @@
 
 </div><!-- #page -->
 
+<?php
+// ── Back-to-Top Button ────────────────────────────────────────────────────
+if ( function_exists('get_field') && get_field('btt_enabled', 'option') ) : ?>
+<button
+    class="back-to-top"
+    aria-label="<?php esc_attr_e('Zurück nach oben', 'custom-theme'); ?>"
+    type="button"
+>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+</button>
+<?php endif; ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>

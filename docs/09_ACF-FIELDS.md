@@ -1,6 +1,6 @@
 # ACF Fields Reference
 
-**Version:** 1.12.0  
+**Version:** 1.13.0  
 **Letzte Aktualisierung:** 2026-03-09  
 **Plugin:** Media Lab Project Starter v1.0.0 (optional)
 
@@ -644,6 +644,14 @@ Das Agency Core Plugin registriert 10 separate Unterseiten unter **Agency Core**
 
 > **Hinweis:** Gespeicherte Feldwerte bleiben bei einer Slug-Änderung erhalten, da ACF Options-Werte nach dem Feld-`name` (nicht nach dem Page-Slug) in der Datenbank gespeichert werden.
 
+### UI-Features
+
+| Field | Name | Typ | Standard | Beschreibung |
+|---|---|---|---|---|
+| Back-to-Top Button | `btt_enabled` | true_false | 1 | Button zum Seitenanfang |
+| Scroll Progress Bar | `scroll_progress_enabled` | true_false | 0 | Fortschrittslinie auf single.php |
+
+
 ## 14. Hero Image Settings
 
 **Field Group:** `group_hero_global` + `group_hero_image`  
@@ -820,5 +828,5 @@ Pro Kategorie je ein Head- und Body-Code Feld. Snippets werden nach Consent des 
 
 ---
 
-**113 fields ready!** 🎨  
+**115 fields ready!** 🎨  
 **Next:** [Deployment Guide](10_DEPLOYMENT.md) →

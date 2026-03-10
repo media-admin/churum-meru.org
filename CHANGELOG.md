@@ -6,6 +6,49 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.13.0] - 2026-03-09
+
+### custom-theme 1.13.0
+
+#### Added
+- **`_scroll-progress.scss`** + **`scroll-progress.js`** – Scroll Progress Bar:
+  - 3px Linie am oberen Viewport-Rand, Farbe `$color-primary`
+  - Glow-Dot am rechten Ende
+  - CSS Custom Property `--scroll-progress` (0%–100%), per `rAF` aktualisiert
+  - ARIA `role="progressbar"` + `aria-valuenow`
+  - `prefers-reduced-motion`: Glow-Dot ausgeblendet
+  - Nur auf `single.php` + nur wenn ACF `scroll_progress_enabled` aktiv
+- **`header.php`**: `<div class="scroll-progress">` – ACF-gesteuert + `is_single()`
+- **`style.scss`**: `@use 'components/scroll-progress'` registriert
+
+#### Changed
+- **`_back-to-top.scss`** – vollständig überarbeitet:
+  - SVG-Pfeil (Chevron) statt Text-Zeichen
+  - Hover: `translateY(-3px)` + `$color-primary-dark`
+  - `focus-visible` Ring für Keyboard-Navigation
+  - Cookie-Banner-Abstandsregel (`.cookie-notice-visible`)
+- **`back-to-top.js`** – neu geschrieben:
+  - Arbeitet mit PHP-gerendtertem Element (kein `createElement` mehr)
+  - `rAF`-Throttling statt direktem Scroll-Handler
+  - Keyboard-Support (Enter / Space)
+  - Focus-Rückgabe nach Scroll auf erstes fokussierbares Element
+- **`footer.php`**: `<button class="back-to-top">` – ACF-gesteuert (`btt_enabled`)
+- **`main.js`**: BackToTop + ScrollProgress als statische Imports,
+  Initialisierung nur wenn DOM-Element vorhanden
+
+#### Fixed
+- **`sentry.js`**: `new Sentry.BrowserTracing()` → `Sentry.browserTracingIntegration()`
+  (API-Änderung in `@sentry/browser` v8)
+
+### media-lab-agency-core 1.6.0 (ACF)
+
+#### Added
+- **`field_btt_enabled`** (true_false, default: 1) – Back-to-Top Button
+- **`field_scroll_progress_enabled`** (true_false, default: 0) – Scroll Progress Bar
+  → beide in Logo / Globale Einstellungen unter „UI-Features"
+
+---
+
 ## [1.12.0] - 2026-03-09
 
 ### media-lab-agency-core 1.6.0

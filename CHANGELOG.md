@@ -6,6 +6,28 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.12.0] - 2026-03-09
+
+### media-lab-agency-core 1.6.0
+
+#### Added
+- **`inc/hcaptcha.php`** – hCaptcha Integration (kein Drittanbieter-Plugin nötig):
+  - `medialab_hcaptcha_active()` – globaler Aktivitätsstatus
+  - `medialab_hcaptcha_widget($id)` – HTML-Widget-Ausgabe
+  - `medialab_hcaptcha_verify()` – serverseitige Verifikation via `api.hcaptcha.com/siteverify`
+  - **CF7**: Widget vor Submit-Button + `wpcf7_validate` Hook
+  - **WP-Login**: Widget + `authenticate` Filter (Prio 30)
+  - **WooCommerce Checkout**: Widget + `woocommerce_checkout_process`
+  - **WooCommerce Registrierung**: Widget + `woocommerce_process_registration_errors`
+  - Script `hcaptcha-api` nur auf relevanten Seiten eingebunden
+- **ACF-Felder** in Spam-Schutz-Seite ergänzt (9 neue Felder):
+  `hcaptcha_enabled`, `hcaptcha_site_key`, `hcaptcha_secret_key`,
+  `hcaptcha_cf7`, `hcaptcha_wp_login`, `hcaptcha_woo_checkout`,
+  `hcaptcha_woo_register`, `hcaptcha_theme`, `hcaptcha_size`
+  – alle Felder außer dem Schalter via `conditional_logic` versteckt
+
+---
+
 ## [1.11.1] - 2026-03-09
 
 ### media-lab-agency-core 1.5.5

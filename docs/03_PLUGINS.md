@@ -1,6 +1,6 @@
 # Plugin-Dokumentation
 
-**Version:** 1.11.1 | **Letzte Aktualisierung:** 2026-03-09
+**Version:** 1.12.0 | **Letzte Aktualisierung:** 2026-03-09
 
 ---
 
@@ -8,13 +8,13 @@
 
 | Plugin | Version | Zweck | Modifizierbar? |
 |---|---|---|---|
-| media-lab-agency-core | 1.5.5 | Framework + Features | ❌ Nie |
+| media-lab-agency-core | 1.6.0 | Framework + Features | ❌ Nie |
 | media-lab-seo | 1.1.1 | SEO-Toolkit | ✅ Konfigurierbar |
 | advanced-custom-fields-pro | aktuell | Custom Fields | ✅ Konfigurierbar |
 
 ---
 
-## media-lab-agency-core `v1.5.5`
+## media-lab-agency-core `v1.6.0`
 
 **Datei:** `cms/wp-content/plugins/media-lab-agency-core/media-lab-agency-core.php`
 
@@ -39,6 +39,7 @@ Dieses Plugin wird **unverändert auf allen Projekten eingesetzt**. Nie direkt m
 | `inc/maintenance.php` | Maintenance Mode (503, Admin-Bypass, ACF-konfigurierbar) |
 | `inc/media-replace.php` | Medien ersetzen ohne Plugin-Verlust der Attachment-ID |
 | `inc/cookie-consent.php` | Cookie Consent Manager (Banner, Modal, Toggle-Integration, Snippet-Verwaltung) |
+| `inc/hcaptcha.php` | hCaptcha Integration – CF7, WP-Login, WooCommerce (kein Plugin nötig) |
 | `inc/hero-image.php` | Hero Image – Subtitle, zwei Buttons (primary/outline/ghost), Höhe, Ausrichtung, Opacity |
 
 ### SMTP-Konfiguration
@@ -155,6 +156,44 @@ if (!medialab_check_rate_limit('meine_action', 20, 60)) {
 ```
 
 ---
+
+
+### hCaptcha
+
+DSGVO-konformer CAPTCHA-Schutz ohne Drittanbieter-Plugin. Konfiguration unter **Agency Core → Spam-Schutz / E-Mail Obfuskierung**.
+
+**Voraussetzung:** Kostenloser Account auf [hcaptcha.com](https://hcaptcha.com) → Site anlegen → Site Key + Secret Key kopieren.
+
+**Abgedeckte Formulare:**
+
+| Formular | Hook (Frontend) | Hook (Validierung) |
+|---|---|---|
+| Contact Form 7 | `wpcf7_form_elements` | `wpcf7_validate` |
+| WP-Login | `login_form` | `authenticate` (Prio 30) |
+| WooCommerce Checkout | `woocommerce_review_order_before_submit` | `woocommerce_checkout_process` |
+| WooCommerce Registrierung | `woocommerce_register_form` | `woocommerce_process_registration_errors` |
+
+**Widget-Optionen:**
+
+| Einstellung | Optionen | Beschreibung |
+|---|---|---|
+| Theme | `light` / `dark` | Passt sich dem Design an |
+| Größe | `normal` / `compact` / `invisible` | Invisible: kein sichtbares Widget, nur bei verdächtigem Verhalten |
+
+**Öffentliche Funktionen:**
+
+```php
+// Status prüfen (aktiv + Keys gesetzt?)
+medialab_hcaptcha_active(): bool
+
+// Widget-HTML ausgeben
+medialab_hcaptcha_widget( string $id = '' ): string
+
+// Token serverseitig verifizieren
+medialab_hcaptcha_verify(): bool|WP_Error
+```
+
+**Script-Einbindung:** `hcaptcha-api` wird nur auf Seiten geladen, auf denen ein Widget sichtbar ist – kein unnötiges JS auf allen Seiten.
 
 
 ### Hero Image

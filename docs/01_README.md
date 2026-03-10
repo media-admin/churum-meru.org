@@ -1,6 +1,6 @@
 # Media Lab Starter Kit - Internal Documentation
 
-**Version:** 1.11.1  
+**Version:** 1.12.0  
 **Last Updated:** March 9, 2026  
 **Architecture:** Modular Plugin System
 
@@ -33,7 +33,7 @@
 WordPress Installation
 │
 ├── 📦 Regular Plugins
-│   ├── media-lab-agency-core/      v1.5.5 (Framework)
+│   ├── media-lab-agency-core/      v1.6.0 (Framework)
 │   ├── media-lab-project-starter/  v1.0.0 (Content Structure)
 │   ├── media-lab-analytics/        v1.0.0 (Tracking)
 │   └── media-lab-seo/              v1.1.1 (SEO)
@@ -54,6 +54,7 @@ WordPress Installation
 - ✅ Contact Form 7 Styling vollständig überarbeitet
 - ✅ Hero Image: Subtitle, Buttons, Höhen-/Ausrichtungs-Varianten
 - ✅ PHP 8.1 Deprecated-Warnings behoben (ACF message-Felder)
+- ✅ hCaptcha Integration (CF7, WP-Login, WooCommerce)
 
 ---
 

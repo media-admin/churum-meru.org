@@ -1,6 +1,6 @@
 # ACF Fields Reference
 
-**Version:** 1.11.1  
+**Version:** 1.12.0  
 **Letzte Aktualisierung:** 2026-03-09  
 **Plugin:** Media Lab Project Starter v1.0.0 (optional)
 
@@ -790,6 +790,28 @@ Pro Kategorie je ein Head- und Body-Code Feld. Snippets werden nach Consent des 
 
 ---
 
+## 15. hCaptcha Settings
+
+**Field Group:** in `group_obfuscation` (Spam-Schutz-Seite)  
+**Options Page:** Agency Core → Spam-Schutz / E-Mail Obfuskierung  
+**Plugin:** media-lab-agency-core (v1.6.0+)
+
+| Field | Name | Typ | Standard | Beschreibung |
+|---|---|---|---|---|
+| hCaptcha aktivieren | `hcaptcha_enabled` | true_false | 0 | Globaler Schalter |
+| Site Key | `hcaptcha_site_key` | text | – | Öffentlicher Key von hcaptcha.com |
+| Secret Key | `hcaptcha_secret_key` | text | – | Privater Key – nur serverseitig verwendet |
+| Contact Form 7 | `hcaptcha_cf7` | true_false | 1 | Alle CF7-Formulare schützen |
+| WordPress Login | `hcaptcha_wp_login` | true_false | 1 | wp-login.php schützen |
+| WooCommerce Checkout | `hcaptcha_woo_checkout` | true_false | 0 | Checkout schützen |
+| WooCommerce Registrierung | `hcaptcha_woo_register` | true_false | 0 | Registrierungsformular schützen |
+| Widget-Theme | `hcaptcha_theme` | select | `light` | `light` / `dark` |
+| Widget-Größe | `hcaptcha_size` | select | `normal` | `normal` / `compact` / `invisible` |
+
+> Alle Felder außer dem Schalter werden via `conditional_logic` erst sichtbar, wenn `hcaptcha_enabled` aktiv ist.
+
+---
+
 ## Next Steps
 
 - **Custom Post Types:** [CPT Documentation](08_CUSTOM-POST-TYPES.md)
@@ -798,5 +820,5 @@ Pro Kategorie je ein Head- und Body-Code Feld. Snippets werden nach Consent des 
 
 ---
 
-**104 fields ready!** 🎨  
+**113 fields ready!** 🎨  
 **Next:** [Deployment Guide](10_DEPLOYMENT.md) →

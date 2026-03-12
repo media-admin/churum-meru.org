@@ -1506,3 +1506,4 @@ Desktop.ini
 # ============================================
 /scripts/deploy-*.js
 deploy-config.local.*
+cms/wp-content/themes/custom-theme/assets/hot

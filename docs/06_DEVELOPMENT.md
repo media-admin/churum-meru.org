@@ -107,12 +107,45 @@ assets/src/scss/blocks.scss       → dist/css/blocks-scss.css     (Block Styles
 **Befehle:**
 
 ```bash
-npm run dev            # Hot Reload (Valet-URL: media-lab-starter-kit.test)
+npm run dev            # Vite Dev Server + Hot Reload (startet vite-dev.mjs)
+npm run dev:stop       # Hot-Datei manuell löschen (nach Absturz)
 npm run build          # Production: beide Configs nacheinander
 npm run build:theme    # Nur Theme-Assets
 npm run build:blocks   # Nur Plugin-Block-Assets
 npm run watch          # Watch: beide Configs parallel
 ```
+
+**Wie `npm run dev` funktioniert (v1.5.1):**
+
+Der Dev-Befehl läuft nicht mehr direkt via `vite`, sondern über `scripts/vite-dev.mjs`.
+Dieses Script verwaltet eine `hot`-Datei im Theme-Assets-Ordner:
+
+```
+npm run dev startet
+  → erstellt: assets/hot          ← WordPress erkennt: Dev Server aktiv
+  → startet: Vite auf localhost:3000
+  → WordPress lädt @vite/client   ← WebSocket-Verbindung → HMR & Live Reload
+Ctrl+C
+  → löscht: assets/hot            ← WordPress zurück im Prod-Modus
+```
+
+**Wichtig:** `assets/hot` muss in `.gitignore` eingetragen sein:
+```
+cms/wp-content/themes/custom-theme/assets/hot
+```
+
+**CSS-Enqueueing (v1.5.1):**
+
+CSS wird im Production-Modus direkt per Dateipfad geladen (nicht via Manifest-Lookup),
+da Vite bei `cssCodeSplit: false` die CSS-Datei nicht im Manifest unter `main.js` verlinkt:
+
+```php
+// enqueue.php – Prod-Modus
+$css_file = $dist . '/css/style.css';
+wp_enqueue_style('custom-theme-style', $dist_uri . '/css/style.css', [], filemtime($css_file));
+```
+
+`filemtime()` übernimmt das Cache-Busting automatisch.
 
 **Was `npm run build` macht:**
 - Build 1 (Theme): Terser, Autoprefixer, SCSS → eine `style.css`, JS-Chunks

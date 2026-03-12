@@ -807,6 +807,103 @@ wp cache flush
 wp rewrite flush
 ```
 
+
+## Neue Probleme (v1.5.1)
+
+### Live Reload / HMR funktioniert nicht
+
+**Symptom:** `npm run dev` läuft, aber Änderungen an SCSS oder PHP werden im Browser nicht automatisch übernommen.
+
+**Ursache:** WordPress lädt Assets immer aus `dist/` und baut nie eine WebSocket-Verbindung
+zu Vite auf — es sei denn, `@vite/client` wird explizit enqueued. Das passiert nur wenn
+die `hot`-Datei vorhanden ist.
+
+**Checkliste:**
+
+1. `hot`-Datei vorhanden?
+```bash
+ls cms/wp-content/themes/custom-theme/assets/hot
+```
+
+2. Falls nicht: `scripts/vite-dev.mjs` enthält falschen Theme-Pfad.
+```bash
+cat scripts/vite-dev.mjs | grep HOT_FILE
+# Muss auf das korrekte Theme zeigen, z.B. stadtwirt-theme statt custom-theme
+```
+
+3. Port 3000 bereits belegt?
+```bash
+lsof -ti :3000 | xargs kill -9
+npm run dev:stop && npm run dev
+```
+
+4. Im Browser DevTools → Network prüfen: Wird `@vite/client` von `localhost:3000` geladen?
+   - Ja → WebSocket-Verbindung besteht, HMR aktiv
+   - Nein → `hot`-Datei fehlt oder `enqueue.php` nicht aktuell
+
+---
+
+### Hot-Datei bleibt nach Absturz liegen
+
+**Symptom:** Nach einem Terminal-Absturz zeigt das Frontend kein CSS mehr (WordPress
+versucht Assets von `localhost:3000` zu laden, der aber nicht läuft).
+
+**Fix:**
+```bash
+npm run dev:stop
+# Oder manuell:
+rm cms/wp-content/themes/custom-theme/assets/hot
+```
+
+Danach normale Browser-Seite laden → CSS aus `dist/` wird wieder verwendet.
+
+---
+
+### CSS fehlt nach `npm run build`
+
+**Symptom:** Nach dem Build und Browser-Reload ist das gesamte Styling verschwunden.
+
+**Ursache A:** Falscher Theme-Ordner in `vite.config.js`.
+```bash
+grep "themeDir" vite.config.js
+# Muss auf das korrekte Theme zeigen
+```
+
+**Ursache B:** `hot`-Datei noch vorhanden → WordPress lädt vom (gestoppten) Dev Server.
+```bash
+npm run dev:stop
+```
+
+**Ursache C:** `assets/dist/css/style.css` existiert nicht.
+```bash
+ls cms/wp-content/themes/custom-theme/assets/dist/css/
+# Falls leer: npm run build erneut ausführen
+```
+
+---
+
+### Beim Portieren auf neues Projekt (z.B. stadtwirt-theme)
+
+Folgende Stellen müssen angepasst werden wenn das Theme einen anderen Ordnernamen hat:
+
+| Datei | Zu ändernde Stelle |
+|---|---|
+| `vite.config.js` | `themeDir` Pfad + `base` URL + `liveReload()` Pfad |
+| `scripts/vite-dev.mjs` | `HOT_FILE` Pfad |
+| `inc/enqueue.php` | Alle Funktionsnamen + Handles + `window.customTheme`-Name |
+| `assets/src/js/**/*.js` | `window.customTheme` → `window.{projektname}Theme` |
+
+**Schnellcheck nach dem Portieren:**
+```bash
+# Alle alten Theme-Referenzen finden
+grep -r "custom-theme" vite.config.js scripts/vite-dev.mjs
+
+# Alle alten window.customTheme Referenzen finden
+grep -r "window.customTheme" cms/wp-content/themes/{dein-theme}/assets/src/
+```
+
+
+
 ---
 
 ## Getting Help

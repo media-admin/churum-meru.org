@@ -5,27 +5,45 @@ import { fileURLToPath } from 'url';
 import autoprefixer from 'autoprefixer';
 
 // Compression (Brotli + Gzip) – graceful fallback wenn nicht installiert
-// Installation: npm install -D vite-plugin-compression2
 let compression = null;
 try {
-    const mod = await import('vite-plugin-compression2');
-    compression = mod.compression ?? mod.default;
+  const mod = await import('vite-plugin-compression2');
+  compression = mod.compression ?? mod.default;
 } catch (e) { /* not installed */ }
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const themeDir  = path.resolve(__dirname, 'cms/wp-content/themes/custom-theme');
+const __dirname  = path.dirname(__filename);
+const themeDir   = path.resolve(__dirname, 'cms/wp-content/themes/custom-theme');
+
+const isDev = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging';
 
 export default defineConfig({
   root: path.resolve(themeDir, 'assets'),
-  base: '/wp-content/themes/custom-theme/assets/dist/',
+
+  /**
+   * FIX: Im Dev-Modus zeigt base auf den Vite Dev Server (localhost:3000).
+   * WordPress liest diese URL aus einer JSON-Datei (s.u.) und verwendet sie
+   * für alle Asset-URLs → Browser verbindet sich mit dem Vite-WebSocket
+   * → HMR und Live Reload funktionieren.
+   *
+   * Im Build-Modus: normaler dist-Pfad für WordPress.
+   */
+  base: isDev
+    ? 'http://localhost:3000/'
+    : '/wp-content/themes/custom-theme/assets/dist/',
 
   plugins: [
+    // Triggert Full-Page-Reload bei PHP-Änderungen (relativ zum CWD = Projekt-Root)
     liveReload([
       'cms/wp-content/themes/custom-theme/**/*.php',
+      'cms/wp-content/themes/custom-theme/**/*.twig', // falls Twig verwendet wird
     ]),
-    ...(compression ? [compression({ algorithm: 'brotliCompress', exclude: [/\.(br|gz)$/] })] : []),
-    ...(compression ? [compression({ algorithm: 'gzip',           exclude: [/\.(br|gz)$/] })] : []),
+    ...(compression
+      ? [
+          compression({ algorithm: 'brotliCompress', exclude: [/\.(br|gz)$/] }),
+          compression({ algorithm: 'gzip',           exclude: [/\.(br|gz)$/] }),
+        ]
+      : []),
   ],
 
   build: {
@@ -61,11 +79,17 @@ export default defineConfig({
   },
 
   server: {
-    host: 'localhost',
-    port: 3000,
+    host:       'localhost',
+    port:       3000,
     strictPort: true,
-    cors: true,
-    hmr: { host: 'localhost', port: 3000 },
+    cors:       true,
+
+    // HMR über expliziten Host – wichtig wenn WordPress auf einer anderen Domain läuft
+    hmr: {
+      host:     'localhost',
+      port:     3000,
+      protocol: 'ws',
+    },
   },
 
   css: {

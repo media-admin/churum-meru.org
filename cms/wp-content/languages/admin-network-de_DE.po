@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.9.x - Development - Administration - Network Admin package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-01 15:11:18+0000\n"
+"PO-Revision-Date: 2026-03-12 22:43:19+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -128,7 +128,7 @@ msgstr "Die Tabelle ist nach Website-Pfad sortiert."
 
 #: wp-admin/includes/class-wp-ms-sites-list-table.php:395
 msgid "Table ordered by Site Domain Name."
-msgstr "Die Tabelle ist nach Website-Domain-Name sortiert."
+msgstr "Die Tabelle ist nach Website-Domainname sortiert."
 
 #: wp-admin/includes/network.php:588
 msgid "Network configuration authentication keys"
@@ -183,15 +183,15 @@ msgstr "Kein Spam"
 #: wp-admin/network/themes.php:438
 msgid "%s theme will no longer be auto-updated."
 msgid_plural "%s themes will no longer be auto-updated."
-msgstr[0] "%s Theme wird nicht mehr automatisch aktualisiert."
-msgstr[1] "%s Themes werden nicht mehr automatisch aktualisiert."
+msgstr[0] "%s Theme wird nicht mehr automatisch aktualisiert."
+msgstr[1] "%s Themes werden nicht mehr automatisch aktualisiert."
 
 #. translators: %s: Number of themes.
 #: wp-admin/network/themes.php:427
 msgid "%s theme will be auto-updated."
 msgid_plural "%s themes will be auto-updated."
-msgstr[0] "%s Theme wird automatisch aktualisiert."
-msgstr[1] "%s Themes werden automatisch aktualisiert."
+msgstr[0] "%s Theme wird automatisch aktualisiert."
+msgstr[1] "%s Themes werden automatisch aktualisiert."
 
 #: wp-admin/network/themes.php:240
 msgid "Sorry, you are not allowed to change themes automatic update settings."
@@ -232,14 +232,14 @@ msgstr[1] "Erwachseneninhalt <span class=\"count\">(%s)</span>"
 msgid "Archived <span class=\"count\">(%s)</span>"
 msgid_plural "Archived <span class=\"count\">(%s)</span>"
 msgstr[0] "Archiviert <span class=\"count\">(%s)</span>"
-msgstr[1] "Archivierte <span class=\"count\">(%s)</span>"
+msgstr[1] "Archiviert <span class=\"count\">(%s)</span>"
 
 #. translators: %s: Number of sites.
 #: wp-admin/includes/class-wp-ms-sites-list-table.php:233
 msgid "Public <span class=\"count\">(%s)</span>"
 msgid_plural "Public <span class=\"count\">(%s)</span>"
 msgstr[0] "Öffentlich <span class=\"count\">(%s)</span>"
-msgstr[1] "Öffentliche <span class=\"count\">(%s)</span>"
+msgstr[1] "Öffentlich <span class=\"count\">(%s)</span>"
 
 #. translators: %s: Number of sites.
 #: wp-admin/includes/class-wp-ms-sites-list-table.php:226
@@ -254,8 +254,8 @@ msgstr[1] "Alle <span class=\"count\">(%s)</span>"
 msgctxt "themes"
 msgid "Update Available <span class=\"count\">(%s)</span>"
 msgid_plural "Update Available <span class=\"count\">(%s)</span>"
-msgstr[0] "Update verfügbar <span class=\"count\">(%s)</span>"
-msgstr[1] "Updates verfügbar <span class=\"count\">(%s)</span>"
+msgstr[0] "Aktualisierung verfügbar <span class=\"count\">(%s)</span>"
+msgstr[1] "Aktualisierungen verfügbar <span class=\"count\">(%s)</span>"
 
 #: wp-admin/includes/class-wp-ms-sites-list-table.php:652
 msgid "Main"
@@ -268,7 +268,7 @@ msgstr "<a href=\"https://wordpress.org/documentation/article/tools-network-scre
 #. translators: %s: DO_NOT_UPGRADE_GLOBAL_TABLES
 #: wp-admin/includes/network.php:120
 msgid "The constant %s cannot be defined when creating a network."
-msgstr "Die Konstante %s kann nicht beim Erstellen eines Netzwerks definiert sein."
+msgstr "Die Konstante %s kann nicht beim Erstellen eines Netzwerks definiert werden."
 
 #: wp-admin/network/sites.php:222
 msgid "You are about to delete the following sites:"
@@ -336,7 +336,7 @@ msgstr "Du bist leider nicht berechtigt, diese Website zu bearbeiten."
 
 #: wp-admin/network/settings.php:385
 msgid "The email address of the first comment author on a new site."
-msgstr "Die E-Mail-Adresse des ersten Kommentar-Autors auf einer neuen Website."
+msgstr "Die E-Mail-Adresse des ersten Kommentarautors auf einer neuen Website."
 
 #: wp-admin/network/settings.php:381
 msgid "First Comment Email"
@@ -374,7 +374,7 @@ msgstr "Diese eindeutigen Authentifizierungsschlüssel fehlen ebenfalls in der D
 #. translators: %s: wp-config.php
 #: wp-admin/includes/network.php:575
 msgid "This unique authentication key is also missing from your %s file."
-msgstr "Dieser einmalige Authentifizierungsschlüssel fehlt ebenfalls in der Datei %s."
+msgstr "Dieser eindeutige Authentifizierungsschlüssel fehlt ebenfalls in der Datei %s."
 
 #. translators: 1: localhost, 2: localhost.localdomain
 #: wp-admin/includes/network.php:326
@@ -389,7 +389,7 @@ msgstr "Die Internetadresse deines Netzwerks wird %s sein."
 #. translators: 1: Site URL, 2: Host name, 3: www.
 #: wp-admin/includes/network.php:294
 msgid "You should consider changing your site domain to %1$s before enabling the network feature. It will still be possible to visit your site using the %3$s prefix with an address like %2$s but any links will not have the %3$s prefix."
-msgstr "Du solltest in Erwägung ziehen, deine Website-Domain in %1$s zu ändern, bevor du die Netzwerk-Funktionalität aktivierst. Es wird weiterhin möglich sein, deine Website unter Verwendung des Präfixes %3$s mit einer Adresse wie %2$s aufzurufen, aber die Links werden kein Präfix %3$s haben."
+msgstr "Du solltest in Erwägung ziehen, deine Website-Domain in %1$s zu ändern, bevor du die Netzwerkfunktion aktivierst. Es wird weiterhin möglich sein, deine Website unter Verwendung des Präfixes %3$s mit einer Adresse wie %2$s aufzurufen, aber die Links werden kein Präfix %3$s haben."
 
 #: wp-admin/includes/network.php:242
 msgid "You cannot change this later."
@@ -1089,7 +1089,7 @@ msgstr "Sobald das Netzwerk erstellt wurde, kannst du deine Plugins wieder aktiv
 #. translators: %s: URL to Plugins screen.
 #: wp-admin/includes/network.php:141
 msgid "Please <a href=\"%s\">deactivate your plugins</a> before enabling the Network feature."
-msgstr "Bitte <a href=\"%s\">deaktiviere deine Plugins</a>, bevor du die Netzwerk-Funktionalität aktivierst."
+msgstr "Bitte <a href=\"%s\">deaktiviere deine Plugins</a>, bevor du die Netzwerkfunktion aktivierst."
 
 #: wp-admin/network.php:74
 msgid "Network"

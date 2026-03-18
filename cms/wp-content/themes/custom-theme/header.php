@@ -16,7 +16,12 @@
     </script>
 </head>
 <body <?php body_class(); ?>>
+
 <?php wp_body_open(); ?>
+
+<a class="skip-link" href="#main-content">
+    <?php esc_html_e( 'Zum Inhalt springen', 'custom-theme' ); ?>
+</a>
 
 <?php
 // ── Scroll Progress Bar ───────────────────────────────────────────────────
@@ -122,7 +127,7 @@ if (function_exists('get_field') && get_field('top_header_enable', 'option')) :
 
 
 
-<header class="site-header">
+<header class="site-header" role="banner">
     <nav class="site-navigation" role="navigation" aria-label="Primary Navigation">
         <!-- Logo -->
         <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo" aria-label="<?php bloginfo('name'); ?>">
@@ -192,4 +197,4 @@ if (function_exists('get_field') && get_field('top_header_enable', 'option')) :
 <!-- Mobile Overlay -->
 <div class="mobile-menu-overlay"></div>
 
-<main id="main-content" class="site-main">
+<main id="main-content" class="site-main" tabindex="-1">

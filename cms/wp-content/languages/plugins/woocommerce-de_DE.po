@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-17 21:37:30+0000\n"
+"PO-Revision-Date: 2026-03-18 21:37:59+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45284,11 +45284,6 @@ msgstr "Webhook erfolgreich erstellt."
 msgid "Webhooks"
 msgstr "Webhooks"
 
-#. translators: %s: WooCommerce version
-#: includes/admin/class-wc-admin.php:367
-msgid "Version %s"
-msgstr "Version %s"
-
 #: includes/class-wc-install.php:2657
 msgid "Docs"
 msgstr "Dokumentation"
@@ -46168,6 +46163,11 @@ msgstr "Begriffe erfolgreich neu gezählt"
 #: includes/admin/meta-boxes/class-wc-meta-box-coupon-data.php:180
 msgid "Check this box if the coupon should not apply to items on sale. Per-item coupons will only work if the item is not on sale. Per-cart coupons will only work if there are items in the cart that are not on sale."
 msgstr "Aktiviere diese Option, wenn der Gutschein nicht für Produkte gelten soll, die im Angebot sind. Gutscheine pro Produkt/Artikel funktionieren nur, wenn das Produkt nicht im Angebot ist. Gutscheine, die pro Warenkorb gelten, sind nur einlösbar, wenn der Warenkorb keine Produkte enthält, die im Angebot sind."
+
+#. translators: %s: WooCommerce version
+#: includes/admin/class-wc-admin.php:367
+msgid "Version %s"
+msgstr "Version %s"
 
 #: includes/admin/class-wc-admin-post-types.php:138
 #: assets/client/admin/product-editor/index.js:2

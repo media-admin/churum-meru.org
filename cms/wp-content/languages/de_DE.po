@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.9.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-18 00:14:24+0000\n"
+"PO-Revision-Date: 2026-03-19 19:55:08+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -464,7 +464,7 @@ msgstr "Akkordeon-Bereich"
 #: wp-includes/blocks/accordion-item/block.json
 msgctxt "block description"
 msgid "Wraps the heading and panel in one unit."
-msgstr "Umfasst die Überschrift und das Bedienfeld."
+msgstr "Umfasst die Überschrift und den Bereich."
 
 #: wp-includes/blocks/accordion-item/block.json
 msgctxt "block title"
@@ -509,7 +509,7 @@ msgstr "Das Feld „user_pass“ ist beim Erstellen eines neuen Benutzers erford
 #. translators: %s is the class name
 #: wp-includes/template.php:1026 wp-includes/template.php:1065
 msgid "Uncaught \"%s\" thrown:"
-msgstr "Unerwartet „%s” ausgegeben:"
+msgstr "Unerwartet „%s“ ausgegeben:"
 
 #: wp-includes/template.php:975
 msgid "User error triggered:"
@@ -1412,7 +1412,7 @@ msgstr "Ob oben gehaltene Beiträge ignoriert werden sollen oder nicht."
 #: wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php:182
 #: wp-includes/script-loader.php:1032
 msgid "The web server cannot generate responsive image sizes for this image. Convert it to JPEG or PNG before uploading."
-msgstr "Der Webserver kann keine responsiven Bildergrößen für dieses Bild erzeugen. Wandle es in JPEG oder PNG um, bevor du es hochlädst."
+msgstr "Der Webserver kann keine responsiven Bildgrößen für dieses Bild erzeugen. Wandle es in JPEG oder PNG um, bevor du es hochlädst."
 
 #: wp-includes/rest-api.php:445
 msgid "The REST route parameter must be a string."
@@ -1864,7 +1864,7 @@ msgstr "Die Route muss angegeben sein. Innerhalb des Namensraums ‚%1$s‘ sche
 #. translators: 1: string value of the namespace, 2: string value of the route.
 #: wp-includes/rest-api.php:45
 msgid "Routes must be namespaced with plugin or theme name and version. Instead there seems to be an empty namespace '%1$s' for route '%2$s'."
-msgstr "Routen müssen mit dem Namen und der Version des Plugins oder Themes benannt werden. Der Namespace ‚%1$s‘ für die Route ‚%2$s‘ scheint jedoch leer zu sein."
+msgstr "Routen müssen mit dem Namen und der Version des Plugins oder Themes benannt werden. Der Namensraum ‚%1$s‘ für die Route ‚%2$s‘ scheint jedoch leer zu sein."
 
 #: wp-includes/media-template.php:1556
 msgid "As an app icon and a browser icon."
@@ -4879,11 +4879,11 @@ msgstr "Die Menü-Position ist ungültig."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-menu-locations-controller.php:162
 msgid "Sorry, you are not allowed to view menu locations."
-msgstr "Du bist leider nicht berechtigt Menü-Positionen anzuzeigen."
+msgstr "Du bist leider nicht berechtigt, Menü-Positionen anzuzeigen."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-menu-locations-controller.php:57
 msgid "An alphanumeric identifier for the menu location."
-msgstr "Dies ist ein alphanumerischer Identifikator für die Menü-Position."
+msgstr "Ein alphanumerischer Identifikator für die Menü-Position."
 
 #. translators: %s: taxonomy name
 #: wp-includes/rest-api/endpoints/class-wp-rest-menu-items-controller.php:916
@@ -7656,21 +7656,21 @@ msgstr "Die Konstante %s wird nicht mehr unterstützt."
 #: wp-admin/includes/theme.php:953 wp-admin/includes/update.php:807
 #: wp-admin/themes.php:505 wp-admin/themes.php:902 wp-admin/themes.php:1213
 msgid "There is a new version of %s available, but it does not work with your version of PHP."
-msgstr "Es gibt eine neue Version von %s, aber es funktioniert nicht mit deiner PHP-Version."
+msgstr "Es gibt eine neue Version von %s, aber sie funktioniert nicht mit deiner PHP-Version."
 
 #. translators: %s: Theme name.
 #: wp-includes/customize/class-wp-customize-theme-control.php:146
 #: wp-admin/includes/theme.php:938 wp-admin/includes/update.php:794
 #: wp-admin/themes.php:492 wp-admin/themes.php:887 wp-admin/themes.php:1198
 msgid "There is a new version of %s available, but it does not work with your version of WordPress."
-msgstr "Es gibt eine neue Version von %s, aber es funktioniert nicht mit deiner WordPress-Version."
+msgstr "Es gibt eine neue Version von %s, aber sie funktioniert nicht mit deiner WordPress-Version."
 
 #. translators: %s: Theme name.
 #: wp-includes/customize/class-wp-customize-theme-control.php:116
 #: wp-admin/includes/theme.php:908 wp-admin/includes/update.php:766
 #: wp-admin/themes.php:464 wp-admin/themes.php:857 wp-admin/themes.php:1168
 msgid "There is a new version of %s available, but it does not work with your versions of WordPress and PHP."
-msgstr "Es gibt eine neue Version von %s, aber es funktioniert nicht mit deiner PHP- und WordPress-Version."
+msgstr "Es gibt eine neue Version von %s, aber sie funktioniert nicht mit deiner PHP- und WordPress-Version."
 
 #: wp-includes/customize/class-wp-customize-theme-control.php:220
 #: wp-admin/includes/theme.php:1024 wp-admin/theme-install.php:377
@@ -14092,7 +14092,7 @@ msgstr "Responsives Layout"
 
 #: wp-includes/class-wp-theme.php:1087
 msgid "Fluid Layout"
-msgstr "Fließendes Layout"
+msgstr "Dynamisches Layout"
 
 #: wp-includes/class-wp-theme.php:1086
 msgid "Fixed Layout"

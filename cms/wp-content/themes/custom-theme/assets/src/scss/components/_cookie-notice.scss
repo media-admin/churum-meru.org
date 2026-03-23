@@ -112,14 +112,18 @@
 // =============================================================================
 
 .cookie-modal {
-    // Basis-Layout (display:none via JS gesetzt bis Modal geöffnet wird)
-    position:        fixed;
-    inset:           0;
-    z-index:         9998;
-    align-items:     center;
+    position:  fixed;
+    inset:     0;
+    z-index:   9998;
+    display:   flex;
+    align-items: center;
     justify-content: center;
-    padding:         1rem;
-    // pointer-events:none ebenfalls via JS gesetzt wenn geschlossen
+    padding:   1rem;
+    pointer-events: none; // ← NEU
+
+    &.is-visible {
+        pointer-events: auto; // ← NEU
+    }
 }
 
 .cookie-modal__backdrop {

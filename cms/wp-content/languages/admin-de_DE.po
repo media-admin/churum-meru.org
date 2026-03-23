@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.9.x - Development - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-18 00:15:31+0000\n"
+"PO-Revision-Date: 2026-03-18 22:12:09+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1793,14 +1793,14 @@ msgstr "Das Argument %s muss ein Array sein."
 #: wp-admin/includes/class-wp-automatic-updater.php:1372
 #: wp-admin/includes/class-wp-automatic-updater.php:1444
 msgid "- %1$s version %2$s%3$s"
-msgstr "- %1$s Version %2$s%3$s"
+msgstr "- %1$s-Version %2$s%3$s"
 
 #. translators: 1: Plugin name, 2: Current version number, 3: New version
 #. number, 4: Plugin URL.
 #: wp-admin/includes/class-wp-automatic-updater.php:1363
 #: wp-admin/includes/class-wp-automatic-updater.php:1435
 msgid "- %1$s (from version %2$s to %3$s)%4$s"
-msgstr "- %1$s (von Version %2$s auf %3$s)%4$s"
+msgstr "- %1$s (von Version %2$s auf %3$s)%4$s"
 
 #: wp-admin/includes/class-wp-automatic-updater.php:1069
 msgid "Reach out to WordPress Core developers to ensure you'll never have this problem again."
@@ -2064,7 +2064,7 @@ msgstr "Erstelle umfangreiche Inhalte mit Blöcken und Vorlagen"
 #. translators: %s: Current WordPress version.
 #: wp-admin/includes/dashboard.php:2077
 msgid "Learn more about the %s version."
-msgstr "Erfahre mehr über die Version %s."
+msgstr "Erfahre mehr über die Version %s."
 
 #: wp-admin/freedoms.php:44
 msgid "WordPress is free and open source software"
@@ -2459,7 +2459,7 @@ msgstr "Einstellungen"
 #. translators: %s: WordPress version.
 #: wp-admin/update-core.php:82
 msgid "Re-install version %s"
-msgstr "Version %s erneut installieren"
+msgstr "Version %s erneut installieren"
 
 #. translators: %s: WordPress version.
 #: wp-admin/update-core.php:71
@@ -2904,7 +2904,7 @@ msgstr "Personenbezogene Daten löschen"
 #: wp-admin/includes/class-wp-automatic-updater.php:1395
 #: wp-admin/includes/class-wp-automatic-updater.php:1466
 msgid "- %1$s (from version %2$s to %3$s)"
-msgstr "- %1$s (von Version %2$s auf %3$s)"
+msgstr "- %1$s (von Version %2$s auf %3$s)"
 
 #: wp-admin/includes/template.php:2445
 msgid "Current Header Video"
@@ -3203,7 +3203,7 @@ msgstr "%s jetzt aktualisieren"
 #: wp-admin/includes/class-wp-automatic-updater.php:1403
 #: wp-admin/includes/class-wp-automatic-updater.php:1474
 msgid "- %1$s version %2$s"
-msgstr "- %1$s Version %2$s"
+msgstr "- %1$s-Version %2$s"
 
 #: wp-admin/theme-install.php:413 wp-admin/theme-install.php:492
 msgctxt "theme"
@@ -4731,7 +4731,7 @@ msgstr "Filter-Liste der personenbezogenen Daten exportieren"
 #. 4: Version number 5: URL to Update PHP page.
 #: wp-admin/includes/update.php:572
 msgid "There is a new version of %1$s available, but it does not work with your version of PHP. <a href=\"%2$s\" %3$s>View version %4$s details</a> or <a href=\"%5$s\">learn more about updating PHP</a>."
-msgstr "Es gibt eine neue Version von %1$s, aber sie funktioniert nicht mit deiner PHP-Version. <a href=\"%2$s\" %3$s>Siehe Details der Version %4$s (engl.)</a> oder <a href=\"%5$s\">erfahre mehr über die Aktualisierung von PHP (engl.)</a>."
+msgstr "Es gibt eine neue Version von %1$s, aber sie funktioniert nicht mit deiner PHP-Version. <a href=\"%2$s\" %3$s>Siehe Details der Version %4$s (engl.)</a> oder <a href=\"%5$s\">erfahre mehr über die Aktualisierung von PHP (engl.)</a>."
 
 #: wp-admin/includes/class-wp-plugins-list-table.php:1284
 msgid "This plugin failed to load properly and is paused during recovery mode."
@@ -5050,7 +5050,7 @@ msgstr "Stark veralteter SQL-Server"
 #. server recommended version number.
 #: wp-admin/includes/class-wp-site-health.php:1266
 msgid "For optimal performance and security reasons, you should consider running %1$s version %2$s or higher. Contact your web hosting company to correct this."
-msgstr "Aus Gründen der optimalen Leistung und Sicherheit wird empfohlen, %1$s Version %2$s oder höher auszuführen. Wende dich an dein Webhosting-Unternehmen, um dies zu korrigieren."
+msgstr "Aus Gründen der optimalen Leistung und Sicherheit wird empfohlen, %1$s-Version %2$s oder höher auszuführen. Wende dich an dein Webhosting-Unternehmen, um dies zu korrigieren."
 
 #: wp-admin/includes/class-wp-site-health.php:1260
 msgid "Outdated SQL server"
@@ -5325,7 +5325,7 @@ msgstr "(Neueste Version: %s)"
 #: wp-admin/includes/class-wp-debug-data.php:968
 #: wp-admin/includes/class-wp-debug-data.php:1356
 msgid "Version %1$s by %2$s"
-msgstr "Version %1$s von %2$s"
+msgstr "Version %1$s von %2$s"
 
 #: wp-admin/includes/class-wp-debug-data.php:787
 #: wp-admin/includes/class-wp-debug-data.php:963
@@ -7813,7 +7813,7 @@ msgstr "Die Mediendatei wurde aktualisiert."
 #: wp-admin/includes/update.php:738 wp-admin/includes/update.php:751
 #: wp-admin/update-core.php:575
 msgid "View %1$s version %2$s details"
-msgstr "Details der Version %2$s von %1$s anzeigen"
+msgstr "Details der Version %2$s von %1$s anzeigen"
 
 #. translators: 1: Relative date, 2: Time.
 #: wp-admin/includes/dashboard.php:1036
@@ -8170,7 +8170,7 @@ msgstr "(Aktueller Wert: %s)"
 #. translators: %s: WordPress version number.
 #: wp-admin/about.php:332
 msgid "<strong>Version %s</strong> addressed one security issue."
-msgstr "<strong>Version %s</strong> behob ein Sicherheitsproblem."
+msgstr "<strong>Version %s</strong> behebt ein Sicherheitsproblem."
 
 #. translators: The localized Gravatar URL.
 #: wp-admin/includes/upgrade.php:291 wp-admin/user-edit.php:648
@@ -8420,7 +8420,7 @@ msgstr "Linkliste"
 #. translators: %s: WordPress version.
 #: wp-admin/includes/update.php:284
 msgid "Get Version %s"
-msgstr "Version %s herunterladen"
+msgstr "Version %s herunterladen"
 
 #. translators: %s: Hidden accessibility text. Meta box title.
 #: wp-admin/includes/template.php:1424
@@ -9548,7 +9548,7 @@ msgstr "https://de.wordpress.org/support/forum/installation/"
 
 #: wp-admin/index.php:86
 msgid "<strong>At a Glance</strong> &mdash; Displays a summary of the content on your site and identifies which theme and version of WordPress you are using."
-msgstr "<strong>Auf einen Blick</strong> &ndash; Zeigt eine Zusammenfassung der Inhalte deiner Website und zeigt, welches Theme und welche WordPress-Version du verwendest."
+msgstr "<strong>Auf einen Blick</strong> &ndash; Zeigt eine Zusammenfassung der Inhalte deiner Website und zeigt, welches Theme und welche WordPress-Version du verwendest."
 
 #: wp-admin/index.php:65
 msgid "<strong>Box Controls</strong> &mdash; Click the title bar of the box to expand or collapse it. Some boxes added by plugins may have configurable content, and will show a &#8220;Configure&#8221; link in the title bar if you hover over it."
@@ -9856,7 +9856,7 @@ msgstr "Erfolg bei: %s"
 #. translators: %s: WordPress version.
 #: wp-admin/includes/class-wp-automatic-updater.php:1583
 msgid "FAILED: WordPress failed to update to %s"
-msgstr "Fehler! Die Aktualisierung von WordPress auf Version %s ist fehlgeschlagen"
+msgstr "Fehler! Die Aktualisierung von WordPress auf die Version %s ist fehlgeschlagen"
 
 #. translators: %s: WordPress version.
 #: wp-admin/includes/class-wp-automatic-updater.php:1580
@@ -9871,12 +9871,12 @@ msgstr "WordPress-Website: %s"
 #. translators: %s: WordPress version.
 #: wp-admin/includes/class-wp-automatic-updater.php:1083
 msgid "Your site was running version %s."
-msgstr "Deine Website läuft mit Version %s."
+msgstr "Deine Website führt die Version %s aus."
 
 #. translators: 1: Home URL, 2: WordPress version.
 #: wp-admin/includes/class-wp-automatic-updater.php:1029
 msgid "Your site at %1$s experienced a critical failure while trying to update WordPress to version %2$s."
-msgstr "Deine Website %1$s hat einen kritischen Fehler gemeldet, als versucht wurde WordPress auf Version %2$s zu aktualisieren."
+msgstr "Deine Website %1$s hat einen kritischen Fehler gemeldet, als versucht wurde WordPress auf Version %2$s zu aktualisieren."
 
 #. translators: %s: WordPress latest version.
 #: wp-admin/includes/class-wp-automatic-updater.php:995
@@ -9951,7 +9951,7 @@ msgstr "Bitte aktualisiere deine Website unter %1$s auf WordPress %2$s."
 #. translators: %s: WordPress version.
 #: wp-admin/includes/class-wp-automatic-updater.php:990
 msgid "For more on version %s, see the About WordPress screen:"
-msgstr "Um mehr über Version %s zu erfahren, schau dir die Seite „Über WordPress“ an:"
+msgstr "Weitere Informationen zur Version %s findest du auf dem Bildschirm „Über WordPress“:"
 
 #: wp-admin/includes/class-wp-automatic-updater.php:984
 msgid "No further action is needed on your part."
@@ -10957,7 +10957,7 @@ msgstr "Du kannst aus den Standard-Header-Bildern wählen oder ein eigenes Bild 
 
 #: wp-admin/includes/class-custom-image-header.php:110
 msgid "This screen is used to customize the header section of your theme."
-msgstr "Dieser Bildschirm wird verwendet, um den Header des Themes anpassen."
+msgstr "Dieser Bildschirm dient dazu, den Header deines Themes anzupassen."
 
 #: wp-admin/install.php:320 wp-admin/install.php:333
 msgid "Configuration Error"
@@ -10965,7 +10965,7 @@ msgstr "Konfigurationsfehler"
 
 #: wp-admin/media-new.php:55
 msgid "Revert to the <strong>Browser Uploader</strong> by clicking the link below the drag and drop box."
-msgstr "Kehre zum <strong>Browser-Uploader</strong> zurück, indem du den Link unter der Drag-and-drop-Box klickst."
+msgstr "Kehre zum <strong>Browser-Uploader</strong> zurück, indem du auf den Link unter der Drag-and-drop-Box klickst."
 
 #: wp-admin/users.php:615 wp-admin/network/users.php:260
 msgid "User deleted."
@@ -11143,7 +11143,7 @@ msgstr "Header-Text"
 #: wp-admin/includes/theme.php:255 wp-admin/includes/update.php:553
 #: wp-admin/includes/update.php:745
 msgid "There is a new version of %1$s available. <a href=\"%2$s\" %3$s>View version %4$s details</a> or <a href=\"%5$s\" %6$s>update now</a>."
-msgstr "Eine neue Version von %1$s ist verfügbar. <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a> oder <a href=\"%5$s\" %6$s>jetzt aktualisieren</a>."
+msgstr "Eine neue Version von %1$s ist verfügbar. <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a> oder <a href=\"%5$s\" %6$s>jetzt aktualisieren</a>."
 
 #. translators: %s: Plugin author.
 #: wp-admin/includes/plugin.php:215
@@ -11180,7 +11180,7 @@ msgstr "<strong>Willkommen</strong> &ndash; Zeigt Links für einige der häufigs
 #. 4: Version number.
 #: wp-admin/includes/theme.php:242 wp-admin/includes/update.php:732
 msgid "There is a new version of %1$s available. <a href=\"%2$s\" %3$s>View version %4$s details</a>. <em>Automatic update is unavailable for this theme.</em>"
-msgstr "Eine neue Version von %1$s ist verfügbar <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a>. <em>Eine automatische Aktualisierung ist für dieses Theme nicht verfügbar.</em>"
+msgstr "Eine neue Version von %1$s ist verfügbar <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a>. <em>Eine automatische Aktualisierung ist für dieses Theme nicht verfügbar.</em>"
 
 #: wp-admin/install.php:107 wp-admin/install.php:384
 msgctxt "Howdy"
@@ -11517,7 +11517,7 @@ msgstr[1] "<strong>Version %1$s</strong> behebt %2$s Fehler."
 #. translators: %s: WordPress version number.
 #: wp-admin/about.php:334
 msgid "<strong>Version %s</strong> addressed some security issues."
-msgstr "<strong>Version %s</strong> behob einige Sicherheitsprobleme."
+msgstr "<strong>Version %s</strong> behebt einige Sicherheitsprobleme."
 
 #: wp-admin/about.php:65 wp-admin/about.php:328
 msgid "Maintenance and Security Release"
@@ -11901,7 +11901,7 @@ msgstr "Die Tabelle %s ist in Ordnung."
 #. translators: %s: Plugin version.
 #: wp-admin/update-core.php:577
 msgid "View version %s details."
-msgstr "Details der Version %s anzeigen."
+msgstr "Details der Version %s anzeigen."
 
 #: wp-admin/includes/import.php:217
 msgid "Tumblr"
@@ -12024,7 +12024,7 @@ msgstr "Super-Administrator"
 #: wp-admin/index.php:113
 #: wp-admin/includes/class-wp-ms-themes-list-table.php:736
 msgid "Version %s"
-msgstr "Version %s"
+msgstr "Version %s"
 
 #. translators: %s: Number of plugins.
 #: wp-admin/includes/class-wp-plugins-list-table.php:565
@@ -12431,7 +12431,7 @@ msgstr "Du bist dabei, WordPress %s in <strong>Englisch (US)</strong> zu instal
 #. 4: Version number.
 #: wp-admin/includes/update.php:539
 msgid "There is a new version of %1$s available. <a href=\"%2$s\" %3$s>View version %4$s details</a>. <em>Automatic update is unavailable for this plugin.</em>"
-msgstr "Eine neue Version von %1$s ist verfügbar. <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a>. <em>Eine automatische Aktualisierung für dieses Plugin ist nicht verfügbar.</em>"
+msgstr "Eine neue Version von %1$s ist verfügbar. <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a>. <em>Eine automatische Aktualisierung für dieses Plugin ist nicht verfügbar.</em>"
 
 #: wp-admin/includes/class-theme-upgrader-skin.php:44 wp-admin/update.php:219
 msgid "Update Theme"
@@ -12523,7 +12523,7 @@ msgstr "Hinweis: Du kannst das Bild zuschneiden, indem du darauf klickst (das Ic
 
 #: wp-admin/edit-form-advanced.php:340
 msgid "For images only, you can click on Edit Image under the thumbnail to expand out an inline image editor with icons for cropping, rotating, or flipping the image as well as for undoing and redoing. The boxes on the right give you more options for scaling the image, for cropping it, and for cropping the thumbnail in a different way than you crop the original image. You can click on Help in those boxes to get more information."
-msgstr "Nur bei den Bildern kannst du auf „Original bearbeiten“ unter dem Thumbnail klicken, um einen Inline-Bildeditor mit Symbolen zum Zuschneiden, Drehen oder Spiegeln des Bildes sowie zum Rückgängigmachen und Wiederherstellen zu erweitern. Die Kästchen auf der rechten Seite bieten dir mehr Möglichkeiten, das Bild zu skalieren, es zu beschneiden und das Miniaturbild anders zu beschneiden als das Originalbild. Du kannst dort auch auf das Hilfe „?“ klicken, um weitere Informationen zu erhalten."
+msgstr "Nur bei Bildern kannst du unter dem Vorschaubild auf „Bild bearbeiten“ klicken, um einen integrierten Bildeditor zu öffnen, der Symbole zum Zuschneiden, Drehen oder Spiegeln des Bildes sowie zum Rückgängigmachen und Wiederherstellen enthält. Die Felder auf der rechten Seite bieten dir weitere Optionen zum Skalieren und Zuschneiden des Bildes sowie die Möglichkeit, das Vorschaubild unabhängig vom Originalbild zuzuschneiden. Du kannst in diesen Feldern auf Hilfe klicken, um weitere Informationen zu erhalten."
 
 #: wp-admin/edit-form-advanced.php:339
 msgid "This screen allows you to edit fields for metadata in a file within the media library."
@@ -12645,7 +12645,7 @@ msgstr "(Die Registrierung ist deaktiviert. Nur Benutzer dieser Website können 
 #: wp-admin/includes/theme.php:229 wp-admin/includes/update.php:526
 #: wp-admin/includes/update.php:719
 msgid "There is a new version of %1$s available. <a href=\"%2$s\" %3$s>View version %4$s details</a>."
-msgstr "Eine neue Version von %1$s ist verfügbar. <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a>."
+msgstr "Eine neue Version von %1$s ist verfügbar. <a href=\"%2$s\" %3$s>Details der Version %4$s anzeigen</a>."
 
 #: wp-admin/includes/class-bulk-theme-upgrader-skin.php:78
 #: wp-admin/includes/class-theme-installer-skin.php:180
@@ -12797,7 +12797,7 @@ msgstr "Du kannst Links normalerweise mithilfe von <a href=\"%s\">Widgets</a> hi
 
 #: wp-admin/edit-tags.php:286
 msgid "<strong>Slug</strong> &mdash; The &#8220;slug&#8221; is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
-msgstr "<strong>Titelform</strong> &ndash; Die &#8222;Titelform&#8220; ist die lesbare URL-Variante des Namens. Sie besteht normalerweise nur aus Kleinbuchstaben, Zahlen und Bindestrichen."
+msgstr "<strong>Titelform</strong> &ndash; Die &#8222;Titelform&#8220; ist die lesbare URL-Variante des Namens. Sie besteht normalerweise nur aus Kleinbuchstaben, Zahlen und Bindestrichen."
 
 #. translators: %s: URL to Press This bookmarklet.
 #: wp-admin/edit-form-advanced.php:308
@@ -13139,7 +13139,7 @@ msgstr "Erweiterte Menüeigenschaften anzeigen"
 #. translators: 1: Theme version, 2: New version.
 #: wp-admin/update-core.php:602 wp-admin/update-core.php:780
 msgid "You have version %1$s installed. Update to %2$s."
-msgstr "Du hast Version %1$s installiert. Aktualisiere auf Version %2$s."
+msgstr "Du hast Version %1$s installiert. Aktualisiere auf Version %2$s."
 
 #: wp-admin/includes/class-wp-debug-data.php:623
 #: wp-admin/includes/class-wp-debug-data.php:1178
@@ -13378,7 +13378,7 @@ msgstr "Wichtig:"
 #: wp-admin/includes/class-wp-theme-install-list-table.php:478
 #: wp-admin/update-core.php:74
 msgid "Update to version %s"
-msgstr "Auf Version %s aktualisieren"
+msgstr "Auf Version %s aktualisieren"
 
 #: wp-admin/setup-config.php:309
 msgid "<strong>Error:</strong> \"Table Prefix\" can only contain numbers, letters, and underscores."
@@ -14418,7 +14418,7 @@ msgstr "Benutzer müssen zum Kommentieren registriert und angemeldet sein"
 
 #: wp-admin/options-discussion.php:69
 msgid "Comment author must fill out name and email"
-msgstr "Benutzer müssen zum Kommentieren Name und E-Mail-Adresse angeben"
+msgstr "Kommentarautoren müssen ihren Namen und ihre E-Mail-Adresse angeben"
 
 #: wp-admin/options-discussion.php:65
 msgid "Other comment settings"

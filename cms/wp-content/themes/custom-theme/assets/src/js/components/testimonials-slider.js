@@ -41,11 +41,12 @@ export default class TestimonialsSlider {
           pauseOnMouseEnter: true,
         } : false,
         navigation: {
-          nextEl: '.testimonials__button--next',
-          prevEl: '.testimonials__button--prev',
+          nextEl: sliderElement.querySelector('.testimonials__button--next'),
+          prevEl: sliderElement.querySelector('.testimonials__button--prev'),
         },
         pagination: {
-          el: '.testimonials__pagination',
+          el: sliderElement.querySelector('.testimonials__pagination'),
+          type: 'bullets',
           clickable: true,
         },
         breakpoints: {
@@ -72,4 +73,3 @@ export default class TestimonialsSlider {
 }
 
 // Auto-initialize
-new TestimonialsSlider();

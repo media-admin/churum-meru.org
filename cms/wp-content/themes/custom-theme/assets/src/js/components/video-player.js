@@ -52,5 +52,3 @@ export default class VideoPlayer {
   }
 }
 
-// Initialize
-new VideoPlayer();

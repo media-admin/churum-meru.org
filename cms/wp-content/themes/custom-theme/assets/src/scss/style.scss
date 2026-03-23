@@ -60,6 +60,7 @@
 @use 'components/projects-grid';
 @use 'components/job-card';
 @use 'components/ajax-filters';
+@use 'components/carousel';
 
 // Templates
 @use 'templates/page-builder';
@@ -75,3 +76,6 @@
 // WooCommerce
 @use 'pages/page-404';
 @use 'woocommerce/woocommerce';
+
+// Swiper Overrides – muss zuletzt stehen
+@use 'components/swiper-overrides';

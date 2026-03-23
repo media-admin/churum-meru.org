@@ -97,5 +97,3 @@ export default class ImageComparison {
   }
 }
 
-// Initialize
-new ImageComparison();

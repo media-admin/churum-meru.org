@@ -51,5 +51,3 @@ export default class FaqAccordion {
   }
 }
 
-// Initialize
-new FaqAccordion();

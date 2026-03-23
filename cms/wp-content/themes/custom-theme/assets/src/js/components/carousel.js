@@ -62,5 +62,3 @@ export default class Carousel {
   }
 }
 
-// Initialize
-new Carousel();

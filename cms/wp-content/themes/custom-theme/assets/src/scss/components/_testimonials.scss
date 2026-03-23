@@ -35,7 +35,8 @@
 // Horizontales Layout: Avatar links, Body rechts
 // =============================================================================
 
-.ml-block-testimonial {
+.ml-block-testimonial,
+.testimonial {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -128,7 +129,7 @@
   position: relative;
   padding: 0 $spacing-10;
 
-  @include respond-to('md') { padding: 0 $spacing-12; }
+  @include respond-to('md') { padding: 0 $spacing-12 $spacing-10; }
 
   .swiper-slide { height: auto; }
 
@@ -171,6 +172,8 @@
 
 // Pagination-Bullets
 .testimonials__pagination {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
   gap: $spacing-2;
@@ -199,4 +202,49 @@
   background: transparent;
   border-left: 4px solid $color-primary;
   padding-left: $spacing-4;
+}
+
+// Swiper-Pagination im Testimonial-Slider fix positionieren
+.testimonials--slider {
+  padding-bottom: $spacing-10 !important;
+
+  .swiper-pagination {
+    position: relative !important;
+    bottom: auto !important;
+    top: auto !important;
+    margin-top: $spacing-4;
+  }
+
+  .testimonials__pagination {
+    position: relative;
+    bottom: auto;
+  }
+}
+
+// Swiper Pagination Position-Fix
+.testimonials--slider .testimonials__pagination,
+.testimonials--slider .swiper-pagination {
+  position: absolute !important;
+  top: 90% !important;
+  left: 0 !important;
+  width: 100% !important;
+}
+
+// Swiper Farben auf Primary-Color
+.testimonials--slider {
+  --swiper-theme-color: #{$color-primary};
+  --swiper-pagination-color: #{$color-primary};
+  --swiper-navigation-color: #{$color-primary};
+}
+
+// Swiper Bullet-Farben
+.testimonials--slider {
+  .swiper-pagination-bullet-active {
+    background: $color-primary !important;
+  }
+
+  .swiper-pagination-bullet {
+    background: var(--color-border) !important;
+    opacity: 1 !important;
+  }
 }

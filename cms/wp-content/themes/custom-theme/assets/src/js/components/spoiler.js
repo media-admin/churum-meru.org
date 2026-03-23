@@ -50,5 +50,3 @@ export default class Spoiler {
   }
 }
 
-// Initialize
-new Spoiler();

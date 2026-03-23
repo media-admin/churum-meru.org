@@ -558,7 +558,7 @@ function testimonials_shortcode($atts, $content = null) {
                     </svg>
                 </button>
             </div>
-            <div class="testimonials__pagination"></div>
+            <div class="testimonials__pagination swiper-pagination"></div>
         </div>';
     } else {
         return '
@@ -1607,7 +1607,7 @@ function testimonials_query_shortcode($atts) {
     $slider = $atts['slider'] === 'true';
     
     $args = array(
-        'post_type' => 'testimonials',
+        'post_type' => 'testimonial',
         'posts_per_page' => $number,
         'order' => 'DESC',
         'orderby' => 'date',
@@ -1637,13 +1637,15 @@ function testimonials_query_shortcode($atts) {
     ob_start();
     ?>
     <div class="<?php echo $wrapper_class; ?>" data-columns="<?php echo $columns; ?>" <?php if ($slider) echo 'data-autoplay="true"'; ?>>
-        <div class="<?php echo $slider ? 'swiper-wrapper' : ''; ?>">
+        <?php if ($slider) : ?><div class="swiper-wrapper"><?php endif; ?>
             <?php while ($testimonials_query->have_posts()) : $testimonials_query->the_post(); ?>
                 <?php
                 $company = get_field('company');
                 $role = get_field('role');
                 $rating = get_field('rating');
-                $thumbnail_img = medialab_get_thumbnail(get_the_ID(), 'thumbnail', ['class' => 'testimonial__avatar-img']);
+                $thumbnail_img = has_post_thumbnail()
+                    ? medialab_get_thumbnail(get_the_ID(), 'thumbnail', ['class' => 'testimonial__avatar-img'])
+                    : '';
                 ?>
                 
                 <div class="<?php echo $item_class; ?>" data-animate="fade-in-up">
@@ -1662,9 +1664,9 @@ function testimonials_query_shortcode($atts) {
                     </div>
                     
                     <div class="testimonial__footer">
-                        <?php if ($thumbnail) : ?>
+                        <?php if ($thumbnail_img) : ?>
                             <div class="testimonial__image">
-                                <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php the_title(); ?>">
+                               <?php echo $thumbnail_img; ?>
                             </div>
                         <?php endif; ?>
                         
@@ -1682,7 +1684,7 @@ function testimonials_query_shortcode($atts) {
                     </div>
                 </div>
             <?php endwhile; ?>
-        </div>
+        <?php if ($slider) : ?></div><?php endif; ?>
         
         <?php if ($slider) : ?>
             <div class="testimonials__navigation">
@@ -1697,7 +1699,7 @@ function testimonials_query_shortcode($atts) {
                     </svg>
                 </button>
             </div>
-            <div class="testimonials__pagination"></div>
+            <div class="testimonials__pagination swiper-pagination"></div>
         <?php endif; ?>
     </div>
     <?php
@@ -1712,74 +1714,112 @@ add_shortcode('testimonials_query', 'testimonials_query_shortcode');
 
 function services_query_shortcode($atts) {
     $atts = shortcode_atts(array(
-        'number' => -1,
-        'columns' => 3,
-        'order' => 'ASC',
-        'orderby' => 'menu_order',
+        'number'   => -1,
+        'columns'  => 3,
+        'order'    => 'ASC',
+        'orderby'  => 'menu_order',
+        'category' => '',   // Slug(s) der service_category Taxonomie, kommagetrennt
     ), $atts);
-    
-    $number = intval($atts['number']);
-    $columns = esc_attr($atts['columns']);
-    $order = esc_attr($atts['order']);
-    $orderby = esc_attr($atts['orderby']);
-    
+
+    $number   = intval( $atts['number'] );
+    $columns  = esc_attr( $atts['columns'] );
+    $order    = esc_attr( $atts['order'] );
+    $orderby  = esc_attr( $atts['orderby'] );
+    $category = sanitize_text_field( $atts['category'] );
+
     $args = array(
-        'post_type' => 'services',
+        'post_type'      => 'service',
         'posts_per_page' => $number,
-        'order' => $order,
-        'orderby' => $orderby,
-        'post_status' => 'publish',
+        'order'          => $order,
+        'orderby'        => $orderby,
+        'post_status'    => 'publish',
     );
-    
-    $services_query = new WP_Query($args);
-    
-    if (!$services_query->have_posts()) {
+
+    // Kategorie-Filtering
+    if ( ! empty( $category ) ) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'service_category',
+                'field'    => 'slug',
+                'terms'    => array_map( 'trim', explode( ',', $category ) ),
+            ),
+        );
+    }
+
+    $services_query = new WP_Query( $args );
+
+    if ( ! $services_query->have_posts() ) {
         return '<p>Keine Services gefunden.</p>';
     }
-    
+
     ob_start();
     ?>
     <div class="services-grid" data-columns="<?php echo $columns; ?>">
-        <?php while ($services_query->have_posts()) : $services_query->the_post(); ?>
+        <?php while ( $services_query->have_posts() ) : $services_query->the_post(); ?>
             <?php
-            $icon = get_field('icon');
-            $price = get_field('price');
-            $features = get_field('features');
-            $cta = get_field('cta');
+            $icon          = get_field('icon');
+            $price         = get_field('price');
+            $features      = get_field('features');
+            $cta           = get_field('cta');
             $thumbnail_img = medialab_get_thumbnail(get_the_ID(), 'medium', ['class' => 'service-card__img']);
             ?>
-            
+
             <div class="service-card" data-animate="fade-in-up">
-                <?php if ($icon) : ?>
+                <?php if ( $icon ) : ?>
                     <div class="service-card__icon">
                         <span class="dashicons <?php echo esc_attr($icon); ?>"></span>
                     </div>
                 <?php endif; ?>
-                
+
                 <h3 class="service-card__title"><?php the_title(); ?></h3>
-                
-                <?php if ($price) : ?>
+
+                <?php if ( $price ) : ?>
                     <div class="service-card__price"><?php echo esc_html($price); ?></div>
                 <?php endif; ?>
-                
-                <?php if (has_excerpt()) : ?>
+
+                <?php if ( has_excerpt() ) : ?>
                     <div class="service-card__excerpt">
                         <?php the_excerpt(); ?>
                     </div>
                 <?php endif; ?>
-                
-                <?php if ($features) : ?>
+
+                <?php if ( $features ) : ?>
                     <ul class="service-card__features">
-                        <?php foreach ($features as $feature) : ?>
-                            <li><?php echo esc_html($feature['text']); ?></li>
-                        <?php endforeach; ?>
+                        <?php
+                        // ACF kann String (Textarea) oder Repeater-Array liefern
+                        if ( is_array( $features ) ) {
+                            foreach ( $features as $feature ) :
+                                $feature_text = is_array( $feature ) ? ( $feature['text'] ?? $feature['feature'] ?? '' ) : $feature;
+                                if ( $feature_text ) : ?>
+                                <li><?php echo esc_html( $feature_text ); ?></li>
+                        <?php   endif;
+                            endforeach;
+                        } elseif ( is_string( $features ) && str_starts_with( trim($features), '[' ) ) {
+                            // JSON-String (ACF Repeater als JSON gespeichert)
+                            $decoded = json_decode( $features, true );
+                            if ( is_array( $decoded ) ) {
+                                foreach ( $decoded as $feature ) :
+                                    $feature_text = $feature['feature_text'] ?? $feature['text'] ?? $feature['feature'] ?? '';
+                                    if ( $feature_text ) : ?>
+                                    <li><?php echo esc_html( $feature_text ); ?></li>
+                        <?php       endif;
+                                endforeach;
+                            }
+                        } else {
+                            // Einfacher Textarea-String: eine Zeile = ein Feature
+                            $lines = array_filter( array_map( 'trim', explode( "
+", $features ) ) );
+                            foreach ( $lines as $line ) : ?>
+                                <li><?php echo esc_html( $line ); ?></li>
+                        <?php   endforeach;
+                        } ?>
                     </ul>
                 <?php endif; ?>
-                
-                <?php if ($cta && !empty($cta['link'])) : ?>
-                    <a href="<?php echo esc_url($cta['link']['url']); ?>" 
+
+                <?php if ( $cta && ! empty($cta['link']) ) : ?>
+                    <a href="<?php echo esc_url($cta['link']['url']); ?>"
                        class="service-card__cta button button--primary"
-                       <?php echo !empty($cta['link']['target']) ? 'target="' . esc_attr($cta['link']['target']) . '"' : ''; ?>>
+                       <?php echo ! empty($cta['link']['target']) ? 'target="' . esc_attr($cta['link']['target']) . '"' : ''; ?>>
                         <?php echo esc_html($cta['text']); ?>
                     </a>
                 <?php else : ?>
@@ -1795,6 +1835,7 @@ function services_query_shortcode($atts) {
     return ob_get_clean();
 }
 add_shortcode('services_query', 'services_query_shortcode');
+
 
 // ============================================
 // SPOILER/READ-MORE SHORTCODE
@@ -3115,18 +3156,17 @@ function carousel_query_shortcode($atts) {
         if ($link_url) {
             echo '<a href="' . esc_url($link_url) . '" target="' . esc_attr($link_target) . '" class="carousel-grid__link">';
         }
-
+        echo '<div class="carousel-grid__image' . (!$img_url ? ' carousel-grid__image--empty' : '') . '">';
         if ($img_url) {
-            echo '<div class="carousel-grid__image">';
             echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr(get_the_title()) . '" loading="lazy">';
-            if ($show_overlay) {
-                echo '<div class="carousel-grid__overlay">';
-                echo '<h3 class="carousel-grid__title">' . get_the_title() . '</h3>';
-                if ($subtitle) echo '<p class="carousel-grid__subtitle">' . esc_html($subtitle) . '</p>';
-                echo '</div>';
-            }
+        }
+        if ($show_overlay) {
+            echo '<div class="carousel-grid__overlay">';
+            echo '<h3 class="carousel-grid__title">' . get_the_title() . '</h3>';
+            if ($subtitle) echo '<p class="carousel-grid__subtitle">' . esc_html($subtitle) . '</p>';
             echo '</div>';
         }
+        echo '</div>';
 
         if (!$show_overlay) {
             echo '<div class="carousel-grid__caption">';

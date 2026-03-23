@@ -74,5 +74,3 @@ export default class StatsCounter {
   }
 }
 
-// Initialize
-new StatsCounter();

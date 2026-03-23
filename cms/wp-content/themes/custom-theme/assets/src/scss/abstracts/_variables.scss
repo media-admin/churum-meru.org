@@ -341,3 +341,53 @@ $z-header:   100;
 $z-dropdown: 1000;
 $z-modal:    2000;
 $z-tooltip:  3000;
+
+
+// ─────────────────────────────────────────────────────────────────
+// 13. SWIPER DEFAULTS
+//     Globale CSS-Variablen für alle Swiper-Instanzen.
+//     Überschreiben per Komponente (z.B. .hero-slider) möglich.
+// ─────────────────────────────────────────────────────────────────
+:root {
+  // Primärfarbe (Navigation, aktiver Bullet)
+  --swiper-theme-color:                       #{$color-primary};
+
+  // Navigation (Prev/Next Arrows)
+  --swiper-navigation-color:                  #{$color-primary};
+  --swiper-navigation-size:                   44px;
+
+  // Pagination Bullets
+  --swiper-pagination-color:                  #{$color-primary};        // aktiver Bullet
+  --swiper-pagination-bullet-size:            10px;
+  --swiper-pagination-bullet-horizontal-gap:  6px;
+  --swiper-pagination-bullet-inactive-color:  #{$color-primary};        // inaktiver Bullet
+  --swiper-pagination-bullet-inactive-opacity: 0.3;
+  --swiper-pagination-bullet-opacity:         1;
+}
+// Swiper CSS-Variablen — direkt auf .swiper gesetzt (höhere Spezifität als :root)
+.swiper {
+  --swiper-theme-color:                        #{$color-primary};
+  --swiper-navigation-color:                   #{$color-primary};
+  --swiper-pagination-color:                   #{$color-primary};
+  --swiper-pagination-bullet-inactive-color:   #{$color-primary};
+  --swiper-pagination-bullet-inactive-opacity: 0.3;
+  --swiper-pagination-bullet-opacity:          1;
+  --swiper-pagination-bullet-size:             10px;
+  --swiper-pagination-bullet-horizontal-gap:   6px;
+}
+
+// Swiper Bullet-Farben – Direkt-Override
+.swiper-pagination-bullet {
+  background: $color-primary !important;
+  opacity: 0.3 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: $color-primary !important;
+  opacity: 1 !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: $color-primary !important;
+}

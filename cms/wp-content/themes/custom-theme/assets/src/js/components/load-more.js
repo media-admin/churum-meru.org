@@ -276,4 +276,3 @@ export default class LoadMore {
 }
 
 // Direkte Initialisierung – Dynamic Import läuft immer nach DOMContentLoaded
-new LoadMore();

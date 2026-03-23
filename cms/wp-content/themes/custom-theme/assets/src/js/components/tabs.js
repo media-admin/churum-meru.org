@@ -95,5 +95,3 @@ export default class Tabs {
   }
 }
 
-// Initialize
-new Tabs();

@@ -92,5 +92,3 @@ export default class ThemeSwitcher {
   }
 }
 
-// Initialize
-new ThemeSwitcher();

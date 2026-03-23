@@ -92,8 +92,6 @@ export default class Notification {
   }
 }
 
-// Initialize
-new Notification();
 
 // Make available globally for programmatic use
 window.Notification = Notification;

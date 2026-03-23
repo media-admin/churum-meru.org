@@ -150,6 +150,28 @@
     }
   }
   
+  &__features-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-3;
+  }
+  
+  &__feature {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    font-size: $font-size-sm;
+    color: var(--color-text);
+    
+    svg {
+      flex-shrink: 0;
+      color: $color-primary;
+    }
+  }
+  
   // Footer
   &__footer {
     margin-top: auto;

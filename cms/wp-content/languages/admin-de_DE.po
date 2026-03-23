@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.9.x - Development - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-18 22:12:09+0000\n"
+"PO-Revision-Date: 2026-03-22 01:30:39+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -536,7 +536,7 @@ msgstr "Automatisch geladene Optionen"
 
 #: wp-admin/includes/class-wp-site-health.php:2700
 msgid "More info about optimizing autoloaded options"
-msgstr "Weitere Informationen zu der Optimierung von automatisch geladenen Optionen"
+msgstr "Weitere Informationen zur Optimierung von automatisch geladenen Optionen (engl.)"
 
 #: wp-admin/includes/class-wp-site-health.php:2699
 msgid "https://developer.wordpress.org/advanced-administration/performance/optimization/#autoloaded-options"
@@ -554,7 +554,7 @@ msgstr "Automatisch geladene Optionen können die Leistung beeinflussen"
 #. translators: 1: Number of autoloaded options, 2: Autoloaded options size.
 #: wp-admin/includes/class-wp-site-health.php:2657
 msgid "Your site has %1$s autoloaded options (size: %2$s) in the options table, which is acceptable."
-msgstr "Deine Website hat %1$s automatisch geladene Optionen (Größe: %2$s) in der Options-Tabelle, was akzeptabel ist."
+msgstr "Deine Website hat %1$s automatisch geladene Optionen (Größe: %2$s) in der Optionstabelle, was akzeptabel ist."
 
 #: wp-admin/includes/class-wp-site-health.php:2649
 msgid "Autoloaded options are acceptable"
@@ -682,7 +682,7 @@ msgstr "<strong>Erforderlich für:</strong> %s"
 
 #: wp-admin/includes/class-wp-plugins-list-table.php:1540
 msgid "Note: This plugin cannot be deactivated or deleted until the plugins that require it are deactivated or deleted."
-msgstr "Hinweis: Dieses Plugin kann nicht deaktiviert oder gelöscht werden, bevor nicht die Plugins, die es erfordert, deaktiviert oder gelöscht wurden."
+msgstr "Hinweis: Dieses Plugin kann nicht deaktiviert oder gelöscht werden, bevor nicht die Plugins, die es erfordern, deaktiviert oder gelöscht wurden."
 
 #: wp-admin/includes/class-wp-plugins-list-table.php:902
 msgid "You cannot deactivate this plugin as other plugins depend on it."
@@ -787,7 +787,7 @@ msgstr "Es dürfen nur .zip-Archive hochgeladen werden."
 #. translators: %s: Link to activate the Classic Widgets plugin.
 #: wp-admin/widgets-form-blocks.php:105
 msgid "The block widgets require JavaScript. Please enable JavaScript in your browser settings, or activate the <a href=\"%s\">Classic Widgets plugin</a>."
-msgstr "Die Block-Widgets erfordern JavaScript. Bitte aktiviere JavaScript in deinen Browser-Einstellungen oder aktiviere das Plugin <a href=\"%s\">Classic Editor</a>."
+msgstr "Die Block-Widgets erfordern JavaScript. Bitte aktiviere JavaScript in deinen Browser-Einstellungen oder aktiviere das Plugin <a href=\"%s\">Classic Widgets</a>."
 
 #. translators: %s: Link to install the Classic Editor plugin.
 #: wp-admin/edit-form-blocks.php:405
@@ -1086,7 +1086,7 @@ msgstr "Das Verzeichnis %s, das zur Verbesserung der Stabilität von Plugin- und
 
 #: wp-admin/includes/class-wp-site-health.php:1897
 msgid "Plugin and theme temporary backup directory is writable"
-msgstr "Das temporäre Backup-Verzeichnis für Plugins und Themen ist beschreibbar"
+msgstr "Das temporäre Backup-Verzeichnis für Plugins und Themes ist beschreibbar"
 
 #: wp-admin/includes/class-wp-site-health.php:1863
 msgid "Could not determine available disk space for updates."
@@ -1406,7 +1406,7 @@ msgstr "Sowohl die WordPress-URL als auch die Website-URL können entweder mit %
 #. translators: %s: Documentation URL.
 #: wp-admin/options-general.php:34
 msgid "Though the terms refer to two different concepts, in practice, they can be the same address or different. For example, you can have the core WordPress installation files in the root directory (<code>https://example.com</code>), in which case the two URLs would be the same. Or the <a href=\"%s\">WordPress files can be in a subdirectory</a> (<code>https://example.com/wordpress</code>). In that case, the WordPress URL and the site URL would be different."
-msgstr "Obwohl sich die Begriffe auf zwei verschiedene Konzepte beziehen, kann es sich in der Praxis um dieselbe oder um eine andere Adresse handeln. Zum Beispiel kannst du die Kerndateien der WordPress-Installation im Stammverzeichnis haben (<code>https://example.com</code>), in diesem Fall wären die beiden URLs gleich. Oder die <a href=\"%s\">WordPress-Dateien können sich in einem Unterverzeichnis befinden</a> (<code>https://example.com/wordpress</code>). In diesem Fall würden die WordPress-URL und die Website-URL unterschiedlich sein."
+msgstr "Obwohl sich die Begriffe auf zwei verschiedene Konzepte beziehen, kann es sich in der Praxis um dieselbe oder um eine andere Adresse handeln. Zum Beispiel kannst du die Kerndateien der WordPress-Installation im Stammverzeichnis haben (<code>https://example.com</code>), in diesem Fall wären die beiden URLs gleich. Oder die <a href=\"%s\">WordPress-Dateien können sich in einem Unterverzeichnis befinden (engl.)</a> (<code>https://example.com/wordpress</code>). In diesem Fall würden die WordPress-URL und die Website-URL unterschiedlich sein."
 
 #: wp-admin/options-general.php:31
 msgid "Two terms you will want to know are the WordPress URL and the site URL. The WordPress URL is where the core WordPress installation files are, and the site URL is the address a visitor uses in the browser to go to your site."
@@ -1560,12 +1560,12 @@ msgstr "Konfigurationsregeln für %s:"
 #. translators: Hidden accessibility text.
 #: wp-admin/options-permalink.php:366
 msgid "Customize permalink structure by selecting available tags"
-msgstr "Passe die Permalink-Struktur durch eine Auswahl verfügbarer Schlagwörter an"
+msgstr "Passe die Permalink-Struktur durch eine Auswahl verfügbarer Platzhalter an"
 
 #. translators: %s: %postname%
 #: wp-admin/options-permalink.php:322
 msgid "Select the permalink structure for your website. Including the %s tag makes links easy to understand, and can help your posts rank higher in search engines."
-msgstr "Wähle die Permalink-Struktur für deine Website. Die Verwendung des Schlagworts %s macht Links leicht verständlich und kann dazu beitragen, dass deine Beiträge in Suchmaschinen besser platziert werden."
+msgstr "Wähle die Permalink-Struktur für deine Website. Die Verwendung des Platzhalters %s macht Links leicht verständlich und kann dazu beitragen, dass deine Beiträge in Suchmaschinen besser platziert werden."
 
 #. translators: %s: Permalink structure tag.
 #: wp-admin/options-permalink.php:313
@@ -1629,7 +1629,7 @@ msgstr "Ein persistenter Objekt-Cache ist nicht erforderlich"
 
 #: wp-admin/includes/class-wp-site-health.php:2552
 msgid "Learn more about persistent object caching."
-msgstr "Erfahre mehr über das Cachen persistenter Objekte."
+msgstr "Mehr über das Caching persistenter Objekte erfahren (engl.)"
 
 #: wp-admin/includes/class-wp-site-health.php:2547
 msgid "A persistent object cache makes your site&#8217;s database more efficient, resulting in faster load times because WordPress can retrieve your site&#8217;s content and settings much more quickly."
@@ -1701,7 +1701,7 @@ msgstr "Das Vorhandensein eines Seiten-Caches kann nicht erkannt werden"
 
 #: wp-admin/includes/class-wp-site-health.php:2426
 msgid "Learn more about page cache"
-msgstr "Mehr über Seiten-Cache erfahren"
+msgstr "Mehr über den Seiten-Cache erfahren (engl.)"
 
 #: wp-admin/includes/class-wp-site-health.php:2411
 msgid "Page cache is detected by looking for an active page cache plugin as well as making three requests to the homepage and looking for one or more of the following HTTP client caching response headers:"
@@ -1870,13 +1870,13 @@ msgstr "Nachdem deine Seite zur Datenschutzerklärung eingerichtet wurde, empfeh
 #. translators: 1: .htaccess, 2: Documentation URL, 3: Ctrl + A, 4: ⌘ + A
 #: wp-admin/options-permalink.php:530
 msgid "<strong>Error:</strong> Your %1$s file is not <a href=\"%2$s\">writable</a>, so updating it automatically was not possible. These are the mod_rewrite rules you should have in your %1$s file. Click in the field and press %3$s (or %4$s on Mac) to select all."
-msgstr "<strong>Fehler:</strong> Deine %1$s-Datei ist nicht <a href=\"%2$s\">beschreibbar</a>, sodass ihre automatische Aktualisierung nicht möglich war. Darum findest du hier die mod_rewrite-Regeln für deine %1$s-Datei. Klicke in das Feld und drücke %3$s (oder %4$s am Mac), um alles auszuwählen."
+msgstr "<strong>Fehler:</strong> Deine %1$s-Datei ist nicht <a href=\"%2$s\">beschreibbar (engl.)</a>, sodass ihre automatische Aktualisierung nicht möglich war. Darum findest du hier die mod_rewrite-Regeln für deine %1$s-Datei. Klicke in das Feld und drücke %3$s (oder %4$s am Mac), um alles auszuwählen."
 
 #. translators: 1: web.config, 2: Documentation URL, 3: Ctrl + A, 4: ⌘ + A,
 #. 5: Element code.
 #: wp-admin/options-permalink.php:462
 msgid "<strong>Error:</strong> Your %1$s file is not <a href=\"%2$s\">writable</a>, so updating it automatically was not possible. This is the URL rewrite rule you should have in your %1$s file. Click in the field and press %3$s (or %4$s on Mac) to select all. Then insert this rule inside of the %5$s element in %1$s file."
-msgstr "<strong>Fehler:</strong> Deine %1$s-Datei ist nicht <a href=\"%2$s\">beschreibbar</a>, sodass ihre automatische Aktualisierung nicht möglich war. Darum findest du hier die URL-Umschreibungsregel, die du in der %1$s-Datei speichern solltest. Klicke in das Feld und drücke %3$s (oder %4$s am Mac), um alles auszuwählen. Füge die Regel dann innerhalb des Elements %5$s in der %1$s-Datei ein."
+msgstr "<strong>Fehler:</strong> Deine %1$s-Datei ist nicht <a href=\"%2$s\">beschreibbar (engl.)</a>, sodass ihre automatische Aktualisierung nicht möglich war. Darum findest du hier die URL-Umschreibungsregel, die du in der %1$s-Datei speichern solltest. Klicke in das Feld und drücke %3$s (oder %4$s am Mac), um alles auszuwählen. Füge die Regel dann innerhalb des Elements %5$s in der %1$s-Datei ein."
 
 #: wp-admin/options-discussion.php:216
 msgid "An avatar is an image that can be associated with a user across multiple websites. In this area, you can choose to display avatars of users who interact with the site."
@@ -1964,7 +1964,7 @@ msgstr "WordPress sammelt (aber veröffentlicht <em>niemals</em>) eine begrenzte
 
 #: wp-admin/export-personal-data.php:28
 msgid "Note: Since this tool only gathers data from WordPress and participating plugins, you may need to do more to comply with export requests. For example, you should also send the requester some of the data collected from or stored with the 3rd party services your organization uses."
-msgstr "Hinweis: Da dieses Werkzeug nur Daten von WordPress und teilnehmenden Plugins sammelt, musst du möglicherweise mehr tun, um Anfragen für einen Export nachzukommen. Du solltest der antragstellenden Person auch alle Daten senden, die von Drittanbieter-Diensten, die von deinem Unternehmen oder deiner Website verwendet werden, gesammelt oder gespeichert wurden."
+msgstr "Hinweis: Da dieses Werkzeug nur Daten von WordPress und teilnehmenden Plugins sammelt, musst du möglicherweise mehr tun, um Anfragen für einen Export nachzukommen. Du solltest der antragstellenden Person auch alle Daten senden, die von Drittanbieter-Diensten, die von deinem Unternehmen oder deiner Website verwendet werden, gesammelt oder bei diesen gespeichert wurden."
 
 #: wp-admin/export-personal-data.php:26
 msgid "Privacy Laws around the world require businesses and online services to provide an export of some of the data they collect about an individual, and to deliver that export on request. The rights those laws enshrine are sometimes called the \"Right of Data Portability\". It allows individuals to obtain and reuse their personal data for their own purposes across different services. It allows them to move, copy or transfer personal data easily from one IT environment to another."
@@ -1972,7 +1972,7 @@ msgstr "Datenschutzgesetze rund um die Welt verlangen von Unternehmen und Online
 
 #: wp-admin/erase-personal-data.php:41
 msgid "<strong>Comments</strong> &mdash; WordPress does not delete comments. The software does anonymize (but, again, <em>never</em> publishes) the associated Email Address, IP Address, and User Agent (Browser/OS)."
-msgstr "<strong>Kommentare</strong> &ndash; WordPress löscht keine Kommentare. Die Software anonymisiert (aber, noch einmal, veröffentlicht <em>niemals</em>) die zugehörige E-Mail-Adresse, IP-Adresse und den User Agent (Browser/Betriebssystem)."
+msgstr "<strong>Kommentare</strong> &ndash; WordPress löscht keine Kommentare. Die Software anonymisiert (aber veröffentlicht <em>niemals</em>) die zugehörige E-Mail-Adresse, IP-Adresse und den User Agent (Browser/Betriebssystem)."
 
 #: wp-admin/erase-personal-data.php:37
 msgid "WordPress collects (but <em>never</em> publishes) a limited amount of data from logged-in users but then deletes it or anonymizes it. That data can include:"
@@ -1980,7 +1980,7 @@ msgstr "WordPress sammelt (aber veröffentlicht <em>niemals</em>) eine begrenzte
 
 #: wp-admin/erase-personal-data.php:28
 msgid "Note: As this tool only gathers data from WordPress and participating plugins, you may need to do more to comply with erasure requests. For example, you are also responsible for ensuring that data collected by or stored with the 3rd party services your organization uses gets deleted."
-msgstr "Hinweis: Da dieses Werkzeug nur Daten von WordPress und teilnehmenden Plugins sammelt, musst du möglicherweise mehr tun, um Anfragen für eine Löschung nachzukommen. Du bist beispielsweise auch dafür verantwortlich, sicherzustellen, dass Daten gelöscht werden, die von Drittanbieter-Diensten, die von deinem Unternehmen oder deiner Website verwendet werden, gesammelt oder gespeichert wurden."
+msgstr "Hinweis: Da dieses Werkzeug nur Daten von WordPress und teilnehmenden Plugins sammelt, musst du möglicherweise mehr tun, um Anfragen für eine Löschung nachzukommen. Du bist beispielsweise auch dafür verantwortlich, sicherzustellen, dass Daten gelöscht werden, die von Drittanbieter-Diensten, die von deinem Unternehmen oder deiner Website verwendet werden, gesammelt oder bei diesen gespeichert wurden."
 
 #: wp-admin/erase-personal-data.php:26
 msgid "Privacy Laws around the world require businesses and online services to delete, anonymize, or forget the data they collect about an individual. The rights those laws enshrine are sometimes called the \"Right to be Forgotten\"."
@@ -1992,7 +1992,7 @@ msgstr "In dieser Ansicht kannst du Anfragen zum Anonymisieren oder Löschen von
 
 #: wp-admin/edit-form-advanced.php:462
 msgid "This post is being backed up in your browser, just in case."
-msgstr "Dieser Beitrag wird in deinem Browser gesichert, nur für den Fall."
+msgstr "Dieser Beitrag wird sicherheitshalber in deinem Browser gesichert."
 
 #. translators: 1: URL to my-sites.php, 2: Number of sites the user has.
 #: wp-admin/authorize-application.php:185
@@ -2385,7 +2385,7 @@ msgstr "<a href=\"https://wordpress.org/documentation/article/tools-export-perso
 
 #: wp-admin/export-personal-data.php:57
 msgid "Many plugins may collect or store personal data either in the WordPress database or remotely. Any Export Personal Data request should include data from plugins as well."
-msgstr "Viele Plugins können personenbezogene Daten entweder in der WordPress-Datenbank oder aus der Ferne sammeln oder speichern. Jede Anfrage zum Exportieren personenbezogener Daten sollte auch die Daten von Plugins beinhalten."
+msgstr "Viele Plugins erfassen oder speichern möglicherweise personenbezogene Daten entweder in der WordPress-Datenbank oder auf einem externen Server. Jede Anfrage zum Export personenbezogener Daten sollte auch die Daten von Plugins umfassen."
 
 #. translators: %s: URL to Privacy Policy Guide screen.
 #: wp-admin/export-personal-data.php:48
@@ -2484,7 +2484,7 @@ msgstr "<a href=\"https://wordpress.org/documentation/article/tools-erase-person
 
 #: wp-admin/erase-personal-data.php:57
 msgid "Many plugins may collect or store personal data either in the WordPress database or remotely. Any Erase Personal Data request should delete data from plugins as well."
-msgstr "Viele Plugins können personenbezogene Daten entweder in der WordPress-Datenbank oder aus der Ferne sammeln oder speichern. Jede Anfrage zum Löschen personenbezogener Daten sollte auch die Daten von Plugins löschen."
+msgstr "Viele Plugins erfassen oder speichern möglicherweise personenbezogene Daten entweder in der WordPress-Datenbank oder auf einem externen Server. Jede Anfrage zur Löschung personenbezogener Daten sollte auch die Daten von Plugins löschen."
 
 #: wp-admin/erase-personal-data.php:55 wp-admin/export-personal-data.php:55
 msgid "Plugin Data"
@@ -2540,7 +2540,7 @@ msgstr "Das Zurücksetzen des Passwortes kann nicht gesendet werden, die Berecht
 #. translators: 1: post_max_size, 2: upload_max_filesize
 #: wp-admin/includes/class-wp-site-health.php:2319
 msgid "The setting for %1$s is currently configured as 0, this could cause some problems when trying to upload files through plugin or theme features that rely on various upload methods. It is recommended to configure this setting to a fixed value, ideally matching the value of %2$s, as some upload methods read the value 0 as either unlimited, or disabled."
-msgstr "Die Einstellung für %1$s ist derzeit als 0 konfiguriert. Dies könnte zu Problemen führen, wenn du versuchst, Dateien über Plugin- oder Theme-Funktionen hochzuladen, die auf verschiedene Upload-Methoden angewiesen sind. Es wird empfohlen, diese Einstellung auf einen festen Wert zu konfigurieren, der idealerweise mit dem Wert von %2$s übereinstimmt, da einige Upload-Methoden den Wert 0 entweder als unbegrenzt oder deaktiviert lesen."
+msgstr "Die Einstellung für %1$s ist derzeit als 0 konfiguriert. Dies könnte zu Problemen führen, wenn du versuchst, Dateien über Plugin- oder Theme-Funktionen hochzuladen, die auf verschiedene Upload-Methoden angewiesen sind. Es wird empfohlen, diese Einstellung auf einen festen Wert zu konfigurieren, der idealerweise mit dem Wert von %2$s übereinstimmt, da einige Upload-Methoden den Wert 0 entweder als unbegrenzt oder deaktiviert interpretieren."
 
 #: wp-admin/includes/class-wp-site-health.php:1587
 #: wp-admin/includes/class-wp-site-health.php:1594
@@ -2580,7 +2580,7 @@ msgstr "Deine <a href=\"%s\">Website-Adresse</a> ist nicht für die Verwendung v
 
 #: wp-admin/includes/class-wp-site-health.php:1403
 msgid "Learn more about debugging in WordPress."
-msgstr "Erfahre mehr über die Fehlerbehebung in WordPress."
+msgstr "Mehr über die Fehlerbehebung in WordPress erfahren (engl.)"
 
 #: wp-admin/includes/revision.php:98
 msgid "Added"
@@ -2916,7 +2916,7 @@ msgstr "Autorisierungs-Header"
 
 #: wp-admin/includes/class-wp-site-health.php:2393
 msgid "Learn how to configure the Authorization header."
-msgstr "Erfahre, wie man den Autorisierungs-Header konfiguriert."
+msgstr "Erfahre, wie du den Authorization-Header konfigurierst (engl.)"
 
 #: wp-admin/includes/class-wp-site-health.php:2387
 msgid "Flush permalinks"
@@ -3132,7 +3132,7 @@ msgstr "Du bist leider nicht berechtigt, Plugins zu ändern."
 #. translators: 1: post_max_size, 2: upload_max_filesize
 #: wp-admin/includes/class-wp-site-health.php:2329
 msgid "The setting for %1$s is smaller than %2$s, this could cause some problems when trying to upload files."
-msgstr "Die Einstellung für %1$s ist kleiner als die für %2$s, dies könnte beim Versuch, Dateien hochzuladen, zu Problemen führen."
+msgstr "Die Einstellung für %1$s ist kleiner als die für %2$s. Dies könnte beim Versuch, Dateien hochzuladen, zu Problemen führen."
 
 #. translators: 1: file_uploads, 2: 0
 #: wp-admin/includes/class-wp-site-health.php:2294
@@ -3303,7 +3303,7 @@ msgstr "Automatische Aktualisierungen können für jedes einzelne Plugin aktivie
 
 #: wp-admin/plugins.php:473
 msgid "Please connect to your network admin to manage plugins automatic updates."
-msgstr "Bitte begib dich zu deiner Netzwerkadministration, um automatische Plugin-Aktualisierungen zu verwalten."
+msgstr "Bitte wende dich an deinen Netzwerkadministrator, um automatische Plugin-Aktualisierungen zu verwalten."
 
 #. translators: %s: Human-readable time interval.
 #: wp-admin/index.php:159
@@ -3554,12 +3554,12 @@ msgstr "Es ist keine automatische Aktualisierung geplant. Es gibt möglicherweis
 #. translators: %s: Documentation URL.
 #: wp-admin/includes/class-plugin-installer-skin.php:307
 msgid "You are updating a plugin. Be sure to <a href=\"%s\">back up your database and files</a> first."
-msgstr "Du aktualisierst ein Plugin. Stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst</a>."
+msgstr "Du aktualisierst ein Plugin. Stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst (engl.)</a>."
 
 #. translators: %s: Documentation URL.
 #: wp-admin/includes/class-plugin-installer-skin.php:301
 msgid "You are uploading an older version of a current plugin. You can continue to install the older version, but be sure to <a href=\"%s\">back up your database and files</a> first."
-msgstr "Du lädst eine ältere Version eines bestehenden Plugins hoch. Du kannst die ältere Version weiterhin installieren, aber stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst</a>."
+msgstr "Du lädst eine ältere Version eines bestehenden Plugins hoch. Du kannst mit der Installation der älteren Version fortfahren, aber stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst (engl.)</a>."
 
 #. translators: 1: Current WordPress version, 2: Version required by the
 #. uploaded plugin.
@@ -3676,12 +3676,12 @@ msgstr "Installiertes durch Hochgeladenes ersetzen"
 #. translators: %s: Documentation URL.
 #: wp-admin/includes/class-theme-installer-skin.php:352
 msgid "You are updating a theme. Be sure to <a href=\"%s\">back up your database and files</a> first."
-msgstr "Du aktualisierst ein Theme. Stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst</a>."
+msgstr "Du aktualisierst ein Theme. Stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst (engl.)</a>."
 
 #. translators: %s: Documentation URL.
 #: wp-admin/includes/class-theme-installer-skin.php:346
 msgid "You are uploading an older version of the installed theme. You can continue to install the older version, but be sure to <a href=\"%s\">back up your database and files</a> first."
-msgstr "Du lädst eine ältere Version des installierten Themes hoch. Du kannst die ältere Version weiterhin installieren, aber stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst</a>."
+msgstr "Du lädst eine ältere Version des installierten Themes hoch. Du kannst mit der Installation der älteren Version fortfahren, aber stelle sicher, dass du zuerst deine <a href=\"%s\">Datenbank und Dateien sicherst (engl.)</a>."
 
 #. translators: 1: Current WordPress version, 2: Version required by the
 #. uploaded theme.
@@ -4501,7 +4501,7 @@ msgstr "Benutzersprache"
 #. translators: 1: WP_DEBUG_DISPLAY, 2: WP_DEBUG
 #: wp-admin/includes/class-wp-site-health.php:1440
 msgid "The value, %1$s, has either been enabled by %2$s or added to your configuration file. This will make errors display on the front end of your site."
-msgstr "Der Wert %1$s wurde entweder durch %2$s aktiviert oder in deine Konfigurationsdatei aufgenommen. Dies führt zu Fehlern in der Frontend-Anzeige deiner Website."
+msgstr "Der Wert %1$s wurde entweder durch %2$s aktiviert oder in deine Konfigurationsdatei aufgenommen. Dadurch werden Fehler im Frontend deiner Website sichtbar."
 
 #. translators: Background update finished notification email subject. %s: Site
 #. title.
@@ -4546,7 +4546,7 @@ msgstr "Bericht in die Zwischenablage kopieren"
 
 #: wp-admin/site-health-info.php:51
 msgid "If you want to export a handy list of all the information on this page, you can use the button below to copy it to the clipboard. You can then paste it in a text file and save it to your device, or paste it in an email exchange with a support engineer or theme/plugin developer for example."
-msgstr "Wenn du eine praktische Liste aller Informationen von dieser Seite exportieren möchtest, kannst du sie über den Button unten in die Zwischenablage kopieren. Du kannst diese Liste dann in eine Textdatei einfügen und auf deinem Gerät speichern, oder sie in einen E-Mail-Austausch mit einem Support-Techniker oder Theme-/Plugin-Entwickler einfügen."
+msgstr "Wenn du eine praktische Liste aller Informationen von dieser Seite exportieren möchtest, kannst du sie über den Button unten in die Zwischenablage kopieren. Du kannst diese Liste dann in eine Textdatei einfügen und auf deinem Gerät speichern oder sie in einen E-Mail-Austausch mit einem Support-Techniker oder Theme-/Plugin-Entwickler einfügen."
 
 #: wp-admin/site-health-info.php:23 wp-admin/site-health.php:226
 msgid "The Site Health check requires JavaScript."
@@ -4591,12 +4591,12 @@ msgstr "Die Echtheit von %s konnte nicht verifiziert werden, da die Signaturprü
 #. translators: %s: Eraser friendly name.
 #: wp-admin/includes/ajax-actions.php:5229
 msgid "Eraser callback is not valid: %s."
-msgstr "Der Löschvorgang ist nicht gültig: %s."
+msgstr "Die Rückruffunktion für die Löschung ist ungültig: %s."
 
 #. translators: %s: Eraser friendly name.
 #: wp-admin/includes/ajax-actions.php:5219
 msgid "Eraser does not include a callback: %s."
-msgstr "Löschprogramm enthält keinen Aufruf: %s."
+msgstr "Die Löschung beinhaltet keine Rückruffunktion: %s."
 
 #: wp-admin/includes/ajax-actions.php:4941
 #: wp-admin/includes/ajax-actions.php:5132
@@ -6037,7 +6037,7 @@ msgstr "<strong>Fehler:</strong> „Tabellenpräfix“ darf nicht leer sein."
 #. translators: %s: The name of the plugin that generated this meta box.
 #: wp-admin/includes/template.php:1189 wp-admin/includes/template.php:1441
 msgid "This meta box, from the %s plugin, is not compatible with the block editor."
-msgstr "Diese Metabox, von dem %s-Plugin, ist nicht mit dem Block-Editor kompatibel."
+msgstr "Diese Metabox von dem Plugin %s ist mit dem Block-Editor inkompatibel."
 
 #. translators: Header for the About section in a personal data export.
 #: wp-admin/includes/privacy-tools.php:368
@@ -6359,7 +6359,7 @@ msgstr "Aus deiner E-Mail-Adresse kann eine anonymisierte Zeichenfolge erstellt 
 #. translators: Default privacy policy text.
 #: wp-admin/includes/class-wp-privacy-policy-content.php:502
 msgid "When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor&#8217;s IP address and browser user agent string to help spam detection."
-msgstr "Wenn Besucher Kommentare auf der Website schreiben, sammeln wir die Daten, die im Kommentar-Formular angezeigt werden, außerdem die IP-Adresse des Besuchers und den User-Agent-String (damit wird der Browser identifiziert), um die Erkennung von Spam zu unterstützen."
+msgstr "Wenn Besucher Kommentare auf der Website hinterlassen, erfassen wir die im Kommentarformular angezeigten Daten sowie die IP-Adresse des Besuchers und die User-Agent-Zeichenfolge des Browsers, um Spam zu erkennen."
 
 #. translators: Privacy policy tutorial.
 #: wp-admin/includes/class-wp-privacy-policy-content.php:522
@@ -6379,7 +6379,7 @@ msgstr "Wenn du ein registrierter Benutzer bist und Fotos auf diese Website läd
 #. translators: Privacy policy tutorial.
 #: wp-admin/includes/class-wp-privacy-policy-content.php:491
 msgid "By default WordPress does not collect any personal data about visitors, and only collects the data shown on the User Profile screen from registered users. However some of your plugins may collect personal data. You should add the relevant information below."
-msgstr "Standardmäßig sammelt WordPress keine personenbezogenen Daten über Benutzer und sammelt nur die Daten, die im Profil eines registrierten Benutzers angezeigt werden. Einige deiner Plugins können aber zusätzliche personenbezogene Daten sammeln, füge die relevanten Informationen unten hinzu."
+msgstr "Standardmäßig sammelt WordPress keine personenbezogenen Daten über Benutzer und sammelt nur die Daten, die im Profil eines registrierten Benutzers angezeigt werden. Einige deiner Plugins können aber zusätzliche personenbezogene Daten sammeln. Füge die relevanten Informationen unten hinzu."
 
 #. translators: Privacy policy tutorial.
 #: wp-admin/includes/class-wp-privacy-policy-content.php:489
@@ -6423,7 +6423,7 @@ msgstr "Wer wir sind"
 
 #: wp-admin/privacy-policy-guide.php:79
 msgid "It is your responsibility to write a comprehensive privacy policy, to make sure it reflects all national and international legal requirements on privacy, and to keep your policy current and accurate."
-msgstr "Es ist deine Verantwortung, eine umfassende Datenschutzerklärung zu schreiben, die alle nationalen und internationalen gesetzlichen Vorgaben abdeckt und diese Datenschutzerklärung aktuell und korrekt zu halten."
+msgstr "Es ist deine Verantwortung, eine umfassende Datenschutzerklärung zu schreiben, die alle nationalen und internationalen gesetzlichen Vorgaben abdeckt, und diese Datenschutzerklärung aktuell und korrekt zu halten."
 
 #: wp-admin/privacy-policy-guide.php:78
 msgid "Please edit your privacy policy content, making sure to delete the summaries, and adding any information from your theme and plugins. Once you publish your policy page, remember to add it to your navigation menu."
@@ -6509,7 +6509,7 @@ msgstr "Erwartet wurde ein Array als Antwort der Funktion zum Datenexport: %s."
 #. translators: %s: Exporter friendly name.
 #: wp-admin/includes/ajax-actions.php:5041
 msgid "Exporter callback is not a valid callback: %s."
-msgstr "Rückruffunktion der Funktion zum Datenexport ist kein gültiger Callback: %s."
+msgstr "Die Rückruffunktion für den Daten-Export ist ungültig: %s."
 
 #. translators: %s: Exporter friendly name.
 #: wp-admin/includes/ajax-actions.php:5034
@@ -6825,11 +6825,11 @@ msgstr "Hervorzuhebende Mitwirkende"
 
 #: wp-admin/theme-editor.php:461
 msgid "If you decide to go ahead with direct edits anyway, use a file manager to create a copy with a new name and hang on to the original. That way, you can re-enable a functional version if something goes wrong."
-msgstr "Solltest du dich dennoch dazu entscheiden, direkt zu editieren, empfehlen wir dir mittels Dateimanager eine Kopie mit neuem Namen zu erstellen und das Original zu behalten. So hast du die Möglichkeit, eine funktionierende Version wiederherzustellen, falls etwas schiefgeht."
+msgstr "Solltest du dich dennoch dazu entscheiden, direkt zu editieren, empfehlen wir dir, mittels eines Dateimanagers eine Kopie mit neuem Namen zu erstellen und das Original zu behalten. So hast du die Möglichkeit, eine funktionierende Version wiederherzustellen, falls etwas schiefgeht."
 
 #: wp-admin/plugin-editor.php:373
 msgid "If you absolutely have to make direct edits to this plugin, use a file manager to create a copy with a new name and hang on to the original. That way, you can re-enable a functional version if something goes wrong."
-msgstr "Falls du dieses Plugin tatsächlich direkt ändern musst, empfehlen wir dir mittels Dateimanager eine Kopie mit neuem Namen zu erstellen und das Original zu behalten. So hast du die Möglichkeit, eine funktionierende Version wiederherzustellen, falls etwas schiefgeht."
+msgstr "Falls du dieses Plugin tatsächlich direkt ändern musst, empfehlen wir dir, mittels eines Dateimanagers eine Kopie mit neuem Namen zu erstellen und das Original zu behalten. So hast du die Möglichkeit, eine funktionierende Version wiederherzustellen, falls etwas schiefgeht."
 
 #: wp-admin/plugin-editor.php:372
 msgid "You appear to be making direct edits to your plugin in the WordPress dashboard. Editing plugins directly is not recommended as it may introduce incompatibilities that break your site and your changes may be lost in future updates."
@@ -6838,12 +6838,12 @@ msgstr "Du scheinst im WordPress-Dashboard direkte Änderungen an deinem Plugin 
 #. translators: 1: Documentation URL, 2: URL to Reading Settings screen.
 #: wp-admin/options-writing.php:237
 msgid "WordPress is not notifying any <a href=\"%1$s\">Update Services</a> because of your site&#8217;s <a href=\"%2$s\">visibility settings</a>."
-msgstr "WordPress benachrichtigt derzeit keine <a href=\"%1$s\">Update-Dienste</a> aufgrund deiner Website-Einstellungen zur <a href=\"%2$s\">Sichtbarkeit für Suchmaschinen</a>."
+msgstr "WordPress benachrichtigt derzeit keine <a href=\"%1$s\">Update-Dienste (engl.)</a> aufgrund deiner Website-Einstellungen zur <a href=\"%2$s\">Sichtbarkeit für Suchmaschinen</a>."
 
 #. translators: 1: Documentation URL, 2: web.config, 3: Ctrl + A, 4: ⌘ + A
 #: wp-admin/options-permalink.php:495
 msgid "<strong>Error:</strong> The root directory of your site is not <a href=\"%1$s\">writable</a>, so creating a file automatically was not possible. This is the URL rewrite rule you should have in your %2$s file. Create a new file called %2$s in the root directory of your site. Click in the field and press %3$s (or %4$s on Mac) to select all. Then insert this code into the %2$s file."
-msgstr "<strong>Fehler:</strong> Das Hauptverzeichnis deiner Website ist nicht <a href=\"%1$s\">beschreibbar</a>, sodass die automatische Dateierstellung nicht möglich war. Darum findest du hier die URL-Umschreibungsregel, die du in der %2$s-Datei speichern solltest. Erstelle eine neue Datei namens %2$s im Hauptverzeichnis deiner Website. Klicke in das Feld und drücke %3$s (oder %4$s am Mac), um alles auszuwählen. Füge diesen Code dann in die %2$s-Datei ein."
+msgstr "<strong>Fehler:</strong> Das Hauptverzeichnis deiner Website ist nicht <a href=\"%1$s\">beschreibbar (engl.)</a>, sodass die automatische Dateierstellung nicht möglich war. Darum findest du hier die URL-Umschreibungsregel, die du in der %2$s-Datei speichern solltest. Erstelle eine neue Datei namens %2$s im Hauptverzeichnis deiner Website. Klicke in das Feld und drücke %3$s (oder %4$s am Mac), um alles auszuwählen. Füge diesen Code dann in die %2$s-Datei ein."
 
 #. translators: %s: Documentation URL.
 #: wp-admin/options-general.php:253
@@ -8200,7 +8200,7 @@ msgstr "Einfach"
 #. translators: %s: Documentation URL.
 #: wp-admin/options-permalink.php:226
 msgid "WordPress offers you the ability to create a custom URL structure for your permalinks and archives. Custom URL structures can improve the aesthetics, usability, and forward-compatibility of your links. A <a href=\"%s\">number of tags are available</a>, and here are some examples to get you started."
-msgstr "WordPress bietet die Möglichkeit, individuelle URL-Strukturen für deine Permalinks und Archive zu erstellen. Individuelle URL-Strukturen verbessern Aussehen, Benutzerfreundlichkeit und Vorwärtskompatibilität der Links. Eine <a href=\"%s\">Reihe an Platzhaltern ist verfügbar</a>, hier sind einige Beispiele, um dir den Einstieg zu erleichtern."
+msgstr "WordPress bietet die Möglichkeit, individuelle URL-Strukturen für deine Permalinks und Archive zu erstellen. Individuelle URL-Strukturen verbessern Ästhetik, Benutzerfreundlichkeit und Vorwärtskompatibilität deiner Links. <a href=\"%s\">Eine Reihe an Platzhaltern ist verfügbar (engl.)</a>. Hier sind einige Beispiele für den Einstieg."
 
 #: wp-admin/options-permalink.php:34
 msgid "Permalinks can contain useful information, such as the post date, title, or other elements. You can choose from any of the suggested permalink formats, or you can craft your own if you select Custom Structure."
@@ -9470,7 +9470,7 @@ msgstr "Nachdem du deine Auswahl getroffen hast, kannst du diese durch Eingabe d
 
 #: wp-admin/includes/image-edit.php:203
 msgid "The aspect ratio is the relationship between the width and height. You can preserve the aspect ratio by holding down the shift key while resizing your selection. Use the input box to specify the aspect ratio, e.g. 1:1 (square), 4:3, 16:9, etc."
-msgstr "Das Seitenverhältnis ist die Bildhöhe in Relation zur Bildbreite. Du kannst das Seitenverhältnis beibehalten, indem du die Steuerungstaste gedrückt hältst, wenn du eine Größenänderung vornimmst. Verwende das Eingabefeld, um ein Seitenverhältnis festzulegen, z. B. 1:1 (quadratisch), 4:3, 16:9 usw."
+msgstr "Das Seitenverhältnis ist die Bildhöhe in Relation zur Bildbreite. Du kannst das Seitenverhältnis beibehalten, indem du die Umschalttaste gedrückt hältst, wenn du eine Größenänderung vornimmst. Verwende das Eingabefeld, um ein Seitenverhältnis festzulegen, z. B. 1:1 (quadratisch), 4:3, 16:9 usw."
 
 #: wp-admin/includes/image-edit.php:201
 msgid "To crop the image, click on it and drag to make your selection."
@@ -11194,7 +11194,7 @@ msgstr "Meine Website unwiderruflich löschen"
 #. translators: %s: Site address.
 #: wp-admin/ms-delete-site.php:134
 msgid "I'm sure I want to permanently delete my site, and I am aware I can never get it back or use %s again."
-msgstr "Ich bin mir sicher, dass ich meine Website endgültig deaktivieren möchte. Und ich bin mir bewusst, dass ich sie nie wieder zurückbekommen werde oder %s jemals wiederverwenden kann."
+msgstr "Ich bin mir sicher, dass ich meine Website endgültig löschen möchte. Und ich bin mir bewusst, dass ich sie nie wieder zurückbekommen werde oder %s jemals wiederverwenden kann."
 
 #: wp-admin/ms-delete-site.php:125
 msgid "Remember, once deleted your site cannot be restored."
@@ -11661,7 +11661,7 @@ msgstr "Im Bereich „Dateien hochladen“ bestimmst du den Ordner und Pfad für
 
 #: wp-admin/themes.php:152
 msgid "Installing themes on Multisite can only be done from the Network Admin section."
-msgstr "In einem Netzwerk können neue Themes nur in der Netzwerkverwaltung installiert werden."
+msgstr "In einer Multisite ist die Installation von Themes nur über die Netzwerkverwaltung möglich."
 
 #: wp-admin/options-writing.php:46
 msgid "If desired, WordPress will automatically alert various services of your new posts."
@@ -12727,7 +12727,7 @@ msgstr "Wenn du einem Beitrag mehrere Kategorien oder Schlagwörter zuweist, kan
 #. translators: %s: Percent sign (%).
 #: wp-admin/options-permalink.php:37
 msgid "If you pick an option other than Plain, your general URL path with structure tags (terms surrounded by %s) will also appear in the custom structure field and your path can be further modified there."
-msgstr "Falls du eine andere Struktur als „Einfach“ auswählst, wird dein genereller URL-Pfad mit Struktur-Schlagwörtern (Begriffe umschlossen mit %s) direkt in das individuelle Struktur-Feld übertragen und du kannst den Pfad auf Wunsch noch weiter anpassen."
+msgstr "Falls du eine andere Struktur als „Einfach“ auswählst, wird dein genereller URL-Pfad mit Struktur-Platzhaltern (Begriffe umschlossen mit %s) direkt in das individuelle Struktur-Feld übertragen und du kannst den Pfad auf Wunsch noch weiter anpassen."
 
 #: wp-admin/widgets-form.php:54
 msgid "If you want to remove the widget but save its setting for possible future use, just drag it into the Inactive Widgets area. You can add them back anytime from there. This is especially helpful when you switch to a theme with fewer or different widget areas."
@@ -13568,7 +13568,7 @@ msgstr "Die Installation ist nicht möglich, da <a href=\"%1$s\">WordPress %2$s
 
 #: wp-admin/includes/plugin.php:513
 msgid "Executed before Multisite is loaded."
-msgstr "Wird ausgeführt, bevor das Netzwerk geladen wird."
+msgstr "Wird ausgeführt, bevor Multisite geladen wird."
 
 #: wp-admin/includes/plugin.php:507
 msgid "External object cache."
@@ -14454,7 +14454,7 @@ msgstr "Entfernt"
 #: wp-admin/ms-delete-site.php:13 wp-admin/my-sites.php:13
 #: wp-admin/network/admin.php:17
 msgid "Multisite support is not enabled."
-msgstr "Die Unterstützung für eine Netzwerk-Installation (Multisite) ist nicht aktiviert."
+msgstr "Die Multisite-Unterstützung ist nicht aktiviert."
 
 #: wp-admin/menu.php:408
 msgid "Permalinks"

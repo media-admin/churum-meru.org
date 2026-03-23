@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-18 21:37:59+0000\n"
+"PO-Revision-Date: 2026-03-22 13:29:52+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1932,10 +1932,6 @@ msgstr "Beschreibung für das Einstellungsfeld."
 msgid "Available options for select/multiselect fields."
 msgstr "Verfügbare Optionen für Auswahl-/Mehrfachauswahl-Felder."
 
-#: src/Internal/RestApi/Routes/V4/Settings/General/Schema/GeneralSettingsSchema.php:209
-msgid "Set your store's address, visibility, currency, language, and timezone."
-msgstr "Lege die Adresse, Sichtbarkeit, Währung, Sprache und Zeitzone deines Shops fest."
-
 #: src/Internal/RestApi/Routes/V4/Settings/Account/Schema/AccountSettingsSchema.php:54
 #: src/Internal/RestApi/Routes/V4/Settings/Email/Schema/EmailSettingsSchema.php:61
 #: src/Internal/RestApi/Routes/V4/Settings/Emails/Schema/EmailsSettingsSchema.php:128
@@ -1945,6 +1941,10 @@ msgstr "Lege die Adresse, Sichtbarkeit, Währung, Sprache und Zeitzone deines Sh
 #: src/Internal/RestApi/Routes/V4/Settings/Tax/Schema/TaxSettingsSchema.php:54
 msgid "Flat key-value mapping of all setting field values."
 msgstr "Flaches Schlüssel-Wert-Mapping aller Einstellungsfeldwerte."
+
+#: src/Internal/RestApi/Routes/V4/Settings/General/Schema/GeneralSettingsSchema.php:209
+msgid "Set your store's address, visibility, currency, language, and timezone."
+msgstr "Lege die Adresse, Sichtbarkeit, Währung, Sprache und Zeitzone deines Shops fest."
 
 #. translators: Alt text for video play button icon.
 #: packages/email-editor/src/Integrations/Core/Renderer/Blocks/class-video.php:156
@@ -6749,13 +6749,13 @@ msgstr "Sichere und zuverlässig Zahlungen über das PayPal-Konto deines Kunden.
 msgid "Paymob is a leading payment gateway in the Middle East and Africa. Accept payments online and in-store with Paymob."
 msgstr "Paymob ist ein führendes Zahlungs-Gateway im Nahen Osten und Afrika. Akzeptiere Zahlungen online und in Geschäften mit Paymob."
 
-#: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3372
-msgid "The Payfast extension for WooCommerce enables you to accept payments by Credit Card and EFT via one of South Africa's most popular payment gateways. No setup fees or monthly subscription costs. Selecting this extension will configure your store to use South African rands as the selected currency."
-msgstr "Mithilfe der PayFast-Erweiterung für WooCommerce kannst du über eines der beliebtesten Zahlungs-Gateways Südafrikas Zahlungen per Kreditkarte und elektronischer Überweisung entgegennehmen. Keine Einrichtungsgebühren oder monatlichen Abonnementkosten. Durch die Auswahl dieser Erweiterung wird dein Shop darauf konfiguriert, den südafrikanischen Rand als ausgewählte Währung zu verwenden."
-
 #: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3405
 msgid "Paymob"
 msgstr "Paymob"
+
+#: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3372
+msgid "The Payfast extension for WooCommerce enables you to accept payments by Credit Card and EFT via one of South Africa's most popular payment gateways. No setup fees or monthly subscription costs. Selecting this extension will configure your store to use South African rands as the selected currency."
+msgstr "Mithilfe der PayFast-Erweiterung für WooCommerce kannst du über eines der beliebtesten Zahlungs-Gateways Südafrikas Zahlungen per Kreditkarte und elektronischer Überweisung entgegennehmen. Keine Einrichtungsgebühren oder monatlichen Abonnementkosten. Durch die Auswahl dieser Erweiterung wird dein Shop darauf konfiguriert, den südafrikanischen Rand als ausgewählte Währung zu verwenden."
 
 #: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3286
 msgid "Your trusted payments partner in Asia and around the world."
@@ -17856,7 +17856,7 @@ msgstr "Für diese Vorlage wurde kein Theme festgelegt."
 
 #: templates/myaccount/form-login.php:99
 msgid "A link to set a new password will be sent to your email address."
-msgstr "Ein Link zum Erstellen eines neuen Passwort wird an deine E-Mail-Adresse gesendet."
+msgstr "Ein Link zum Erstellen eines neuen Passworts wird an deine E-Mail-Adresse gesendet."
 
 #: src/Admin/API/OnboardingTasks.php:715
 msgid "List of extended deprecated tasks from the client side filter."

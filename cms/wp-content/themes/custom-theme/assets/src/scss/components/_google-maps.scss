@@ -1,107 +1,147 @@
 @use '../abstracts' as *;
 
-// ============================================
-// GOOGLE MAPS (DSGVO)
-// ============================================
+// =============================================================================
+// GOOGLE MAPS SHORTCODE
+// Shortcode: [google_map src="..." height="..." fullwidth="true"]
+// Cookie Consent Integration via _google-maps.js
+// =============================================================================
 
-.google-map-wrapper {
-  position: relative;
-  width: 100%;
-  border-radius: $radius-lg;
-  overflow: hidden;
-  background: $color-gray-100;
-}
+.google-map {
+    position: relative;
+    width: 100%;
+    height: var(--map-height, 450px);
+    overflow: hidden;
+    border-radius: $radius-lg;
+    background-color: $color-gray-100;
 
-.google-map-canvas {
-  width: 100%;
-  height: 100%;
-}
+    // ── Fullwidth Variante ────────────────────────────────────────────────────
+    // Bricht aus dem Container heraus auf 100vw.
+    &--fullwidth {
+        border-radius: 0;
+        width: 100vw;
+        margin-left: 50%;
+        transform: translateX(-50%);
 
-// DSGVO Overlay
-.google-map-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba($color-white, 0.98);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: opacity 0.3s ease;
-  
-  &__content {
-    text-align: center;
-    max-width: 500px;
-    padding: 2rem;
-  }
-  
-  &__icon {
-    color: $color-primary;
-    margin-bottom: 1.5rem;
-    
-    svg {
-      width: 64px;
-      height: 64px;
+        .google-map__iframe {
+            width: 100%;
+        }
     }
-  }
-  
-  &__title {
-    font-size: $font-size-2xl;
-    font-weight: $font-weight-bold;
-    margin-bottom: 1rem;
-    color: $color-text;
-  }
-  
-  &__text {
-    font-size: $font-size-base;
-    line-height: 1.6;
-    color: $color-text-muted;
-    margin-bottom: 1.5rem;
-    
-    a {
-      color: $color-primary;
-      text-decoration: underline;
-      
-      &:hover {
-        color: $color-primary-dark;
-      }
+
+    // ── iframe ────────────────────────────────────────────────────────────────
+    &__iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+
+        &.is-loaded {
+            animation: mapFadeIn 0.4s ease forwards;
+        }
+
+        &[hidden] {
+            display: none;
+        }
     }
-  }
-  
-  &__address {
-    padding: 1rem;
-    background: $color-gray-50;
-    border-radius: $radius-base;
-    margin-bottom: 1.5rem;
-    font-size: $font-size-sm;
-    color: $color-text-muted;
-    
-    strong {
-      color: $color-text;
+
+    // ── Placeholder ───────────────────────────────────────────────────────────
+    &__placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color-gray-50;
+        padding: $spacing-8;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+
+        &.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
     }
-  }
-  
-  &__button {
-    @include btn-base;
-    @include btn-primary;
-    @include btn-lg;
-  }
-  
-  &__privacy {
-    margin-top: 1rem;
-    font-size: $font-size-xs;
-    color: $color-text-muted;
-    
-    a {
-      color: $color-text-muted;
-      text-decoration: underline;
-      
-      &:hover {
+
+    &__placeholder-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 28rem;
+        gap: $spacing-4;
+    }
+
+    &__placeholder-icon {
+        color: $color-gray-400;
+        flex-shrink: 0;
+        opacity: 0.7;
+    }
+
+    &__placeholder-title {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
         color: $color-text;
-      }
+        margin: 0;
     }
-  }
+
+    &__placeholder-text {
+        font-size: $font-size-sm;
+        color: $color-text-muted;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    &__placeholder-btn {
+        // Erbt .btn .btn--primary .btn--sm aus dem Button-System
+        white-space: nowrap;
+    }
+
+    &__placeholder-hint {
+        font-size: $font-size-xs;
+        color: $color-text-muted;
+        margin: 0;
+    }
+
+    &__placeholder-settings-link {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: $color-primary;
+        font-size: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        font-family: inherit;
+
+        &:hover {
+            color: $color-primary-dark;
+            text-decoration: none;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $color-primary;
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+    }
+}
+
+// ── Animation ─────────────────────────────────────────────────────────────────
+@keyframes mapFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+// ── Reduced Motion ────────────────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+    .google-map {
+        &__iframe.is-loaded {
+            animation: none;
+        }
+
+        &__placeholder {
+            transition: none;
+        }
+    }
 }

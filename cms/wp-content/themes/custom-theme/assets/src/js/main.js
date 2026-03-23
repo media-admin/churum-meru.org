@@ -119,7 +119,7 @@ const initApp = async () => {
     safeInit('VideoPlayer', () => new VideoPlayer());
   }
 
-  if (has('[data-scroll-animation], .animate-on-scroll')) {
+  if (has('[data-animate], [data-scroll-animation], .animate-on-scroll')) {
     const { default: ScrollAnimations } = await import('./components/scroll-animations');
     safeInit('ScrollAnimations', () => new ScrollAnimations());
   }
@@ -143,9 +143,20 @@ const initApp = async () => {
   }
 
   if (has('.google-map, [data-map]')) {
-    await import('./components/google-maps');
+    const { default: GoogleMapConsent } = await import('./components/google-maps');
+    safeInit('GoogleMapConsent', () => GoogleMapConsent.init());
   }
 };
+
+
+// Carousel Grid: data-columns -> CSS Variable
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.carousel-grid').forEach(grid => {
+    const cols = grid.getAttribute('data-columns');
+    if (cols) grid.style.setProperty('--carousel-cols', cols);
+  });
+});
+
 
 // DOM Ready
 if (document.readyState === 'loading') {

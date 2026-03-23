@@ -1892,63 +1892,83 @@ add_shortcode('pricing_tables', 'pricing_tables_shortcode');
 
 function pricing_table_shortcode($atts, $content = null) {
     $atts = shortcode_atts(array(
-        'title' => '',
-        'price' => '',
-        'currency' => '€',
-        'period' => 'pro Monat',
-        'featured' => 'false',
-        'button_text' => 'Jetzt starten',
-        'button_link' => '#',
+        'title'         => '',
+        'price'         => '',
+        'currency'      => '€',
+        'period'        => 'pro Monat',
+        'featured'      => 'false',
+        'button_text'   => 'Jetzt starten',
+        'button_link'   => '#',
+        'button_url'    => '',   // Alias für button_link
         'button_target' => '_self',
-        'badge' => '', // e.g. "Beliebt", "Empfohlen"
-        'description' => '',
+        'badge'         => '',
+        'description'   => '',
+        'features'      => '',   // Komma-separierte Feature-Liste
     ), $atts);
-    
-    $title = esc_html($atts['title']);
-    $price = esc_html($atts['price']);
-    $currency = esc_html($atts['currency']);
-    $period = esc_html($atts['period']);
-    $featured = $atts['featured'] === 'true';
-    $button_text = esc_html($atts['button_text']);
-    $button_link = esc_url($atts['button_link']);
-    $button_target = esc_attr($atts['button_target']);
-    $badge = esc_html($atts['badge']);
-    $description = esc_html($atts['description']);
-    
+
+    // button_url als Alias für button_link
+    if ( ! empty( $atts['button_url'] ) ) {
+        $atts['button_link'] = $atts['button_url'];
+    }
+
+    $title       = esc_html( $atts['title'] );
+    $price       = esc_html( $atts['price'] );
+    $currency    = esc_html( $atts['currency'] );
+    $period      = esc_html( $atts['period'] );
+    $featured    = $atts['featured'] === 'true';
+    $button_text = esc_html( $atts['button_text'] );
+    $button_link = esc_url( $atts['button_link'] );
+    $button_target = esc_attr( $atts['button_target'] );
+    $badge       = esc_html( $atts['badge'] );
+    $description = esc_html( $atts['description'] );
+    $features    = array_filter( array_map( 'trim', explode( ',', $atts['features'] ) ) );
+
     $featured_class = $featured ? ' pricing-table--featured' : '';
-    
+
     ob_start();
     ?>
     <div class="pricing-table<?php echo $featured_class; ?>" data-animate="fade-in-up">
-        <?php if ($badge) : ?>
+        <?php if ( $badge ) : ?>
             <div class="pricing-table__badge"><?php echo $badge; ?></div>
         <?php endif; ?>
-        
+
         <div class="pricing-table__header">
-            <?php if ($title) : ?>
+            <?php if ( $title ) : ?>
                 <h3 class="pricing-table__title"><?php echo $title; ?></h3>
             <?php endif; ?>
-            
-            <?php if ($description) : ?>
+            <?php if ( $description ) : ?>
                 <p class="pricing-table__description"><?php echo $description; ?></p>
             <?php endif; ?>
         </div>
-        
+
         <div class="pricing-table__price">
             <span class="pricing-table__currency"><?php echo $currency; ?></span>
             <span class="pricing-table__amount"><?php echo $price; ?></span>
-            <?php if ($period) : ?>
+            <?php if ( $period ) : ?>
                 <span class="pricing-table__period"><?php echo $period; ?></span>
             <?php endif; ?>
         </div>
-        
+
         <div class="pricing-table__features">
-            <?php echo wpautop(do_shortcode($content)); ?>
+            <?php if ( $features ) : ?>
+            <ul class="pricing-table__features-list">
+                <?php foreach ( $features as $feature ) : ?>
+                <li class="pricing-table__feature">
+                    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <?php echo esc_html( $feature ); ?>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+            <?php echo wpautop( do_shortcode( $content ) ); ?>
         </div>
-        
+
         <div class="pricing-table__footer">
-            <a href="<?php echo $button_link; ?>" 
-               class="pricing-table__button button button--primary" 
+            <a href="<?php echo $button_link; ?>"
+               class="pricing-table__button button button--primary"
                target="<?php echo $button_target; ?>">
                 <?php echo $button_text; ?>
             </a>
@@ -1958,6 +1978,7 @@ function pricing_table_shortcode($atts, $content = null) {
     return ob_get_clean();
 }
 add_shortcode('pricing_table', 'pricing_table_shortcode');
+
 
 // Helper shortcode for feature lists
 function pricing_feature_shortcode($atts, $content = null) {
@@ -2353,104 +2374,178 @@ function posts_load_more_template_list() {
 }
 
 // ============================================
-// GOOGLE MAPS SHORTCODE (DSGVO)
+// GOOGLE MAPS SHORTCODE (Cookie Consent + Fullwidth + ACF)
 // ============================================
 
 /**
- * DSGVO-konforme Google Maps
- * 
- * Usage: [google_map id="123" height="400px"]
- * Usage: [google_map address="Stephansplatz 1, 1010 Wien" lat="48.2082" lng="16.3738"]
+ * DSGVO-konforme Google Maps Embed mit Cookie Consent Integration.
+ *
+ * Unterstützt zwei Verwendungsarten:
+ *
+ * A) Direkt via src-Parameter:
+ *    [google_map src="https://www.google.com/maps/embed?pb=..."]
+ *
+ * B) Via CPT-ID (liest embed_src aus ACF-Feldern):
+ *    [google_map id="42"]
+ *    [google_map id="42" fullwidth="true"]
+ *
+ * Alle Parameter:
+ *   id        (int,    optional) – Post-ID des Google Maps CPT
+ *   src       (string, optional) – Google Maps Embed-URL (direkt)
+ *   height    (int,    optional) – Höhe in px, Standard: 450
+ *   title     (string, optional) – title-Attribut des iframes
+ *   fullwidth (bool,   optional) – "true" → 100vw breites Layout
+ *   class     (string, optional) – Zusätzliche CSS-Klassen
  */
-function google_map_shortcode($atts) {
-    static $map_counter = 0;
-    $map_counter++;
-    
-    $atts = shortcode_atts(array(
-        'id' => '',
-        'address' => '',
-        'lat' => '',
-        'lng' => '',
-        'zoom' => '15',
-        'height' => '400px',
-        'marker_title' => '',
-        'style' => 'default',
-    ), $atts);
-    
-    // Load from CPT if ID provided
-    if (!empty($atts['id'])) {
-        $post_id = intval($atts['id']);
-        $atts['address'] = get_field('address', $post_id);
-        $atts['lat'] = get_field('latitude', $post_id);
-        $atts['lng'] = get_field('longitude', $post_id);
-        $atts['zoom'] = get_field('zoom', $post_id) ?: '15';
-        $atts['marker_title'] = get_field('marker_title', $post_id) ?: get_the_title($post_id);
-        $atts['style'] = get_field('map_style', $post_id) ?: 'default';
+function medialab_shortcode_google_map( array $atts ): string {
+
+    $atts = shortcode_atts( array(
+        'id'        => '',
+        'src'       => '',
+        'height'    => 450,
+        'title'     => __( 'Google Maps', 'media-lab-agency-core' ),
+        'fullwidth' => 'false',
+        'class'     => '',
+    ), $atts, 'google_map' );
+
+    // ── Wenn ID angegeben: Daten aus ACF laden ────────────────────────────────
+    if ( ! empty( $atts['id'] ) ) {
+        $post_id = intval( $atts['id'] );
+
+        // embed_src aus ACF (Pflichtfeld)
+        $embed_src = get_field( 'embed_src', $post_id );
+        if ( empty( $embed_src ) ) {
+            // Fallback: altes Feld falls noch vorhanden
+            $embed_src = get_field( 'maps_embed_url', $post_id );
+        }
+
+        if ( ! empty( $embed_src ) ) {
+            $atts['src'] = $embed_src;
+        }
+
+        // Optionale Overrides aus ACF (nur wenn nicht im Shortcode gesetzt)
+        if ( empty( $atts['title'] ) || $atts['title'] === __( 'Google Maps', 'media-lab-agency-core' ) ) {
+            $marker_title = get_field( 'marker_title', $post_id ) ?: get_the_title( $post_id );
+            if ( $marker_title ) {
+                $atts['title'] = $marker_title;
+            }
+        }
+
+        // Höhe aus ACF falls vorhanden
+        $acf_height = get_field( 'map_height', $post_id );
+        if ( $acf_height && $atts['height'] === 450 ) {
+            $atts['height'] = $acf_height;
+        }
     }
-    
-    // Validate required fields
-    if (empty($atts['lat']) || empty($atts['lng'])) {
-        return '<p>⚠️ Google Maps: Lat/Lng fehlt</p>';
+
+    // ── Pflichtfeld prüfen ────────────────────────────────────────────────────
+    if ( empty( $atts['src'] ) ) {
+        if ( current_user_can( 'edit_posts' ) ) {
+            return '<p style="color:red;border:1px solid red;padding:.5rem;">'
+                 . __( '[google_map] Fehler: Kein src oder embed_src gefunden. Bitte Embed-URL im CPT eintragen.', 'media-lab-agency-core' )
+                 . '</p>';
+        }
+        return '';
     }
-    
-    $map_id = 'gmap-' . $map_counter;
-    
+
+    $src       = esc_url( $atts['src'] );
+    $height    = absint( $atts['height'] ) ?: 450;
+    $title     = esc_attr( $atts['title'] );
+    $fullwidth = filter_var( $atts['fullwidth'], FILTER_VALIDATE_BOOLEAN );
+    $extra_cls = sanitize_html_class( $atts['class'] );
+
+    // ── CSS-Klassen ───────────────────────────────────────────────────────────
+    $wrapper_classes = array( 'google-map' );
+    if ( $fullwidth )  $wrapper_classes[] = 'google-map--fullwidth';
+    if ( $extra_cls )  $wrapper_classes[] = $extra_cls;
+    $wrapper_class_str = implode( ' ', $wrapper_classes );
+
+    // ── Placeholder-Texte ─────────────────────────────────────────────────────
+    $placeholder_title  = apply_filters( 'medialab_map_placeholder_title',  __( 'Karte kann nicht geladen werden', 'media-lab-agency-core' ) );
+    $placeholder_text   = apply_filters( 'medialab_map_placeholder_text',   __( 'Um die Google Maps Karte anzuzeigen, musst du Komfort-Cookies akzeptieren. Diese Cookies ermöglichen eingebettete Inhalte von Drittanbietern.', 'media-lab-agency-core' ) );
+    $placeholder_button = apply_filters( 'medialab_map_placeholder_button', __( 'Karte anzeigen & Cookies akzeptieren', 'media-lab-agency-core' ) );
+    $placeholder_hint   = apply_filters( 'medialab_map_placeholder_hint',   __( 'Oder passe deine Cookie-Einstellungen an.', 'media-lab-agency-core' ) );
+
+    // ── HTML ──────────────────────────────────────────────────────────────────
     ob_start();
     ?>
-    <div class="google-map-wrapper" 
-         data-map-id="<?php echo esc_attr($map_id); ?>"
-         data-lat="<?php echo esc_attr($atts['lat']); ?>"
-         data-lng="<?php echo esc_attr($atts['lng']); ?>"
-         data-zoom="<?php echo esc_attr($atts['zoom']); ?>"
-         data-marker-title="<?php echo esc_attr($atts['marker_title']); ?>"
-         data-style="<?php echo esc_attr($atts['style']); ?>"
-         style="height: <?php echo esc_attr($atts['height']); ?>;">
-        
-        <!-- DSGVO Overlay (before consent) -->
-        <div class="google-map-overlay">
-            <div class="google-map-overlay__content">
-                <div class="google-map-overlay__icon">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <path d="M32 4C20.96 4 12 12.96 12 24c0 13.5 20 36 20 36s20-22.5 20-36c0-11.04-8.96-20-20-20zm0 27c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" fill="currentColor"/>
-                    </svg>
-                </div>
-                
-                <h3 class="google-map-overlay__title">Google Maps</h3>
-                
-                <p class="google-map-overlay__text">
-                    Um die Karte anzuzeigen, benötigen wir Ihre Zustimmung. 
-                    Durch das Laden der Karte akzeptieren Sie die 
-                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.
+    <div
+        class="<?php echo esc_attr( $wrapper_class_str ); ?>"
+        style="--map-height: <?php echo $height; ?>px;"
+        data-map-src="<?php echo $src; ?>"
+        aria-label="<?php echo $title; ?>"
+    >
+        <!-- Placeholder: sichtbar solange kein Komfort-Consent -->
+        <div class="google-map__placeholder" aria-live="polite" role="region">
+            <div class="google-map__placeholder-inner">
+
+                <svg class="google-map__placeholder-icon" xmlns="http://www.w3.org/2000/svg"
+                     width="40" height="40" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                    <line x1="1" y1="1" x2="23" y2="23" stroke-dasharray="3 2"/>
+                </svg>
+
+                <h3 class="google-map__placeholder-title">
+                    <?php echo esc_html( $placeholder_title ); ?>
+                </h3>
+
+                <p class="google-map__placeholder-text">
+                    <?php echo esc_html( $placeholder_text ); ?>
                 </p>
-                
-                <?php if (!empty($atts['address'])) : ?>
-                    <p class="google-map-overlay__address">
-                        <strong>Adresse:</strong><br>
-                        <?php echo nl2br(esc_html($atts['address'])); ?>
-                    </p>
-                <?php endif; ?>
-                
-                <button class="google-map-overlay__button" data-action="load-map">
-                    Karte laden
+
+                <button
+                    type="button"
+                    class="google-map__placeholder-btn btn btn--primary btn--sm"
+                    data-map-accept-comfort
+                    aria-label="<?php echo esc_attr( $placeholder_button ); ?>"
+                >
+                    <?php echo esc_html( $placeholder_button ); ?>
                 </button>
-                
-                <p class="google-map-overlay__privacy">
-                    <small>
-                        Es werden Cookies von Google gesetzt. 
-                        <a href="/datenschutz">Mehr erfahren</a>
-                    </small>
+
+                <p class="google-map__placeholder-hint">
+                    <button
+                        type="button"
+                        class="google-map__placeholder-settings-link"
+                        data-map-open-settings
+                    >
+                        <?php echo esc_html( $placeholder_hint ); ?>
+                    </button>
                 </p>
+
             </div>
         </div>
-        
-        <!-- Map Container (loaded after consent) -->
-        <div id="<?php echo esc_attr($map_id); ?>" class="google-map-canvas"></div>
+
+        <!-- iframe: wird vom JS eingeblendet sobald Consent vorliegt -->
+        <iframe
+            class="google-map__iframe"
+            src=""
+            data-src="<?php echo $src; ?>"
+            width="100%"
+            height="<?php echo $height; ?>"
+            title="<?php echo $title; ?>"
+            style="border:0;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            aria-label="<?php echo $title; ?>"
+            hidden
+        ></iframe>
+
     </div>
     <?php
-    
     return ob_get_clean();
 }
-add_shortcode('google_map', 'google_map_shortcode');
+add_shortcode( 'google_map', 'medialab_shortcode_google_map' );
+
+
+
+
+
+
+
 
 // ============================================
 // JOBS QUERY SHORTCODE
@@ -2954,3 +3049,101 @@ function filter_search_shortcode($atts) {
     return ob_get_clean();
 }
 add_shortcode('filter_search', 'filter_search_shortcode');
+
+
+
+// ============================================
+// CAROUSEL QUERY SHORTCODE
+// ============================================
+
+/**
+ * Carousel Query Shortcode
+ * Usage: [carousel_query category="catering" columns="3" number="12"]
+ */
+function carousel_query_shortcode($atts) {
+    $atts = shortcode_atts([
+        'category' => '',
+        'columns'  => 3,
+        'number'   => -1,
+        'orderby'  => 'menu_order',
+        'order'    => 'ASC',
+    ], $atts);
+
+    $args = [
+        'post_type'      => 'carousel',
+        'posts_per_page' => intval($atts['number']),
+        'post_status'    => 'publish',
+        'orderby'        => $atts['orderby'],
+        'order'          => $atts['order'],
+    ];
+
+    if (!empty($atts['category'])) {
+        $args['tax_query'] = [[
+            'taxonomy' => 'carousel_category',
+            'field'    => 'slug',
+            'terms'    => explode(',', $atts['category']),
+        ]];
+    }
+
+    $query = new WP_Query($args);
+
+    if (!$query->have_posts()) {
+        return '';
+    }
+
+    $columns = intval($atts['columns']);
+
+    ob_start();
+    echo '<div class="carousel-grid" data-columns="' . esc_attr($columns) . '">';
+
+    while ($query->have_posts()) {
+        $query->the_post();
+        $subtitle     = get_field('subtitle');
+        $link_url     = get_field('link_url');
+        $link_target  = get_field('link_target') ?: '_self';
+        $image        = get_field('image');
+        $show_overlay = get_field('show_overlay');
+        $img_url      = is_array($image) ? ($image['sizes']['large'] ?? $image['url']) : $image;
+
+        // Fallback: Featured Image
+        if (empty($img_url) && has_post_thumbnail()) {
+            $img_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        }
+
+        echo '<div class="carousel-grid__item">';
+
+        if ($link_url) {
+            echo '<a href="' . esc_url($link_url) . '" target="' . esc_attr($link_target) . '" class="carousel-grid__link">';
+        }
+
+        if ($img_url) {
+            echo '<div class="carousel-grid__image">';
+            echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr(get_the_title()) . '" loading="lazy">';
+            if ($show_overlay) {
+                echo '<div class="carousel-grid__overlay">';
+                echo '<h3 class="carousel-grid__title">' . get_the_title() . '</h3>';
+                if ($subtitle) echo '<p class="carousel-grid__subtitle">' . esc_html($subtitle) . '</p>';
+                echo '</div>';
+            }
+            echo '</div>';
+        }
+
+        if (!$show_overlay) {
+            echo '<div class="carousel-grid__caption">';
+            echo '<h3 class="carousel-grid__title">' . get_the_title() . '</h3>';
+            if ($subtitle) echo '<p class="carousel-grid__subtitle">' . esc_html($subtitle) . '</p>';
+            echo '</div>';
+        }
+
+        if ($link_url) {
+            echo '</a>';
+        }
+
+        echo '</div>';
+    }
+
+    echo '</div>';
+    wp_reset_postdata();
+    return ob_get_clean();
+}
+add_shortcode('carousel_query', 'carousel_query_shortcode');

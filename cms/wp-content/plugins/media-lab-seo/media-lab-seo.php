@@ -44,6 +44,7 @@ function medialab_seo_init() {
     require_once MEDIALAB_SEO_PATH . 'inc/seo-report-template.php';
     require_once MEDIALAB_SEO_PATH . 'inc/seo-report-mailer.php';
     require_once MEDIALAB_SEO_PATH . 'inc/seo-dashboard.php';
+    require_once MEDIALAB_SEO_PATH . 'inc/image-sitemap.php';
 }
 add_action('plugins_loaded', 'medialab_seo_init');
 

@@ -313,4 +313,42 @@ export default class CookieConsent {
     openSettings() {
         this._openModal();
     }
+
+    // ── In cookie-notice.js einfügen ──────────────────────────────────────────────
+    // Position: direkt nach der openSettings() Methode (ganz am Ende der Klasse,
+    // vor der schließenden })
+
+    // ── Public API (Ergänzung) ────────────────────────────────────────────────────
+
+    /**
+     * Akzeptiert eine einzelne Kategorie programmatisch.
+     * Bestehende Consent-Werte anderer Kategorien bleiben erhalten.
+     * Feuert cookies:changed → _google-maps.js lädt die Karte sofort nach.
+     *
+     * @param {string} category – z.B. 'comfort', 'statistics', 'marketing'
+     */
+    acceptCategory( category ) {
+        if ( ! this.categories[ category ] ) {
+            console.warn( `[CookieConsent] Unbekannte Kategorie: "${category}"` );
+            return;
+        }
+
+        // Aktuellen Consent laden oder leeres Objekt
+        const current = this.consent || {};
+
+        // Neue Consent-Map aufbauen: notwendig immer true,
+        // Ziel-Kategorie auf true, Rest unverändert
+        const updated = {};
+        Object.keys( this.categories ).forEach( key => {
+            if ( this.categories[ key ].required ) {
+                updated[ key ] = true;
+            } else {
+                updated[ key ] = key === category ? true : ( current[ key ] ?? false );
+            }
+        } );
+
+        this._saveConsent( updated );
+        // _saveConsent feuert cookies:changed → GoogleMapConsent._handleConsentChange lädt die Karte
+    }
+
 }

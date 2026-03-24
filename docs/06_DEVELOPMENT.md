@@ -1,6 +1,6 @@
 # Development Guide
 
-**Version:** 1.14.0 | **Letzte Aktualisierung:** 2026-03-10
+**Version:** 1.15.0 | **Letzte Aktualisierung:** 2026-03-24
 
 ---
 
@@ -591,6 +591,37 @@ if (has('.meine-komponente')) {
   const { default: MeineKomponente } = await import('./components/meine-komponente');
   safeInit('MeineKomponente', () => new MeineKomponente());
 }
+```
+
+### Spoiler-Component – Viewport-Steuerung
+
+Der Spoiler-Component unterstützt ab v1.7.0 das `show_on`-Attribut für viewport-abhängiges Verhalten.
+
+**Architektur-Prinzip:** Sichtbarkeit wird vollständig via CSS gesteuert (`max-height` + `opacity`). JS toggelt ausschließlich die Klasse `is-open` sowie `spoiler--passive`.
+
+**Breakpoint-Konstante** (muss mit `$breakpoint-md` in `_variables.scss` übereinstimmen):
+```javascript
+const BREAKPOINT_MD = 768; // px
+```
+
+**Zustandsklassen:**
+
+| Klasse | Bedeutung |
+|---|---|
+| *(keine)* | Geschlossen – Content abgeschnitten, Fade sichtbar |
+| `is-open` | Geöffnet – voller Content, Fade ausgeblendet |
+| `spoiler--passive` | Kein Toggle – Content immer vollständig sichtbar |
+
+**Resize-Verhalten:**
+- Listener mit 150 ms Debounce auf `window.resize`
+- Nur Spoiler mit `show_on="desktop"` oder `show_on="mobile"` werden geprüft
+- `show_on="all"` bleibt unberührt
+
+```javascript
+// Beispiel: Spoiler nur auf Mobile togglebar
+// [spoiler show_on="mobile"] → data-show-on="mobile"
+// < 768px  → _activate()  → is-open/Toggle aktiv
+// ≥ 768px  → _passivate() → spoiler--passive gesetzt, Content voll sichtbar
 ```
 
 ### AJAX-Pattern

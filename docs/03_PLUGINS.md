@@ -1,6 +1,6 @@
 # Plugin-Dokumentation
 
-**Version:** 1.13.0 | **Letzte Aktualisierung:** 2026-03-10
+**Version:** 1.14.0 | **Letzte Aktualisierung:** 2026-03-24
 
 ---
 
@@ -8,13 +8,13 @@
 
 | Plugin | Version | Zweck | Modifizierbar? |
 |---|---|---|---|
-| media-lab-agency-core | 1.6.0 | Framework + Features | ❌ Nie |
+| media-lab-agency-core | 1.7.0 | Framework + Features | ❌ Nie |
 | media-lab-seo | 1.3.0 | SEO-Toolkit + Dashboard + Reports | ✅ Konfigurierbar |
 | advanced-custom-fields-pro | aktuell | Custom Fields | ✅ Konfigurierbar |
 
 ---
 
-## media-lab-agency-core `v1.6.0`
+## media-lab-agency-core `v1.7.0`
 
 **Datei:** `cms/wp-content/plugins/media-lab-agency-core/media-lab-agency-core.php`
 
@@ -294,6 +294,92 @@ Konfiguration unter **Agency Core → Hero Image**.
 - `primary` → weißer Button mit Primärfarbe-Text
 - `outline` → transparenter Button mit weißem Rand
 - `ghost` → komplett transparent
+
+
+---
+
+
+## Shortcode: `[spoiler]` / `[read_more]`
+
+Zeigt Inhalte zunächst abgeschnitten mit Fade-Overlay und Chevron-Button an.
+Beim Klick auf den Pfeil öffnet sich der vollständige Content.
+
+### Parameter
+
+| Parameter | Werte | Standard | Beschreibung |
+|---|---|---|---|
+| `open_text` | String | `Mehr anzeigen` | Aria-Label des Buttons (geschlossen) |
+| `close_text` | String | `Weniger anzeigen` | Aria-Label des Buttons (geöffnet) |
+| `open` | `true` / `false` | `false` | Startet den Spoiler im geöffneten Zustand |
+| `style` | `default` / `bordered` / `minimal` | `default` | Visueller Stil |
+| `icon` | `true` / `false` | `true` | Chevron-Icon anzeigen |
+| `show_on` | `all` / `desktop` / `mobile` | `all` | Auf welchem Viewport der Toggle aktiv ist |
+
+### `show_on` – Viewport-Steuerung
+
+| Wert | Desktop (≥ 768 px) | Mobile (< 768 px) |
+|---|---|---|
+| `all` | Toggle aktiv | Toggle aktiv |
+| `desktop` | Toggle aktiv | Content immer vollständig sichtbar |
+| `mobile` | Content immer vollständig sichtbar | Toggle aktiv |
+
+Auf dem Ausnahme-Viewport wird die Klasse `spoiler--passive` gesetzt:
+der Button wird ausgeblendet, der Content vollständig ohne Fade dargestellt.
+Bei Browser-Resize reagiert der Component automatisch (Debounce 150 ms).
+Breakpoint-Grenze: **768 px** (entspricht `$breakpoint-md`).
+
+### Verwendung
+
+```
+[spoiler]
+Dieser Inhalt wird auf allen Geräten hinter dem Fade versteckt.
+[/spoiler]
+
+[spoiler show_on="mobile" open_text="Mehr lesen"]
+Auf Desktop immer vollständig sichtbar, auf Mobile togglebar.
+[/spoiler]
+
+[spoiler show_on="desktop" style="bordered"]
+Auf Mobile immer vollständig sichtbar, auf Desktop togglebar.
+[/spoiler]
+
+[spoiler open="true"]
+Startet bereits geöffnet.
+[/spoiler]
+```
+
+### Alias
+
+`[read_more]` ist ein Alias für `[spoiler]` mit den Defaults
+`style="minimal"` und `open_text="Weiterlesen"`.
+
+### Design-Verhalten
+
+- Content ist immer sichtbar, wird aber auf `max-height: 180px` begrenzt
+- Ein linearer Gradient-Fade blendet den unteren Rand aus (`--color-bg`)
+- Der Chevron-Button sitzt unterhalb des Fades, ohne Rahmen oder Hintergrund
+- Im offenen Zustand: `max-height: none`, Fade-Opacity auf `0`
+- Sichtbarkeitssteuerung vollständig via CSS (`max-height` + `opacity`) – kein `display: none` via JS
+
+### Technische Dateien
+
+| Datei | Pfad |
+|---|---|
+| PHP Shortcode | `cms/wp-content/plugins/media-lab-agency-core/inc/shortcodes.php` |
+| JavaScript | `cms/wp-content/themes/custom-theme/src/js/components/Spoiler.js` |
+| SCSS | `cms/wp-content/themes/custom-theme/src/scss/components/_spoiler.scss` |
+
+### Changelog
+
+| Version | Änderung |
+|---|---|
+| 1.7.0 | `show_on`-Parameter hinzugefügt (Viewport-Steuerung: `all` / `desktop` / `mobile`) |
+| 1.7.0 | Visuelles Redesign: Fade-Overlay + reiner Chevron-Button als Standard |
+| 1.7.0 | Sichtbarkeitslogik von JS (`display:none`) auf CSS (`max-height` + `opacity`) umgestellt |
+| 1.7.0 | Button-Position von oberhalb nach unterhalb des Contents verschoben |
+| 1.7.0 | `spoiler--passive`-Klasse für Ausnahme-Viewport (kein Toggle, kein Fade) |
+
+---
 
 
 ## media-lab-seo `v1.3.0`

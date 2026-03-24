@@ -1843,45 +1843,50 @@ add_shortcode('services_query', 'services_query_shortcode');
 
 function spoiler_shortcode($atts, $content = null) {
     $atts = shortcode_atts(array(
-        'open_text' => 'Mehr anzeigen',
+        'open_text'  => 'Mehr anzeigen',
         'close_text' => 'Weniger anzeigen',
-        'open' => 'false',
-        'style' => 'default',
-        'icon' => 'true',
+        'open'       => 'false',
+        'style'      => 'default',
+        'icon'       => 'true',
+        'show_on'    => 'all',
     ), $atts);
-    
-    $open_text = esc_html($atts['open_text']);
+
+    $open_text  = esc_html($atts['open_text']);
     $close_text = esc_html($atts['close_text']);
-    $is_open = $atts['open'] === 'true';
-    $style = esc_attr($atts['style']);
-    $show_icon = $atts['icon'] === 'true';
-    
-    $unique_id = 'spoiler-' . uniqid();
+    $is_open    = $atts['open'] === 'true';
+    $style      = esc_attr($atts['style']);
+    $show_icon  = $atts['icon'] === 'true';
+    $show_on    = in_array($atts['show_on'], ['all', 'desktop', 'mobile'], true)
+                    ? $atts['show_on'] : 'all';
+
+    $unique_id  = 'spoiler-' . uniqid();
     $open_class = $is_open ? ' is-open' : '';
-    $display = $is_open ? 'block' : 'none';
-    $button_text = $is_open ? $close_text : $open_text;
-    
-    $output = '<div class="spoiler spoiler--' . $style . $open_class . '" id="' . $unique_id . '">';
+
+    $output  = '<div class="spoiler spoiler--' . $style . $open_class . '" ';
+    $output .= 'id="' . $unique_id . '" ';
+    $output .= 'data-show-on="' . esc_attr($show_on) . '">';
+
+    $output .= '<div class="spoiler__content">';
+    $output .= wpautop(do_shortcode($content));
+    $output .= '</div>';
+
     $output .= '<button class="spoiler__toggle" ';
-    $output .= 'data-open-text="' . esc_attr($open_text) . '" ';
+    $output .= 'data-open-text="'  . esc_attr($open_text)  . '" ';
     $output .= 'data-close-text="' . esc_attr($close_text) . '" ';
-    $output .= 'aria-expanded="' . ($is_open ? 'true' : 'false') . '">';
-    $output .= '<span class="spoiler__button-text">' . $button_text . '</span>';
-    
+    $output .= 'aria-expanded="' . ($is_open ? 'true' : 'false') . '" ';
+    $output .= 'aria-label="' . esc_attr($open_text) . '">';
+
     if ($show_icon) {
         $output .= '<span class="spoiler__icon">';
-        $output .= '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">';
-        $output .= '<path d="M8 4l4 4-4 4V4z"/>';
+        $output .= '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+        $output .= '<polyline points="4 7 10 13 16 7"/>';
         $output .= '</svg>';
         $output .= '</span>';
     }
-    
+
     $output .= '</button>';
-    $output .= '<div class="spoiler__content" style="display: ' . $display . ';">';
-    $output .= wpautop(do_shortcode($content));
     $output .= '</div>';
-    $output .= '</div>';
-    
+
     return $output;
 }
 add_shortcode('spoiler', 'spoiler_shortcode');

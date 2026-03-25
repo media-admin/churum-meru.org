@@ -1,0 +1,29 @@
+# Changelog
+
+Alle wesentlichen Änderungen werden in dieser Datei dokumentiert.
+Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
+Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
+
+---
+
+## [1.0.0] - 2026-03-25
+
+### media-lab-bookings 1.0.0
+
+#### Added
+
+- **Custom Post Type `mlb_location`** – Standorte/Filialen mit ACF-Feldern für Öffnungszeiten, Zeitslots, Kontakt, E-Mail-Template und Dienstleistungen
+- **Custom Post Type `mlb_booking`** – Buchungseinträge mit Backend-Übersicht, Custom Post Statuses (`mlb-pending`, `mlb-confirmed`, `mlb-cancelled`)
+- **ACF-Feldgruppen** – programmatisch registriert via `acf/include_fields`; Öffnungszeiten für alle 7 Wochentage (je `active`, `open`, `close` mit `conditional_logic`); Zeitslot-Konfiguration; Kontaktfelder; WYSIWYG-Bestätigungsmail-Template; Dienstleistungen-Repeater
+- **Slot-Logik** (`MLB_Slots`) – dynamische Slot-Generierung aus Öffnungszeiten, konfigurierbarer Slot-Dauer und `last_slot_offset`; Kapazitätsprüfung gegen bestehende Buchungen per `WP_Query`
+- **AJAX-Endpunkte** (`MLB_Ajax`) – `mlb_get_location_data` (Wochentage + Services), `mlb_get_slots` (verfügbare Zeitslots), `mlb_submit_booking` (Validierung, Speichern, Mail); alle Endpunkte per Nonce abgesichert
+- **E-Mail-Versand** (`MLB_Mail`) – Kunden-Bestätigung mit standortspezifischem HTML-Template und 13 Platzhaltern (`{name}`, `{date}`, `{time}`, `{location_name}` etc.); Kopie an Filial-E-Mail; Fallback-Template wenn kein ACF-Template hinterlegt; Filial-Benachrichtigung mit Backend-Link; HTML-Wrapper mit Inline-CSS
+- **SMTP-Integration** – nutzt `wp_mail()` → SMTP-Konfiguration aus `media-lab-agency-core`; kein separates SMTP-Setup erforderlich
+- **Shortcode `[mlb_booking_form]`** – Attribute `location` (ID oder Slug), `title`, `class`; Assets werden nur bei Bedarf geladen (`wp_register_*` + on-demand `wp_enqueue_*`)
+- **Flatpickr-Integration** – Deutsch-Locale; geschlossene Wochentage automatisch deaktiviert; `altInput` mit lesbarem Datumsformat
+- **Admin-Dashboard** (`MLB_Admin`) – Toplevel-Menü „Bookings"; Übersichtsseite mit Status-Statistiken; Buchungs-Listenansicht mit Spalten (Status-Badge, Standort, Datum, Uhrzeit, Kunde, Dienstleistung, Personen); Filter nach Standort + Status; sortierbare Spalten (Datum, Status); Standort-Listenansicht mit Slot-Zusammenfassung + Buchungszähler
+- **Formular-Template** (`templates/booking-form.php`) – sauber vom PHP-Logic getrennt; mehrsprachige Fehlermeldungen über `mlbConfig.i18n`; Datenschutz-Hinweis mit Link auf WP-Privacy-Policy
+- **Frontend-CSS** – CSS Custom Properties für Theme-Integration; responsives Grid; Flatpickr-Override; Spinner-Animation; Erfolgs- und Fehlermeldungs-States
+- **Dokumentation** – `docs/14_BOOKINGS.md` im Format der bestehenden Docs-Dateien
+
+---

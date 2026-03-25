@@ -100,6 +100,11 @@ class MLB_Ajax {
             }
         }
 
+        // DSGVO-Zustimmung serverseitig prüfen
+        if ( empty( $_POST['privacy_consent'] ) || $_POST['privacy_consent'] !== '1' ) {
+            wp_send_json_error( [ 'message' => 'Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.' ] );
+        }
+
         $location_id = (int) sanitize_text_field( $_POST['location_id'] );
         $date        = sanitize_text_field( $_POST['date'] );
         $time        = sanitize_text_field( $_POST['time'] );

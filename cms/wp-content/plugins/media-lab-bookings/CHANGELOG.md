@@ -6,6 +6,20 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.1.0] - 2026-03-25
+
+### media-lab-bookings 1.1.0
+
+#### Added
+- **DSGVO-Zustimmungs-Checkbox** – Pflichtfeld vor dem Absenden; serverseitige Prüfung in `ajax.php`; clientseitige Validierung mit Inline-Fehlermeldung in `booking-form.js`; „Datenschutzerklärung" im Zustimmungstext wird automatisch mit der WP-Privacy-Policy-URL verlinkt
+- **ACF-Tab „Formular-Labels"** pro Standort – alle 10 Feldbeschriftungen (Standort, Datum, Uhrzeit, Dienstleistung, Personenanzahl, Name, E-Mail, Telefon, Anmerkungen, Button) im Backend änderbar; DSGVO-Zustimmungstext und optionaler Hinweistext unter dem Button ebenfalls per ACF konfigurierbar; Fallback auf Standardtexte wenn Felder leer
+
+#### Changed
+- **`templates/booking-form.php`** – Labels werden aus ACF-Feldern des gewählten Standorts geladen via Hilfsfunktion `mlb_label()`; alter statischer Datenschutz-Hinweistext ersetzt durch konfigurierbare DSGVO-Checkbox; `privacy_note` optional
+- **`assets/css/booking-form.css`** – Checkbox-Styling (`.mlb-form__field--checkbox`, `.mlb-form__checkbox-label`, `.mlb-form__field-error`) ergänzt; `accent-color` nutzt `--mlb-color-primary`
+
+---
+
 ## [1.0.0] - 2026-03-25
 
 ### media-lab-bookings 1.0.0

@@ -43,7 +43,7 @@ media-lab-bookings/
 │   ├── shortcode.php           [mlb_booking_form] + Asset-Enqueue
 │   └── admin.php               Menü, Buchungs-Tabelle, Filter, Dashboard
 ├── templates/
-│   └── booking-form.php        Formular-HTML-Template 
+│   └── booking-form.php        Formular-HTML-Template
 └── assets/
     ├── js/booking-form.js      Frontend-JS (Flatpickr, AJAX, Submit)
     └── css/booking-form.css    Formular-Styles mit CSS Custom Properties

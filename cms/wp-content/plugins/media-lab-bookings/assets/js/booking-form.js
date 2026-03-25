@@ -255,6 +255,16 @@
             return;
         }
 
+        // DSGVO-Checkbox explizit prüfen + Inline-Fehler anzeigen
+        var $privacyCheckbox = $form.find( '.mlb-privacy-checkbox' );
+        var $privacyError    = $form.find( '[id$="-privacy-error"]' );
+        if ( $privacyCheckbox.length && ! $privacyCheckbox.is( ':checked' ) ) {
+            $privacyError.prop( 'hidden', false );
+            $privacyCheckbox[0].focus();
+            return;
+        }
+        $privacyError.prop( 'hidden', true );
+
         self.setLoading( true );
         self.hideError();
 

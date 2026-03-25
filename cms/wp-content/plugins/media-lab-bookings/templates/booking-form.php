@@ -7,12 +7,41 @@
  *   $atts                – Shortcode-Attribute
  *   $locations           – Array von WP_Post (mlb_location)
  *   $preset_location_id  – Vorausgewählter Standort (0 = keiner)
+ *
+ * Labels werden aus ACF-Feldern des Standorts geladen.
+ * Fallback auf Standardtexte wenn kein Label hinterlegt.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+// ── Hilfsfunktion: ACF-Label mit Fallback ─────────────────────────────────────
+function mlb_label( string $field_name, string $default, int $location_id ): string {
+    if ( ! $location_id || ! function_exists( 'get_field' ) ) return $default;
+    $val = get_field( $field_name, $location_id );
+    return ( $val && trim( $val ) !== '' ) ? esc_html( trim( $val ) ) : $default;
+}
+
+// Labels für diesen Standort laden
+$loc_id = $preset_location_id ?: 0;
+
+$labels = [
+    'location'    => mlb_label( 'mlb_label_location',    'Standort wählen',        $loc_id ),
+    'date'        => mlb_label( 'mlb_label_date',        'Datum',                   $loc_id ),
+    'time'        => mlb_label( 'mlb_label_time',        'Uhrzeit',                 $loc_id ),
+    'service'     => mlb_label( 'mlb_label_service',     'Dienstleistung',          $loc_id ),
+    'persons'     => mlb_label( 'mlb_label_persons',     'Personenanzahl',          $loc_id ),
+    'name'        => mlb_label( 'mlb_label_name',        'Vor- und Nachname',       $loc_id ),
+    'email'       => mlb_label( 'mlb_label_email',       'E-Mail-Adresse',          $loc_id ),
+    'phone'       => mlb_label( 'mlb_label_phone',       'Telefon',                 $loc_id ),
+    'notes'       => mlb_label( 'mlb_label_notes',       'Anmerkungen',             $loc_id ),
+    'submit'      => mlb_label( 'mlb_label_submit',      'Buchung anfragen',        $loc_id ),
+    'privacy'     => mlb_label( 'mlb_label_privacy',     'Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zu.', $loc_id ),
+    'privacy_note'=> mlb_label( 'mlb_label_privacy_note', '', $loc_id ),
+];
+
 $wrapper_class = 'mlb-booking-form' . ( ! empty( $atts['class'] ) ? ' ' . esc_attr( $atts['class'] ) : '' );
 $form_id       = 'mlb-form-' . wp_unique_id();
+$privacy_url   = get_privacy_policy_url();
 ?>
 
 <div class="<?php echo esc_attr( $wrapper_class ); ?>" id="<?php echo esc_attr( $form_id ); ?>" data-form-id="<?php echo esc_attr( $form_id ); ?>">
@@ -29,7 +58,7 @@ $form_id       = 'mlb-form-' . wp_unique_id();
         <div class="mlb-form__step mlb-form__step--location <?php echo $preset_location_id ? 'mlb-form__step--hidden' : ''; ?>">
             <div class="mlb-form__field">
                 <label for="<?php echo esc_attr( $form_id ); ?>-location" class="mlb-form__label mlb-form__label--required">
-                    Standort wählen
+                    <?php echo $labels['location']; ?>
                 </label>
                 <select
                     id="<?php echo esc_attr( $form_id ); ?>-location"
@@ -54,13 +83,13 @@ $form_id       = 'mlb-form-' . wp_unique_id();
             <input type="hidden" name="location_id" value="<?php echo esc_attr( $preset_location_id ); ?>">
         <?php endif; ?>
 
-        <!-- ── Schritt 2: Datum ─────────────────────────────────────────── -->
+        <!-- ── Schritt 2: Datum + Uhrzeit ──────────────────────────────── -->
         <div class="mlb-form__step mlb-form__step--datetime">
             <div class="mlb-form__row">
 
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-date" class="mlb-form__label mlb-form__label--required">
-                        Datum
+                        <?php echo $labels['date']; ?>
                     </label>
                     <input
                         type="text"
@@ -76,7 +105,7 @@ $form_id       = 'mlb-form-' . wp_unique_id();
 
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-time" class="mlb-form__label mlb-form__label--required">
-                        Uhrzeit
+                        <?php echo $labels['time']; ?>
                     </label>
                     <select
                         id="<?php echo esc_attr( $form_id ); ?>-time"
@@ -93,13 +122,13 @@ $form_id       = 'mlb-form-' . wp_unique_id();
             </div>
         </div>
 
-        <!-- ── Schritt 3: Dienstleistung ───────────────────────────────── -->
+        <!-- ── Schritt 3: Dienstleistung + Personen ────────────────────── -->
         <div class="mlb-form__step mlb-form__step--service">
             <div class="mlb-form__row">
 
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-service" class="mlb-form__label">
-                        Dienstleistung
+                        <?php echo $labels['service']; ?>
                     </label>
                     <select
                         id="<?php echo esc_attr( $form_id ); ?>-service"
@@ -112,7 +141,7 @@ $form_id       = 'mlb-form-' . wp_unique_id();
 
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-persons" class="mlb-form__label mlb-form__label--required">
-                        Personenanzahl
+                        <?php echo $labels['persons']; ?>
                     </label>
                     <input
                         type="number"
@@ -135,7 +164,7 @@ $form_id       = 'mlb-form-' . wp_unique_id();
             <div class="mlb-form__row mlb-form__row--3">
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-name" class="mlb-form__label mlb-form__label--required">
-                        Vor- und Nachname
+                        <?php echo $labels['name']; ?>
                     </label>
                     <input
                         type="text"
@@ -149,7 +178,7 @@ $form_id       = 'mlb-form-' . wp_unique_id();
 
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-email" class="mlb-form__label mlb-form__label--required">
-                        E-Mail-Adresse
+                        <?php echo $labels['email']; ?>
                     </label>
                     <input
                         type="email"
@@ -163,7 +192,7 @@ $form_id       = 'mlb-form-' . wp_unique_id();
 
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-phone" class="mlb-form__label">
-                        Telefon
+                        <?php echo $labels['phone']; ?>
                     </label>
                     <input
                         type="tel"
@@ -177,7 +206,7 @@ $form_id       = 'mlb-form-' . wp_unique_id();
 
             <div class="mlb-form__field">
                 <label for="<?php echo esc_attr( $form_id ); ?>-notes" class="mlb-form__label">
-                    Anmerkungen
+                    <?php echo $labels['notes']; ?>
                 </label>
                 <textarea
                     id="<?php echo esc_attr( $form_id ); ?>-notes"
@@ -190,16 +219,49 @@ $form_id       = 'mlb-form-' . wp_unique_id();
 
         </div>
 
+        <!-- ── DSGVO-Zustimmung ─────────────────────────────────────────── -->
+        <div class="mlb-form__step mlb-form__step--privacy">
+            <div class="mlb-form__field mlb-form__field--checkbox">
+                <label class="mlb-form__checkbox-label">
+                    <input
+                        type="checkbox"
+                        name="privacy_consent"
+                        value="1"
+                        class="mlb-form__checkbox mlb-privacy-checkbox"
+                        required
+                        aria-required="true"
+                        aria-describedby="<?php echo esc_attr( $form_id ); ?>-privacy-error"
+                    >
+                    <span class="mlb-form__checkbox-text">
+                        <?php
+                        $privacy_text = $labels['privacy'];
+                        if ( $privacy_url && strpos( $privacy_text, 'Datenschutzerklärung' ) !== false ) {
+                            $privacy_link = '<a href="' . esc_url( $privacy_url ) . '" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>';
+                            echo str_replace( 'Datenschutzerklärung', $privacy_link, $privacy_text );
+                        } elseif ( $privacy_url ) {
+                            echo esc_html( $privacy_text ) . ' (<a href="' . esc_url( $privacy_url ) . '" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>)';
+                        } else {
+                            echo esc_html( $privacy_text );
+                        }
+                        ?>
+                        <span class="mlb-form__required-mark" aria-hidden="true"> *</span>
+                    </span>
+                </label>
+                <div class="mlb-form__field-error" id="<?php echo esc_attr( $form_id ); ?>-privacy-error" role="alert" hidden>
+                    Bitte stimmen Sie der Datenschutzerklärung zu, um fortzufahren.
+                </div>
+            </div>
+        </div>
+
         <!-- ── Submit ───────────────────────────────────────────────────── -->
         <div class="mlb-form__submit">
             <button type="submit" class="mlb-form__button">
-                <span class="mlb-form__button-text">Buchung anfragen</span>
+                <span class="mlb-form__button-text"><?php echo $labels['submit']; ?></span>
                 <span class="mlb-form__button-spinner" aria-hidden="true"></span>
             </button>
-            <p class="mlb-form__privacy">
-                Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten gemäß unserer
-                <a href="<?php echo esc_url( get_privacy_policy_url() ); ?>">Datenschutzerklärung</a> zu.
-            </p>
+            <?php if ( $labels['privacy_note'] ) : ?>
+                <p class="mlb-form__privacy-note"><?php echo esc_html( $labels['privacy_note'] ); ?></p>
+            <?php endif; ?>
         </div>
 
     </form>

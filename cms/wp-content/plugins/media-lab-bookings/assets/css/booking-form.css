@@ -271,6 +271,70 @@
     border-color: var(--mlb-color-primary);
 }
 
+/* ── DSGVO-Checkbox ───────────────────────────────────────────────────────── */
+
+.mlb-form__field--checkbox {
+    margin-top: 8px;
+}
+
+.mlb-form__checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-size: .925rem;
+    line-height: 1.5;
+}
+
+.mlb-form__checkbox {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    border: 1.5px solid var(--mlb-color-border);
+    border-radius: 4px;
+    background: var(--mlb-color-bg-input);
+    cursor: pointer;
+    accent-color: var(--mlb-color-primary);
+    appearance: auto;
+    -webkit-appearance: auto;
+}
+
+.mlb-form__checkbox:focus {
+    outline: 2px solid var(--mlb-color-border-focus);
+    outline-offset: 2px;
+}
+
+.mlb-form__checkbox-text {
+    color: var(--mlb-color-text);
+}
+
+.mlb-form__checkbox-text a {
+    color: var(--mlb-color-primary);
+    text-decoration: underline;
+}
+
+.mlb-form__required-mark {
+    color: var(--mlb-color-primary);
+    font-weight: 700;
+}
+
+.mlb-form__field-error {
+    margin-top: 6px;
+    font-size: .825rem;
+    color: var(--mlb-color-error);
+    padding: 6px 10px;
+    background: var(--mlb-color-error-bg);
+    border-radius: 4px;
+    border-left: 3px solid var(--mlb-color-error);
+}
+
+.mlb-form__privacy-note {
+    margin: 10px 0 0;
+    font-size: .8rem;
+    color: #666;
+}
+
 /* ── Hidden-Utility ───────────────────────────────────────────────────────── */
 
 [hidden] {

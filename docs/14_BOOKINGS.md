@@ -1,4 +1,4 @@
-# 10. Bookings Plugin
+# 14. Bookings Plugin
 
 **Plugin:** `media-lab-bookings`
 **Version:** 1.0.0

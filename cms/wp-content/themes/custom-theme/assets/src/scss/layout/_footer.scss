@@ -2,72 +2,94 @@
 
 // =============================================================================
 // Site Footer
+// Version: 1.2.0 – Fluid Responsive System
+//
+// Änderungen:
+//   - padding: $spacing-8 0 $spacing-4 → var(--space-2xl) 0 var(--space-md)
+//   - gap/padding-bottom → var(--space-*)
+//   - @media (max-width: 767px) → @include respond-below('md')
+//   - font-size → var(--text-*)
 // =============================================================================
 
 .site-footer {
     background: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding: $spacing-8 0 $spacing-4;
+    // Fluid: 64px oben (war: $spacing-8 = 64px fix), 16px unten (war: $spacing-4 = 32px fix)
+    padding:    var(--space-2xl) 0 var(--space-md);
     margin-top: auto;
 
     // ── Oberer Bereich: Logo + Navigation ────────────────────────────────────
-    &__inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: $spacing-6;
-        padding-bottom: $spacing-6;
-        border-bottom: 1px solid var(--color-border);
-        flex-wrap: wrap;
 
-        @media (max-width: 767px) {
+    &__inner {
+        display:         flex;
+        align-items:     center;
+        justify-content: space-between;
+        gap:             var(--space-xl);
+        padding-bottom:  var(--space-xl);
+        border-bottom:   1px solid var(--color-border);
+        flex-wrap:       wrap;
+
+        @include respond-below('md') {
             flex-direction: column;
-            align-items: flex-start;
-            gap: $spacing-4;
+            align-items:    flex-start;
+            gap:            var(--space-md);
         }
     }
 
     // ── Brand / Logo ──────────────────────────────────────────────────────────
+
     &__brand {
         flex-shrink: 0;
     }
 
     &__logo-link {
-        display: inline-block;
+        display:     inline-block;
         line-height: 0;
+
+        &:focus-visible {
+            outline:        2px solid $color-primary;
+            outline-offset: 3px;
+            border-radius:  $radius-sm;
+        }
     }
 
     &__logo {
         max-height: 40px;
-        width: auto;
+        width:      auto;
     }
 
     &__site-name {
-        font-size: $font-size-xl;
-        font-weight: 700;
-        color: var(--color-text);
+        font-size:       var(--text-xl);
+        font-weight:     $font-weight-bold;
+        color:           var(--color-text);
         text-decoration: none;
-        transition: color 0.2s;
+        transition:      color 0.2s ease;
 
-        &:hover {
-            color: $color-primary;
+        &:hover { color: $color-primary; }
+
+        &:focus-visible {
+            outline:        2px solid $color-primary;
+            outline-offset: 3px;
+            border-radius:  $radius-sm;
         }
     }
 
     // ── Unterer Bereich: Copyright ────────────────────────────────────────────
+
     &__bottom {
-        display: flex;
-        align-items: center;
+        display:         flex;
+        align-items:     center;
         justify-content: center;
-        padding-top: $spacing-4;
+        padding-top:     var(--space-md);
     }
 
     &__copyright {
-        font-size: $font-size-sm;
-        color: var(--color-text-muted);
-        margin: 0;
+        font-size: var(--text-sm);
+        color:     var(--color-text-muted);
+        margin:    0;
     }
 }
+
 
 // =============================================================================
 // Footer Navigation
@@ -76,25 +98,23 @@
 .footer-nav {
 
     &__list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: $spacing-1 $spacing-4;
+        list-style:  none;
+        margin:      0;
+        padding:     0;
+        display:     flex;
+        flex-wrap:   wrap;
+        gap:         $spacing-1 $spacing-4;
         align-items: center;
 
-        @media (max-width: 767px) {
+        @include respond-below('md') {
             gap: $spacing-1 $spacing-3;
         }
     }
 
-    // Menu-Items
     li {
-        margin: 0;
+        margin:  0;
         padding: 0;
 
-        // Aktueller Menüpunkt
         &.current-menu-item > a,
         &.current_page_item > a {
             color: $color-primary;
@@ -102,14 +122,18 @@
     }
 
     a {
-        font-size: $font-size-sm;
-        color: var(--color-text-muted);
+        font-size:       var(--text-sm);
+        color:           var(--color-text-muted);
         text-decoration: none;
-        transition: color 0.2s;
-        white-space: nowrap;
+        transition:      color 0.2s ease;
+        white-space:     nowrap;
 
-        &:hover {
-            color: $color-primary;
+        &:hover { color: $color-primary; }
+
+        &:focus-visible {
+            outline:        2px solid $color-primary;
+            outline-offset: 2px;
+            border-radius:  $radius-sm;
         }
     }
 }

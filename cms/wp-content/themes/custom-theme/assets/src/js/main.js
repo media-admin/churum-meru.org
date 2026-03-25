@@ -111,7 +111,8 @@ const initApp = async () => {
   }
 
   if (has('.faq-accordion')) {
-    await import('./components/faq-accordion');
+      const { default: FaqAccordion } = await import('./components/faq-accordion');
+      safeInit('FaqAccordion', () => new FaqAccordion());
   }
 
   if (has('.video-player, [data-video]')) {

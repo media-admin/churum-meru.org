@@ -1,12 +1,13 @@
 // =============================================================================
 // DESIGN TOKENS
 // Media Lab Starter Kit – Single Source of Truth
-// Version: 1.1.0 – 2026-03-04 (bereinigt und vereinheitlicht)
+// Version: 1.2.0 – Fluid Responsive System
 //
 // REGELN:
 //  - Jede Variable NUR EINMAL definieren
 //  - Hardcodierte Werte in Components → immer Token verwenden
 //  - CSS Custom Properties und SCSS-Variablen sind synchron gehalten
+//  - Fluid Tokens (clamp) in :root → keine px-Breakpoints für Type/Spacing nötig
 // =============================================================================
 
 
@@ -15,7 +16,7 @@
 //    Primärfarben – direkt aus Figma
 // ─────────────────────────────────────────────────────────────────
 
-$color-primary:   #ff0000;  // Figma: "Primary"
+$color-primary:   #d40000;  // Figma: "Primary" – WCAG AA Fix (war: #ff0000)
 $color-secondary: #ff6b6b;  // Figma: "Secondary"
 $color-accent:    #00d9ff;  // Figma: "Accent"
 
@@ -86,8 +87,8 @@ $color-purple: #8b5cf6;   // Highlights, Badges
 //     NICHT in Components verwenden – nur über diese Tokens!
 // ─────────────────────────────────────────────────────────────────
 
-$color-primary-dark:        #cc0000;  // darken($color-primary, 10%)
-$color-primary-darker:      #b20000;  // darken($color-primary, 15%)
+$color-primary-dark:        #b30000;  // darken($color-primary, 10%)
+$color-primary-darker:      #990000;  // darken($color-primary, 15%)
 
 $color-success-dark:        #075b3f;  // darken($color-success, 20%)
 $color-success-light-bg:    #b5f8e2;  // lighten($color-success, 45%)
@@ -178,6 +179,44 @@ $color-input-bg:   $color-white;
   // Accent
   --color-gold:   #{$color-gold};
   --color-purple: #{$color-purple};
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // FLUID TYPOGRAPHY
+  // clamp(min, preferred, max) – skaliert flüssig zwischen
+  // Mobile (375px) und Large Desktop (1440px).
+  // Kein zusätzlicher @media-Query für Font-Sizes nötig.
+  // ═══════════════════════════════════════════════════════════════
+
+  --text-xs:   clamp(0.75rem,   1vw,    0.8125rem);  // 12–13px
+  --text-sm:   clamp(0.8125rem, 1.2vw,  0.875rem);   // 13–14px
+  --text-base: clamp(0.9375rem, 1.5vw,  1rem);       // 15–16px
+  --text-lg:   clamp(1rem,      1.8vw,  1.125rem);   // 16–18px
+  --text-xl:   clamp(1.125rem,  2vw,    1.25rem);    // 18–20px
+  --text-2xl:  clamp(1.25rem,   2.5vw,  1.5rem);     // 20–24px
+  --text-3xl:  clamp(1.375rem,  3vw,    1.75rem);    // 22–28px
+  --text-4xl:  clamp(1.75rem,   4vw,    2rem);       // 28–32px
+  --text-5xl:  clamp(2rem,      5vw,    2.5rem);     // 32–40px
+  --text-h1:   clamp(2rem,      6vw,    3rem);       // 32–48px
+  --text-hero: clamp(2.25rem,   7vw,    3.5rem);     // 36–56px
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // FLUID SPACING
+  // Identische Logik wie Typography – ein Wert für alle Viewport-Breiten.
+  // Verwenden statt $spacing-* überall wo visueller Atem-Raum skalieren soll.
+  // ═══════════════════════════════════════════════════════════════
+
+  --space-xs:      clamp(0.5rem,   1vw,   0.75rem);   //  8–12px
+  --space-sm:      clamp(0.75rem,  2vw,   1rem);       // 12–16px
+  --space-md:      clamp(1rem,     2.5vw, 1.5rem);     // 16–24px
+  --space-lg:      clamp(1.5rem,   4vw,   2rem);       // 24–32px
+  --space-xl:      clamp(2rem,     5vw,   3rem);       // 32–48px
+  --space-2xl:     clamp(3rem,     7vw,   5rem);       // 48–80px
+  --space-section: clamp(3rem,     8vw,   6rem);       // 48–96px – für section-padding
+
+  // Container Padding – flüssig statt fix 24px auf allen Breakpoints
+  --container-padding: clamp(1rem, 4vw, 2rem);         // 16–32px
 }
 
 [data-theme="dark"] {
@@ -209,25 +248,27 @@ $color-border:         var(--color-border);
 
 // ─────────────────────────────────────────────────────────────────
 // 6. TYPOGRAPHY
+//    SCSS-Variablen bleiben als Fallback erhalten.
+//    In Components: CSS Custom Properties (--text-*) bevorzugen.
 // ─────────────────────────────────────────────────────────────────
 
 $font-primary:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 $font-secondary: 'Merriweather', Georgia, serif;
 
-// Fluid Font Scale (px)
-$font-size-xs:   12px;  // Figma: Text/XSmall
-$font-size-sm:   14px;  // Figma: Text/Small
-$font-size-base: 16px;  // Figma: Text/Base
-$font-size-lg:   18px;  // Figma: Text/Large
-$font-size-xl:   20px;  // Figma: Text/XLarge
-$font-size-2xl:  24px;  // Figma: Text/2XLarge
-$font-size-3xl:  28px;  // Figma: Text/3XLarge
+// Statische Skala (für Kontexte wo clamp() nicht passt, z.B. Icons, Badges)
+$font-size-xs:   12px;
+$font-size-sm:   14px;
+$font-size-base: 16px;
+$font-size-lg:   18px;
+$font-size-xl:   20px;
+$font-size-2xl:  24px;
+$font-size-3xl:  28px;
 $font-size-4xl:  32px;
 $font-size-5xl:  40px;
 $font-size-6xl:  48px;
 $font-size-7xl:  56px;
 
-// Heading Aliases
+// Heading Aliases (statisch – für Einzelfälle ohne fluid scaling)
 $font-size-h1: $font-size-6xl;  // 48px
 $font-size-h2: 36px;
 $font-size-h3: $font-size-3xl;  // 28px
@@ -250,6 +291,8 @@ $line-height-relaxed: 1.8;
 
 // ─────────────────────────────────────────────────────────────────
 // 7. SPACING (8px Grid)
+//    Statische Tokens – für exakte Innen-Abstände (Padding in Buttons etc.)
+//    Für Section- und Layout-Abstände: fluid --space-* bevorzugen.
 // ─────────────────────────────────────────────────────────────────
 
 $spacing-unit: 8px;
@@ -284,7 +327,7 @@ $spacing-2xl: $spacing-8;   // 64px
 
 $container-width:     1200px;
 $container-max-width: $container-width;  // Alias
-$container-padding:   $spacing-md;
+$container-padding:   $spacing-md;       // Statischer Fallback – Layout nutzt var(--container-padding)
 
 $breakpoint-xs:  375px;   // Mobile
 $breakpoint-sm:  576px;   // Mobile Landscape
@@ -299,12 +342,11 @@ $grid-gap:     $spacing-3;
 
 // ─────────────────────────────────────────────────────────────────
 // 9. BORDER RADIUS
-//    Einmalig definiert – keine Überschreibungen
 // ─────────────────────────────────────────────────────────────────
 
 $radius-none: 0;
 $radius-sm:   4px;
-$radius-base: 8px;   // Standard
+$radius-base: 8px;
 $radius-md:   8px;   // Alias für $radius-base
 $radius-lg:   16px;
 $radius-xl:   24px;
@@ -313,19 +355,17 @@ $radius-full: 9999px;
 
 // ─────────────────────────────────────────────────────────────────
 // 10. SHADOWS
-//     Einmalig definiert
 // ─────────────────────────────────────────────────────────────────
 
 $shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.1);
 $shadow-base: 0 4px 6px rgba(0, 0, 0, 0.1);
-$shadow-md:   $shadow-base;                   // Alias
+$shadow-md:   $shadow-base;
 $shadow-lg:   0 10px 15px rgba(0, 0, 0, 0.1);
 $shadow-xl:   0 20px 25px rgba(0, 0, 0, 0.15);
 
 
 // ─────────────────────────────────────────────────────────────────
 // 11. TRANSITIONS
-//     Einmalig definiert – alle mit `all` Prefix für Konsistenz
 // ─────────────────────────────────────────────────────────────────
 
 $transition-fast:  all 0.15s ease;
@@ -345,26 +385,20 @@ $z-tooltip:  3000;
 
 // ─────────────────────────────────────────────────────────────────
 // 13. SWIPER DEFAULTS
-//     Globale CSS-Variablen für alle Swiper-Instanzen.
-//     Überschreiben per Komponente (z.B. .hero-slider) möglich.
 // ─────────────────────────────────────────────────────────────────
+
 :root {
-  // Primärfarbe (Navigation, aktiver Bullet)
-  --swiper-theme-color:                       #{$color-primary};
-
-  // Navigation (Prev/Next Arrows)
-  --swiper-navigation-color:                  #{$color-primary};
-  --swiper-navigation-size:                   44px;
-
-  // Pagination Bullets
-  --swiper-pagination-color:                  #{$color-primary};        // aktiver Bullet
-  --swiper-pagination-bullet-size:            10px;
-  --swiper-pagination-bullet-horizontal-gap:  6px;
-  --swiper-pagination-bullet-inactive-color:  #{$color-primary};        // inaktiver Bullet
+  --swiper-theme-color:                        #{$color-primary};
+  --swiper-navigation-color:                   #{$color-primary};
+  --swiper-navigation-size:                    44px;
+  --swiper-pagination-color:                   #{$color-primary};
+  --swiper-pagination-bullet-size:             10px;
+  --swiper-pagination-bullet-horizontal-gap:   6px;
+  --swiper-pagination-bullet-inactive-color:   #{$color-primary};
   --swiper-pagination-bullet-inactive-opacity: 0.3;
-  --swiper-pagination-bullet-opacity:         1;
+  --swiper-pagination-bullet-opacity:          1;
 }
-// Swiper CSS-Variablen — direkt auf .swiper gesetzt (höhere Spezifität als :root)
+
 .swiper {
   --swiper-theme-color:                        #{$color-primary};
   --swiper-navigation-color:                   #{$color-primary};
@@ -376,7 +410,6 @@ $z-tooltip:  3000;
   --swiper-pagination-bullet-horizontal-gap:   6px;
 }
 
-// Swiper Bullet-Farben – Direkt-Override
 .swiper-pagination-bullet {
   background: $color-primary !important;
   opacity: 0.3 !important;

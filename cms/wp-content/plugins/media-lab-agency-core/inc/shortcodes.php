@@ -747,18 +747,10 @@ function stats_shortcode($atts, $content = null) {
     $columns = intval($atts['columns']);
     $style = esc_attr($atts['style']);
     
-    // INLINE STYLES
-    $inline_style = 'display:grid!important;gap:2rem!important;margin:2rem 0!important;width:100%!important;';
-    
-    if ($columns == 2) {
-        $inline_style .= 'grid-template-columns:repeat(2,1fr)!important;';
-    } elseif ($columns == 3) {
-        $inline_style .= 'grid-template-columns:repeat(3,1fr)!important;';
-    } elseif ($columns == 4) {
-        $inline_style .= 'grid-template-columns:repeat(4,1fr)!important;';
-    } else {
-        $inline_style .= 'grid-template-columns:repeat(' . $columns . ',1fr)!important;';
-    }
+    // grid-template-columns wird NICHT mehr inline gesetzt –
+    // das CSS (_stats.scss) übernimmt das responsiv via data-columns.
+    // Inline !important würde die mobilen Breakpoints überschreiben.
+    $inline_style = 'width:100%!important;';
     
     return '<div class="stats stats--' . $style . '" data-columns="' . $columns . '" style="' . $inline_style . '">' . do_shortcode($content) . '</div>';
 }
@@ -1919,18 +1911,10 @@ function pricing_tables_shortcode($atts, $content = null) {
     $columns = intval($atts['columns']);
     $style = esc_attr($atts['style']);
     
-    // INLINE STYLES
-    $inline_style = 'display:grid!important;gap:2rem!important;margin:4rem 0!important;width:100%!important;align-items:stretch!important;';
-    
-    if ($columns == 2) {
-        $inline_style .= 'grid-template-columns:repeat(2,1fr)!important;';
-    } elseif ($columns == 3) {
-        $inline_style .= 'grid-template-columns:repeat(3,1fr)!important;';
-    } elseif ($columns == 4) {
-        $inline_style .= 'grid-template-columns:repeat(4,1fr)!important;';
-    } else {
-        $inline_style .= 'grid-template-columns:repeat(' . $columns . ',1fr)!important;';
-    }
+    // grid-template-columns wird NICHT mehr inline gesetzt –
+    // das CSS (_pricing-tables.scss) übernimmt das responsiv via data-columns.
+    // Inline !important würde die mobilen Breakpoints überschreiben.
+    $inline_style = 'width:100%!important;';
     
     return '<div class="pricing-tables pricing-tables--' . $style . '" data-columns="' . $columns . '" style="' . $inline_style . '">' . do_shortcode($content) . '</div>';
 }

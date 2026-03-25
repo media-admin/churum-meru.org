@@ -97,6 +97,11 @@ class MLB_Shortcode {
             'order'          => 'ASC',
         ] );
 
+        // Nur 1 aktiver Standort → automatisch vorauswählen, Dropdown ausblenden
+        if ( ! $preset_location_id && count( $locations ) === 1 ) {
+            $preset_location_id = $locations[0]->ID;
+        }
+
         // JS-Config übergeben
         wp_localize_script( 'mlb-booking-form', 'mlbConfig', [
             'ajaxUrl'          => admin_url( 'admin-ajax.php' ),

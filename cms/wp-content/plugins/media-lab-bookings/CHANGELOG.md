@@ -6,6 +6,15 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.2.0] - 2026-03-25
+
+### media-lab-bookings 1.2.0
+
+#### Changed
+- **`shortcode.php`** – Wenn nur 1 aktiver Standort (`mlb_location`, Status `publish`) vorhanden ist, wird dieser automatisch vorausgewählt und das Standort-Dropdown ausgeblendet. Ab 2 Standorten erscheint das Dropdown wie gewohnt. Manuell per Shortcode-Attribut gesetzte Standorte (`location="..."`) bleiben davon unberührt.
+
+---
+
 ## [1.1.0] - 2026-03-25
 
 ### media-lab-bookings 1.1.0

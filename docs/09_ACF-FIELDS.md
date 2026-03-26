@@ -1,7 +1,7 @@
 # ACF Fields Reference
 
-**Version:** 1.13.0  
-**Letzte Aktualisierung:** 2026-03-09  
+**Version:** 1.18.0  
+**Letzte Aktualisierung:** 2026-03-26  
 **Plugin:** Media Lab Project Starter v1.0.0 (optional)
 
 Complete reference for all ACF Field Groups: 11 CPT Field Groups (JSON, 65 custom fields) + 10 Options Sub-Pages (PHP, 92 custom fields).
@@ -930,3 +930,49 @@ ACF-Feldgruppen für die 5 ACF-basierten Gutenberg Blocks.
 
 **163 fields ready!** 🎨  
 **Next:** [Deployment Guide](10_DEPLOYMENT.md) →
+---
+
+## Welcome Page Fields
+
+**Feldgruppe:** `group_welcome_page`  
+**Registriert in:** `inc/acf-welcome.php`  
+**Sichtbar bei:** Template `page-templates/template-welcome.php`
+
+### Tab: Hintergrund
+
+| Feld | Name | Typ | Hinweis |
+|---|---|---|---|
+| Hintergrundbild | `welcome_bg_image` | Image | Optional, min. 1920×1080px |
+| Overlay-Deckkraft | `welcome_bg_overlay` | Range | 0–80%, nur wenn Bild gesetzt |
+
+### Tab: Logo & Inhalt
+
+| Feld | Name | Typ | Hinweis |
+|---|---|---|---|
+| Logo | `welcome_logo` | Image | Optional – Fallback: WP Custom Logo |
+| Content-Bereich | `welcome_content` | WYSIWYG | Optional, z.B. Coming-Soon-Text |
+
+### Tab: Firmendaten
+
+| Feld | Name | Typ | Hinweis |
+|---|---|---|---|
+| Firmenname | `welcome_company_name` | Text | Leer → WP Seitentitel |
+| Adresse | `welcome_address` | Textarea | Zeilenumbrüche werden übernommen |
+| Telefon | `welcome_phone` | Text | Wird als `tel:` Link ausgegeben |
+| E-Mail | `welcome_email` | Email | Antispambot-geschützt |
+
+### Tab: Social Media
+
+| Feld | Name | Typ | Hinweis |
+|---|---|---|---|
+| Social Media Links | `welcome_social_links` | Repeater | Plattform-Select + URL |
+
+**Repeater Sub-Felder:**
+
+| Feld | Name | Typ | Optionen |
+|---|---|---|---|
+| Plattform | `platform` | Select | Instagram, Facebook, LinkedIn, Xing, YouTube, TikTok, X |
+| URL | `url` | URL | `https://` |
+
+**Icons:** SVG data URIs direkt im Template – keine Font-Abhängigkeit.
+

@@ -76,6 +76,7 @@
 // WooCommerce
 @use 'pages/page-404';
 @use 'woocommerce/woocommerce';
+@use 'pages/welcome-page';
 
 // Swiper Overrides – muss zuletzt stehen
 @use 'components/swiper-overrides';

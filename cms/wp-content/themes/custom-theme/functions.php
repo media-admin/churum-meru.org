@@ -85,6 +85,8 @@ $optional_components = array(
     'helpers.php',
     'woocommerce.php',
     'woocommerce-emails.php',
+    'acf-welcome.php',   // ACF-Felder: Welcome Page
+    'welcome-mode.php',  // Weiterleitung: Welcome Mode (auskommentieren zum Deaktivieren)
 );
 
 foreach ($optional_components as $component) {

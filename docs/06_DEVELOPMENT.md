@@ -1,6 +1,6 @@
 # Development Guide
 
-**Version:** 1.15.0 | **Letzte Aktualisierung:** 2026-03-24
+**Version:** 1.18.0 | **Letzte Aktualisierung:** 2026-03-26
 
 ---
 
@@ -167,29 +167,55 @@ Die Warning `[legacy-js-api]` kommt von Vite intern – kein Handlungsbedarf.
 assets/src/scss/
 ├── abstracts/
 │   ├── _index.scss        ← @forward Entry Point (nicht direkt bearbeiten)
-│   ├── _variables.scss    ← Alle Design-Tokens
-│   └── _mixins.scss       ← Alle Mixins
+│   ├── _variables.scss    ← Design-Tokens + Fluid CSS Custom Properties
+│   │                         (--text-*, --space-*, --container-padding)
+│   └── _mixins.scss       ← respond-to(), respond-below(), container, section-padding
 ├── base/
 │   ├── _reset.scss
-│   ├── _typography.scss
+│   ├── _typography.scss   ← Fluid Type Scale (var(--text-*))
 │   ├── _global.scss
 │   └── _grid-fix.scss
-├── components/            ← 35 Partials
+├── components/            ← 35 Partials (alle auf Fluid System umgestellt)
 ├── layout/
-│   ├── _header.scss
+│   ├── _header.scss       ← --header-height Custom Property
 │   ├── _footer.scss
 │   ├── _navigation.scss
 │   ├── _grid.scss
 │   └── _top-header.scss
+├── pages/
+│   ├── _home.scss
+│   ├── _page-404.scss
+│   └── _welcome-page.scss ← Welcome Page Template Styles (neu)
 ├── templates/
+│   ├── _archive.scss
 │   ├── _page-builder.scss
-│   └── _search-results.scss
+│   ├── _search-results.scss
+│   └── _single.scss
 ├── utilities/
-│   ├── _animations.scss
+│   ├── _animations.scss   ← inkl. prefers-reduced-motion (WCAG 2.3.3)
 │   └── _helpers.scss      ← Fullwidth, sr-only, text-*, spacing-*
 ├── woocommerce/
 │   └── _woocommerce.scss
 └── style.scss             ← Haupt-Entry
+```
+
+### Fluid Design Token System (v1.2.0)
+
+Alle Abstände und Schriftgrößen nutzen `clamp()`-basierte CSS Custom Properties
+aus `:root` in `_variables.scss`. `respond-to()` ist nur noch für **strukturelle**
+Layout-Änderungen (Grid-Spalten, `display: none`) zuständig.
+
+```scss
+// Fluid Typography – kein @media nötig
+h1 { font-size: var(--text-h1); }   // clamp(2rem, 6vw, 3rem)
+
+// Fluid Spacing
+.section { padding: var(--space-section) 0; }  // clamp(3rem, 8vw, 6rem)
+
+// Breakpoints nur für strukturelle Änderungen
+.grid {
+    @include respond-to('lg') { grid-template-columns: 1fr 1fr; }
+}
 ```
 
 ### @use / @forward System
@@ -989,3 +1015,51 @@ npm run build 2>&1 | head -50
 ---
 
 **Weiter:** [docs/07_TROUBLESHOOTING.md](07_TROUBLESHOOTING.md)
+---
+
+## Welcome Mode
+
+Temporäre Willkommensseite während die echte Site entwickelt wird.
+
+### Aktivierung
+
+In `wp-config.php`:
+```php
+define( 'WELCOME_MODE', true );
+define( 'WELCOME_PAGE_ID', 42 ); // ID der Welcome Page
+```
+
+### Deaktivierung
+
+```php
+define( 'WELCOME_MODE', false );
+```
+
+Oder `welcome-mode.php` aus der optionalen Components-Liste in `functions.php` auskommentieren.
+
+### Beteiligte Dateien
+
+| Datei | Zweck |
+|---|---|
+| `page-templates/template-welcome.php` | Page Template (eigenständiges Layout) |
+| `inc/welcome-mode.php` | Redirect-Logik + `wpm_content` Modal-Handler |
+| `inc/acf-welcome.php` | ACF Feldgruppe (4 Tabs) |
+| `assets/src/scss/pages/_welcome-page.scss` | Styles |
+
+### Footer-Seiten Modal
+
+Footer-Links öffnen sich in einem Modal ohne Header/Footer der Hauptseite.
+Der `fetch()` Request sendet `X-WPM-Request: 1` + `?wpm_content=1` →
+`welcome-mode.php` gibt nur den reinen Seiteninhalt zurück.
+
+### Konfiguration erlaubte Slugs
+
+Seiten die trotzdem direkt erreichbar sind (kein Redirect):
+```php
+define( 'WELCOME_ALLOWED_SLUGS', serialize( [
+    'impressum',
+    'datenschutz',
+    'privacy-policy',
+] ) );
+```
+

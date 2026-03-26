@@ -6,6 +6,91 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.18.0] - 2026-03-26
+
+### Versionen
+- custom-theme: 1.14.0
+- agency-core: 1.6.1 (shortcodes.php)
+- media-lab-seo: 1.3.0 (unverändert)
+
+---
+
+### Added – Responsive CSS System v1.2.0
+
+#### Fluid Design Tokens (`abstracts/_variables.scss`)
+- `--text-xs` bis `--text-hero`: Fluid Typography via `clamp()` (15px→16px bis 36px→56px)
+- `--space-xs` bis `--space-section`: Fluid Spacing via `clamp()` (8px→12px bis 48px→96px)
+- `--container-padding`: Fluid Container-Padding `clamp(1rem, 4vw, 2rem)`
+- `$color-primary: #d40000` (WCAG AA Fix, war: `#ff0000`)
+- `$color-text-muted: #4a4a4a` (WCAG AA Fix, war: `#9b9b9b`)
+
+#### Responsive Mixins (`abstracts/_mixins.scss`)
+- `respond-below('xs'|'sm'|'md'|'lg'|'xl')` – Max-width Breakpoint-Mixin (neu: `xs`)
+- `@mixin container` nutzt `var(--container-padding)` statt fixem Wert
+- `@mixin section-padding` nutzt `var(--space-section)` statt zwei `@media`-Blöcken
+- WCAG Touch Target: `min-height: 44px` auf `btn-base`
+
+#### Alle SCSS-Files auf Fluid System umgestellt
+- **`base/`**: `_typography.scss` – alle `font-size` auf `var(--text-*)`, neue Utility-Klassen
+- **`layout/`**: Header, Navigation, Footer, Top-Header, Grid – `@media` → `respond-below()`, Spacing fluid
+  - `--header-height: 64px` als Custom Property eingeführt
+- **`components/`** (14 Files): `_hero`, `_hero-slider`, `_hero-image`, `_events`, `_job-card`,
+  `_load-more`, `_projects-grid`, `_pricing-tables`, `_team-cards`, `_services`, `_stats`,
+  `_ajax-filters`, `_ajax-search`, `_breadcrumbs` – hardcodierte `@media` → Mixins, Spacing fluid
+- **`templates/`**: `_archive`, `_page-builder`, `_search-results`, `_single` – Padding/Spacing fluid
+- **`pages/`**: `_page-404` – Spacing fluid
+- **`utilities/`**: `_animations` – `prefers-reduced-motion` WCAG 2.3.3 ergänzt
+- **`woocommerce/`**: `_woocommerce` – `@media (max-width: Xpx)` → `respond-below()`, `font-size` fluid
+
+#### Plugin: `media-lab-agency-core`
+- **`assets/src/scss/blocks.scss`**: Fluid Spacing Tokens `--ml-space-*`, WCAG-Patch integriert
+  (kein separater Patch-Block mehr), Range-Slider Track `var(--color-border)`
+- **`inc/shortcodes.php`**: `grid-template-columns` aus PHP Inline-Styles entfernt
+  (`pricing_tables`, `stats` Shortcodes) – CSS übernimmt responsiv via `data-columns`
+
+#### Bugfixes
+- FAQ Accordion: `FaqAccordion` wurde in `main.js` importiert aber nie instanziiert (`new FaqAccordion()`)
+- `_cpt-grids.scss` (`services-grid`): `!important` auf Grid-Definitionen ergänzt
+- Logo Mobile `.site-logo__img--mobile`: `object-fit: contain` gegen Verzerrung
+
+---
+
+### Added – Welcome Page Template
+
+#### Neue Dateien
+- **`page-templates/template-welcome.php`** – Eigenständiges Page Template (kein Header/Footer)
+  - Hintergrundbild + Overlay (optional)
+  - Logo (ACF oder WP Custom Logo)
+  - Flexibler WYSIWYG Content-Bereich (optional)
+  - Firmendaten: Name, Adresse, Telefon, E-Mail
+  - Social Media Icons (SVG data URIs, kein Font-Loading)
+  - Footer-Navigation mit Modal-Anzeige (kein Page-Reload)
+  - Cookie Consent Banner via `wp_footer()`
+
+- **`inc/welcome-mode.php`** – Redirect-Logik
+  - Alle Besucher → Welcome Page (302)
+  - Admins/Editoren durchgelassen
+  - Erlaubte Slugs (Impressum, Datenschutz) konfigurierbar via `WELCOME_ALLOWED_SLUGS`
+  - `X-WPM-Request` Header → Modal-Fetch wird nicht redirected
+  - `?wpm_content=1` → liefert reinen Seiteninhalt (kein Layout/Scripts) für Modal
+  - Admin-Hinweis-Banner wenn Welcome Mode aktiv
+  - **Deaktivierung:** `define('WELCOME_MODE', false)` in `wp-config.php`
+
+- **`inc/acf-welcome.php`** – ACF Feldgruppe `group_welcome_page`
+  - 4 Tabs: Hintergrund, Logo & Inhalt, Firmendaten, Social Media
+  - Repeater-Feld für Social Media (Plattform-Select + URL)
+  - Nur sichtbar wenn Template `template-welcome.php` gewählt
+
+- **`assets/src/scss/pages/_welcome-page.scss`** – Eigenständiges CSS
+
+#### `functions.php`
+- `acf-welcome.php` und `welcome-mode.php` in optionale Components-Liste aufgenommen
+
+#### `assets/src/scss/style.scss`
+- `@use 'pages/welcome-page'` ergänzt
+
+---
+
 ## [1.13.1] - 2026-03-09
 
 ### Dokumentation & Testing

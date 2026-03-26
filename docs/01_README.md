@@ -1,275 +1,146 @@
-# Media Lab Starter Kit - Internal Documentation
+# Media Lab Starter Kit
 
-**Version:** 1.17.0  
-**Last Updated:** March 10, 2026  
-**Architecture:** Modular Plugin System
+**Professional WordPress Agency Framework** – Modulares Plugin-System für skalierbare Kundenprojekte.
 
----
-
-## 📚 Documentation Index
-
-| # | Document | Description | Status |
-|---|----------|-------------|--------|
-| 1 | [README](01_README.md) | Documentation overview | ✅ Current |
-| 2 | [Installation](02_INSTALLATION.md) | Setup guide | ✅ Updated |
-| 3 | [Plugins](03_PLUGINS.md) | Plugin architecture | ✅ New |
-| 4 | [Shortcodes](04_SHORTCODES.md) | 44 shortcodes reference | ✅ Updated |
-| 5 | [AJAX Features](05_AJAX-FEATURES.md) | AJAX system guide | ✅ Updated |
-| 6 | [Development](06_DEVELOPMENT.md) | Development workflow | ✅ Updated |
-| 7 | [Troubleshooting](07_TROUBLESHOOTING.md) | Common issues | ✅ Updated |
-| 8 | [Custom Post Types](08_CUSTOM-POST-TYPES.md) | 9 CPTs reference | ✅ Updated |
-| 9 | [ACF Fields](09_ACF-FIELDS.md) | Field groups reference | ✅ Updated |
-| 10 | [Deployment](10_DEPLOYMENT.md) | Production deploy | ✅ Updated |
-| 11 | [Testing](11_TESTING.md) | Test suite (23 tests) | ✅ New |
-| 12 | [Analytics](12_ANALYTICS.md) | Analytics plugin | ✅ New |
-| 13 | [SEO](13_SEO.md) | SEO plugin | ✅ New |
+[![Version](https://img.shields.io/badge/version-1.18.0-blue.svg)](../../CHANGELOG.md)
+[![PHP](https://img.shields.io/badge/PHP-8.0+-purple.svg)](https://php.net)
+[![WordPress](https://img.shields.io/badge/WordPress-6.0+-blue.svg)](https://wordpress.org)
+[![License](https://img.shields.io/badge/license-proprietary-red.svg)](#lizenz)
 
 ---
 
-## 🏗️ Architecture v1.17.0
+## Übersicht
 
-### Plugin System Overview
+Vollständiges WordPress-Starter-Kit mit modularer Plugin-Architektur für Agentur-Workflows.
+Entwickelt für Wartbarkeit, Sicherheit und schnelles Client-Deployment.
+
+### Architektur-Prinzip
+
 ```
-WordPress Installation
-│
-├── 📦 Regular Plugins
-│   ├── media-lab-agency-core/      v1.6.0 (Framework + Blocks)
-│   ├── media-lab-project-starter/  v1.0.0 (Content Structure)
-│   ├── media-lab-analytics/        v1.0.0 (Tracking)
-│   └── media-lab-seo/              v1.1.1 (SEO)
-│
-├── 🎨 Theme
-│   └── custom-theme/               (Presentation Layer)
-│
-└── 🔌 MU-Plugins
-    └── System-level plugins
+media-lab-agency-core   →  Wiederverwendbares Framework (nie modifizieren)
+media-lab-seo           →  SEO-Toolkit (pro Projekt aktivieren + konfigurieren)
+custom-theme            →  Präsentationsebene (pro Projekt anpassen)
 ```
 
-### What Changed in v1.17.0
+---
 
-**Highlights seit v1.7.0:**
-- ✅ single.php + archive.php Templates (Post-Card Komponente)
-- ✅ search.php + 404.php fertiggestellt
-- ✅ WooCommerce Basis-Styling (Shop, Produkt, Warenkorb, Checkout, Konto)
-- ✅ Contact Form 7 Styling vollständig überarbeitet
-- ✅ Hero Image: Subtitle, Buttons, Höhen-/Ausrichtungs-Varianten
-- ✅ PHP 8.1 Deprecated-Warnings behoben (ACF message-Felder)
-- ✅ hCaptcha Integration (CF7, WP-Login, WooCommerce)
-- ✅ Back-to-Top Button + Scroll Progress Bar (ACF-gesteuert)
-- ✅ GA4 + Matomo Analytics-Adapter (v1.13.0)
-- ✅ Core Web Vitals Performance-Optimierungen / Lighthouse CI (v1.15.0)
-- ✅ WooCommerce E-Mail-Templates (8 Templates, vollständig filterbar) (v1.16.0)
-- ✅ **Gutenberg Custom Blocks – 8 Blöcke (ACF + Native) (v1.17.0)**
+## Komponenten & Versionen
+
+| Komponente             | Version  | Beschreibung                          |
+|------------------------|----------|---------------------------------------|
+| `media-lab-agency-core`| `1.6.0`  | Framework-Plugin (nicht modifizieren) |
+| `media-lab-seo`        | `1.3.0`  | SEO-Toolkit                           |
+| `custom-theme`         | `1.14.0` | Theme & Gutenberg-Blocks              |
 
 ---
 
-## 🎯 Quick Start Paths
+## Custom Gutenberg Blocks (8)
 
-### For Developers
-1. [Installation](02_INSTALLATION.md) - Set up local environment
-2. [Plugins](03_PLUGINS.md) - Understand plugin system
-3. [Development](06_DEVELOPMENT.md) - Build workflow
-4. [Testing](11_TESTING.md) - Run test suite
+Alle Blöcke sind unter der Kategorie **„Design"** im Editor verfügbar.
 
-### For Content Managers
-1. [Shortcodes](04_SHORTCODES.md) - Content building blocks
-2. [Custom Post Types](08_CUSTOM-POST-TYPES.md) - Content types
-3. [ACF Fields](09_ACF-FIELDS.md) - Custom fields
-
-### For New Client Setup
-1. **One-Click-Setup:** `bash bin/setup.sh` – Domain, Theme, DB-Präfix, Admin in einem Schritt
-2. [Deployment](10_DEPLOYMENT.md) - Vollständige Deployment-Anleitung
-3. [SEO](13_SEO.md) - GSC, GA4/Matomo, Report-Mailer konfigurieren
+| Block           | Typ         | Beschreibung                        |
+|-----------------|-------------|-------------------------------------|
+| Hero            | ACF         | Fullscreen-Hero mit CTA             |
+| Testimonial     | ACF         | Kundenstimmen mit Slider            |
+| Team-Mitglied   | ACF         | Teamkarten mit Social Links         |
+| Logo-Leiste     | ACF         | Statische Logo-Reihe                |
+| Logo-Slider     | ACF         | Animierter Logo-Karussell           |
+| CTA-Banner      | Native      | Handlungsaufforderung               |
+| Accordion / FAQ | Native      | Barrierefreies Akkordeon            |
+| Icon + Text     | Native      | Icon mit Textbereich                |
 
 ---
 
-## 📊 System Status
+## Footer-Menüs
 
-**Current Version:** v1.14.0  
-**Test Coverage:** 23/23 tests passing (100%)  
-**PHP Version:** 8.0+  
-**WordPress Version:** 6.0+  
+Das Theme registriert drei Menü-Locations:
 
-**Active Plugins:**
-- ✅ Media Lab Agency Core v1.5.4
-- ✅ Media Lab Project Starter v1.0.0
-- ✅ Media Lab Analytics v1.0.0
-- ✅ Media Lab SEO v1.1.1
+| Location       | Beschreibung                                          |
+|----------------|-------------------------------------------------------|
+| `primary`      | Hauptnavigation (4 Ebenen, Desktop + Mobile)          |
+| `footer`       | Footer Navigation (oberer Footer-Bereich)             |
+| `footer-legal` | Footer Legal (Impressum, Datenschutz, AGB, etc.)      |
 
----
-
-## 🔄 Migration from v1.1.0
-
-### Key Changes
-1. **MU-Plugin Migration:**
-   - `mu-plugins/agency-core/` → `plugins/media-lab-agency-core/`
-   - All features now in regular plugins
-
-2. **Theme Cleanup:**
-   - 159 lines → 118 lines (-26%)
-   - Presentation layer only
-   - Plugin dependency checks
-
-3. **New Plugins:**
-   - Analytics: GA4, GTM, Facebook Pixel
-   - SEO: Schema.org, Open Graph, Twitter Cards
-
-4. **Testing:**
-   - 16 tests → 23 tests
-   - Automated test suite
-
-### Migration Guide
-See [Deployment Guide](10_DEPLOYMENT.md) for migration steps.
+**Footer Legal** wird unterhalb des Copyright-Hinweises als dezente, horizontale
+Link-Leiste ausgegeben. Ganz unten erscheint die Credit-Line mit Verweis auf
+[media-lab.at](https://www.media-lab.at).
 
 ---
 
-## 🛠️ Essential Commands
+## Projektstruktur
+
+```
+media-lab-starter-kit/
+├── cms/
+│   └── wp-content/
+│       ├── plugins/
+│       │   ├── media-lab-agency-core/     # Framework v1.6.0
+│       │   └── media-lab-seo/             # SEO-Toolkit v1.3.0
+│       └── themes/
+│           └── custom-theme/              # Theme v1.14.0
+│               ├── assets/src/scss/       # SCSS + Design-Tokens
+│               ├── assets/src/js/         # JS-Komponenten
+│               ├── assets/dist/           # Build-Output (nicht committen)
+│               ├── inc/                   # PHP-Helpers (ACF, Enqueue, etc.)
+│               └── template-parts/        # Wiederverwendbare Template-Teile
+├── docs/                                  # Dokumentation
+├── scripts/                               # vite-dev.mjs, Deploy-Scripts
+├── vite.config.js                         # Theme-Build
+├── vite.config.blocks.js                  # Block-Build
+├── package.json
+└── CHANGELOG.md
+```
+
+---
+
+## Build-System
+
 ```bash
-# Plugin Management
-wp plugin activate media-lab-agency-core
-wp plugin activate media-lab-project-starter
-wp plugin activate media-lab-analytics
-wp plugin activate media-lab-seo
+# Entwicklung starten
+npm run dev
 
-# Testing
-./tests/run-tests.sh
+# Produktions-Build
+npm run build
 
-# Development
-npm run dev       # Development with HMR
-npm run build     # Production build
-
-# Cache
-wp cache flush
-wp transient delete --all
+# Dev-Server stoppen
+npm run dev:stop
 ```
 
----
-
-## 📖 Documentation Standards
-
-### File Naming
-- `01_` prefix for ordering
-- UPPERCASE for main words
-- `.md` extension
-
-### Content Structure
-1. Title with version/date
-2. Table of contents
-3. Main content with examples
-4. Troubleshooting
-5. Related documents
-
-### Code Examples
-- Always include working examples
-- Show both PHP and shortcode usage
-- Include expected output
+Zwei separate Vite-Configs werden via `npm run build` nacheinander ausgeführt:
+- `vite.config.js` → Theme-Assets (SCSS, JS)
+- `vite.config.blocks.js` → Gutenberg-Block-Assets
 
 ---
 
-## 🔍 Finding Information
+## Dokumentation
 
-### By Topic
-- **Setup:** Installation, Deployment
-- **Content:** Shortcodes, CPTs, ACF
-- **Development:** Development, Testing
-- **Features:** AJAX, Analytics, SEO
-- **Issues:** Troubleshooting
-
-### By Role
-- **Developer:** 02, 03, 06, 11
-- **Content Manager:** 04, 05, 08, 09
-- **Project Manager:** 10, 12, 13
-- **Admin:** 02, 07, 10
+| Dokument                     | Inhalt                              |
+|------------------------------|-------------------------------------|
+| [02_INSTALLATION.md]         | Vollständige Installationsanleitung |
+| [03_PLUGINS.md]              | Plugin-Referenz                     |
+| [06_DEVELOPMENT.md]          | Entwicklungs-Guide                  |
+| [07_TROUBLESHOOTING.md]      | Fehlerbehebung                      |
+| [09_ACF-FIELDS.md]           | ACF-Felder Referenz                 |
+| [CHANGELOG.md](../../CHANGELOG.md) | Vollständige Versionshistorie  |
 
 ---
 
-## 🆘 Support Resources
+## Versionshistorie (Auszug)
 
-**Internal:**
-- GitHub Issues: Track bugs and features
-- Documentation: This docs folder
-- Test Suite: `./tests/run-tests.sh`
+| Version  | Schwerpunkt                                                  |
+|----------|--------------------------------------------------------------|
+| v1.18.0  | Footer Legal Navigation + Credit-Line                        |
+| v1.17.0  | WCAG 2.1 AA Audit – 11 Fixes (Kontrast, Fokus, Motion, ...) |
+| v1.16.0  | 8 Custom Gutenberg Blocks abgeschlossen                      |
+| v1.15.0  | ACF-Felder via PHP registriert (inc/acf-blocks.php)          |
+| v1.14.0  | Vite Multi-Config Build (theme + blocks)                     |
 
-**External:**
-- WordPress Codex: https://codex.wordpress.org/
-- ACF Documentation: https://www.advancedcustomfields.com/resources/
-- Vite Documentation: https://vitejs.dev/
-
-**Contact:**
-- Email: markus.tritremmel@media-lab.at
-- Emergency: Check Troubleshooting first
+Vollständiger Changelog: [CHANGELOG.md](../../CHANGELOG.md)
 
 ---
 
-## 📈 Changelog
+## Lizenz
 
-### v1.7.0 (2026-03-06)
-- ✅ Fullwidth-Helper (Klasse + Mixin, 3 Varianten)
-- ✅ Navigation auf 4 Ebenen erweitert (Header + Mobile + Footer)
-- ✅ Viewport-Kollisionserkennung für Desktop-Flyouts
-- ✅ Footer-Nav: Flyout nach oben (Desktop), Accordion (Mobile)
-- ✅ Docs aktualisiert
-
-### v1.6.0 (2026-03-06)
-- ✅ Cookie Consent Manager (Banner, Modal, Floating Button 🍪)
-- ✅ Code-Snippet-Verwaltung im Backend (Head + Body pro Kategorie)
-- ✅ Button-System zentralisiert (Mixins + globale .btn-Klassen)
-- ✅ 7 SCSS-Komponenten auf @include btn-* umgestellt
-- ✅ Alle Docs aktualisiert
-
-### v1.5.0 (2026-03-04)
-- ✅ 404-Seite mit Suchformular + Navigationslinks
-- ✅ Maintenance Mode (503, ACF-konfigurierbar, Admin-Bypass)
-- ✅ Footer Navigation
-- ✅ Media Replace (Attachment-ID bleibt erhalten)
-- ✅ Security F-04 – redirects.php Open Redirect + SQL abgesichert
-- ✅ AJAX Bugfixes (Swiper lokal, wp_head Nonce, Selektoren)
-- ✅ Alle Docs aktualisiert
-
-### v1.4.0 (2026-02-26)
-- ✅ Dynamic Imports / Code-Splitting
-- ✅ Rate-Limiting AJAX
-- ✅ SVG-Upload Sanitizer
-- ✅ SMTP via wp-config.php
-- ✅ HTTP-Security-Headers
-
-### v1.2.0 (2026-02-16)
-- ✅ Analytics Plugin (GA4, GTM, FB Pixel)
-- ✅ SEO Plugin (Schema, OG, Twitter)
-- ✅ Modular Plugin-Architektur
-
-### v1.1.0 (2026-02-16)
-- ✅ Plugin architecture migration
-- ✅ Core Plugin (44 shortcodes)
-- ✅ Project Plugin (CPTs + ACF)
-- ✅ Theme cleanup (118 lines)
-- ✅ Initial test suite (16 tests)
-
-### v1.0.0
-- Initial release
-- Monolithic MU-plugin structure
-- Theme with Vite build
-- 24 JavaScript components
-
----
-
-## 🎓 Learning Path
-
-**Week 1: Fundamentals**
-- Day 1-2: Installation & Setup
-- Day 3-4: Plugin Architecture
-- Day 5: Shortcodes & Content
-
-**Week 2: Advanced**
-- Day 1-2: Development Workflow
-- Day 3: AJAX Features
-- Day 4-5: CPTs & ACF
-
-**Week 3: Production**
-- Day 1-2: Testing & QA
-- Day 3-4: Deployment
-- Day 5: Analytics & SEO
-
----
-
-**Ready to start?** → [Installation Guide](02_INSTALLATION.md)
+Proprietär – Media Lab Tritremmel GmbH
+Kontakt: [markus.tritremmel@media-lab.at](mailto:markus.tritremmel@media-lab.at)
+Website: [www.media-lab.at](https://www.media-lab.at)

@@ -42,9 +42,38 @@
         </div><!-- .site-footer__inner -->
 
         <div class="site-footer__bottom">
+
             <p class="site-footer__copyright">
                 &copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>.
                 <?php esc_html_e('Alle Rechte vorbehalten.', 'custom-theme'); ?>
+            </p>
+
+            <?php
+            // ── Footer Legal Navigation ───────────────────────────────────────────
+            if ( has_nav_menu('footer-legal') ) :
+                wp_nav_menu([
+                    'theme_location'       => 'footer-legal',
+                    'menu_class'           => 'footer-legal__list',
+                    'container'            => 'nav',
+                    'container_class'      => 'footer-legal',
+                    'container_aria_label' => __('Rechtliche Links', 'custom-theme'),
+                    'depth'                => 1,       // Nur eine Ebene – keine Submenüs
+                    'fallback_cb'          => false,
+                ]);
+            endif;
+            ?>
+
+        </div><!-- .site-footer__bottom -->
+
+        <div class="site-footer__credit">
+
+            <p>
+                <?php esc_html_e('Konzept und Programmierung:', 'custom-theme'); ?>
+                    <a 
+                    href="https://www.media-lab.at"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >Media Lab Tritremmel GmbH</a>
             </p>
         </div>
 

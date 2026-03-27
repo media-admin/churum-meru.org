@@ -14,13 +14,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// ── Hilfsfunktion: ACF-Label mit Fallback ─────────────────────────────────────
-function mlb_label( string $field_name, string $default, int $location_id ): string {
-    if ( ! $location_id || ! function_exists( 'get_field' ) ) return $default;
-    $val = get_field( $field_name, $location_id );
-    return ( $val && trim( $val ) !== '' ) ? esc_html( trim( $val ) ) : $default;
-}
-
 // Labels für diesen Standort laden
 $loc_id = $preset_location_id ?: 0;
 
@@ -161,8 +154,7 @@ $privacy_url   = get_privacy_policy_url();
         <!-- ── Schritt 4: Kontaktdaten ──────────────────────────────────── -->
         <div class="mlb-form__step mlb-form__step--contact">
 
-            <div class="mlb-form__row mlb-form__row--3">
-                <div class="mlb-form__field">
+            <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-name" class="mlb-form__label mlb-form__label--required">
                         <?php echo $labels['name']; ?>
                     </label>
@@ -176,6 +168,7 @@ $privacy_url   = get_privacy_policy_url();
                     >
                 </div>
 
+            <div class="mlb-form__row">
                 <div class="mlb-form__field">
                     <label for="<?php echo esc_attr( $form_id ); ?>-email" class="mlb-form__label mlb-form__label--required">
                         <?php echo $labels['email']; ?>

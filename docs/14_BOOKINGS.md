@@ -1,7 +1,7 @@
-# 14. Bookings Plugin
+# 10. Bookings Plugin
 
 **Plugin:** `media-lab-bookings`
-**Version:** 1.2.0
+**Version:** 1.0.0
 **Abhängigkeiten:** ACF Pro, jQuery (WordPress Core)
 **Optionale Integration:** Contact Form 7 (für hybride Workflows)
 

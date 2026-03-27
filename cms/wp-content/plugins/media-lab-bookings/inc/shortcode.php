@@ -67,6 +67,7 @@ class MLB_Shortcode {
     // ── Shortcode rendern ─────────────────────────────────────────────────────
 
     public static function render( $atts ): string {
+
         $atts = shortcode_atts( [
             'location' => '',
             'title'    => '',
@@ -118,11 +119,25 @@ class MLB_Shortcode {
             ],
         ] );
 
-        // Template laden
+        // Template laden – Theme-Override hat Vorrang (wie WooCommerce-Prinzip).
+        // Eigene Version ablegen unter: {active-theme}/media-lab-bookings/booking-form.php
+        $theme_tpl = locate_template( 'media-lab-bookings/booking-form.php' );
+        $template  = $theme_tpl ?: MLB_PATH . 'templates/booking-form.php';
+
         ob_start();
-        include MLB_PATH . 'templates/booking-form.php';
+        include $template;
         return ob_get_clean();
     }
 }
 
 MLB_Shortcode::init();
+
+// ── Hilfsfunktion: ACF-Label mit Fallback ─────────────────────────────────────
+// Außerhalb der Klasse definiert damit das Template sie direkt aufrufen kann.
+// Einmalige Definition hier verhindert "Cannot redeclare"-Fehler bei mehrfachem
+// Shortcode-Einsatz auf einer Seite.
+function mlb_label( string $field_name, string $default, int $location_id ): string {
+    if ( ! $location_id || ! function_exists( 'get_field' ) ) return $default;
+    $val = get_field( $field_name, $location_id );
+    return ( $val && trim( $val ) !== '' ) ? esc_html( trim( $val ) ) : $default;
+}

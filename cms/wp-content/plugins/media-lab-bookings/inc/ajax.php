@@ -50,6 +50,10 @@ class MLB_Ajax {
             }
         }
 
+        // Hook: Nach dem Speichern
+        // add_action( 'mlb_after_save_booking', function( $booking_id, $data ) { ... }, 10, 2 );
+        do_action( 'mlb_after_save_booking', $booking_id, $booking_data );
+
         wp_send_json_success( [
             'open_weekdays' => $open_weekdays,
             'services'      => $services,
@@ -155,6 +159,24 @@ class MLB_Ajax {
         if ( ! $available_slot['available'] ) {
             wp_send_json_error( [ 'message' => 'Der gewählte Zeitslot ist ausgebucht.' ] );
         }
+
+        // Hook: Vor dem Speichern – Daten filtern oder abbrechen
+        // add_filter( 'mlb_before_save_booking', function( $data ) { return $data; } );
+        $booking_data = apply_filters( 'mlb_before_save_booking', [
+            'location_id' => $location_id,
+            'date'        => $date,
+            'time'        => $time,
+            'name'        => $name,
+            'email'       => $email,
+            'phone'       => $phone,
+            'service'     => $service,
+            'persons'     => $persons,
+            'notes'       => $notes,
+        ] );
+        if ( ! $booking_data ) {
+            wp_send_json_error( [ 'message' => 'Die Buchung wurde durch eine Erweiterung abgebrochen.' ] );
+        }
+        extract( $booking_data );
 
         // Buchung speichern ────────────────────────────────────────────────────
         $location_name = get_the_title( $location_id );

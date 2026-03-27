@@ -52,13 +52,8 @@
     gap: 16px;
 }
 
-.mlb-form__row--3 {
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
 @media ( max-width: 600px ) {
-    .mlb-form__row,
-    .mlb-form__row--3 {
+    .mlb-form__row {
         grid-template-columns: 1fr;
     }
 }

@@ -28,12 +28,17 @@ class MLB_Mail {
         $raw_subject = get_field( 'mlb_confirmation_subject', $location_id );
         $subject     = $raw_subject ? wp_strip_all_tags( $raw_subject ) : get_bloginfo( 'name' ) . ' – Buchungsbestätigung';
         $subject     = self::replace_placeholders( $subject, $booking_id );
+        // Hook: Betreff filtern
+        $subject = apply_filters( 'mlb_confirmation_subject', $subject, $booking_id, $location_id );
 
         // Body
         $template = get_field( 'mlb_confirmation_template', $location_id );
         $body     = $template ? $template : self::default_template();
         $body     = self::replace_placeholders( $body, $booking_id );
-        $body     = self::wrap_html( $body );
+        // Hook: Mail-Body vor dem Versand filtern
+        // add_filter( 'mlb_confirmation_body', function( $body, $booking_id, $location_id ) { return $body; }, 10, 3 );
+        $body = apply_filters( 'mlb_confirmation_body', $body, $booking_id, $location_id );
+        $body = self::wrap_html( $body );
 
         $headers = [
             'Content-Type: text/html; charset=UTF-8',

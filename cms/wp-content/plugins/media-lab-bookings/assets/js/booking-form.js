@@ -14,11 +14,6 @@
     // Kein Config-Objekt → abbrechen
     if ( ! cfg || ! cfg.ajaxUrl ) return;
 
-    // ── Jede Formular-Instanz initialisieren ──────────────────────────────────
-    $( '.mlb-booking-form' ).each( function () {
-        new MLBForm( $( this ) );
-    } );
-
     // ── Klasse pro Formular-Instanz ───────────────────────────────────────────
     function MLBForm( $wrap ) {
 
@@ -318,5 +313,12 @@
     MLBForm.prototype.hideError = function () {
         this.$errGlobal.prop( 'hidden', true );
     };
+
+    // ── Jede Formular-Instanz initialisieren ──────────────────────────────────
+    // Muss NACH allen Prototype-Definitionen stehen, damit loadLocationData
+    // und die anderen Methoden beim Aufruf von new MLBForm() bereits verfügbar sind.
+    $( '.mlb-booking-form' ).each( function () {
+        new MLBForm( $( this ) );
+    } );
 
 } )( jQuery, window.mlbConfig || null );

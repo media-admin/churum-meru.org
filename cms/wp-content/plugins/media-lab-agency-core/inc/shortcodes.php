@@ -212,7 +212,8 @@ function modal_shortcode($atts, $content = null) {
     $show_header = $atts['show_header'] === 'true';
     $show_footer = $atts['show_footer'] === 'true';
     
-    $body_content = wpautop(do_shortcode($content));
+    $has_cf7 = strpos($content, 'contact-form-7') !== false || strpos($content, 'wpcf7') !== false;
+    $body_content = $has_cf7 ? do_shortcode($content) : wpautop(do_shortcode($content));
     
     $html = '<div class="modal' . $size_class . '" id="' . $modal_id . '">';
     $html .= '<div class="modal__dialog">';

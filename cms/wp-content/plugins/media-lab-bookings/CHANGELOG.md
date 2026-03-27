@@ -6,6 +6,47 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.3.1] - 2026-03-27
+
+### media-lab-bookings 1.3.1
+
+#### Changed
+- **`templates/booking-form.php`** – Name-Feld in eigene Zeile (volle Breite) verschoben; E-Mail + Telefon in 2-spaltigem `.mlb-form__row` darunter. Vorher waren alle drei Felder in einem 3-spaltigen Grid.
+- **`assets/css/booking-form.css`** – `.mlb-form__row--3` entfernt (nicht mehr verwendet).
+
+---
+
+## [1.3.0] - 2026-03-27
+
+### media-lab-bookings 1.3.0
+
+#### Added
+- **Template-Override** (`shortcode.php`) – Das Plugin lädt das Formular-Template via `locate_template()`. Eine Datei unter `{active-theme}/media-lab-bookings/booking-form.php` hat automatisch Vorrang vor dem Plugin-Template. Damit sind HTML-Anpassungen update-sicher im Theme ablegbar.
+- **Filter `mlb_before_save_booking`** (`ajax.php`) – Alle Buchungsdaten vor dem Speichern filtern oder `false` zurückgeben um die Buchung abzubrechen.
+- **Action `mlb_after_save_booking`** (`ajax.php`) – Wird nach erfolgreichem Speichern ausgelöst. Parameter: `$booking_id`, `$booking_data`.
+- **Filter `mlb_confirmation_body`** (`mail.php`) – HTML-Body der Kunden-Bestätigungsmail filtern. Parameter: `$body`, `$booking_id`, `$location_id`.
+- **Filter `mlb_confirmation_subject`** (`mail.php`) – Betreff der Kunden-Bestätigungsmail filtern. Parameter: `$subject`, `$booking_id`, `$location_id`.
+
+---
+
+## [1.2.2] - 2026-03-27
+
+### media-lab-bookings 1.2.2
+
+#### Fixed
+- **`assets/js/booking-form.js`** – `$('.mlb-booking-form').each()` Initialisierung ans Ende der IIFE verschoben. `new MLBForm()` wurde zuvor aufgerufen bevor alle `MLBForm.prototype.*`-Methoden definiert waren → `Uncaught TypeError: self.loadLocationData is not a function`.
+
+---
+
+## [1.2.1] - 2026-03-25
+
+### media-lab-bookings 1.2.1
+
+#### Fixed
+- **`templates/booking-form.php`** – `mlb_label()` aus dem Template entfernt; Funktion ist in `inc/shortcode.php` definiert. Verhindert Fatal Error „Cannot redeclare mlb_label()" wenn der Shortcode mehrfach auf einer Seite verwendet wird.
+
+---
+
 ## [1.2.0] - 2026-03-25
 
 ### media-lab-bookings 1.2.0

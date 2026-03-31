@@ -7,14 +7,13 @@ export default class Lightbox {
     this.currentIndex = 0;
     this.images = [];
     this.lightbox = null;
+    this.isZoomed = false;
     this.init();
   }
-  
+
   init() {
-    // Create lightbox container
     this.createLightbox();
-    
-    // Listen for image clicks
+
     document.addEventListener('click', (e) => {
       const trigger = e.target.closest('[data-lightbox]');
       if (trigger) {
@@ -22,17 +21,15 @@ export default class Lightbox {
         this.open(trigger);
       }
     });
-    
-    // Keyboard navigation
+
     document.addEventListener('keydown', (e) => {
       if (!this.lightbox.classList.contains('is-active')) return;
-      
       if (e.key === 'Escape') this.close();
       if (e.key === 'ArrowLeft') this.prev();
       if (e.key === 'ArrowRight') this.next();
     });
   }
-  
+
   createLightbox() {
     this.lightbox = document.createElement('div');
     this.lightbox.className = 'lightbox';
@@ -44,23 +41,97 @@ export default class Lightbox {
         <img class="lightbox__image" src="" alt="">
         <div class="lightbox__caption"></div>
       </div>
+      <div class="lightbox__zoom-hint">Doppelklick zum Zoomen</div>
     `;
-    
+
     document.body.appendChild(this.lightbox);
-    
-    // Event listeners
+
+    const img = this.lightbox.querySelector('.lightbox__image');
+
+    // Doppelklick: Zoom togglen
+    img.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      this.toggleZoom(e);
+    });
+
+    // Gezoomtes Bild verschieben
+    img.addEventListener('mousemove', (e) => {
+      if (!this.isZoomed) return;
+      const rect = img.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width  - 0.5) * -60;
+      const y = ((e.clientY - rect.top)  / rect.height - 0.5) * -60;
+      img.style.transform = `scale(2.5) translate(${x}px, ${y}px)`;
+    });
+
+    // Touch: Pinch-to-Zoom
+    this.initPinchZoom(img);
+
     this.lightbox.querySelector('.lightbox__close').addEventListener('click', () => this.close());
     this.lightbox.querySelector('.lightbox__prev').addEventListener('click', () => this.prev());
     this.lightbox.querySelector('.lightbox__next').addEventListener('click', () => this.next());
+
     this.lightbox.addEventListener('click', (e) => {
       if (e.target === this.lightbox) this.close();
+      if (this.isZoomed) this.resetZoom();
     });
   }
-  
+
+  toggleZoom(e) {
+    const img = this.lightbox.querySelector('.lightbox__image');
+    if (this.isZoomed) {
+      this.resetZoom();
+    } else {
+      this.isZoomed = true;
+      img.classList.add('is-zoomed');
+      this.lightbox.classList.add('is-zoomed');
+    }
+  }
+
+  resetZoom() {
+    const img = this.lightbox.querySelector('.lightbox__image');
+    this.isZoomed = false;
+    img.style.transform = '';
+    img.classList.remove('is-zoomed');
+    this.lightbox.classList.remove('is-zoomed');
+  }
+
+  initPinchZoom(img) {
+    let startDist = 0;
+    let startScale = 1;
+    let currentScale = 1;
+
+    img.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        startDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        startScale = currentScale;
+      }
+    }, { passive: true });
+
+    img.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        currentScale = Math.min(Math.max(startScale * (dist / startDist), 1), 4);
+        img.style.transform = `scale(${currentScale})`;
+        this.isZoomed = currentScale > 1;
+        img.classList.toggle('is-zoomed', this.isZoomed);
+        this.lightbox.classList.toggle('is-zoomed', this.isZoomed);
+      }
+    }, { passive: false });
+
+    img.addEventListener('touchend', () => {
+      if (currentScale <= 1) this.resetZoom();
+    });
+  }
+
   open(trigger) {
     const gallery = trigger.dataset.lightbox;
-    
-    // Get all images in gallery
     if (gallery) {
       this.images = Array.from(document.querySelectorAll(`[data-lightbox="${gallery}"]`));
       this.currentIndex = this.images.indexOf(trigger);
@@ -68,80 +139,41 @@ export default class Lightbox {
       this.images = [trigger];
       this.currentIndex = 0;
     }
-    
+    this.resetZoom();
     this.showImage();
     this.lightbox.classList.add('is-active');
     document.body.style.overflow = 'hidden';
   }
-  
+
   close() {
+    this.resetZoom();
     this.lightbox.classList.remove('is-active');
     document.body.style.overflow = '';
   }
-  
+
   showImage() {
     const current = this.images[this.currentIndex];
     const img = this.lightbox.querySelector('.lightbox__image');
     const caption = this.lightbox.querySelector('.lightbox__caption');
-    
+
     img.src = current.href || current.src;
     img.alt = current.alt || '';
     caption.textContent = current.dataset.caption || '';
-    
-    // Show/hide navigation
+
     const hasPrev = this.images.length > 1;
-    const hasNext = this.images.length > 1;
     this.lightbox.querySelector('.lightbox__prev').style.display = hasPrev ? 'block' : 'none';
-    this.lightbox.querySelector('.lightbox__next').style.display = hasNext ? 'block' : 'none';
+    this.lightbox.querySelector('.lightbox__next').style.display = hasPrev ? 'block' : 'none';
   }
-  
+
   prev() {
+    this.resetZoom();
     this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
     this.showImage();
   }
-  
+
   next() {
+    this.resetZoom();
     this.currentIndex = (this.currentIndex + 1) % this.images.length;
     this.showImage();
   }
 }
-
-// Initialize
-// new Lightbox();
-
-// Auto-initialize für WordPress Media Library Bilder
-document.addEventListener('DOMContentLoaded', () => {
-  // Alle verlinkten Bilder finden
-  const imageLinks = document.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"], a[href$=".gif"], a[href$=".webp"]');
-  
-  imageLinks.forEach((link, index) => {
-    // Nur wenn Link ein img-Tag enthält
-    const img = link.querySelector('img');
-    if (img) {
-      // Lightbox-Attribute hinzufügen
-      link.setAttribute('data-lightbox', 'wp-gallery');
-      
-      // Caption aus img alt oder title nehmen
-      const caption = img.getAttribute('alt') || img.getAttribute('title') || '';
-      if (caption) {
-        link.setAttribute('data-caption', caption);
-      }
-      
-      // Verhindere Standard-Link-Verhalten
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-      });
-    }
-  });
-
-  // Galerie-Bilder gruppieren
-  document.querySelectorAll('.wp-block-gallery').forEach((gallery, galleryIndex) => {
-    const links = gallery.querySelectorAll('a[href$=".jpg"], a[href$=".jpeg"], a[href$=".png"]');
-    links.forEach(link => {
-      link.setAttribute('data-lightbox', `gallery-${galleryIndex}`);
-    });
-  });
-  
-  // Lightbox initialisieren
-  new Lightbox();
-});

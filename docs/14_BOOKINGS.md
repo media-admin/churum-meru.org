@@ -1,15 +1,14 @@
-# 10. Bookings Plugin
+# 14. Bookings Plugin
 
 **Plugin:** `media-lab-bookings`
-**Version:** 1.0.0
+**Version:** 1.5.2
 **Abhängigkeiten:** ACF Pro, jQuery (WordPress Core)
-**Optionale Integration:** Contact Form 7 (für hybride Workflows)
 
 ---
 
 ## Übersicht
 
-Das Bookings Plugin ermöglicht standortbasierte Terminbuchungen direkt auf der Website. Buchungen werden in der WordPress-Datenbank gespeichert und per E-Mail bestätigt. Der Mailversand nutzt die SMTP-Konfiguration aus `media-lab-agency-core`.
+Das Bookings Plugin ermöglicht standortbasierte Terminbuchungen direkt auf der Website. Buchungen werden in der WordPress-Datenbank gespeichert, per E-Mail bestätigt und sind über einen iCal-Feed in gängigen Kalender-Apps abonnierbar. Der Mailversand nutzt die SMTP-Konfiguration aus `media-lab-agency-core`.
 
 ### Features
 
@@ -19,13 +18,26 @@ Das Bookings Plugin ermöglicht standortbasierte Terminbuchungen direkt auf der 
 | Öffnungszeiten | Pro Wochentag konfigurierbar (on/off + von/bis) |
 | Zeitslots | Slot-Dauer in Minuten, letzter Slot X Min. vor Schließung |
 | Kapazitätslimit | Max. Buchungen pro Zeitslot konfigurierbar |
+| Tageslimit | Max. Buchungen pro Tag (0 = unbegrenzt) |
 | Buchungs-CPT | Backend-Übersicht mit Statusverwaltung + Filter |
+| Manuelle Buchung | Direkte Erfassung im Backend (Bookings → Neue Buchung) |
+| Kalenderansicht | Monatsansicht mit Buchungen pro Tag, Detail-Popup |
+| Dashboard-Widget | Nächste X Termine auf WP-Startseite |
+| iCal-Anhang | .ics-Datei in Bestätigungs-, Status- und Erinnerungsmails |
+| iCal-Feed | Abonnierbare URL für Google Calendar, Apple Calendar, Outlook |
+| Status-Mails | Kunden-E-Mail bei Statuswechsel (Bestätigt / Storniert) |
+| Erinnerungsmail | WP-Cron X Stunden vor dem Termin |
+| Stornierungslink | Token-basierter Link in jeder Mail |
+| CSV-Export | Buchungen als CSV-Datei aus dem Backend |
 | E-Mail Kunden | Standortspezifisches HTML-Template mit Platzhaltern |
 | E-Mail Filiale | Automatische Kopie an Filial-E-Mail-Adresse |
 | SMTP | Nutzt `wp_mail()` → Core Plugin SMTP-Konfiguration |
 | Shortcode | `[mlb_booking_form]` mit optionalem Standort-Preset |
 | Datepicker | Flatpickr (DE) – geschlossene Wochentage automatisch deaktiviert |
-| Formularfelder | Name, E-Mail, Telefon, Dienstleistung, Personenanzahl, Anmerkungen |
+| DSGVO | Pflicht-Checkbox, client- und serverseitig validiert |
+| ACF-Labels | Alle Feldbeschriftungen pro Standort im Backend konfigurierbar |
+| Template-Override | Theme kann `media-lab-bookings/booking-form.php` überschreiben |
+| PHP-Filter/Actions | Hooks für projektspezifische Anpassungen |
 
 ---
 
@@ -37,16 +49,26 @@ media-lab-bookings/
 ├── inc/
 │   ├── cpt.php                 CPTs mlb_location + mlb_booking, Custom Statuses
 │   ├── acf-fields.php          ACF-Feldgruppen (programmatisch registriert)
-│   ├── slots.php               Slot-Generierung + Kapazitätsprüfung
+│   ├── slots.php               Slot-Generierung, Kapazitäts- und Tageslimitprüfung
 │   ├── ajax.php                AJAX-Handler (Standortdaten, Slots, Submit)
+│   ├── ical.php                iCal-Generator (.ics), Download-Endpunkt
+│   ├── feed.php                iCal-Feed (abonnierbare URL für Kalender-Apps)
 │   ├── mail.php                E-Mail-Versand, Platzhalter, HTML-Wrapper
+│   ├── notifications.php       Status-Mails, Erinnerungs-Cron, Stornierungstoken
+│   ├── export.php              CSV-Export
+│   ├── calendar.php            Backend-Kalenderansicht (Monatsansicht)
+│   ├── dashboard-widget.php    WP-Dashboard-Widget (nächste Termine)
 │   ├── shortcode.php           [mlb_booking_form] + Asset-Enqueue
-│   └── admin.php               Menü, Buchungs-Tabelle, Filter, Dashboard
+│   └── admin.php               Menü, Dashboard, Buchungs-Tabelle, Filter
 ├── templates/
 │   └── booking-form.php        Formular-HTML-Template
 └── assets/
-    ├── js/booking-form.js      Frontend-JS (Flatpickr, AJAX, Submit)
-    └── css/booking-form.css    Formular-Styles mit CSS Custom Properties
+    ├── js/
+    │   ├── booking-form.js     Frontend-JS (Flatpickr, AJAX, Submit)
+    │   └── calendar.js         Kalender-JS (Popup per AJAX)
+    └── css/
+        ├── booking-form.css    Formular-Styles mit CSS Custom Properties
+        └── calendar.css        Kalender-Styles
 ```
 
 ### Klassen-Übersicht
@@ -54,9 +76,15 @@ media-lab-bookings/
 | Klasse | Datei | Funktion |
 |---|---|---|
 | `MLB_CPT` | `cpt.php` | Registriert CPTs + Post Statuses |
-| `MLB_Slots` | `slots.php` | Slot-Logik, Öffnungszeiten, Kapazität |
+| `MLB_Slots` | `slots.php` | Slot-Logik, Öffnungszeiten, Kapazität, Tageslimit |
 | `MLB_Ajax` | `ajax.php` | 3 AJAX-Endpunkte |
+| `MLB_ICal` | `ical.php` | .ics-Generator, Datei-Anhang, Download-URL |
+| `MLB_Feed` | `feed.php` | Abonnierbarer iCal-Feed |
 | `MLB_Mail` | `mail.php` | Kunden- + Admin-Mail |
+| `MLB_Notifications` | `notifications.php` | Status-Mails, Cron, Stornierungstoken |
+| `MLB_Export` | `export.php` | CSV-Export |
+| `MLB_Calendar` | `calendar.php` | Backend-Kalenderansicht |
+| `MLB_Dashboard_Widget` | `dashboard-widget.php` | WP-Dashboard-Widget |
 | `MLB_Shortcode` | `shortcode.php` | Shortcode-Registrierung + Assets |
 | `MLB_Admin` | `admin.php` | Backend-UI |
 
@@ -66,30 +94,36 @@ media-lab-bookings/
 
 1. ZIP in WordPress hochladen: **Plugins → Installieren → Plugin hochladen**
 2. Plugin aktivieren
-3. SMTP unter **Agency Core → E-Mail / SMTP** konfigurieren (falls noch nicht geschehen)
-4. Ersten Standort anlegen: **Bookings → Standorte → Hinzufügen**
+3. SMTP unter **Agency Core → E-Mail / SMTP** konfigurieren
+4. **Einstellungen → Permalinks → Speichern** (für iCal-Feed-Rewrite-Rule)
+5. Ersten Standort anlegen: **Bookings → Standorte → Hinzufügen**
 
-**Voraussetzungen:**
-- ACF Pro aktiv
-- `media-lab-agency-core` aktiv (SMTP)
-- WordPress 6.0+, PHP 7.4+
+**Voraussetzungen:** ACF Pro aktiv, `media-lab-agency-core` aktiv (SMTP), WordPress 6.0+, PHP 7.4+
+
+---
+
+## Menü-Struktur
+
+```
+Bookings
+├── Übersicht       Dashboard mit Statistiken, Feed-URLs, Schnellzugriff
+├── Buchungen       Liste aller mlb_booking Einträge
+├── Neue Buchung    Manuelle Buchungserfassung im Backend
+├── Standorte       Liste aller mlb_location Einträge
+├── Neuer Standort  Neuen Standort anlegen
+└── Kalender        Monatsansicht mit Buchungen pro Tag
+```
 
 ---
 
 ## Custom Post Types
 
 ### `mlb_location` – Standorte
-
-Wird im Backend unter **Bookings → Standorte** verwaltet. Jeder Standort definiert seine eigenen Öffnungszeiten, Slotregeln und E-Mail-Templates.
-
-- Sichtbarkeit: `public => false` (keine Frontend-Archiv-Seite)
+- Sichtbarkeit: `public => false`, `show_in_menu => false` (manuell über admin.php)
 - Unterstützt: `title` (= Standortname)
 
 ### `mlb_booking` – Buchungen
-
-Wird automatisch beim Formular-Submit erstellt. Manuelles Anlegen im Backend ebenfalls möglich.
-
-- Sichtbarkeit: `public => false`
+- Sichtbarkeit: `public => false`, `show_in_menu => false`
 - Standard-Status bei neuem Eintrag: `mlb-pending`
 
 ### Custom Post Statuses
@@ -97,8 +131,8 @@ Wird automatisch beim Formular-Submit erstellt. Manuelles Anlegen im Backend ebe
 | Status-Key | Label | Bedeutung |
 |---|---|---|
 | `mlb-pending` | Ausstehend | Neu eingegangen, noch nicht bearbeitet |
-| `mlb-confirmed` | Bestätigt | Buchung bestätigt |
-| `mlb-cancelled` | Storniert | Buchung storniert |
+| `mlb-confirmed` | Bestätigt | Buchung bestätigt → Bestätigungsmail wird gesendet |
+| `mlb-cancelled` | Storniert | Storniert → Stornierungsmail wird gesendet |
 
 ---
 
@@ -114,7 +148,7 @@ Wird automatisch beim Formular-Submit erstellt. Manuelles Anlegen im Backend ebe
 | `mlb_{day}_open` | text | Öffnungszeit (Format `HH:MM`) |
 | `mlb_{day}_close` | text | Schließzeit (Format `HH:MM`) |
 
-`{day}` = `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`. Öffnung/Schließung werden per `conditional_logic` nur angezeigt wenn der Tag aktiv ist. Standard: Mo–Fr aktiv (`09:00`–`18:00`).
+`{day}` = `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`. Standard: Mo–Fr aktiv (`09:00`–`18:00`).
 
 **Tab: Zeitslots**
 
@@ -123,6 +157,7 @@ Wird automatisch beim Formular-Submit erstellt. Manuelles Anlegen im Backend ebe
 | `mlb_slot_duration` | number | `60` | Slot-Dauer in Minuten |
 | `mlb_last_slot_offset` | number | `60` | Letzter Slot startet X Min. vor Schließung |
 | `mlb_max_capacity` | number | `1` | Max. Buchungen pro Slot |
+| `mlb_max_per_day` | number | `0` | Max. Buchungen pro Tag (0 = unbegrenzt) |
 
 **Tab: Kontakt**
 
@@ -130,20 +165,59 @@ Wird automatisch beim Formular-Submit erstellt. Manuelles Anlegen im Backend ebe
 |---|---|---|
 | `mlb_location_email` | email | Filial-E-Mail (Kopie-Empfänger) |
 | `mlb_location_phone` | text | Telefonnummer |
-| `mlb_location_address` | textarea | Adresse (für E-Mail-Template) |
+| `mlb_location_address` | textarea | Adresse |
 
-**Tab: Bestätigungsmail**
+**Tab: Bestätigungsmail** (beim ersten Formular-Submit)
 
 | Feldname | Typ | Beschreibung |
 |---|---|---|
-| `mlb_confirmation_subject` | text | Betreff der Kunden-E-Mail |
+| `mlb_confirmation_subject` | text | Betreff |
 | `mlb_confirmation_template` | wysiwyg | HTML-Mailtext mit Platzhaltern |
+
+**Tab: Mail: Bestätigt** (bei Statuswechsel auf `mlb-confirmed`)
+
+| Feldname | Typ | Beschreibung |
+|---|---|---|
+| `mlb_confirmed_subject` | text | Betreff |
+| `mlb_confirmed_template` | wysiwyg | HTML-Mailtext (iCal wird automatisch angehängt) |
+
+**Tab: Mail: Storniert** (bei Statuswechsel auf `mlb-cancelled`)
+
+| Feldname | Typ | Beschreibung |
+|---|---|---|
+| `mlb_cancelled_subject` | text | Betreff |
+| `mlb_cancelled_template` | wysiwyg | HTML-Mailtext |
+
+**Tab: Erinnerungsmail** (WP-Cron)
+
+| Feldname | Typ | Standard | Beschreibung |
+|---|---|---|---|
+| `mlb_reminder_hours` | number | `24` | Stunden vor Termin (0 = deaktiviert) |
+| `mlb_reminder_subject` | text | – | Betreff |
+| `mlb_reminder_template` | wysiwyg | – | HTML-Mailtext (iCal wird angehängt) |
+
+**Tab: Formular-Labels**
+
+| Feldname | Placeholder | Beschreibung |
+|---|---|---|
+| `mlb_label_location` | Standort wählen | Label Standort-Dropdown |
+| `mlb_label_date` | Datum | Label Datumsfeld |
+| `mlb_label_time` | Uhrzeit | Label Zeitslot-Dropdown |
+| `mlb_label_service` | Dienstleistung | Label Dienstleistungs-Dropdown |
+| `mlb_label_persons` | Personenanzahl | Label Personenfeld |
+| `mlb_label_name` | Vor- und Nachname | Label Namensfeld |
+| `mlb_label_email` | E-Mail-Adresse | Label E-Mail-Feld |
+| `mlb_label_phone` | Telefon | Label Telefonfeld |
+| `mlb_label_notes` | Anmerkungen | Label Anmerkungsfeld |
+| `mlb_label_submit` | Buchung anfragen | Button-Beschriftung |
+| `mlb_label_privacy` | (Zustimmungstext) | DSGVO-Checkbox-Text |
+| `mlb_label_privacy_note` | – | Optionaler Hinweis unter Button |
 
 **Tab: Dienstleistungen** – Repeater `mlb_services`:
 
 | Sub-Feld | Typ | Beschreibung |
 |---|---|---|
-| `service_name` | text | Bezeichnung der Dienstleistung |
+| `service_name` | text | Bezeichnung |
 | `service_duration` | number | Optionale Dauer in Minuten |
 
 ---
@@ -180,13 +254,13 @@ Wird automatisch beim Formular-Submit erstellt. Manuelles Anlegen im Backend ebe
 | `title` | string | Überschrift über dem Formular |
 | `class` | string | Zusätzliche CSS-Klassen auf dem Wrapper |
 
-**Assets:** Flatpickr + Plugin-CSS/JS werden nur geladen wenn der Shortcode auf der aktuellen Seite vorhanden ist (`wp_register_*` + `wp_enqueue_*` on demand).
+**Auto-Preset:** Wenn nur 1 aktiver Standort vorhanden ist, wird dieser automatisch vorausgewählt und das Dropdown ausgeblendet.
 
 ---
 
 ## E-Mail-Platzhalter
 
-In `mlb_confirmation_subject` und `mlb_confirmation_template` sind folgende Platzhalter verfügbar:
+Verfügbar in allen Mail-Templates (`mlb_confirmation_template`, `mlb_confirmed_template`, `mlb_cancelled_template`, `mlb_reminder_template`):
 
 | Platzhalter | Inhalt |
 |---|---|
@@ -203,32 +277,43 @@ In `mlb_confirmation_subject` und `mlb_confirmation_template` sind folgende Plat
 | `{location_email}` | Filial-E-Mail |
 | `{location_phone}` | Filial-Telefon |
 | `{booking_id}` | WordPress-Post-ID der Buchung (`#42`) |
-
-**Fallback-Template:** Wenn kein Template im ACF-Feld hinterlegt ist, wird automatisch ein Standard-Template mit allen oben genannten Feldern verwendet.
+| `{cancel_url}` | Stornierungslink (einmalig, token-basiert) |
 
 ---
 
-## E-Mail-Versand
+## iCal-Feed (Kalender-Abonnement)
 
-### Kunden-Bestätigung
-- **An:** E-Mail-Adresse aus dem Formular
-- **Betreff:** ACF-Feld `mlb_confirmation_subject` (mit Platzhalter-Ersetzung)
-- **Body:** ACF-Feld `mlb_confirmation_template` (HTML, mit Platzhalter-Ersetzung)
-- **Absender:** Website-Name + Admin-E-Mail (konfigurierbar über Core SMTP)
+Nach der Aktivierung ist unter `/mlb-calendar-feed/` ein iCal-Feed verfügbar. Die Feed-URLs werden im Backend-Dashboard unter **Bookings → Übersicht** angezeigt.
 
-### Filial-Kopie
-- **An:** `mlb_location_email` des gewählten Standorts
-- **Betreff:** `[Neue Buchung] {Buchungstitel}`
-- **Body:** Tabellarische Übersicht aller Buchungsdetails + Link direkt ins Backend
+### URL-Parameter
 
-### SMTP-Konfiguration
-Der Versand läuft über `wp_mail()`. Die SMTP-Einstellungen werden aus dem `media-lab-agency-core` Plugin übernommen:
+| Parameter | Beispiel | Beschreibung |
+|---|---|---|
+| `token` | `?token=abc123` | Sicherheits-Token (im Dashboard angezeigt) |
+| `location` | `?location=42` | Nur Buchungen eines Standorts (ID oder Slug) |
+| `status` | `?status=confirmed` | Nur bestätigte Buchungen |
 
-```
-WP-Admin → Agency Core → E-Mail / SMTP
-```
+### Kalender-Apps einrichten
 
-Kein separates SMTP-Setup im Bookings Plugin erforderlich.
+**Google Calendar:** Andere Kalender → Per URL hinzufügen → Feed-URL einfügen
+
+**Apple Calendar:** Ablage → Neues Kalenderabonnement → Feed-URL einfügen
+
+**Outlook:** Kalender hinzufügen → Aus dem Internet → Feed-URL einfügen
+
+**Wichtig:** Nach Aktivierung einmal unter **Einstellungen → Permalinks → Speichern** klicken, damit die Rewrite-Rule aktiv wird.
+
+---
+
+## Manuelle Buchungserfassung
+
+Buchungen die persönlich oder telefonisch erfolgen können direkt im Backend erfasst werden:
+
+1. **Bookings → Neue Buchung** (oder Button im Dashboard)
+2. Alle Felder ausfüllen: Status, Standort, Datum, Uhrzeit, Kunde etc.
+3. **Veröffentlichen** klicken
+
+**Hinweis:** Bei manuell erfassten Buchungen werden keine E-Mails automatisch versendet. Status-Mails werden erst bei einer manuellen Statusänderung ausgelöst (z.B. von Ausstehend auf Bestätigt).
 
 ---
 
@@ -238,143 +323,168 @@ Kein separates SMTP-Setup im Bookings Plugin erforderlich.
 `MLB_Slots::generate( $location_id, $date )` erzeugt alle Slots für einen Tag:
 
 ```
-Öffnungszeit     → Schließzeit − last_slot_offset
-Slot-Abstände    = slot_duration Minuten
+Öffnungszeit → Schließzeit − last_slot_offset
+Slot-Abstände = slot_duration Minuten
 Beispiel: 09:00–18:00, Dauer 60 Min., Offset 60 Min.
 → Slots: 09:00, 10:00, 11:00, 12:00, 13:00, 14:00, 15:00, 16:00, 17:00
 ```
 
 ### Kapazitätsprüfung
-Pro Slot wird `MLB_Slots::count_bookings()` ausgeführt. Gezählt werden alle Buchungen mit Status `publish`, `mlb-pending` oder `mlb-confirmed` für denselben Standort, dasselbe Datum und dieselbe Uhrzeit. Stornierte Buchungen (`mlb-cancelled`) werden nicht gezählt.
+Pro Slot wird `MLB_Slots::count_bookings()` ausgeführt. Stornierte Buchungen werden nicht gezählt.
+
+### Tageslimit
+Wenn `mlb_max_per_day > 0` und `MLB_Slots::count_day_bookings()` das Limit erreicht hat, gibt `generate()` ein leeres Array zurück — alle Slots des Tages sind gesperrt.
 
 ### AJAX-Endpunkte
 
 | Action | Funktion | Parameter |
 |---|---|---|
-| `mlb_get_location_data` | Wochentage + Services laden | `location_id`, `nonce` |
-| `mlb_get_slots` | Zeitslots für Datum laden | `location_id`, `date`, `nonce` |
-| `mlb_submit_booking` | Buchung speichern + Mails senden | Alle Formularfelder, `nonce` |
-
-Alle Endpunkte sind per `check_ajax_referer( 'mlb_nonce', 'nonce' )` abgesichert und für eingeloggte wie nicht eingeloggte Nutzer verfügbar (`wp_ajax_nopriv_*`).
+| `mlb_get_location_data` | Wochentage + Services | `location_id`, `nonce` |
+| `mlb_get_slots` | Zeitslots für Datum | `location_id`, `date`, `nonce` |
+| `mlb_submit_booking` | Buchung speichern + Mails | Alle Formularfelder, `nonce` |
+| `mlb_download_ical` | .ics-Datei herunterladen | `booking_id`, `nonce` (GET) |
+| `mlb_calendar_day` | Tages-Detail (Kalender-Popup) | `date`, `location_id`, `nonce` |
+| `mlb_cancel_booking` | Buchung stornieren | `booking_id`, `token` (GET) |
 
 ---
 
-## Backend-Übersicht
+## Benachrichtigungen & Cron
 
-Das Plugin fügt ein eigenes Toplevel-Menü **Bookings** hinzu:
+### Status-Mails (automatisch bei Statuswechsel im Backend)
 
-```
-Bookings
-├── Übersicht       Dashboard mit Status-Statistiken
-├── Buchungen       Liste aller mlb_booking Einträge
-└── Standorte       Liste aller mlb_location Einträge
-```
+| Status | Mail an Kunden | Mail an Filiale | iCal |
+|---|---|---|---|
+| Formular-Submit | Bestätigungsmail | Neue-Buchung-Kopie | ✅ |
+| → Bestätigt | Bestätigt-Mail | Kopie | ✅ |
+| → Storniert | Storniert-Mail | Kopie | ✗ |
 
-### Buchungs-Listenansicht
+### Stornierungslink
+- Token wird bei `mlb_after_save_booking` generiert (`_mlb_cancel_token` in Post Meta)
+- Link `{cancel_url}` in allen Templates verfügbar
+- Einmalverwendung — Token wird nach Stornierung gelöscht
+- Setzt Status auf `mlb-cancelled`, versendet Stornierungsmail, entfernt Cron-Job
 
-Spalten: Status (Badge), Standort, Datum, Uhrzeit, Kunde (Name + E-Mail + Telefon), Dienstleistung, Personenanzahl, Eingangsdatum.
+### Erinnerungs-Cron
+- Wird beim Statuswechsel auf `mlb-confirmed` geplant
+- Zeitpunkt: Buchungsdatum/zeit minus `mlb_reminder_hours` Stunden
+- Bei Stornierung wird der geplante Job automatisch entfernt (`wp_clear_scheduled_hook`)
 
-Filter: **Standort** + **Status** (Dropdown-Filter über der Tabelle).
+---
 
-Sortierung: Datum und Status sind als sortierbare Spalten registriert.
+## CSV-Export
 
-### Status-Badges
+**Bookings → Buchungen → „Als CSV exportieren"**
 
-| Badge | Farbe |
-|---|---|
-| Ausstehend | Gelb |
-| Bestätigt | Grün |
-| Storniert | Rot |
+- Respektiert aktive Filter (Standort, Status)
+- UTF-8 BOM für Excel-Kompatibilität
+- Semikolon als Trenner
+- Spalten: ID, Status, Standort, Datum, Uhrzeit, Name, E-Mail, Telefon, Dienstleistung, Personen, Anmerkungen, Eingangsdatum
+
+---
+
+## Kalenderansicht
+
+**Bookings → Kalender**
+
+- Monatsnavigation (vor/zurück + Heute)
+- Filter nach Standort
+- Buchungen farbkodiert: Gelb = Ausstehend, Grün = Bestätigt, Rot = Storniert
+- Klick auf einen Tag öffnet Detail-Popup mit vollständiger Buchungstabelle
+- Direktlink zur Buchung im Popup
+
+---
+
+## Dashboard-Widget
+
+Zeigt nächste X bevorstehende Buchungen (Status: Ausstehend/Bestätigt) auf der WP-Startseite. Anzahl über Widget-Einstellungen konfigurierbar (1–20, Standard: 5).
 
 ---
 
 ## Styling
 
-Das Formular nutzt CSS Custom Properties für einfache Theme-Integration. Überschreiben durch einmalige Definition im Theme-CSS:
+CSS Custom Properties für einfache Theme-Integration:
 
 ```css
 .mlb-booking-form {
-    --mlb-color-primary:    #d40000;   /* Primärfarbe (Buttons, Links, Akzente) */
-    --mlb-color-primary-dk: #b30000;   /* Hover-Zustand */
-    --mlb-color-border:     #d0d5dd;   /* Input-Rahmen */
-    --mlb-color-radius:     6px;       /* Border-Radius */
-    --mlb-font:             inherit;   /* Schriftart aus Theme übernehmen */
+    --mlb-color-primary:    #d40000;  /* Primärfarbe */
+    --mlb-color-primary-dk: #b30000;  /* Hover */
+    --mlb-color-border:     #d0d5dd;  /* Input-Rahmen */
+    --mlb-radius:           6px;      /* Border-Radius */
+    --mlb-font:             inherit;  /* Schriftart */
 }
 ```
 
-Alle weiteren Variablen sind in `assets/css/booking-form.css` dokumentiert.
-
 ---
 
-## Erweiterung
+## Projektspezifische Anpassungen (update-sicher)
 
-### Neuen Standort anlegen
-
-1. **Bookings → Standorte → Neuen Standort hinzufügen**
-2. Titel = Standortname (erscheint im Formular-Dropdown)
-3. ACF-Felder ausfüllen: Öffnungszeiten, Slots, Kontakt, E-Mail-Template, Dienstleistungen
-4. Veröffentlichen
-
-### Formular mit festem Standort einbinden
-
-```php
-// In einem Template oder Page-Builder-Block:
-echo do_shortcode('[mlb_booking_form location="wien-mitte" title="Termin buchen"]');
+### 1. CSS-Overrides im Theme
+```scss
+// custom-theme/assets/src/scss/_bookings.scss
+.mlb-booking-form {
+    --mlb-color-primary: #e8a000;
+}
 ```
 
-### E-Mail-Template anpassen
+### 2. Template-Override
+```
+// Datei anlegen:
+custom-theme/media-lab-bookings/booking-form.php
+```
+Das Plugin lädt automatisch diese Datei wenn vorhanden (`locate_template()`).
 
-Unter **Bookings → Standorte → {Standort bearbeiten} → Tab: Bestätigungsmail** steht ein WYSIWYG-Editor zur Verfügung. Platzhalter (z.B. `{date}`, `{location_address}`) werden automatisch ersetzt.
-
-### Bestätigungs-HTML programmatisch überschreiben
-
+### 3. PHP-Filter/Actions in `functions.php`
 ```php
-add_filter( 'mlb_confirmation_template', function( $template, $booking_id, $location_id ) {
-    // Eigenes Template zurückgeben
-    return '<p>Hallo {name}, deine Buchung am {date} ist eingegangen.</p>';
+// Buchungsdaten vor dem Speichern ändern
+add_filter( 'mlb_before_save_booking', function( $data ) {
+    return $data;
+} );
+
+// Nach dem Speichern
+add_action( 'mlb_after_save_booking', function( $booking_id, $data ) {
+    // eigene Logik
+}, 10, 2 );
+
+// Bestätigungsmail-Body
+add_filter( 'mlb_confirmation_body', function( $body, $booking_id, $location_id ) {
+    return $body;
+}, 10, 3 );
+
+// Bestätigungsmail-Betreff
+add_filter( 'mlb_confirmation_subject', function( $subject, $booking_id, $location_id ) {
+    return $subject;
 }, 10, 3 );
 ```
-
-> **Hinweis:** Der Filter `mlb_confirmation_template` ist in v1.0.0 noch nicht implementiert. Er kann bei Bedarf in `inc/mail.php` ergänzt werden.
 
 ---
 
 ## Troubleshooting
 
 ### Keine Zeitslots werden angezeigt
+1. Öffnungszeiten im Standort prüfen — Tab „Zeitslots" → `mlb_slot_duration` ausgefüllt?
+2. Tageslimit erreicht? → `mlb_max_per_day` erhöhen oder auf 0 setzen
+3. Alle Slots ausgebucht → `mlb_max_capacity` erhöhen
+4. Browser-Konsole auf AJAX-Fehler prüfen (`mlb_get_slots`)
 
-1. Öffnungszeiten im Standort prüfen: ACF-Tab „Zeitslots" → `mlb_slot_duration` muss ausgefüllt sein
-2. Gewähltes Datum ist an einem geschlossenen Wochentag → Flatpickr sollte diese Tage bereits deaktivieren
-3. Alle Slots ausgebucht → `mlb_max_capacity` erhöhen oder bestehende Buchungen prüfen
-4. Browser-Konsole auf AJAX-Fehler prüfen: `mlb_get_slots` → HTTP 200?
+### Keine E-Mails
+1. SMTP testen: **Agency Core → E-Mail / SMTP → Test-Mail senden**
+2. `mlb_location_email` im Standort hinterlegt?
+3. `wp-content/debug.log` auf `wp_mail_failed` prüfen
 
-### Formular sendet, aber keine E-Mail kommt an
+### iCal-Feed gibt 404
+Permalinks neu speichern: **Einstellungen → Permalinks → Speichern**
 
-1. SMTP-Konfiguration testen: **Agency Core → E-Mail / SMTP → Test-Mail senden**
-2. Spam-Ordner des Empfängers prüfen
-3. `mlb_location_email` im Standort hinterlegt?
-4. WordPress Debug Log prüfen (`wp-content/debug.log`) auf `wp_mail_failed`
+### Doppelte Menüeinträge
+Prüfen ob `show_in_menu => false` in `inc/cpt.php` gesetzt ist. Bei `show_in_menu => 'mlb-bookings'` generiert WordPress automatisch Untermenüeinträge zusätzlich zu den manuell angelegten.
 
-### Standort-Dropdown im Frontend leer
+### Erinnerungsmail wird nicht gesendet
+1. WP-Cron aktiv? → `wp cron event list | grep mlb_send_reminder`
+2. Status der Buchung muss `mlb-confirmed` sein
+3. Erinnerungszeitpunkt muss in der Zukunft liegen
+4. `mlb_reminder_hours` > 0 im Standort gesetzt?
 
-Prüfen ob Standorte mit Status `publish` vorhanden sind:
-
-```bash
-wp post list --post_type=mlb_location --post_status=publish
-```
-
-### ACF-Felder erscheinen nicht
-
-ACF Pro muss aktiv sein. Feldgruppen werden über `acf/include_fields` registriert. Prüfen:
-
-```bash
-wp plugin list | grep acf
-# → advanced-custom-fields-pro  active
-```
-
-### Buchungen werden nicht in der DB gespeichert
-
-Wenn `wp_insert_post()` fehlschlägt, erscheint im Frontend die Meldung „Buchung konnte nicht gespeichert werden." Im Debug Log steht der genaue Fehler. Häufigste Ursache: fehlende Schreibrechte oder zu restriktive `WP_DEBUG`-Konfiguration.
+### Stornierungslink funktioniert nicht
+Token wird bei der ersten Buchung generiert (Action `mlb_after_save_booking`). Für ältere Buchungen ohne Token funktioniert der Link nicht — nur neue Buchungen ab v1.4.0 haben einen Token.
 
 ---
 
@@ -387,11 +497,21 @@ Wenn `wp_insert_post()` fehlschlägt, erscheint im Frontend die Meldung „Buchu
 | `acf-fields.php` | `mlb_register_acf_fields()` | `acf/include_fields` |
 | `slots.php` | `MLB_Slots::generate()` | – (statisch) |
 | `slots.php` | `MLB_Slots::count_bookings()` | – (statisch) |
+| `slots.php` | `MLB_Slots::count_day_bookings()` | – (statisch) |
 | `ajax.php` | `MLB_Ajax::get_location_data()` | `wp_ajax(_nopriv)_mlb_get_location_data` |
 | `ajax.php` | `MLB_Ajax::get_slots()` | `wp_ajax(_nopriv)_mlb_get_slots` |
 | `ajax.php` | `MLB_Ajax::submit_booking()` | `wp_ajax(_nopriv)_mlb_submit_booking` |
-| `mail.php` | `MLB_Mail::send_confirmation()` | – (statisch, aufgerufen aus Ajax) |
+| `ical.php` | `MLB_ICal::generate()` | – (statisch) |
+| `ical.php` | `MLB_ICal::ajax_download()` | `wp_ajax(_nopriv)_mlb_download_ical` |
+| `feed.php` | `MLB_Feed::handle_feed()` | `template_redirect` |
+| `mail.php` | `MLB_Mail::send_confirmation()` | – (statisch) |
+| `notifications.php` | `MLB_Notifications::on_acf_save()` | `acf/save_post` |
+| `notifications.php` | `MLB_Notifications::send_reminder()` | `mlb_send_reminder` (Cron) |
+| `notifications.php` | `MLB_Notifications::ajax_cancel()` | `wp_ajax(_nopriv)_mlb_cancel_booking` |
+| `export.php` | `MLB_Export::handle_export()` | `admin_init` |
+| `calendar.php` | `MLB_Calendar::render_page()` | – (Menü-Callback) |
+| `calendar.php` | `MLB_Calendar::ajax_day_detail()` | `wp_ajax_mlb_calendar_day` |
+| `dashboard-widget.php` | `MLB_Dashboard_Widget::render()` | `wp_dashboard_setup` |
 | `shortcode.php` | `MLB_Shortcode::render()` | `shortcode mlb_booking_form` |
-| `shortcode.php` | `MLB_Shortcode::register_assets()` | `wp_enqueue_scripts` |
 | `admin.php` | `MLB_Admin::register_menu()` | `admin_menu` |
-| `admin.php` | `MLB_Admin::dashboard_page()` | – (Callback) |
+| `admin.php` | `MLB_Admin::dashboard_page()` | – (Menü-Callback) |

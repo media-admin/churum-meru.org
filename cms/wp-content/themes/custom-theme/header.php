@@ -25,8 +25,15 @@
 
 <?php
 // ── Scroll Progress Bar ───────────────────────────────────────────────────
-// Nur auf Einzelbeitrags-Seiten (single.php), per ACF ein-/ausschaltbar
-if ( function_exists('get_field') && get_field('scroll_progress_enabled', 'option') && is_single() ) : ?>
+// Sichtbarkeit per ACF gesteuert (Agency Core → Logo / Globale Einstellungen)
+if ( function_exists('get_field') && get_field('scroll_progress_enabled', 'option') ) :
+    $scope = get_field('scroll_progress_scope', 'option') ?: 'single';
+    $show_progress = match($scope) {
+        'singular' => is_singular(),
+        'all'      => true,
+        default    => is_single(),
+    };
+    if ( $show_progress ) : ?>
 <div
     class="scroll-progress"
     role="progressbar"
@@ -35,7 +42,7 @@ if ( function_exists('get_field') && get_field('scroll_progress_enabled', 'optio
     aria-valuenow="0"
     aria-label="<?php esc_attr_e('Lesefortschritt', 'custom-theme'); ?>"
 ></div>
-<?php endif; ?>
+<?php endif; endif; ?>
 
 <?php
 /**

@@ -398,7 +398,26 @@ add_action('acf/init', function () {
                 'type'          => 'true_false',
                 'ui'            => 1,
                 'default_value' => 0,
-                'instructions'  => 'Zeigt eine dünne Fortschritts-Linie am oberen Rand nur auf Einzelbeitrags-Seiten (single.php).',
+                'instructions'  => 'Zeigt eine dünne Fortschritts-Linie am oberen Viewport-Rand. Wo sie erscheint, steuert die Option darunter.',
+            ),
+
+            array(
+                'key'     => 'field_scroll_progress_scope',
+                'label'   => 'Scroll Progress Bar – Anzeigebereich',
+                'name'    => 'scroll_progress_scope',
+                'type'    => 'select',
+                'choices' => array(
+                    'single'   => 'Nur Blog-Beiträge (single.php)',
+                    'singular' => 'Beiträge + Seiten (single + page)',
+                    'all'      => 'Alle Seiten (inkl. Archiv, Startseite)',
+                ),
+                'default_value'     => 'single',
+                'instructions'      => 'Auf welchen Seitentypen die Scroll Progress Bar angezeigt wird.',
+                'conditional_logic' => array(array(array(
+                    'field'    => 'field_scroll_progress_enabled',
+                    'operator' => '==',
+                    'value'    => '1',
+                ))),
             ),
 
         ),

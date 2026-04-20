@@ -34,7 +34,10 @@ export default class TestimonialsSlider {
         modules: [Navigation, Pagination, Autoplay],
         slidesPerView: 1,
         spaceBetween: 30,
-        loop: shouldLoop, // Dynamisch: nur wenn genug Slides
+        loop: shouldLoop,
+        // Fix: Swiper registriert DOM-Änderungen und aktualisiert sich selbst
+        observer: true,
+        observeParents: true,
         autoplay: autoplay && shouldLoop ? {
           delay: 5000,
           disableOnInteraction: false,
@@ -49,6 +52,13 @@ export default class TestimonialsSlider {
           type: 'bullets',
           clickable: true,
         },
+        // Fix: realIndexChange statt slideChange — funktioniert korrekt mit loop/geklonten Slides
+        on: {
+          realIndexChange: function () {
+            this.pagination.render();
+            this.pagination.update();
+          },
+        },
         breakpoints: {
           640: {
             slidesPerView: Math.min(2, columns),
@@ -60,8 +70,14 @@ export default class TestimonialsSlider {
           },
         },
       });
-      
-      // Console Info (optional, kann entfernt werden)
+
+      // Fix: data-animate entfernen damit Animations-System Slides nicht versteckt
+      sliderElement.querySelectorAll('.swiper-slide').forEach(slide => {
+        slide.removeAttribute('data-animate');
+        slide.style.opacity = '';
+        slide.style.visibility = '';
+      });
+
       if (!shouldLoop) {
         console.info('Testimonials slider: Loop disabled (not enough slides)');
       }
@@ -73,3 +89,4 @@ export default class TestimonialsSlider {
 }
 
 // Auto-initialize
+new TestimonialsSlider();

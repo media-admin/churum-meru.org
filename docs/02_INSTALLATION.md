@@ -1,19 +1,16 @@
-# Installationsanleitung
-
-**Version:** 1.4.0 | **Letzte Aktualisierung:** 2026-03-04
-
----
+# Installation – Media Lab Agency Starter Kit
 
 ## Inhaltsverzeichnis
 
 1. [Voraussetzungen](#voraussetzungen)
-2. [Lokale Umgebung (Valet)](#lokale-umgebung-valet)
+2. [Neues Kundenprojekt anlegen](#neues-kundenprojekt-anlegen)
 3. [WordPress installieren](#wordpress-installieren)
-4. [Plugins & Theme aktivieren](#plugins--theme-aktivieren)
-5. [Assets kompilieren](#assets-kompilieren)
-6. [SMTP konfigurieren](#smtp-konfigurieren)
-7. [Nach der Installation](#nach-der-installation)
-8. [Troubleshooting](#troubleshooting)
+4. [Dependencies & Build](#dependencies--build)
+5. [Plugins & Theme aktivieren](#plugins--theme-aktivieren)
+6. [HTTPS & Valet-Konfiguration](#https--valet-konfiguration)
+7. [SMTP konfigurieren](#smtp-konfigurieren)
+8. [Vite Dev-Server](#vite-dev-server)
+9. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -27,63 +24,109 @@
 | npm | 9+ | `npm -v` |
 | Composer | 2.0+ | `composer --version` |
 | WP-CLI | 2.8+ | `wp --version` |
-| Laravel Valet | aktuell | `valet --version` |
+| Laravel Valet | 4.x | `valet --version` |
 
 **ACF Pro** – Lizenz erforderlich. Download unter [advancedcustomfields.com](https://www.advancedcustomfields.com/)
 
 ---
 
-## Lokale Umgebung (Valet)
+## Neues Kundenprojekt anlegen
 
 ```bash
-# Repository klonen
-git clone https://github.com/media-admin/media-lab-starter-kit.git
-cd media-lab-starter-kit
+# In den Valet-Ordner wechseln
+cd ~/Valet-Umgebung   # oder ~/Sites je nach Setup
+
+# Starter Kit als Basis klonen
+git clone https://github.com/media-admin/media-lab-starter-kit.git org.projektname-2026
+cd org.projektname-2026
+
+# Git-History trennen (frisches Repo für den Kunden)
+rm -rf .git
+git init
+git add -A
+git commit -m "chore: init project from starter kit"
 
 # Valet-Link setzen
 valet link
-
-# Dependencies installieren
-npm install
-composer install
-
-# Erreichbar unter:
-# http://media-lab-starter-kit.test
 ```
+
+### Setup-Script ausführen
+
+```bash
+./scripts/setup-project.sh
+```
+
+Das Script fragt nach:
+
+| Feld | Beispiel |
+|---|---|
+| Projekt Name | `FJDF Rebuild 2026` |
+| Theme Slug | `fjdf-theme` |
+| Plugin Slug | `fjdf-plugin` |
+| Text Domain | `fjdf` |
+
+Das Script benennt automatisch um:
+- `cms/wp-content/themes/custom-theme/` → `cms/wp-content/themes/{theme-slug}/`
+- `cms/wp-content/plugins/media-lab-project-starter/` → `cms/wp-content/plugins/{plugin-slug}/`
+- `vite.config.js`, `vite.config.blocks.js`, `scripts/vite-dev.mjs`, `scripts/deploy-*.js`, `package.json`
 
 ---
 
 ## WordPress installieren
 
 ```bash
+# Datenbank anlegen
+mysql -u root -e "CREATE DATABASE {slug} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
 cd cms
 
-# WordPress herunterladen (Deutsch)
+# WordPress herunterladen
 wp core download --locale=de_DE
-
-# Datenbank anlegen
-mysql -u root -e "CREATE DATABASE media_lab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # wp-config.php erstellen
 wp core config \
-  --dbname=media_lab \
+  --dbname={slug} \
   --dbuser=root \
   --dbpass=root \
-  --dbprefix=ml_ \
+  --dbprefix={slug}_ \
   --locale=de_DE
 
 # WordPress installieren
+# ⚠️ WICHTIG: --url muss /cms enthalten!
 wp core install \
-  --url=media-lab-starter-kit.test \
-  --title="Media Lab Starter Kit" \
+  --url=https://org.projektname-2026.localdev/cms \
+  --title="Projektname" \
   --admin_user=admin \
-  --admin_password=SICHERES_PASSWORT_HIER \
+  --admin_password=SICHERES_PASSWORT \
   --admin_email=markus.tritremmel@media-lab.at
+
+# home-URL auf Root setzen (ohne /cms)
+wp option update home 'https://org.projektname-2026.localdev'
 
 cd ..
 ```
 
-**Wichtig:** Admin-Passwort sofort nach Installation ändern!
+> **Warum zwei verschiedene URLs?**
+> `siteurl` (mit `/cms`) zeigt auf das WordPress-Verzeichnis.
+> `home` (ohne `/cms`) zeigt auf die öffentliche Domain.
+> Dieses Pattern ist notwendig weil WordPress im `cms/`-Unterordner liegt,
+> Valet aber vom Root-Verzeichnis aus serviert.
+
+---
+
+## Dependencies & Build
+
+```bash
+npm install
+composer install
+npm run build
+```
+
+> Falls `npm install` keine `node_modules` erstellt oder Pakete fehlen:
+> ```bash
+> rm -rf node_modules package-lock.json
+> npm install
+> ```
 
 ---
 
@@ -92,20 +135,12 @@ cd ..
 ```bash
 cd cms
 
-# ACF Pro manuell hochladen (Lizenz-Download) dann:
-wp plugin activate advanced-custom-fields-pro
-
-# Media Lab Plugins aktivieren
+# ACF Pro muss physisch in cms/wp-content/plugins/ liegen
 wp plugin activate media-lab-agency-core
 wp plugin activate media-lab-seo
-
-# Theme aktivieren
-wp theme activate custom-theme
-
-# Standardinhalte bereinigen
-wp post delete 1 2 --force          # Sample-Post + Sample-Page
-wp comment delete 1 --force         # Sample-Comment
-wp plugin delete hello akismet      # Unnötige Standard-Plugins
+wp plugin activate advanced-custom-fields-pro
+wp plugin activate {plugin-slug}
+wp theme activate {theme-slug}
 
 # Permalinks setzen
 wp rewrite structure '/%postname%/'
@@ -116,140 +151,117 @@ cd ..
 
 ---
 
-## Assets kompilieren
+## HTTPS & Valet-Konfiguration
+
+### wp-content Symlink
+
+Valet serviert statische Dateien vom Root-Verzeichnis. Da WordPress im `cms/`-Unterordner liegt, muss ein Symlink gesetzt werden:
 
 ```bash
-# Production Build (einmalig für die Installation)
-npm run build
-
-# Verifizieren
-ls cms/wp-content/themes/custom-theme/assets/dist/css/
-ls cms/wp-content/themes/custom-theme/assets/dist/js/
-# Sollte style.css, main.js und die Lazy Chunks zeigen
+cd ~/Valet-Umgebung/org.projektname-2026
+ln -s cms/wp-content wp-content
 ```
 
-Für Development mit Hot Reload:
-```bash
-npm run dev
-# Browser: http://media-lab-starter-kit.test
+> Ohne diesen Symlink liefert Valet für alle Asset-Requests HTML statt der Dateien
+> → JS/CSS laden nicht, MIME-Type-Fehler in der Browser-Konsole.
+
+### HTTPS in wp-config.php
+
+Da Valet HTTPS terminiert und WordPress das nicht automatisch erkennt, müssen folgende Zeilen in `cms/wp-config.php` **vor** dem `/* That's all */`-Kommentar eingetragen werden:
+
+```php
+/* HTTPS hinter Valet/Proxy */
+$_SERVER['HTTPS'] = 'on';
+define( 'FORCE_SSL_ADMIN', true );
 ```
+
+> Ohne diese Einträge entsteht ein Redirect-Loop beim Aufruf von `/wp-admin`.
 
 ---
 
 ## SMTP konfigurieren
 
-In `cms/wp-config.php` **vor** `/* That's all */` einfügen:
+Credentials sicher in `cms/wp-config.php` eintragen (nie in der Datenbank):
 
 ```php
-// SMTP-Konfiguration (Media Lab Agency Core)
 define('MEDIALAB_SMTP_ENABLED',   true);
 define('MEDIALAB_SMTP_HOST',      'smtp.example.com');
 define('MEDIALAB_SMTP_PORT',      587);
 define('MEDIALAB_SMTP_USER',      'user@example.com');
 define('MEDIALAB_SMTP_PASS',      'geheimes-passwort');
-define('MEDIALAB_SMTP_ENC',       'tls');   // tls | ssl | ''
+define('MEDIALAB_SMTP_ENC',       'tls');
 define('MEDIALAB_SMTP_FROM',      'noreply@example.com');
-define('MEDIALAB_SMTP_FROM_NAME', 'Meine Website');
+define('MEDIALAB_SMTP_FROM_NAME', 'Projektname');
 ```
-
-Test-Mail im Backend: **Einstellungen → Agency Core → SMTP → Test-Mail senden**
 
 ---
 
-## Nach der Installation
-
-### Checkliste
+## Vite Dev-Server
 
 ```bash
-cd cms
+# Development mit Hot Reload starten
+npm run dev
 
-# Pluginstatus prüfen
-wp plugin list
+# Production Build
+npm run build
 
-# Theme aktiv?
-wp theme list
-
-# Build-Output vorhanden?
-ls ../cms/wp-content/themes/custom-theme/assets/dist/
-
-# WordPress-Version
-wp core version
+# Watch-Modus ohne Dev-Server
+npm run watch
 ```
 
-### WordPress-Einstellungen
-
-1. **Allgemein** → Zeitzone: Europa/Wien, Datumsformat: d.m.Y
-2. **Lesen** → Startseite auf statische Seite setzen
-3. **Agency Core** → SMTP konfigurieren und testen
-4. **ACF** → JSON-Load-Pfad auf Plugin-Ordner zeigen
-
-### Debugging aktivieren (nur lokal!)
-
-In `cms/wp-config.php`:
-```php
-define('WP_DEBUG',         true);
-define('WP_DEBUG_LOG',     true);
-define('WP_DEBUG_DISPLAY', false);
-```
+> `npm run dev` immer aus dem **Projekt-Root** ausführen, nicht aus `cms/`.
 
 ---
 
 ## Troubleshooting
 
-### Assets laden nicht
+### `Cannot find package 'vite'`
+
+`node_modules` fehlt oder ist unvollständig:
 
 ```bash
-# Build neu ausführen
-npm run build
-
-# Cache leeren
-cd cms && wp cache flush && cd ..
-
-# Dateiberechtigungen prüfen
-chmod -R 755 cms/wp-content/themes/custom-theme/assets/dist/
+rm -rf node_modules package-lock.json
+npm install
 ```
 
-### Weißer Bildschirm (WSOD)
+### Assets laden nicht (MIME-Type-Fehler in der Console)
+
+`wp-content`-Symlink fehlt:
 
 ```bash
-# Debug-Log prüfen
-tail -f cms/wp-content/debug.log
-
-# Plugin-Konflikte isolieren
-cd cms
-wp plugin deactivate --all
-wp plugin activate media-lab-agency-core
+ln -s cms/wp-content wp-content
 ```
 
-### SCSS-Build-Fehler "Undefined variable"
+### `/wp-admin` → Redirect-Loop
 
-`@use '../abstracts' as *;` fehlt am Anfang des Partials. Jedes SCSS-Partial muss diese Zeile enthalten um auf Tokens und Mixins zugreifen zu können.
+`HTTPS`-Einträge in `wp-config.php` fehlen. Siehe [HTTPS & Valet-Konfiguration](#https--valet-konfiguration).
 
-### Permalinks zeigen 404
+### Frontend ohne Formatierung
 
-```bash
-cd cms
-wp rewrite structure '/%postname%/'
-wp rewrite flush --hard
+Entweder:
+1. `hot`-Datei ist veraltert: `rm cms/wp-content/themes/{theme-slug}/assets/hot`
+2. `npm run build` wurde noch nicht ausgeführt
+3. `wp-content`-Symlink fehlt
+
+### `vite.config.blocks.js` Build schlägt fehl mit `referenceId`-Fehler
+
+Vite 8 unterstützt keine SCSS-Dateien als direkte `rollupOptions.input` Entry Points.
+Fix: SCSS-Import in `blocks.js` verlagern:
+
+```js
+// Erste Zeile in blocks.js
+import "../scss/blocks.scss";
 ```
 
-### `window.customTheme` ist undefined
+Und in `vite.config.blocks.js` den `'blocks-scss'`-Entry entfernen.
 
-`enqueue.php` wird nicht geladen. In `functions.php` prüfen:
-```php
-require_once get_template_directory() . '/inc/enqueue.php';
-```
-
-### ACF-Felder erscheinen nicht
+### `siteurl` und `home` falsch gesetzt
 
 ```bash
 cd cms
-wp plugin list | grep advanced-custom-fields
-# Falls nicht aktiv:
-wp plugin activate advanced-custom-fields-pro
-wp rewrite flush
+wp option get siteurl   # muss /cms enthalten
+wp option get home      # muss ohne /cms sein
+
+wp option update siteurl 'https://domain.localdev/cms'
+wp option update home    'https://domain.localdev'
 ```
-
----
-
-**Weiter:** [docs/06_DEVELOPMENT.md](06_DEVELOPMENT.md) – Entwicklungs-Guide

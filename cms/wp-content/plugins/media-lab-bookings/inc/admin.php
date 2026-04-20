@@ -24,11 +24,24 @@ class MLB_Admin {
         add_submenu_page( 'mlb-bookings', 'Standorte',      'Standorte',        'edit_posts', 'edit.php?post_type=mlb_location' );
         add_submenu_page( 'mlb-bookings', 'Neuer Standort', 'Neuer Standort',   'edit_posts', 'post-new.php?post_type=mlb_location' );
     }
+    // ── Buchungen nach ACF-Meta-Feld zählen (unabhängig vom WP-Post-Status) ────
+
+    private static function count_bookings_by_status( string $status ): int {
+        $q = new WP_Query( [
+            'post_type'      => 'mlb_booking',
+            'post_status'    => 'any',
+            'posts_per_page' => -1,
+            'fields'         => 'ids',
+            'meta_query'     => [ [ 'key' => 'mlb_booking_status', 'value' => $status ] ],
+        ] );
+        return (int) $q->found_posts;
+    }
+
     public static function dashboard_page() {
-        $pending   = wp_count_posts( 'mlb_booking' )->{'mlb-pending'}   ?? 0;
-        $confirmed = wp_count_posts( 'mlb_booking' )->{'mlb-confirmed'} ?? 0;
-        $cancelled = wp_count_posts( 'mlb_booking' )->{'mlb-cancelled'} ?? 0;
-        $locations = wp_count_posts( 'mlb_location' )->publish           ?? 0;
+        $pending   = self::count_bookings_by_status( 'mlb-pending' );
+        $confirmed = self::count_bookings_by_status( 'mlb-confirmed' );
+        $cancelled = self::count_bookings_by_status( 'mlb-cancelled' );
+        $locations = wp_count_posts( 'mlb_location' )->publish ?? 0;
         echo '<div class="wrap mlb-dashboard"><h1>Media Lab Bookings</h1><div class="mlb-stats">';
         echo '<div class="mlb-stat mlb-stat--pending"><span class="mlb-stat__count">' . (int)$pending . '</span><span class="mlb-stat__label">Ausstehend</span></div>';
         echo '<div class="mlb-stat mlb-stat--confirmed"><span class="mlb-stat__count">' . (int)$confirmed . '</span><span class="mlb-stat__label">Bestätigt</span></div>';

@@ -6,6 +6,23 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.6.0] - 2026-04-21
+
+### media-lab-bookings 1.6.0
+
+#### Added
+- **Wording-Konfiguration** (`inc/settings.php`) – neue ACF-Optionsseite unter **Bookings → Einstellungen**; vier konfigurierbare Begriffe: Singular (z.B. „Reservierung"), Plural (z.B. „Reservierungen"), Verb/Button-Text (z.B. „Jetzt reservieren"), Vergangenheit (z.B. „Reservierung eingegangen"); globale Hilfsfunktion `mlb_term( $type )` gibt den konfigurierten Begriff zurück oder den Standard-Fallback
+- **Wording in CPT-Labels** (`inc/cpt.php`) – `mlb_booking` CPT-Labels (name, singular_name, add_new_item, edit_item, not_found) werden dynamisch aus `mlb_term()` befüllt → korrekte Bezeichnung im gesamten WP-Backend
+- **Wording im Admin-Menü** (`inc/admin.php`) – Untermenü-Einträge „Buchungen" und „Neue Buchung" sowie Dashboard-Statistik-Labels nutzen `mlb_term()`
+- **Wording in Erfolgsmeldung** (`inc/ajax.php`) – Formular-Erfolgsmeldung nutzt `mlb_term('singular')`; kann zusätzlich global unter **Einstellungen → Standard Erfolgsmeldung** überschrieben werden
+- **Wording im Shortcode** (`inc/shortcode.php`) – Button-Label Fallback auf `mlb_term('verb')` wenn kein standortspezifisches Label gesetzt ist
+
+#### Fixed
+- **iCal-Anhang** (`inc/mail.php`) – Anhang aus der initialen Bestätigungsmail (Formular-Submit) entfernt. iCal wird nur noch bei Status-Mail „Bestätigt" und Erinnerungsmail angehängt.
+- **iCal-Download-Link** (`templates/booking-form.php`, `assets/js/booking-form.js`, `inc/ajax.php`) – Download-Link aus dem Formular-Erfolgs-Screen entfernt. Termin-Speicherung ist erst nach Bestätigung sinnvoll.
+
+---
+
 ## [1.5.9] - 2026-04-20
 
 ### media-lab-bookings 1.5.9

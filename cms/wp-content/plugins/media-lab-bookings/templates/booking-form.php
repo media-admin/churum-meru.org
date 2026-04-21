@@ -148,7 +148,6 @@ $privacy_url   = get_privacy_policy_url();
         <div class="mlb-form__success-icon" aria-hidden="true">✓</div>
         <h3 class="mlb-form__success-title">Buchung eingereicht!</h3>
         <p class="mlb-form__success-message"></p>
-        <a href="#" class="mlb-form__ical-link" hidden>Termin in Kalender speichern (.ics)</a>
     </div>
 
     <!-- Fehlermeldung -->

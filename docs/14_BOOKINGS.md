@@ -1,7 +1,7 @@
 # 14. Bookings Plugin
 
 **Plugin:** `media-lab-bookings`
-**Version:** 1.5.2
+**Version:** 1.5.9
 **Abhängigkeiten:** ACF Pro, jQuery (WordPress Core)
 
 ---
@@ -335,6 +335,9 @@ Pro Slot wird `MLB_Slots::count_bookings()` ausgeführt. Stornierte Buchungen we
 ### Tageslimit
 Wenn `mlb_max_per_day > 0` und `MLB_Slots::count_day_bookings()` das Limit erreicht hat, gibt `generate()` ein leeres Array zurück — alle Slots des Tages sind gesperrt.
 
+### Datumsformat-Hinweis
+ACF `date_picker` speichert Daten intern als `Ymd` (z.B. `20260422`). `get_field()` gibt das Datum im konfigurierten `return_format` zurück (`Y-m-d`), `get_post_meta()` liefert immer den Raw-Wert (`Ymd`). Bei eigenen Abfragen nach `mlb_booking_date` daher immer `strtotime()` + `date('Y-m-d', ...)` zur Normalisierung verwenden.
+
 ### AJAX-Endpunkte
 
 | Action | Funktion | Parameter |
@@ -485,6 +488,21 @@ Prüfen ob `show_in_menu => false` in `inc/cpt.php` gesetzt ist. Bei `show_in_me
 
 ### Stornierungslink funktioniert nicht
 Token wird bei der ersten Buchung generiert (Action `mlb_after_save_booking`). Für ältere Buchungen ohne Token funktioniert der Link nicht — nur neue Buchungen ab v1.4.0 haben einen Token.
+
+### Kalender zeigt keine Buchungen
+Häufigste Ursachen:
+
+**1. ACF-Datumsformat:** ACF `date_picker` speichert intern als `Ymd` (z.B. `20260422`), unabhängig vom `return_format`. `get_post_meta()` liefert immer den Raw-Wert. Das Plugin normalisiert dieses Format seit v1.5.9 automatisch.
+
+**2. WordPress post_status:** `post_status => 'any'` in `WP_Query` schließt Custom Statuses mit `public => false` aus (`exclude_from_search` wird automatisch auf `true` gesetzt). Das Plugin verwendet seit v1.5.7 eine explizite Status-Liste: `['publish', 'mlb-pending', 'mlb-confirmed', 'mlb-cancelled', 'draft', 'private']`.
+
+**3. get_posts() vs WP_Query:** `get_posts()` setzt `suppress_filters => true` und behandelt `post_status => 'any'` nicht korrekt für Custom Statuses. Das Plugin verwendet seit v1.5.5 `new WP_Query()` direkt.
+
+### Dashboard-Zähler zeigen 0
+`wp_count_posts()` zählt nach WP-Post-Status, nicht nach dem ACF-Feld `mlb_booking_status`. Da WordPress beim Backend-Speichern den Post-Status auf `'publish'` setzen kann, würden alle Buchungen unter `->publish` gezählt. Das Plugin verwendet seit v1.5.6 eigene `WP_Query`-Abfragen nach dem ACF-Meta-Feld.
+
+### Status-Mail wird nicht ausgelöst oder falsche Mail wird gesendet
+Das Plugin verwendet seit v1.5.3 zwei Hook-Prioritäten von `acf/save_post`: Priorität 5 sichert den alten Status aus der DB (vor ACF-Speicherung), Priorität 20 liest den neuen Status aus der DB (nach ACF-Speicherung). Kein `$_POST` mehr. Falls Mails trotzdem falsch ausgelöst werden: SMTP-Konfiguration unter **Agency Core → E-Mail / SMTP** prüfen.
 
 ---
 

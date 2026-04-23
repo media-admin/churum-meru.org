@@ -79,9 +79,13 @@ class MLB_Ajax {
         $booking_id = wp_insert_post( [ 'post_type' => 'mlb_booking', 'post_status' => 'mlb-pending', 'post_title' => sanitize_text_field( $post_title ) ] );
         if ( is_wp_error( $booking_id ) ) wp_send_json_error( [ 'message' => 'Buchung konnte nicht gespeichert werden.' ] );
 
+        // Datum als Ymd (ACF-internes Format) speichern.
+        // update_field() mit 'Y-m-d' würde es so speichern wie übergeben,
+        // aber ACF date_picker speichert intern immer als 'Ymd'.
+        $date_ymd = date( 'Ymd', strtotime( $date ) );
         update_field( 'mlb_booking_status',   'mlb-pending', $booking_id );
         update_field( 'mlb_booking_location', $location_id,  $booking_id );
-        update_field( 'mlb_booking_date',     $date,         $booking_id );
+        update_field( 'mlb_booking_date',     $date_ymd,     $booking_id );
         update_field( 'mlb_booking_time',     $time,         $booking_id );
         update_field( 'mlb_booking_service',  $service,      $booking_id );
         update_field( 'mlb_booking_persons',  $persons,      $booking_id );

@@ -7,30 +7,36 @@
  *
  * ─── Verwendungsmöglichkeiten ────────────────────────────────────────────────
  *
- * 1. Shortcode (Gutenberg / Classic Editor / Page Builder):
+ * 1. Shortcode:
  *    [medialab_share]
  *    [medialab_share services="whatsapp,facebook,email" show_label="false"]
- *    [medialab_share services="facebook,linkedin" layout="vertical" label="Artikel teilen"]
+ *    [medialab_share services="facebook,linkedin" layout="vertical" label="Teilen"]
  *
- * 2. PHP-Funktion (Theme-Template):
+ * 2. PHP-Funktion (Theme-Templates):
  *    <?php medialab_share(); ?>
  *    <?php medialab_share( array( 'services' => 'whatsapp,email' ) ); ?>
  *
- * 3. Gutenberg-Block:
- *    Block „Share-Buttons" in der Kategorie „Design" verwenden.
- *    Einstellungen werden im Block-Inspector gepflegt und können die
- *    globalen Defaults aus Agency Core → Share-Buttons überschreiben.
+ * 3. Gutenberg-Block „Share-Buttons" (Kategorie „Design")
  *
- * ─── Globale Defaults (Agency Core → Share-Buttons) ─────────────────────────
- *    Aktivierte Kanäle, Standard-Layout, Label-Text, Auto-Insert-Einstellung
- *    werden zentral gepflegt und von Shortcode + Block als Fallback genutzt.
+ * ─── Reihenfolge ─────────────────────────────────────────────────────────────
+ *    Agency Core → Share-Buttons: Kanäle per Repeater-Zeilen hinzufügen,
+ *    Reihenfolge via ACF Drag & Drop ändern.
  *
  * ─── Verfügbare Services ─────────────────────────────────────────────────────
  *    whatsapp, facebook, twitter, linkedin, xing, pinterest,
- *    telegram, reddit, email, copy
+ *    telegram, reddit, instagram, tiktok, email, copy
+ *
+ *    Hinweis Instagram: Keine offizielle Web-Share-URL verfügbar.
+ *    Auf Mobilgeräten öffnet der Button die Instagram-App (falls installiert),
+ *    auf Desktop instagram.com. Eine direkte Inhaltsweitergabe ist nur über
+ *    die App möglich.
+ *
+ *    Hinweis TikTok: Die Share-URL (tiktok.com/share?url=…) ist von TikTok
+ *    nicht offiziell dokumentiert, funktioniert aber in der Praxis.
  *
  * @package MediaLab_Core
  * @since   1.9.0
+ * @updated 1.9.1  Instagram + TikTok hinzugefügt; Reihenfolge via Repeater
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -39,10 +45,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // INITIALISIERUNG
 // =============================================================================
 
-add_action( 'init',                         'medialab_social_share_init'   );
-add_action( 'wp_enqueue_scripts',           'medialab_social_share_assets' );
-add_action( 'acf/init',                     'medialab_social_share_acf'    );
-add_filter( 'the_content',                  'medialab_social_share_auto_insert', 20 );
+add_action( 'init',               'medialab_social_share_init'        );
+add_action( 'wp_enqueue_scripts', 'medialab_social_share_assets'      );
+add_action( 'acf/init',           'medialab_social_share_acf'         );
+add_filter( 'the_content',        'medialab_social_share_auto_insert', 20 );
 
 function medialab_social_share_init(): void {
     add_shortcode( 'medialab_share', 'medialab_social_share_shortcode' );
@@ -62,8 +68,8 @@ function medialab_social_share_assets(): void {
 // =============================================================================
 
 /**
- * Gibt die globalen Share-Button-Defaults aus den ACF-Optionen zurück.
- * Ergebnis wird statisch gecacht (einmal pro Request).
+ * Gibt die globalen Share-Button-Defaults zurück.
+ * Services werden aus dem Repeater in der konfigurierten Reihenfolge gelesen.
  *
  * @return array{services: string, layout: string, show_label: bool, label: string}
  */
@@ -73,16 +79,24 @@ function medialab_social_share_get_defaults(): array {
 
     $acf = function_exists( 'get_field' );
 
-    $services_raw = $acf ? get_field( 'ss_default_services', 'option' ) : null;
-    if ( is_array( $services_raw ) && ! empty( $services_raw ) ) {
-        $services = implode( ',', array_map( 'sanitize_key', $services_raw ) );
-    } else {
-        $services = 'whatsapp,facebook,twitter,linkedin';
+    // Services aus Repeater (Reihenfolge = Anzeigereihenfolge)
+    $services = 'whatsapp,facebook,twitter,linkedin'; // Fallback
+    if ( $acf ) {
+        $rows = get_field( 'ss_default_services', 'option' );
+        if ( is_array( $rows ) && ! empty( $rows ) ) {
+            $keys = array_filter( array_map(
+                fn( $row ) => sanitize_key( $row['ss_service'] ?? '' ),
+                $rows
+            ) );
+            if ( ! empty( $keys ) ) {
+                $services = implode( ',', $keys );
+            }
+        }
     }
 
-    $layout     = $acf ? (string) ( get_field( 'ss_default_layout', 'option' )     ?: 'horizontal' ) : 'horizontal';
+    $layout     = $acf ? (string) ( get_field( 'ss_default_layout',     'option' ) ?: 'horizontal' ) : 'horizontal';
     $show_label = $acf ? (bool)   ( get_field( 'ss_default_show_label', 'option' ) ?? true )          : true;
-    $label      = $acf ? (string) ( get_field( 'ss_default_label', 'option' )       ?: __( 'Teilen', 'media-lab-core' ) ) : __( 'Teilen', 'media-lab-core' );
+    $label      = $acf ? (string) ( get_field( 'ss_default_label',      'option' ) ?: __( 'Teilen', 'media-lab-core' ) ) : __( 'Teilen', 'media-lab-core' );
 
     $cache = compact( 'services', 'layout', 'show_label', 'label' );
     return $cache;
@@ -93,17 +107,16 @@ function medialab_social_share_get_defaults(): array {
 // =============================================================================
 
 function medialab_social_share_auto_insert( string $content ): string {
-    if ( ! function_exists( 'get_field' ) )                         return $content;
-    if ( ! in_the_loop() || ! is_main_query() )                     return $content;
-    if ( ! get_field( 'ss_auto_insert', 'option' ) )                return $content;
+    if ( ! function_exists( 'get_field' ) )                  return $content;
+    if ( ! in_the_loop() || ! is_main_query() )              return $content;
+    if ( ! get_field( 'ss_auto_insert', 'option' ) )         return $content;
 
     $post_types = get_field( 'ss_auto_insert_post_types', 'option' );
     if ( ! is_array( $post_types ) || ! in_array( get_post_type(), $post_types, true ) ) {
         return $content;
     }
 
-    $defaults = medialab_social_share_get_defaults();
-    $content .= medialab_social_share_render( $defaults );
+    $content .= medialab_social_share_render( medialab_social_share_get_defaults() );
     return $content;
 }
 
@@ -111,10 +124,6 @@ function medialab_social_share_auto_insert( string $content ): string {
 // SHORTCODE
 // =============================================================================
 
-/**
- * Shortcode-Handler.
- * Fehlende Attribute werden mit globalen Defaults aufgefüllt.
- */
 function medialab_social_share_shortcode( array $atts ): string {
     $defaults = medialab_social_share_get_defaults();
 
@@ -138,18 +147,16 @@ function medialab_social_share_shortcode( array $atts ): string {
 // =============================================================================
 
 /**
- * Gibt Share-Buttons direkt aus (für den Einsatz in Theme-Templates).
+ * Gibt Share-Buttons direkt aus (für Theme-Templates).
  *
- * @param array $args  Optionale Überschreibungen (services, layout, show_label, label)
+ * @param array $args  Optionale Überschreibungen: services, layout, show_label, label
  *
  * @example
  *   medialab_share();
  *   medialab_share( array( 'services' => 'whatsapp,email', 'layout' => 'vertical' ) );
  */
 function medialab_share( array $args = array() ): void {
-    $defaults = medialab_social_share_get_defaults();
-    $merged   = array_merge( $defaults, $args );
-    // Normalisiere show_label auf bool
+    $merged = array_merge( medialab_social_share_get_defaults(), $args );
     if ( isset( $merged['show_label'] ) && is_string( $merged['show_label'] ) ) {
         $merged['show_label'] = $merged['show_label'] !== 'false';
     }
@@ -164,22 +171,20 @@ function medialab_share( array $args = array() ): void {
  * Erzeugt das Share-Button-HTML.
  *
  * @param array{services: string, layout: string, show_label: bool, label: string} $args
- * @return string  HTML-Ausgabe
  */
 function medialab_social_share_render( array $args ): string {
     $all_services = medialab_social_share_services();
 
     $requested  = array_filter( array_map( 'trim', explode( ',', $args['services'] ?? '' ) ) );
     $layout     = in_array( $args['layout'] ?? '', array( 'horizontal', 'vertical' ), true )
-                  ? $args['layout']
-                  : 'horizontal';
+                  ? $args['layout'] : 'horizontal';
     $show_label = (bool) ( $args['show_label'] ?? true );
     $label      = esc_html( $args['label'] ?? __( 'Teilen', 'media-lab-core' ) );
-
     $page_url   = rawurlencode( (string) get_permalink() );
     $page_title = rawurlencode( (string) get_the_title() );
 
-    $html  = '<div class="medialab-share medialab-share--' . esc_attr( $layout ) . '" role="complementary" aria-label="' . esc_attr__( 'Artikel teilen', 'media-lab-core' ) . '">';
+    $html  = '<div class="medialab-share medialab-share--' . esc_attr( $layout ) . '"'
+           . ' role="complementary" aria-label="' . esc_attr__( 'Artikel teilen', 'media-lab-core' ) . '">';
 
     if ( $show_label && $label ) {
         $html .= '<span class="medialab-share__label">' . $label . '</span>';
@@ -187,13 +192,16 @@ function medialab_social_share_render( array $args ): string {
 
     $html .= '<ul class="medialab-share__list">';
 
+    $has_copy = false;
+
     foreach ( $requested as $key ) {
         if ( ! isset( $all_services[ $key ] ) ) continue;
 
         $service = $all_services[ $key ];
 
-        // Copy-Link: kein href, JS-gesteuert
+        // ── Copy-Link (JS-gesteuert, kein href) ───────────────────────────────
         if ( $key === 'copy' ) {
+            $has_copy = true;
             $html .= '<li class="medialab-share__item">';
             $html .= '<button'
                    . ' class="medialab-share__btn medialab-share__btn--copy"'
@@ -204,11 +212,11 @@ function medialab_social_share_render( array $args ): string {
                    . '>';
             $html .= $service['icon'];
             $html .= '<span class="medialab-share__btn-label">' . esc_html( $service['label'] ) . '</span>';
-            $html .= '</button>';
-            $html .= '</li>';
+            $html .= '</button></li>';
             continue;
         }
 
+        // ── Alle anderen Services (Link) ───────────────────────────────────────
         $share_url = str_replace(
             array( '{url}', '{title}' ),
             array( $page_url, $page_title ),
@@ -228,15 +236,13 @@ function medialab_social_share_render( array $args ): string {
                . '>';
         $html .= $service['icon'];
         $html .= '<span class="medialab-share__btn-label">' . esc_html( $service['label'] ) . '</span>';
-        $html .= '</a>';
-        $html .= '</li>';
+        $html .= '</a></li>';
     }
 
-    $html .= '</ul>';
-    $html .= '</div>';
+    $html .= '</ul></div>';
 
     // Inline-Script für Copy-to-Clipboard (nur wenn copy aktiviert)
-    if ( in_array( 'copy', $requested, true ) ) {
+    if ( $has_copy ) {
         $html .= '<script>'
                . '(function(){'
                . 'document.addEventListener("click",function(e){'
@@ -246,7 +252,7 @@ function medialab_social_share_render( array $args ): string {
                . 'navigator.clipboard&&navigator.clipboard.writeText(url).then(function(){'
                . 'var lbl=btn.querySelector(".medialab-share__btn-label");'
                . 'if(!lbl)return;'
-               . 'var orig=lbl.textContent;lbl.textContent="✓ Kopiert!";'
+               . 'var orig=lbl.textContent;lbl.textContent="\u2713 Kopiert!";'
                . 'setTimeout(function(){lbl.textContent=orig;},2000);'
                . '});'
                . '});'
@@ -262,7 +268,14 @@ function medialab_social_share_render( array $args ): string {
 // =============================================================================
 
 /**
- * Gibt alle unterstützten Share-Dienste zurück.
+ * Alle unterstützten Share-Dienste.
+ *
+ * Instagram: Keine offizielle Web-Share-API. Auf Mobile öffnet sich die App
+ * (Standard-Intent), auf Desktop instagram.com. Inhalte müssen manuell in der
+ * App geteilt werden.
+ *
+ * TikTok: Inoffizielle Share-URL; funktioniert in der Praxis, ist aber von
+ * TikTok nicht offiziell dokumentiert.
  *
  * @return array<string, array{label: string, color: string, url: string, icon: string}>
  */
@@ -316,6 +329,26 @@ function medialab_social_share_services(): array {
             'url'   => 'https://www.reddit.com/submit?url={url}&title={title}',
             'icon'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>',
         ),
+
+        // ── NEU: Instagram ────────────────────────────────────────────────────
+        // Keine offizielle Web-Share-URL. Öffnet auf Mobile die App (Intent),
+        // auf Desktop instagram.com. Inhalte über die App manuell teilen.
+        'instagram' => array(
+            'label' => 'Instagram',
+            'color' => '#E1306C',
+            'url'   => 'https://www.instagram.com/',
+            'icon'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
+        ),
+
+        // ── NEU: TikTok ───────────────────────────────────────────────────────
+        // Inoffizielle Share-URL; funktioniert in der Praxis.
+        'tiktok'   => array(
+            'label' => 'TikTok',
+            'color' => '#010101',
+            'url'   => 'https://www.tiktok.com/share?url={url}',
+            'icon'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>',
+        ),
+
         'email'    => array(
             'label' => 'E-Mail',
             'color' => '#6B7280',
@@ -325,20 +358,19 @@ function medialab_social_share_services(): array {
         'copy'     => array(
             'label' => 'Link kopieren',
             'color' => '#4B5563',
-            'url'   => '', // JS-gesteuert
+            'url'   => '',
             'icon'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>',
         ),
     );
 }
 
 // =============================================================================
-// ACF OPTIONS PAGE + FIELD GROUP
+// ACF OPTIONS PAGE + FIELD GROUPS
 // =============================================================================
 
 function medialab_social_share_acf(): void {
     if ( ! function_exists( 'acf_add_options_sub_page' ) ) return;
 
-    // Unterseite registrieren
     acf_add_options_sub_page( array(
         'page_title'  => 'Share-Buttons',
         'menu_title'  => 'Share-Buttons',
@@ -351,6 +383,7 @@ function medialab_social_share_acf(): void {
 
     if ( ! function_exists( 'acf_add_local_field_group' ) ) return;
 
+    // Alle verfügbaren Services als Select-Optionen
     $service_choices = array(
         'whatsapp'  => 'WhatsApp',
         'facebook'  => 'Facebook',
@@ -360,6 +393,8 @@ function medialab_social_share_acf(): void {
         'pinterest' => 'Pinterest',
         'telegram'  => 'Telegram',
         'reddit'    => 'Reddit',
+        'instagram' => 'Instagram',
+        'tiktok'    => 'TikTok',
         'email'     => 'E-Mail',
         'copy'      => 'Link kopieren',
     );
@@ -369,25 +404,38 @@ function medialab_social_share_acf(): void {
         $post_type_choices[ $pt->name ] = $pt->label;
     }
 
+    // ── Globale Einstellungen ─────────────────────────────────────────────────
     acf_add_local_field_group( array(
         'key'   => 'group_social_share_settings',
         'title' => 'Share-Buttons – Globale Einstellungen',
         'fields' => array(
 
-            // ── Aktivierte Kanäle ─────────────────────────────────────────────
+            // Kanäle (Repeater für Drag & Drop Reihenfolge)
             array(
-                'key'           => 'field_ss_default_services',
-                'label'         => 'Aktivierte Kanäle',
-                'name'          => 'ss_default_services',
-                'type'          => 'checkbox',
-                'choices'       => $service_choices,
-                'default_value' => array( 'whatsapp', 'facebook', 'twitter', 'linkedin' ),
-                'layout'        => 'horizontal',
-                'instructions'  => 'Legt fest, welche Kanäle bei [medialab_share] und dem Block standardmäßig angezeigt werden. Reihenfolge = Anzeigereihenfolge.',
-                'wrapper'       => array( 'width' => '100' ),
+                'key'          => 'field_ss_default_services',
+                'label'        => 'Aktivierte Kanäle',
+                'name'         => 'ss_default_services',
+                'type'         => 'repeater',
+                'min'          => 0,
+                'layout'       => 'table',
+                'button_label' => 'Kanal hinzufügen',
+                'instructions' => 'Kanäle per Drag & Drop in die gewünschte Anzeigereihenfolge bringen. Jeden Kanal nur einmal hinzufügen.',
+                'wrapper'      => array( 'width' => '100' ),
+                'sub_fields'   => array(
+                    array(
+                        'key'           => 'field_ss_service_key',
+                        'label'         => 'Kanal',
+                        'name'          => 'ss_service',
+                        'type'          => 'select',
+                        'choices'       => $service_choices,
+                        'default_value' => 'whatsapp',
+                        'allow_null'    => 0,
+                        'wrapper'       => array( 'width' => '100' ),
+                    ),
+                ),
             ),
 
-            // ── Standard-Layout ───────────────────────────────────────────────
+            // Layout
             array(
                 'key'           => 'field_ss_default_layout',
                 'label'         => 'Standard-Layout',
@@ -402,7 +450,7 @@ function medialab_social_share_acf(): void {
                 'wrapper'       => array( 'width' => '50' ),
             ),
 
-            // ── Label ─────────────────────────────────────────────────────────
+            // Label
             array(
                 'key'           => 'field_ss_default_show_label',
                 'label'         => 'Label anzeigen',
@@ -424,7 +472,7 @@ function medialab_social_share_acf(): void {
                 ) ) ),
             ),
 
-            // ── Auto-Insert ───────────────────────────────────────────────────
+            // Auto-Insert
             array(
                 'key'     => 'field_ss_auto_insert_heading',
                 'label'   => ' ',
@@ -457,6 +505,19 @@ function medialab_social_share_acf(): void {
                 ) ) ),
             ),
 
+            // Hinweis Instagram
+            array(
+                'key'     => 'field_ss_instagram_note',
+                'label'   => ' ',
+                'name'    => 'ss_instagram_note',
+                'type'    => 'message',
+                'message' => '<p style="color:#856404;background:#fff3cd;border:1px solid #ffc107;padding:8px 12px;border-radius:4px;font-size:12px;margin:0;">'
+                           . '<strong>Hinweis Instagram:</strong> Instagram bietet keine offizielle Web-Share-URL. '
+                           . 'Auf Mobilgeräten öffnet der Button die Instagram-App (falls installiert), auf Desktop instagram.com. '
+                           . 'Das Teilen von Inhalten muss manuell in der App erfolgen.</p>',
+                'default_value' => '',
+            ),
+
         ),
         'location' => array( array( array(
             'param' => 'options_page', 'operator' => '==', 'value' => 'agency-core-social-share',
@@ -468,7 +529,7 @@ function medialab_social_share_acf(): void {
         'instruction_placement' => 'label',
     ) );
 
-    // ── ACF-Felder für den Gutenberg-Block ────────────────────────────────────
+    // ── Block-Felder ──────────────────────────────────────────────────────────
     acf_add_local_field_group( array(
         'key'   => 'group_block_social_share',
         'title' => 'Share-Buttons Block',
@@ -481,20 +542,33 @@ function medialab_social_share_acf(): void {
                 'type'          => 'true_false',
                 'ui'            => 1,
                 'default_value' => 0,
-                'instructions'  => 'Wenn aktiviert, können Kanäle und Layout für diesen Block individuell gewählt werden.',
+                'instructions'  => 'Kanäle und Layout für diesen Block individuell festlegen.',
                 'wrapper'       => array( 'width' => '100' ),
             ),
 
+            // Block-Kanäle als Repeater (Drag & Drop Reihenfolge auch pro Block)
             array(
-                'key'           => 'field_ss_block_services',
-                'label'         => 'Kanäle',
-                'name'          => 'ss_block_services',
-                'type'          => 'checkbox',
-                'choices'       => $service_choices,
-                'default_value' => array(),
-                'layout'        => 'horizontal',
-                'instructions'  => 'Leer = globale Einstellungen verwenden.',
-                'wrapper'       => array( 'width' => '100' ),
+                'key'          => 'field_ss_block_services',
+                'label'        => 'Kanäle (Reihenfolge per Drag & Drop)',
+                'name'         => 'ss_block_services',
+                'type'         => 'repeater',
+                'min'          => 0,
+                'layout'       => 'table',
+                'button_label' => 'Kanal hinzufügen',
+                'instructions' => 'Leer = globale Einstellungen. Kanäle per Drag & Drop sortieren.',
+                'wrapper'      => array( 'width' => '100' ),
+                'sub_fields'   => array(
+                    array(
+                        'key'           => 'field_ss_block_service_key',
+                        'label'         => 'Kanal',
+                        'name'          => 'ss_block_service',
+                        'type'          => 'select',
+                        'choices'       => $service_choices,
+                        'default_value' => 'whatsapp',
+                        'allow_null'    => 0,
+                        'wrapper'       => array( 'width' => '100' ),
+                    ),
+                ),
                 'conditional_logic' => array( array( array(
                     'field' => 'field_ss_block_override', 'operator' => '==', 'value' => '1',
                 ) ) ),
@@ -505,10 +579,7 @@ function medialab_social_share_acf(): void {
                 'label'         => 'Layout',
                 'name'          => 'ss_block_layout',
                 'type'          => 'radio',
-                'choices'       => array(
-                    'horizontal' => 'Horizontal',
-                    'vertical'   => 'Vertikal',
-                ),
+                'choices'       => array( 'horizontal' => 'Horizontal', 'vertical' => 'Vertikal' ),
                 'default_value' => '',
                 'layout'        => 'horizontal',
                 'wrapper'       => array( 'width' => '50' ),

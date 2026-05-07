@@ -31,8 +31,6 @@ define( 'MEDIALAB_BLOCKS_URI', plugin_dir_url(  dirname( __FILE__ ) ) . 'blocks/
 add_filter( 'block_categories_all', 'medialab_block_categories', 10, 2 );
 
 function medialab_block_categories( array $categories, WP_Block_Editor_Context $context ): array {
-    // Eigene Kategorie als erste einfügen (optional – Blöcke landen unter 'design')
-    // Aktuelle Konfiguration: alle Blöcke unter vorhandener 'design'-Kategorie
     return $categories;
 }
 
@@ -51,6 +49,7 @@ function medialab_register_acf_blocks(): void {
         'team-member',
         'logo-grid',
         'logo-slider',
+        'social-share',  // Share-Buttons Block (since 1.9.0)
     ];
 
     foreach ( $acf_blocks as $block ) {

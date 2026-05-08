@@ -1,76 +1,34 @@
 /**
- * Media Lab – Table of Contents
+ * Media Lab – Table of Contents: Strukturelles Skelett
  *
- * CSS Custom Properties (im Theme überschreibbar):
- *   --toc-bg           Hintergrundfarbe           (Standard: #f9fafb)
- *   --toc-border       Rahmenfarbe                (Standard: #e5e7eb)
- *   --toc-radius       Border-Radius              (Standard: 0.5rem)
- *   --toc-title-color  Titelfarbe                 (Standard: currentColor)
- *   --toc-link-color   Link-Farbe                 (Standard: currentColor)
- *   --toc-active-color Aktiver Link               (Standard: var(--color-primary, #3b82f6))
- *   --toc-top          Sticky-Abstand von oben    (Standard: 2rem)
- *   --toc-max-height   Max-Höhe Sticky            (Standard: calc(100vh - 4rem))
+ * Nur Layout- und Funktions-CSS das für die korrekte Darstellung
+ * zwingend nötig ist – unabhängig vom eingesetzten Theme.
+ *
+ * Visuelles Styling (Farben, Typografie, Abstände, Border) gehört
+ * ins Theme: assets/src/scss/components/_table-of-contents.scss
  */
 
-/* ── Wrapper ────────────────────────────────────────────────────── */
-
-.toc {
-    background: var(--toc-bg, #f9fafb);
-    border: 1px solid var(--toc-border, #e5e7eb);
-    border-radius: var(--toc-radius, 0.5rem);
-    padding: 1.25rem 1.5rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
-}
-
-/* ── Header (Titel + Toggle) ────────────────────────────────────── */
-
-.toc__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.875rem;
-}
-
-.toc__title {
-    font-weight: 600;
-    font-size: 0.9375rem;
-    color: var(--toc-title-color, currentColor);
-}
-
-.toc__toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    padding: 0.25rem;
-    cursor: pointer;
-    color: inherit;
-    opacity: 0.6;
-    transition: opacity 0.15s, transform 0.25s ease;
-    flex-shrink: 0;
-}
-
-.toc__toggle:hover {
-    opacity: 1;
-}
-
-.toc__toggle[aria-expanded="false"] svg {
-    transform: rotate(180deg);
-}
-
-/* ── Listen ─────────────────────────────────────────────────────── */
+/* ── Listen-Struktur ────────────────────────────────────────────── */
 
 .toc__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.toc__sublist {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    /* Collapsible */
+}
+
+/* ── Toggle / Collapsible ───────────────────────────────────────── */
+
+.toc__list {
     overflow: hidden;
     transition: max-height 0.3s ease, opacity 0.25s ease;
     max-height: 9999px;
@@ -82,97 +40,31 @@
     opacity: 0;
 }
 
-.toc__sublist {
-    list-style: none;
-    margin: 0.25rem 0 0 1rem;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+.toc__toggle svg {
+    transition: transform 0.25s ease;
 }
 
-/* ── Links ──────────────────────────────────────────────────────── */
-
-.toc__link {
-    display: block;
-    color: var(--toc-link-color, currentColor);
-    text-decoration: none;
-    padding: 0.15rem 0.35rem;
-    border-radius: 0.25rem;
-    border-left: 2px solid transparent;
-    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
-    word-break: break-word;
+.toc__toggle[aria-expanded="false"] svg {
+    transform: rotate(180deg);
 }
 
-.toc__link:hover {
-    color: var(--toc-active-color, var(--color-primary, #3b82f6));
-    text-decoration: none;
-}
-
-/* Aktiver Eintrag (gesetzt per JS scrollspy) */
-.toc__item.is-active > .toc__link {
-    color: var(--toc-active-color, var(--color-primary, #3b82f6));
-    border-left-color: var(--toc-active-color, var(--color-primary, #3b82f6));
-    background-color: color-mix(in srgb, var(--toc-active-color, #3b82f6) 8%, transparent);
-    font-weight: 500;
-}
-
-/* H3-Einrückung bereits via .toc__sublist, H4 nochmal einrücken */
-.toc__item--h4 > .toc__link {
-    font-size: 0.8125rem;
-    opacity: 0.85;
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   MODUS: INLINE
-   ══════════════════════════════════════════════════════════════════ */
-
-.toc--inline {
-    margin: 2rem 0;
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   MODUS: STICKY
-   ══════════════════════════════════════════════════════════════════ */
+/* ── Sticky-Modus ───────────────────────────────────────────────── */
 
 .toc--sticky {
     position: sticky;
     top: var(--toc-top, 2rem);
     max-height: var(--toc-max-height, calc(100vh - 4rem));
     overflow-y: auto;
-    /* Scrollbar dezent */
     scrollbar-width: thin;
-    scrollbar-color: var(--toc-border, #e5e7eb) transparent;
-    /* Kein äußeres margin damit Sidebar-Abstände greifen */
-    margin: 0;
 }
 
-.toc--sticky::-webkit-scrollbar {
-    width: 4px;
-}
-
-.toc--sticky::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.toc--sticky::-webkit-scrollbar-thumb {
-    background-color: var(--toc-border, #e5e7eb);
-    border-radius: 4px;
-}
-
-/* ── Block-Wrapper ──────────────────────────────────────────────── */
-
-.medialab-toc-block {
-    /* Kein eigenes Padding – Block-Spacing im Editor steuert das */
-}
-
-/* ── Kein ToC auf kleinen Screens im Sticky-Modus ───────────────── */
+.toc--sticky::-webkit-scrollbar { width: 4px; }
+.toc--sticky::-webkit-scrollbar-track { background: transparent; }
 
 @media (max-width: 768px) {
     .toc--sticky {
         position: static;
         max-height: none;
-        margin: 2rem 0;
     }
 }
 
@@ -181,7 +73,5 @@
 @media (prefers-reduced-motion: reduce) {
     .toc__list,
     .toc__toggle svg,
-    .toc__link {
-        transition: none;
-    }
+    .toc__link { transition: none; }
 }

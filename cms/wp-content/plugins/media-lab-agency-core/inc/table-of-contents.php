@@ -137,6 +137,13 @@ function medialab_toc_make_id( string $text, array $used_ids ): string {
  * Liest alle H2/H3/H4 (je nach $depth) aus dem Content des aktuellen Posts
  * und gibt ein Array mit [id, text, level] zurück.
  *
+ * WICHTIG – kein apply_filters('the_content') hier:
+ *   Würde do_blocks() auslösen → ToC-Block rendern → get_headings() → Loop
+ *   → PHP Fatal: Allowed memory size exhausted.
+ *   Stattdessen: parse_blocks() parst die Block-Struktur ohne zu rendern.
+ *   Für Classic-Editor-Content (kein Block-Markup) wird der Raw-Content
+ *   direkt per Regex ausgewertet.
+ *
  * @param  int  $depth  2 = nur H2, 3 = H2+H3, 4 = H2+H3+H4
  * @return array<int, array{id: string, text: string, level: int}>
  */
@@ -144,38 +151,94 @@ function medialab_toc_get_headings( int $depth = 3 ): array {
     $post = get_post();
     if ( ! $post ) return array();
 
-    // Content mit Heading-IDs verarbeiten (Filter bereits gefeuert, aber hier
-    // nochmals lokal damit wir die IDs kennen – gleiche Logik wie im Filter)
-    $content  = apply_filters( 'the_content', $post->post_content );
     $headings = array();
     $used_ids = array();
+    $content  = $post->post_content;
 
-    $pattern = $depth >= 4
-        ? '/<(h[2-4])([^>]*)>(.*?)<\/h[2-4]>/si'
-        : ( $depth >= 3
-            ? '/<(h[23])([^>]*)>(.*?)<\/h[23]>/si'
-            : '/<(h2)([^>]*)>(.*?)<\/h2>/si' );
+    // Enthält der Content Gutenberg-Block-Kommentare?
+    if ( str_contains( $content, '<!-- wp:' ) ) {
+        // ── Gutenberg: Block-Struktur direkt parsen ───────────────────────────
+        $blocks = parse_blocks( $content );
+        medialab_toc_collect_headings( $blocks, $depth, $headings, $used_ids );
+    } else {
+        // ── Classic Editor: Raw-HTML per Regex auswerten ──────────────────────
+        $pattern = match ( true ) {
+            $depth >= 4 => '/<(h[2-4])([^>]*)>(.*?)<\/h[2-4]>/si',
+            $depth >= 3 => '/<(h[23])([^>]*)>(.*?)<\/h[23]>/si',
+            default     => '/<(h2)([^>]*)>(.*?)<\/h2>/si',
+        };
 
-    preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER );
+        preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER );
 
-    foreach ( $matches as $m ) {
-        $tag   = strtolower( $m[1] );
-        $attrs = $m[2];
-        $inner = $m[3];
-        $level = (int) substr( $tag, 1 );
-        $text  = wp_strip_all_tags( $inner );
+        foreach ( $matches as $m ) {
+            $level = (int) substr( strtolower( $m[1] ), 1 );
+            $text  = wp_strip_all_tags( $m[3] );
+            if ( $text === '' ) continue;
 
-        if ( preg_match( '/\bid=["\']([^"\']+)["\']/i', $attrs, $id_match ) ) {
-            $id = $id_match[1];
-        } else {
-            $id = medialab_toc_make_id( $text, $used_ids );
+            $id = preg_match( '/\bid=["\']([^"\']+)["\']/i', $m[2], $id_m )
+                ? $id_m[1]
+                : medialab_toc_make_id( $text, $used_ids );
+
+            $used_ids[] = $id;
+            $headings[] = array( 'id' => $id, 'text' => $text, 'level' => $level );
         }
-
-        $used_ids[]  = $id;
-        $headings[]  = array( 'id' => $id, 'text' => $text, 'level' => $level );
     }
 
     return $headings;
+}
+
+/**
+ * Rekursiv core/heading-Blöcke aus parse_blocks()-Output extrahieren.
+ * Durchsucht auch innerBlocks (Columns, Group, Cover …).
+ *
+ * ID-Priorität:
+ *   1. Gutenberg-Anchor-Attribut (attrs.anchor) – vom Editor gesetzt
+ *   2. Bestehendes id-Attribut im innerHTML
+ *   3. Aus Heading-Text generiert (sanitize_title)
+ *
+ * @param  array<int, array>  $blocks    parse_blocks()-Ausgabe
+ * @param  int                $depth     Max. Heading-Level
+ * @param  array<int, array>  $headings  Rückgabe-Array (per Referenz)
+ * @param  array<int, string> $used_ids  Bereits vergebene IDs (per Referenz)
+ */
+function medialab_toc_collect_headings(
+    array  $blocks,
+    int    $depth,
+    array &$headings,
+    array &$used_ids
+): void {
+    foreach ( $blocks as $block ) {
+
+        // ── Überschriften-Block ───────────────────────────────────────────────
+        if ( $block['blockName'] === 'core/heading' ) {
+            $level = (int) ( $block['attrs']['level'] ?? 2 );
+            if ( $level < 2 || $level > $depth ) {
+                continue;
+            }
+
+            $inner = $block['innerHTML'] ?? '';
+            $text  = wp_strip_all_tags( $inner );
+            if ( $text === '' ) continue;
+
+            // ID ermitteln
+            if ( ! empty( $block['attrs']['anchor'] ) ) {
+                // Gutenberg-Anchor hat höchste Priorität
+                $id = sanitize_html_class( $block['attrs']['anchor'] );
+            } elseif ( preg_match( '/\bid=["\']([^"\']+)["\']/i', $inner, $id_m ) ) {
+                $id = $id_m[1];
+            } else {
+                $id = medialab_toc_make_id( $text, $used_ids );
+            }
+
+            $used_ids[] = $id;
+            $headings[] = array( 'id' => $id, 'text' => $text, 'level' => $level );
+        }
+
+        // ── InnerBlocks rekursiv durchsuchen ──────────────────────────────────
+        if ( ! empty( $block['innerBlocks'] ) ) {
+            medialab_toc_collect_headings( $block['innerBlocks'], $depth, $headings, $used_ids );
+        }
+    }
 }
 
 // =============================================================================

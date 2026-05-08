@@ -6,6 +6,20 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $loc_id = $preset_location_id ?: 0;
+
+// Pflichtfeld-Konfiguration aus post_meta laden (kein ACF nötig, direkte DB-Abfrage).
+if ( ! isset( $required_fields ) ) {
+    $required_fields = [ 'name' => true, 'phone' => false, 'service' => false, 'persons' => true ];
+}
+if ( $loc_id ) {
+    foreach ( [ 'name', 'phone', 'service', 'persons' ] as $_rf ) {
+        $meta_key = 'mlb_required_' . $_rf;
+        if ( metadata_exists( 'post', $loc_id, $meta_key ) ) {
+            $required_fields[ $_rf ] = (bool) get_post_meta( $loc_id, $meta_key, true );
+        }
+    }
+}
+
 $labels = [
     'location'    => mlb_label( 'mlb_label_location',    'Standort wählen',        $loc_id ),
     'date'        => mlb_label( 'mlb_label_date',        'Datum',                   $loc_id ),

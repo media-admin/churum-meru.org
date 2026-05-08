@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class MLB_Ajax {
     public static function init() {
-        $actions = [ 'mlb_get_location_data', 'mlb_get_slots', 'mlb_submit_booking' ];
+        $actions = [ 'mlb_get_location_data', 'mlb_get_slots', 'mlb_submit_booking', 'mlb_get_blocked_dates' ];
         foreach ( $actions as $action ) {
             $method = str_replace( 'mlb_', '', $action );
             add_action( "wp_ajax_{$action}",        [ __CLASS__, $method ] );
@@ -21,7 +21,18 @@ class MLB_Ajax {
         foreach ( $services_raw as $s ) {
             if ( ! empty( $s['service_name'] ) ) $services[] = [ 'name' => sanitize_text_field( $s['service_name'] ), 'duration' => isset( $s['service_duration'] ) ? (int) $s['service_duration'] : null ];
         }
-        wp_send_json_success( [ 'open_weekdays' => $open_weekdays, 'services' => $services ] );
+        wp_send_json_success( [ 'open_weekdays' => $open_weekdays, 'services' => $services, 'blocked_dates' => MLB_Slots::get_blocked_dates_for_range( $location_id, date('Y-m-d'), date('Y-m-d', strtotime('+13 months')) ) ] );
+    }
+
+    public static function get_blocked_dates() {
+        check_ajax_referer( 'mlb_nonce', 'nonce' );
+        $location_id = (int) sanitize_text_field( $_POST['location_id'] ?? 0 );
+        $year        = (int) sanitize_text_field( $_POST['year']        ?? date('Y') );
+        $month       = (int) sanitize_text_field( $_POST['month']       ?? date('m') );
+        if ( ! $location_id || get_post_type( $location_id ) !== 'mlb_location' ) wp_send_json_error( [ 'message' => 'Ungültiger Standort.' ] );
+        $from = sprintf( '%04d-%02d-01', $year, $month );
+        $to   = date( 'Y-m-d', mktime( 0, 0, 0, $month + 1, 0, $year ) );
+        wp_send_json_success( [ 'blocked_dates' => MLB_Slots::get_blocked_dates_for_range( $location_id, $from, $to ) ] );
     }
 
     public static function get_slots() {
@@ -31,6 +42,7 @@ class MLB_Ajax {
         if ( ! $location_id || get_post_type( $location_id ) !== 'mlb_location' ) wp_send_json_error( [ 'message' => 'Ungültiger Standort.' ] );
         if ( ! $date || ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date ) ) wp_send_json_error( [ 'message' => 'Ungültiges Datum.' ] );
         if ( strtotime( $date ) < strtotime( 'today' ) ) wp_send_json_error( [ 'message' => 'Datum liegt in der Vergangenheit.' ] );
+        if ( MLB_Slots::is_day_blocked( $location_id, $date ) ) wp_send_json_success( [ 'slots' => [], 'message' => 'An diesem Tag sind keine Buchungen möglich (gesperrt).' ] );
         if ( ! MLB_Slots::is_date_open( $location_id, $date ) ) wp_send_json_success( [ 'slots' => [], 'message' => 'An diesem Tag ist der Standort geschlossen.' ] );
         $slots = MLB_Slots::generate( $location_id, $date );
         wp_send_json_success( [ 'slots' => $slots ] );
@@ -39,10 +51,24 @@ class MLB_Ajax {
     public static function submit_booking() {
         check_ajax_referer( 'mlb_nonce', 'nonce' );
 
-        $required = [ 'location_id', 'date', 'time', 'name', 'email', 'persons' ];
-        foreach ( $required as $field ) {
+        // Basis-Pflichtfelder (immer)
+        foreach ( [ 'location_id', 'date', 'time', 'email' ] as $field ) {
             if ( empty( $_POST[ $field ] ) ) wp_send_json_error( [ 'message' => sprintf( 'Pflichtfeld fehlt: %s', $field ) ] );
         }
+
+        // Konfigurierbare Pflichtfelder aus ACF (pro Standort)
+        $loc_id_for_req = (int) sanitize_text_field( $_POST['location_id'] ?? 0 );
+        $req = [ 'name' => true, 'phone' => false, 'service' => false, 'persons' => true ];
+        foreach ( [ 'name', 'phone', 'service', 'persons' ] as $rf ) {
+            $meta_key = 'mlb_required_' . $rf;
+            if ( metadata_exists( 'post', $loc_id_for_req, $meta_key ) ) {
+                $req[ $rf ] = (bool) get_post_meta( $loc_id_for_req, $meta_key, true );
+            }
+        }
+        if ( $req['name']    && empty( $_POST['name'] ) )    wp_send_json_error( [ 'message' => 'Bitte geben Sie Ihren Namen an.' ] );
+        if ( $req['phone']   && empty( $_POST['phone'] ) )   wp_send_json_error( [ 'message' => 'Bitte geben Sie Ihre Telefonnummer an.' ] );
+        if ( $req['service'] && empty( $_POST['service'] ) ) wp_send_json_error( [ 'message' => 'Bitte wählen Sie eine Dienstleistung.' ] );
+        if ( $req['persons'] && empty( $_POST['persons'] ) ) wp_send_json_error( [ 'message' => 'Bitte geben Sie die Personenanzahl an.' ] );
 
         if ( empty( $_POST['privacy_consent'] ) || $_POST['privacy_consent'] !== '1' ) {
             wp_send_json_error( [ 'message' => 'Bitte stimmen Sie der Datenschutzerklärung zu.' ] );

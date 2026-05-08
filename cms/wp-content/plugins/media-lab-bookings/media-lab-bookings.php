@@ -12,7 +12,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'MLB_VERSION',  '1.5.2' );
+define( 'MLB_VERSION',  '1.8.0' );
 define( 'MLB_PATH',     plugin_dir_path( __FILE__ ) );
 define( 'MLB_URL',      plugin_dir_url( __FILE__ ) );
 define( 'MLB_BASENAME', plugin_basename( __FILE__ ) );
@@ -23,6 +23,7 @@ $mlb_includes = [
     'inc/cpt.php',
     'inc/acf-fields.php',
     'inc/slots.php',
+    'inc/blocked-dates.php',
     'inc/ajax.php',
     'inc/ical.php',
     'inc/mail.php',

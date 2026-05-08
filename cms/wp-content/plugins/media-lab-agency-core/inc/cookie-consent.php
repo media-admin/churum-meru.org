@@ -371,48 +371,6 @@ class MediaLab_Cookie_Consent {
                 ),
 
                 // ════════════════════════════════════════════════════════════════
-                // MEHRSPRACHIGKEIT
-                // ════════════════════════════════════════════════════════════════
-                array(
-                    'key'     => 'field_cc_multilang_heading',
-                    'label'   => ' ',
-                    'name'    => 'cc_multilang_heading',
-                    'type'    => 'message',
-                    'message' => '<strong style="font-size:13px;">Mehrsprachigkeit</strong>'
-                              . '<p style="margin:.4rem 0 0;color:#666;font-size:12px;">'
-                              . 'Aktiviere diese Option, um Banner-Texte und Kategorie-Bezeichnungen je Sprache zu pflegen.<br>'
-                              . 'Spracherkennung: Polylang → WPML → WP-Locale-Fallback.</p>',
-                    'default_value' => '',
-                ),
-
-                array(
-                    'key'           => 'field_cc_multilang_enabled',
-                    'label'         => 'Mehrsprachigkeit aktivieren',
-                    'name'          => 'cc_multilang_enabled',
-                    'type'          => 'true_false',
-                    'ui'            => 1,
-                    'default_value' => 0,
-                    'instructions'  => 'Wenn deaktiviert, gelten die einfachen Texte weiter unten (Rückwärtskompatibilität).',
-                    'wrapper'       => array( 'width' => '100' ),
-                ),
-
-                // ── Sprachen-Repeater ─────────────────────────────────────────
-                array(
-                    'key'               => 'field_cc_languages',
-                    'label'             => 'Sprachen',
-                    'name'              => 'cc_languages',
-                    'type'              => 'repeater',
-                    'min'               => 0,
-                    'layout'            => 'block',
-                    'button_label'      => 'Sprache hinzufügen',
-                    'instructions'      => 'Die erste Zeile gilt als Standard-Sprache (Fallback wenn keine Übereinstimmung). Sprachcodes: de, en, fr, it, es, …',
-                    'conditional_logic' => array( array( array(
-                        'field' => 'field_cc_multilang_enabled', 'operator' => '==', 'value' => '1',
-                    ) ) ),
-                    'sub_fields'        => $lang_text_fields,
-                ),
-
-                // ════════════════════════════════════════════════════════════════
                 // EINSPRACHIGE TEXTE (Rückwärtskompatibilität / Fallback)
                 // ════════════════════════════════════════════════════════════════
                 array(
@@ -456,6 +414,48 @@ class MediaLab_Cookie_Consent {
                 ),
                 array( 'key' => 'field_cc_modal_intro',  'label' => 'Einleitungstext',   'name' => 'cc_modal_intro',  'type' => 'textarea', 'rows' => 2, 'default_value' => 'Hier können Sie Ihre Cookie-Einstellungen jederzeit anpassen.', 'wrapper' => array( 'width' => '50' ),
                     'conditional_logic' => array( array( array( 'field' => 'field_cc_multilang_enabled', 'operator' => '!=', 'value' => '1' ) ) ),
+                ),
+
+                // ════════════════════════════════════════════════════════════════
+                // MEHRSPRACHIGKEIT
+                // ════════════════════════════════════════════════════════════════
+                array(
+                    'key'     => 'field_cc_multilang_heading',
+                    'label'   => ' ',
+                    'name'    => 'cc_multilang_heading',
+                    'type'    => 'message',
+                    'message' => '<strong style="font-size:13px;">Mehrsprachigkeit</strong>'
+                              . '<p style="margin:.4rem 0 0;color:#666;font-size:12px;">'
+                              . 'Aktiviere diese Option, um Banner-Texte und Kategorie-Bezeichnungen je Sprache zu pflegen.<br>'
+                              . 'Spracherkennung: Polylang → WPML → WP-Locale-Fallback.</p>',
+                    'default_value' => '',
+                ),
+
+                array(
+                    'key'           => 'field_cc_multilang_enabled',
+                    'label'         => 'Mehrsprachigkeit aktivieren',
+                    'name'          => 'cc_multilang_enabled',
+                    'type'          => 'true_false',
+                    'ui'            => 1,
+                    'default_value' => 0,
+                    'instructions'  => 'Wenn aktiviert, gelten die Übersetzungen unten statt der Fallback-Texte oben.',
+                    'wrapper'       => array( 'width' => '100' ),
+                ),
+
+                // ── Sprachen-Repeater ─────────────────────────────────────────
+                array(
+                    'key'               => 'field_cc_languages',
+                    'label'             => 'Sprachen',
+                    'name'              => 'cc_languages',
+                    'type'              => 'repeater',
+                    'min'               => 0,
+                    'layout'            => 'block',
+                    'button_label'      => 'Sprache hinzufügen',
+                    'instructions'      => 'Die erste Zeile gilt als Standard-Sprache (Fallback wenn keine Übereinstimmung). Sprachcodes: de, en, fr, it, es, …',
+                    'conditional_logic' => array( array( array(
+                        'field' => 'field_cc_multilang_enabled', 'operator' => '==', 'value' => '1',
+                    ) ) ),
+                    'sub_fields'        => $lang_text_fields,
                 ),
 
                 // ════════════════════════════════════════════════════════════════

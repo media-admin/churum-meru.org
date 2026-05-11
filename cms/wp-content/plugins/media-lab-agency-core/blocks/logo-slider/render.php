@@ -102,6 +102,7 @@ $swiper_config = wp_json_encode( [
                          class="ml-logo-slider__logo"
                          width="<?php echo (int) $w; ?>"
                          height="<?php echo (int) $h; ?>"
+                         style="max-height: 80px; max-width: 220px; width: auto; height: auto; object-fit: contain;"
                          loading="lazy"
                          draggable="false">
                 <?php if ( $url ) : ?></a><?php endif; ?>

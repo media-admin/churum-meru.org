@@ -2,47 +2,55 @@
  * Slider Block – Strukturelles CSS
  * Visuelles Styling → Theme SCSS: _block-slider.scss
  *
- * Swiper-Core-CSS muss separat geladen sein (bereits via Logo-Slider-Enqueue).
+ * Swiper-Core-CSS wird separat geladen (via Logo-Slider-Dependency).
  */
 
+/* ── Container ───────────────────────────────────────────────────── */
+
 .ml-block-slider {
-    position: relative;
+    position: relative; /* Basis für absolute-positionierte Pfeile */
 }
+
+/* ── Swiper-Wrapper ──────────────────────────────────────────────── */
 
 .ml-slider__swiper {
+    position: relative; /* Swiper erwartet position:relative */
     width: 100%;
+    overflow: hidden;   /* Pfeile bleiben INNERHALB des Containers */
 }
 
-/* Jede Folie: volle Breite standardmäßig */
+/* ── Slides ──────────────────────────────────────────────────────── */
+
 .ml-slider__wrapper > .swiper-slide {
     height: auto;
+    /* Bilder in Slides auf Containergröße beschränken */
+    overflow: hidden;
 }
 
-/* InnerBlocks-Content in Folien */
-.ml-slider__wrapper > .swiper-slide > * {
+.ml-slider__wrapper > .swiper-slide img {
+    display: block;
     width: 100%;
+    height: auto;
+    max-width: 100%;
 }
 
-/* Navigation Buttons */
+/* ── Navigation Buttons ──────────────────────────────────────────── */
+
 .ml-slider__btn {
-    /* Swiper überschreibt diese – nur z-index sicherstellen */
     z-index: 10;
 }
 
-/* Wenn nur 1 Folie: Navigation ausblenden */
-.ml-slider__swiper.swiper-initialized.swiper-horizontal > .swiper-button-prev,
-.ml-slider__swiper.swiper-initialized.swiper-horizontal > .swiper-button-next {
-    display: flex;
-}
+/* ── Pagination ──────────────────────────────────────────────────── */
 
-/* Pagination */
 .ml-slider__pagination {
     position: relative !important;
     bottom: auto !important;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
+    text-align: center;
 }
 
-/* Slide-Inhalt automatisch zentrieren */
+/* ── Fade-Effekt ─────────────────────────────────────────────────── */
+
 .ml-slider--effect-fade .swiper-slide {
     pointer-events: none;
 }
@@ -50,7 +58,8 @@
     pointer-events: auto;
 }
 
-/* Reduced Motion */
+/* ── Reduced Motion ──────────────────────────────────────────────── */
+
 @media (prefers-reduced-motion: reduce) {
     .ml-slider__swiper {
         --swiper-transition-duration: 0ms !important;

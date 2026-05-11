@@ -3,22 +3,18 @@
   "apiVersion": 3,
   "name": "medialab/slider",
   "title": "Slider",
-  "description": "Swiper-Slider mit konfigurierbaren Folien (Bild, Überschrift, Text, Button). Folien und Einstellungen direkt im Block-Panel.",
+  "description": "Swiper-Slider mit konfigurierbaren Folien.",
   "category": "design",
   "icon": "slides",
-  "keywords": ["slider", "swiper", "karussell", "carousel", "folie", "slide"],
   "textdomain": "media-lab-agency-core",
   "acf": {
-    "mode": "edit",
+    "mode": "preview",
     "renderTemplate": "render.php"
   },
   "supports": {
     "anchor": true,
     "align": ["wide", "full"],
-    "spacing": {
-      "margin": true,
-      "padding": true
-    }
+    "spacing": { "margin": true, "padding": true }
   },
   "example": {}
 }

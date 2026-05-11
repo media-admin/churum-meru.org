@@ -18,13 +18,15 @@
     cursor: ew-resize;
     user-select: none;
     touch-action: pan-y;
-    line-height: 0; /* Bild-Gap vermeiden */
+    line-height: 0;
 }
 
-/* Seitenverhältnis-Spacer */
+/* Spacer-Div: height:0 + padding-top = Container bekommt Höhe */
 .ml-ba__ratio {
     display: block;
-    position: relative;
+    height: 0;
+    width: 100%;
+    pointer-events: none;
 }
 
 /* Bilder */
@@ -54,6 +56,12 @@
     display: block;
 }
 
+/* Vorher-Bild: linke Kante verankern damit kein Wandern beim Ziehen */
+.ml-ba__before .ml-ba__img { object-position: left center; }
+
+/* Nachher-Bild: rechte Kante verankern */
+.ml-ba__after  .ml-ba__img { object-position: right center; }
+
 /* Labels */
 .ml-ba__label {
     position: absolute;
@@ -69,8 +77,8 @@
     z-index: 2;
 }
 
-.ml-ba__label--before { right: 0.75rem; }
-.ml-ba__label--after  { left:  0.75rem; }
+.ml-ba__label--before { left:  0.75rem; }
+.ml-ba__label--after  { right: 0.75rem; }
 
 /* Handle */
 .ml-ba__handle {

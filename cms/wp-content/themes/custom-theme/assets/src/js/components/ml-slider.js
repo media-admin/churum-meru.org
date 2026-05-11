@@ -1,62 +1,57 @@
 /**
  * ML Slider – Theme-Komponente
  *
- * Initialisiert alle Swiper-Slider vom medialab/slider Gutenberg-Block.
- * Läuft im Theme-Bundle (Vite) damit Swiper als ES-Modul verfügbar ist.
+ * Initialisiert alle .ml-slider__swiper Elemente.
+ * Import-Pattern identisch zu hero-slider.js und carousel.js im Theme.
  *
- * Was diese Komponente tut:
- *  1. Jeden direkten Child von .swiper-wrapper in ein .swiper-slide wrappen
- *     (InnerBlocks-Output ist noch nicht in Swiper-Slides)
- *  2. data-swiper JSON-Config parsen
- *  3. Navigation- und Pagination-Elemente als DOM-Referenzen übergeben
- *  4. Swiper initialisieren
+ * Da die Folien bereits PHP-seitig in .swiper-slide gewickelt sind,
+ * muss dieses Script sie NICHT mehr nachträglich wrappen.
  *
  * @since 1.11.0
+ * @updated 1.11.4  Korrektes Import-Pattern, kein JS-Wrapping mehr nötig
  */
 
-import Swiper from 'swiper/bundle';
+import Swiper from 'swiper';
+import { Navigation, Pagination, Autoplay, EffectFade, EffectCoverflow } from 'swiper/modules';
 
 export default class MLSlider {
     constructor() {
-        document.querySelectorAll( '.ml-slider__swiper' ).forEach( el => {
-            // Bereits initialisiert?
-            if ( el.swiper ) return;
+        this.sliders = document.querySelectorAll( '.ml-slider__swiper' );
+        if ( ! this.sliders.length ) return;
+        this.init();
+    }
 
-            const wrapper = el.querySelector( '.ml-slider__wrapper' );
-            if ( ! wrapper ) return;
+    init() {
+        this.sliders.forEach( el => {
+            if ( el.swiper ) return; // bereits initialisiert
 
-            // ── InnerBlocks-Children → .swiper-slide ─────────────────────────
-            Array.from( wrapper.children ).forEach( child => {
-                if ( child.classList.contains( 'swiper-slide' ) ) return;
-                const slide = document.createElement( 'div' );
-                slide.className = 'swiper-slide';
-                wrapper.insertBefore( slide, child );
-                slide.appendChild( child );
-            } );
-
-            if ( ! wrapper.querySelector( '.swiper-slide' ) ) return;
-
-            // ── Config parsen ─────────────────────────────────────────────────
             let config = {};
             try {
                 config = JSON.parse( el.dataset.swiper || '{}' );
             } catch ( e ) {
-                console.warn( '[ml-slider] Ungültige Swiper-Config:', e );
+                console.warn( '[ml-slider] Ungültige Config:', e );
                 return;
             }
 
-            // ── Navigation: DOM-Referenzen statt Selektoren ───────────────────
-            const parent = el.closest( '.ml-block-slider' );
+            // Module je nach Konfiguration laden
+            const modules = [ Navigation, Pagination, Autoplay ];
+            if ( config.effect === 'fade' )       modules.push( EffectFade );
+            if ( config.effect === 'coverflow' )  modules.push( EffectCoverflow );
+            config.modules = modules;
 
+            // Navigation: DOM-Referenzen aus PHP-Markup
+            const parent = el.closest( '.ml-block-slider' );
             if ( config.navigation && parent ) {
-                const prevBtn = parent.querySelector( '.swiper-button-prev' );
-                const nextBtn = parent.querySelector( '.swiper-button-next' );
-                config.navigation = prevBtn && nextBtn
-                    ? { prevEl: prevBtn, nextEl: nextBtn }
-                    : false;
+                const prev = parent.querySelector( '.swiper-button-prev' );
+                const next = parent.querySelector( '.swiper-button-next' );
+                if ( prev && next ) {
+                    config.navigation = { prevEl: prev, nextEl: next };
+                } else {
+                    config.navigation = false;
+                }
             }
 
-            // ── Pagination ────────────────────────────────────────────────────
+            // Pagination: DOM-Referenz
             if ( config.pagination && parent ) {
                 const pag = parent.querySelector( '.swiper-pagination' );
                 if ( pag ) {
@@ -66,11 +61,10 @@ export default class MLSlider {
                 }
             }
 
-            // ── Swiper init ───────────────────────────────────────────────────
             try {
                 new Swiper( el, config );
             } catch ( err ) {
-                console.error( '[ml-slider] Swiper Init-Fehler:', err );
+                console.error( '[ml-slider] Init-Fehler:', err );
             }
         } );
     }

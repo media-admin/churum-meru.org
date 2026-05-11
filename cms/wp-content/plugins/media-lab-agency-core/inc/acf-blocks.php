@@ -410,13 +410,19 @@ function medialab_register_acf_block_fields(): void {
                 'wrapper'       => [ 'width' => '50' ],
             ],
             [
-                'key'        => 'field_logo_grid_logos',
-                'label'      => 'Logos',
-                'name'       => 'logo_grid_logos',
-                'type'       => 'repeater',
-                'min'        => 1,
-                'layout'     => 'block',
+                'key'          => 'field_logo_grid_logos',
+                'label'        => 'Logos',
+                'name'         => 'logo_grid_logos',
+                'type'         => 'repeater',
+                'min'          => 0,
+                'layout'       => 'block',
                 'button_label' => 'Logo hinzufügen',
+                'instructions' => 'Wird nur verwendet wenn Quelle „Manuell" gewählt ist.',
+                'conditional_logic' => [ [ [
+                    'field'    => 'field_logo_grid_source',
+                    'operator' => '==',
+                    'value'    => 'manual',
+                ] ] ],
                 'sub_fields' => [
                     [
                         'key'           => 'field_logo_grid_image',
@@ -425,7 +431,7 @@ function medialab_register_acf_block_fields(): void {
                         'type'          => 'image',
                         'return_format' => 'array',
                         'preview_size'  => 'thumbnail',
-                        'required'      => 1,
+                        'required'      => 0,
                         'wrapper'       => [ 'width' => '33' ],
                     ],
                     [

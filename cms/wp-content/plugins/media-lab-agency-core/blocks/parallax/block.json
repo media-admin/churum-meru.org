@@ -9,7 +9,7 @@
   "keywords": ["parallax", "sektion", "hintergrund", "scroll", "banner"],
   "textdomain": "media-lab-agency-core",
   "acf": {
-    "mode": "auto",
+    "mode": "edit",
     "renderTemplate": "render.php"
   },
   "supports": {

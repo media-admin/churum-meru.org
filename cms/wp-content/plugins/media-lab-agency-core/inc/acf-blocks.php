@@ -362,6 +362,20 @@ function medialab_register_acf_block_fields(): void {
         'title'  => 'Logo-Leiste Block',
         'fields' => [
             [
+                'key'           => 'field_logo_grid_source',
+                'label'         => 'Logo-Quelle',
+                'name'          => 'logo_grid_source',
+                'type'          => 'radio',
+                'choices'       => [
+                    'cpt'    => 'Logos aus CPT (Menü: Logos)',
+                    'manual' => 'Manuell (Repeater unten)',
+                ],
+                'default_value' => 'cpt',
+                'layout'        => 'horizontal',
+                'instructions'  => 'CPT empfohlen – Logos zentral unter „Logos" verwalten.',
+                'wrapper'       => [ 'width' => '100' ],
+            ],
+            [
                 'key'         => 'field_logo_grid_title',
                 'label'       => 'Überschrift',
                 'name'        => 'logo_grid_title',

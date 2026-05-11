@@ -165,26 +165,12 @@ function medialab_enqueue_block_frontend_assets(): void {
         }
     }
 
-    // Swiper für Logo-Slider (nur wenn Block auf der Seite)
+    // Swiper CSS (für Logo-Slider + Content-Slider Block)
+    // JS-Initialisierung läuft über Theme-Komponenten (ml-slider.js, ml-logo-slider.js)
     $needs_swiper = has_block( 'medialab/logo-slider' ) || has_block( 'medialab/slider' );
     if ( $needs_swiper ) {
-        $swiper_js  = get_template_directory_uri() . '/assets/dist/js/chunks/swiper.js';
         $swiper_css = get_template_directory_uri() . '/assets/dist/css/swiper.css';
-        wp_enqueue_script( 'swiper', $swiper_js,  [], '11.0.0', true );
-        wp_enqueue_style(  'swiper', $swiper_css, [], '11.0.0' );
-    }
-
-    if ( has_block( 'medialab/logo-slider' ) ) {
-        $logo_slider_js = $dist_dir . 'js/block-logo-slider.js';
-        if ( file_exists( $logo_slider_js ) ) {
-            wp_enqueue_script(
-                'medialab-logo-slider',
-                $dist_uri . 'js/block-logo-slider.js',
-                [ 'swiper' ],
-                filemtime( $logo_slider_js ),
-                true
-            );
-        }
+        wp_enqueue_style( 'swiper', $swiper_css, [], '11.0.0' );
     }
 
     // Parallax Block
@@ -230,6 +216,7 @@ function medialab_enqueue_block_frontend_assets(): void {
     }
 
     // Slider Block
+    // JS-Init läuft über Theme-Komponente ml-slider.js (kein separates Plugin-Script nötig)
     if ( has_block( 'medialab/slider' ) ) {
         $plugin_uri = plugin_dir_url( dirname( __FILE__ ) );
         $plugin_dir = plugin_dir_path( dirname( __FILE__ ) );
@@ -239,14 +226,6 @@ function medialab_enqueue_block_frontend_assets(): void {
             [ 'swiper' ],
             file_exists( $plugin_dir . 'assets/css/block-slider.css' )
                 ? filemtime( $plugin_dir . 'assets/css/block-slider.css' ) : MEDIALAB_CORE_VERSION
-        );
-        wp_enqueue_script(
-            'medialab-block-slider',
-            $plugin_uri . 'assets/js/block-slider.js',
-            [ 'swiper' ],
-            file_exists( $plugin_dir . 'assets/js/block-slider.js' )
-                ? filemtime( $plugin_dir . 'assets/js/block-slider.js' ) : MEDIALAB_CORE_VERSION,
-            true
         );
     }
 }

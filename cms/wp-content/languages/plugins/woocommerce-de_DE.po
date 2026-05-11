@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-07 22:46:26+0000\n"
+"PO-Revision-Date: 2026-05-10 20:29:08+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3784,6 +3784,15 @@ msgstr "Die Abwicklung wurde erfolgreich gelöscht."
 msgid "No fulfillments"
 msgstr "Keine Abwicklungen"
 
+#: src/Admin/Features/Fulfillments/FulfillmentUtils.php:478
+#: src/Admin/Features/Fulfillments/FulfillmentUtils.php:508
+msgid "Unfulfilled"
+msgstr "Nicht abgewickelt"
+
+#: src/Admin/Features/Fulfillments/FulfillmentUtils.php:473
+msgid "Partially fulfilled"
+msgstr "Teilweise abgewickelt"
+
 #: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:751
 #: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:809
 #: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:857
@@ -3795,15 +3804,6 @@ msgstr "Keine Abwicklungen"
 #: src/Internal/RestApi/Routes/V4/Fulfillments/Schema/FulfillmentSchema.php:41
 msgid "Unique identifier for the fulfillment."
 msgstr "Eindeutige Kennung für die Abwicklung."
-
-#: src/Admin/Features/Fulfillments/FulfillmentUtils.php:478
-#: src/Admin/Features/Fulfillments/FulfillmentUtils.php:508
-msgid "Unfulfilled"
-msgstr "Nicht abgewickelt"
-
-#: src/Admin/Features/Fulfillments/FulfillmentUtils.php:473
-msgid "Partially fulfilled"
-msgstr "Teilweise abgewickelt"
 
 #: src/Admin/Features/Fulfillments/FulfillmentUtils.php:468
 #: src/Admin/Features/Fulfillments/FulfillmentUtils.php:502
@@ -32942,10 +32942,6 @@ msgstr "Tags hinzufügen oder entfernen"
 msgid "Order status set to %s."
 msgstr "Bestellstatus auf %s gesetzt."
 
-#: includes/class-wc-post-types.php:155
-msgid "Choose from the most used tags"
-msgstr "Wähle aus den meistgenutzten Schlagwörtern"
-
 #: includes/class-wc-post-types.php:146
 msgid "Search tags"
 msgstr "Schlagwörter suchen"
@@ -32984,6 +32980,10 @@ msgstr "Ungültige Varianten-ID"
 #: includes/class-wc-post-types.php:188
 msgid "Product shipping classes"
 msgstr "Produkt-Versandklassen"
+
+#: includes/class-wc-post-types.php:155
+msgid "Choose from the most used tags"
+msgstr "Aus den meistgenutzten Schlagwörtern auswählen"
 
 #: includes/class-wc-install.php:2669
 msgid "Visit premium customer support"
@@ -42177,11 +42177,6 @@ msgid "New shipping class Name"
 msgstr "Neuer Versandklassenname"
 
 #. translators: %s: attribute name
-#: includes/class-wc-post-types.php:265
-msgid "Search %s"
-msgstr "%s suchen"
-
-#. translators: %s: attribute name
 #: includes/class-wc-post-types.php:269
 msgid "Parent %s"
 msgstr "Übergeordnetes %s"
@@ -42204,11 +42199,6 @@ msgstr "%s bearbeiten"
 #: includes/class-wc-post-types.php:275 assets/client/admin/chunks/5753.js:1
 msgid "Update %s"
 msgstr "%s aktualisieren"
-
-#. translators: %s: attribute name
-#: includes/class-wc-post-types.php:277
-msgid "Add new %s"
-msgstr "%s neu hinzufügen"
 
 #. translators: %s: attribute name
 #: includes/class-wc-post-types.php:279
@@ -42806,6 +42796,16 @@ msgstr "Die Erstattung ist fehlgeschlagen."
 #: includes/class-wc-ajax.php:2353
 msgid "Invalid refund amount"
 msgstr "Ungültiger Erstattungsbetrag"
+
+#. translators: %s: attribute name
+#: includes/class-wc-post-types.php:265
+msgid "Search %s"
+msgstr "%s durchsuchen"
+
+#. translators: %s: attribute name
+#: includes/class-wc-post-types.php:277
+msgid "Add new %s"
+msgstr "%s hinzufügen"
 
 #: includes/admin/views/html-admin-page-status-report.php:86
 msgid "The root URL of your site."

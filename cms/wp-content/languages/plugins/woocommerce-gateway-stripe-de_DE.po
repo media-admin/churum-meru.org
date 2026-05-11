@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce Stripe Payment Gateway - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-05 09:42:30+0000\n"
+"PO-Revision-Date: 2026-05-11 08:40:35+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -72,6 +72,10 @@ msgstr "inventory_quantity darf nicht negativ sein. Erhaltener Wert: %d"
 msgid "Failed to open file for writing: %s"
 msgstr "Die Datei konnte nicht zum Schreiben geöffnet werden: %s"
 
+#: includes/class-wc-stripe-intent-controller.php:1371
+msgid "You do not have permission to update this subscription."
+msgstr "Du hast keine Berechtigung, dieses Abonnement zu aktualisieren."
+
 #: includes/ajax-handlers/class-wc-stripe-checkout-sessions-ajax-handler.php:34
 #: includes/ajax-handlers/class-wc-stripe-checkout-sessions-ajax-handler.php:110
 msgid "Your cart is currently empty."
@@ -85,6 +89,14 @@ msgstr "Wir können deine Zahlungsart derzeit nicht verarbeiten. Bitte versuche 
 msgid "Review Settings"
 msgstr "Einstellungen überprüfen"
 
+#: includes/class-wc-stripe-api.php:378
+msgid "There was a problem retrieving data from the Stripe API endpoint."
+msgstr "Beim Abrufen von Daten vom Stripe-API-Endpunkt ist ein Fehler aufgetreten."
+
+#: includes/class-wc-stripe-api.php:270
+msgid "There was a problem sending a request to the Stripe API endpoint."
+msgstr "Beim Senden einer Anfrage an den Stripe-API-Endpunkt ist ein Fehler aufgetreten."
+
 #: includes/admin/stripe-settings.php:225 build/upe-settings.js:4
 msgid "If enabled, returning customers can check out using payment details securely stored by Stripe. No payment information is stored on your store."
 msgstr "Wenn diese Funktion aktiviert ist, können wiederkehrende Kunden beim Bezahlen die von Stripe sicher gespeicherten Zahlungsdaten verwenden. In deinem Shop werden keine Zahlungsdaten gespeichert."
@@ -96,6 +108,10 @@ msgstr "Gespeicherte Zahlungsarten aktivieren"
 #: includes/class-wc-stripe-api.php:691
 msgid "A valid URL was not provided."
 msgstr "Es wurde keine gültige URL angegeben."
+
+#: includes/class-wc-stripe-intent-controller.php:1265
+msgid "Captcha verification failed. Please try again."
+msgstr "Die Captcha-Überprüfung ist fehlgeschlagen. Bitte versuche es erneut."
 
 #: includes/admin/stripe-settings.php:239 build/upe-settings.js:4
 msgid "Enable saved Bancontact payments for repeat payments"
@@ -561,6 +577,11 @@ msgstr "Die Bezahlung ist ausstehend."
 msgid "Alipay is a popular wallet in China, operated by Ant Financial Services Group, a financial services provider affiliated with Alibaba."
 msgstr "Alipay ist ein beliebtes Onlinebezahlsystem in China, das von der Ant Financial Services Group betrieben wird, einem Finanzdienstleister und Partner von Alibaba."
 
+#: includes/payment-methods/class-wc-stripe-upe-payment-gateway.php:2988
+#: includes/payment-methods/class-wc-stripe-upe-payment-gateway.php:3006
+msgid "We're not able to add this payment method. Please try again later."
+msgstr "Wir konnten diese Zahlungsart nicht hinzufügen. Bitte versuche es später noch einmal."
+
 #: includes/admin/class-wc-rest-stripe-settings-controller.php:175
 msgid "When enabled, payment error logs will be saved to WooCommerce > Status > Logs."
 msgstr "Wenn dies aktiviert ist, werden Fehlerprotokolle von Zahlungen gespeichert unter WooCommerce > Status > Protokolle."
@@ -781,6 +802,10 @@ msgstr "Zahlungsart-IDs, die aktiviert sein sollten. Andere Arten deaktiviert."
 #: includes/class-wc-stripe-intent-controller.php:1278
 msgid "We're not able to add this payment method. Please refresh the page and try again."
 msgstr "Wir können diese Zahlungsart nicht hinzufügen. Bitte aktualisiere die Seite und versuche es erneut."
+
+#: includes/payment-methods/class-wc-stripe-upe-payment-gateway.php:1983
+msgid "Failed to add payment method."
+msgstr "Das Hinzufügen der Zahlungsart ist fehlgeschlagen."
 
 #: includes/admin/stripe-settings.php:206
 #: includes/admin/stripe-settings.php:266

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.9.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-08 10:29:28+0000\n"
+"PO-Revision-Date: 2026-05-11 02:25:51+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -65,11 +65,6 @@ msgstr "Vers"
 msgctxt "block title"
 msgid "Video"
 msgstr "Video"
-
-#: wp-includes/blocks/tag-cloud/block.json
-msgctxt "block title"
-msgid "Tag Cloud"
-msgstr "Schlagwort-Wolke"
 
 #: wp-includes/blocks/social-links/block.json
 msgctxt "block title"
@@ -681,6 +676,11 @@ msgstr "Füge Lyrik ein. Verwende spezielle Formatierungen für Abstände. Oder 
 msgctxt "block keyword"
 msgid "poetry"
 msgstr "Lyrik, Poesie"
+
+#: wp-includes/blocks/tag-cloud/block.json
+msgctxt "block title"
+msgid "Tag Cloud"
+msgstr "Schlagwortwolke"
 
 #: wp-includes/js/dist/editor.js:4982
 #: wp-admin/includes/class-wp-comments-list-table.php:384
@@ -2497,10 +2497,6 @@ msgstr "Beitrags-Autor anzeigen, wenn verfügbar?"
 msgid "Display item date?"
 msgstr "Beitrags-Datum anzeigen?"
 
-#: wp-includes/widgets/class-wp-widget-tag-cloud.php:30
-msgid "Tag Cloud"
-msgstr "Schlagwort-Wolke"
-
 #. translators: %d: Sidebar number.
 #: wp-includes/widgets.php:190 wp-includes/widgets.php:278
 msgid "Sidebar %d"
@@ -3804,10 +3800,6 @@ msgstr ""
 "Das Team von ###SITENAME###\n"
 "###SITEURL###"
 
-#: wp-includes/widgets/class-wp-widget-tag-cloud.php:165
-msgid "The tag cloud will not be displayed since there are no taxonomies that support the tag cloud widget."
-msgstr "Die Schlagwort-Wolke kann nicht angezeigt werden, da keine Taxonomien vorhanden sind, die das Schlagwort-Wolken-Widget unterstützen."
-
 #: wp-includes/widgets/class-wp-nav-menu-widget.php:189
 msgid "Select Menu:"
 msgstr "Menü auswählen:"
@@ -3856,6 +3848,14 @@ msgstr "Eine Website erstellen oder nur einen Benutzernamen anlegen:"
 msgctxt "widgets"
 msgid "%1$s on %2$s"
 msgstr "%1$s zu %2$s"
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:30
+msgid "Tag Cloud"
+msgstr "Schlagwortwolke"
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:165
+msgid "The tag cloud will not be displayed since there are no taxonomies that support the tag cloud widget."
+msgstr "Die Schlagwortwolke kann nicht angezeigt werden, da keine Taxonomien vorhanden sind, die das Schlagwortwolken-Widget unterstützen."
 
 #. translators: Hidden accessibility text.
 #: wp-includes/revision.php:34 wp-includes/js/dist/block-library.js:25465
@@ -7504,11 +7504,6 @@ msgstr ""
 msgid "%s cannot be updated."
 msgstr "%s konnte nicht aktualisiert werden."
 
-#: wp-includes/theme.php:2469
-msgctxt "Theme starter content"
-msgid "This is a page with some basic contact information, such as an address and phone number. You might also try a plugin to add a contact form."
-msgstr "Das ist eine Seite mit einigen grundlegenden Kontaktinformationen, wie Adresse und Telefonnummer. Du kannst auch ein Plugin nutzen, um ein Kontaktformular einzufügen."
-
 #. translators: Do not translate USERNAME, ADMIN_EMAIL, NEW_EMAIL, EMAIL,
 #. SITENAME, SITEURL: those are placeholders.
 #: wp-includes/user.php:2820
@@ -7568,6 +7563,11 @@ msgstr ""
 "Viele Grüße\n"
 "Das Team von ###SITENAME###\n"
 "###SITEURL###"
+
+#: wp-includes/theme.php:2469
+msgctxt "Theme starter content"
+msgid "This is a page with some basic contact information, such as an address and phone number. You might also try a plugin to add a contact form."
+msgstr "Das ist eine Seite mit einigen grundlegenden Kontaktinformationen, wie Adresse und Telefonnummer. Du kannst auch ein Plugin nutzen, um ein Kontaktformular einzufügen."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-global-styles-controller.php:481
 msgid "Title of the global styles variation."
@@ -10343,6 +10343,14 @@ msgstr "Aktuelle Seite der Sammlung."
 msgid "Maximum number of items to be returned in result set."
 msgstr "Maximale Anzahl der im Ergebnissatz zurückzugebenden Elemente."
 
+#: wp-includes/rest-api/endpoints/class-wp-rest-controller.php:362
+msgid "Limit results to those matching a string."
+msgstr "Ergebnisse auf alle begrenzen, die mit einer Zeichenfolge übereinstimmen."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-controller.php:382
+msgid "Scope under which the request is made; determines fields present in response."
+msgstr "Geltungsbereich der Anfrage; ermittelt in der Antwort vorhandene Felder."
+
 #. translators: %s: Method name.
 #: wp-includes/rest-api/endpoints/class-wp-rest-controller.php:70
 #: wp-includes/rest-api/endpoints/class-wp-rest-controller.php:87
@@ -10358,14 +10366,6 @@ msgstr "Maximale Anzahl der im Ergebnissatz zurückzugebenden Elemente."
 #: wp-includes/rest-api/endpoints/class-wp-rest-controller.php:258
 msgid "Method '%s' not implemented. Must be overridden in subclass."
 msgstr "Die Methode ‚%s‘ wurde nicht implementiert. Sie muss in der Unterklasse überschrieben werden."
-
-#: wp-includes/rest-api/endpoints/class-wp-rest-controller.php:362
-msgid "Limit results to those matching a string."
-msgstr "Ergebnisse auf alle begrenzen, die mit einer Zeichenfolge übereinstimmen."
-
-#: wp-includes/rest-api/endpoints/class-wp-rest-controller.php:382
-msgid "Scope under which the request is made; determines fields present in response."
-msgstr "Geltungsbereich der Anfrage; ermittelt in der Antwort vorhandene Felder."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-comments-controller.php:1795
 #: wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php:108
@@ -15205,10 +15205,6 @@ msgstr "Neuer Schlagwortname"
 msgid "New Category Name"
 msgstr "Neuer Kategoriename"
 
-#: wp-includes/class-wp-taxonomy.php:631
-msgid "Choose from the most used tags"
-msgstr "Wähle aus den meistgenutzten Schlagwörtern"
-
 #: wp-includes/class-wp-theme.php:1089
 msgid "Blavatar"
 msgstr "Blavatar"
@@ -15395,6 +15391,10 @@ msgstr "Du bist leider nicht berechtigt, Beiträge dieses Inhaltstyps zu bearbei
 msgid "Image default link type"
 msgstr "Standard-Bildlink"
 
+#: wp-includes/class-wp-xmlrpc-server.php:567
+msgid "Image default size"
+msgstr "Standard-Bildgröße"
+
 #: wp-includes/class-wp-xmlrpc-server.php:1464
 #: wp-includes/class-wp-xmlrpc-server.php:1952
 #: wp-includes/class-wp-xmlrpc-server.php:4804
@@ -15412,10 +15412,6 @@ msgstr "Standard-Bildlink"
 #: wp-admin/includes/post.php:2095
 msgid "Sorry, you are not allowed to edit this post."
 msgstr "Du bist leider nicht berechtigt, diesen Beitrag zu bearbeiten."
-
-#: wp-includes/class-wp-xmlrpc-server.php:567
-msgid "Image default size"
-msgstr "Standard-Bildgröße"
 
 #: wp-includes/class-wp-xmlrpc-server.php:572
 msgid "Image default align"
@@ -15475,6 +15471,16 @@ msgstr "Der Name des Begriffs darf nicht leer sein."
 msgid "This taxonomy is not hierarchical."
 msgstr "Diese Taxonomie ist nicht hierarchisch."
 
+#: wp-includes/class-wp-xmlrpc-server.php:2138
+#: wp-includes/class-wp-xmlrpc-server.php:2256
+#: wp-includes/rest-api/endpoints/class-wp-rest-menus-controller.php:213
+#: wp-includes/rest-api/endpoints/class-wp-rest-menus-controller.php:307
+#: wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php:542
+#: wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php:689
+#: wp-includes/taxonomy.php:2464 wp-includes/taxonomy.php:3266
+msgid "Parent term does not exist."
+msgstr "Übergeordneter Begriff existiert nicht."
+
 #: wp-includes/class-wp-tax-query.php:549
 #: wp-includes/class-wp-tax-query.php:556 wp-includes/class-wp-term.php:173
 #: wp-includes/class-wp-xmlrpc-server.php:2106
@@ -15493,16 +15499,6 @@ msgstr "Diese Taxonomie ist nicht hierarchisch."
 #: wp-admin/includes/class-wp-terms-list-table.php:57
 msgid "Invalid taxonomy."
 msgstr "Die Taxonomie ist ungültig."
-
-#: wp-includes/class-wp-xmlrpc-server.php:2138
-#: wp-includes/class-wp-xmlrpc-server.php:2256
-#: wp-includes/rest-api/endpoints/class-wp-rest-menus-controller.php:213
-#: wp-includes/rest-api/endpoints/class-wp-rest-menus-controller.php:307
-#: wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php:542
-#: wp-includes/rest-api/endpoints/class-wp-rest-terms-controller.php:689
-#: wp-includes/taxonomy.php:2464 wp-includes/taxonomy.php:3266
-msgid "Parent term does not exist."
-msgstr "Übergeordneter Begriff existiert nicht."
 
 #: wp-includes/class-wp-xmlrpc-server.php:1596
 #: wp-includes/class-wp-xmlrpc-server.php:2228
@@ -15887,32 +15883,6 @@ msgstr "Widget hinzufügen"
 #: wp-includes/customize/class-wp-widget-area-customize-control.php:60
 msgid "Reorder"
 msgstr "Umordnen"
-
-#. translators: Hidden accessibility text.
-#: wp-includes/class-wp-customize-nav-menus.php:1103
-#: wp-includes/class-wp-customize-widgets.php:723
-#: wp-includes/js/dist/block-editor.js:45799
-#: wp-includes/js/dist/block-editor.js:45800
-#: wp-includes/js/dist/block-editor.js:48849
-#: wp-includes/js/dist/block-library.js:31739
-#: wp-includes/js/dist/edit-site.js:24571
-#: wp-admin/includes/class-walker-nav-menu-edit.php:165
-#: wp-admin/includes/template.php:1411
-msgid "Move down"
-msgstr "Nach unten"
-
-#. translators: Hidden accessibility text.
-#: wp-includes/class-wp-customize-nav-menus.php:1102
-#: wp-includes/class-wp-customize-widgets.php:724
-#: wp-includes/js/dist/block-editor.js:45774
-#: wp-includes/js/dist/block-editor.js:45775
-#: wp-includes/js/dist/block-editor.js:48844
-#: wp-includes/js/dist/block-library.js:31728
-#: wp-includes/js/dist/edit-site.js:24560
-#: wp-admin/includes/class-walker-nav-menu-edit.php:148
-#: wp-admin/includes/template.php:1398
-msgid "Move up"
-msgstr "Nach oben"
 
 #: wp-includes/class-wp-customize-widgets.php:730
 msgid "Select an area to move this widget into:"
@@ -16751,16 +16721,6 @@ msgstr "Eins nach unten verschieben"
 #: wp-includes/class-wp-customize-nav-menus.php:562 wp-admin/nav-menus.php:574
 msgid "Move to the top"
 msgstr "Nach ganz oben verschieben"
-
-#. translators: %s: Previous item name.
-#: wp-includes/class-wp-customize-nav-menus.php:564 wp-admin/nav-menus.php:576
-msgid "Move under %s"
-msgstr "Unter %s verschieben"
-
-#. translators: %s: Previous item name.
-#: wp-includes/class-wp-customize-nav-menus.php:566 wp-admin/nav-menus.php:578
-msgid "Move out from under %s"
-msgstr "Unter %s heraus verschieben"
 
 #. translators: %s: Previous item name.
 #: wp-includes/class-wp-customize-nav-menus.php:568 wp-admin/nav-menus.php:580
@@ -18069,10 +18029,6 @@ msgstr "WordPress.org-Themes"
 msgid "Homepage Settings"
 msgstr "Homepage-Einstellungen"
 
-#: wp-includes/class-wp-customize-manager.php:5642
-msgid "You can choose what&#8217;s displayed on the homepage of your site. It can be posts in reverse chronological order (classic blog), or a fixed/static page. To set a static homepage, you first need to create two Pages. One will become the homepage, and the other will be where your posts are displayed."
-msgstr "Du kannst auswählen, was auf der Homepage deiner Website angezeigt wird. Das können Beiträge in umgekehrter chronologischer Reihenfolge (klassischer Blog) oder eine feststehende/statische Seite sein. Um eine statische Homepage festzulegen, musst du erst zwei Seiten erstellen. Eine wird die Homepage und die andere wird die, auf der deine Beiträge angezeigt werden."
-
 #: wp-includes/class-wp-customize-manager.php:5659
 #: wp-admin/options-reading.php:85
 msgid "Your homepage displays"
@@ -18093,6 +18049,10 @@ msgstr "Bei der Navigation mit der Tastatur:"
 #: wp-admin/plugin-editor.php:146 wp-admin/theme-editor.php:35
 msgid "In the editing area, the Tab key enters a tab character."
 msgstr "Im Bearbeitungsbereich fügt die Tab-Taste ein Tab-Zeichen ein."
+
+#: wp-includes/class-wp-customize-manager.php:5642
+msgid "You can choose what&#8217;s displayed on the homepage of your site. It can be posts in reverse chronological order (classic blog), or a fixed/static page. To set a static homepage, you first need to create two Pages. One will become the homepage, and the other will be where your posts are displayed."
+msgstr "Du kannst auswählen, was auf der Homepage deiner Website angezeigt wird. Das können Beiträge in umgekehrter chronologischer Reihenfolge (klassischer Blog) oder eine feststehende/statische Seite sein. Um eine statische Homepage festzulegen, musst du erst zwei Seiten erstellen. Eine wird die Homepage und die andere wird die, auf der deine Beiträge angezeigt werden."
 
 #: wp-includes/class-wp-customize-manager.php:5720
 #: wp-includes/widgets/class-wp-widget-custom-html.php:327
@@ -18562,6 +18522,11 @@ msgstr "Bei einem nicht geschützten Endpunkt ist ein Fehler aufgetreten."
 msgid "Please contact your host for assistance with investigating this issue further."
 msgstr "Bitte kontaktiere dein Hosting-Unternehmen, um Unterstützung bei der weiteren Untersuchung dieses Problems zu erhalten."
 
+#. translators: %s: Plugin name.
+#: wp-includes/class-wp-recovery-mode-email-service.php:280
+msgid "In this case, WordPress caught an error with one of your plugins, %s."
+msgstr "In diesem Fall hat WordPress einen Fehler in einem deiner Plugins, %s, abgefangen."
+
 #. translators: Do not translate LINK, EXPIRES, CAUSE, DETAILS, SITEURL,
 #. PAGEURL, SUPPORT. DEBUG: those are placeholders.
 #: wp-includes/class-wp-recovery-mode-email-service.php:153
@@ -18603,11 +18568,6 @@ msgstr ""
 "###DEBUG###\n"
 "\n"
 "###DETAILS###"
-
-#. translators: %s: Plugin name.
-#: wp-includes/class-wp-recovery-mode-email-service.php:280
-msgid "In this case, WordPress caught an error with one of your plugins, %s."
-msgstr "In diesem Fall hat WordPress einen Fehler in einem deiner Plugins, %s, abgefangen."
 
 #. translators: %s: Theme name.
 #: wp-includes/class-wp-recovery-mode-email-service.php:286
@@ -18764,27 +18724,6 @@ msgstr "Benachrichtigungen"
 msgid "This theme does not work with your versions of WordPress and PHP."
 msgstr "Dieses Theme funktioniert nicht mit deinen Versionen von WordPress und PHP."
 
-#: wp-includes/customize/class-wp-customize-theme-control.php:209
-#: wp-admin/includes/theme.php:1013 wp-admin/theme-install.php:366
-#: wp-admin/theme-install.php:571 wp-admin/themes.php:554
-#: wp-admin/themes.php:949 wp-admin/themes.php:1129
-msgid "This theme does not work with your version of WordPress."
-msgstr "Dieses Theme funktioniert nicht mit deiner WordPress-Version."
-
-#: wp-includes/customize/class-wp-customize-theme-control.php:220
-#: wp-admin/includes/theme.php:1024 wp-admin/theme-install.php:377
-#: wp-admin/theme-install.php:582 wp-admin/themes.php:563
-#: wp-admin/themes.php:960 wp-admin/themes.php:1140
-msgid "This theme does not work with your version of PHP."
-msgstr "Dieses Theme funktioniert nicht mit deiner PHP-Version."
-
-#. translators: %s: Theme name.
-#: wp-includes/customize/class-wp-customize-theme-control.php:116
-#: wp-admin/includes/theme.php:908 wp-admin/includes/update.php:766
-#: wp-admin/themes.php:464 wp-admin/themes.php:857 wp-admin/themes.php:1168
-msgid "There is a new version of %s available, but it does not work with your versions of WordPress and PHP."
-msgstr "Es gibt eine neue Version von %s, aber sie funktioniert nicht mit deiner PHP- und WordPress-Version."
-
 #. translators: 1: URL to WordPress Updates screen, 2: URL to Update PHP page.
 #: wp-includes/customize/class-wp-customize-theme-control.php:122
 #: wp-includes/customize/class-wp-customize-theme-control.php:187
@@ -18820,6 +18759,27 @@ msgstr "<a href=\"%1$s\">Bitte aktualisiere WordPress</a> und dann <a href=\"%2$
 #: wp-admin/update-core.php:716 wp-admin/update-core.php:737
 msgid "<a href=\"%s\">Please update WordPress</a>."
 msgstr "<a href=\"%s\">Bitte aktualisiere WordPress</a>."
+
+#: wp-includes/customize/class-wp-customize-theme-control.php:209
+#: wp-admin/includes/theme.php:1013 wp-admin/theme-install.php:366
+#: wp-admin/theme-install.php:571 wp-admin/themes.php:554
+#: wp-admin/themes.php:949 wp-admin/themes.php:1129
+msgid "This theme does not work with your version of WordPress."
+msgstr "Dieses Theme funktioniert nicht mit deiner WordPress-Version."
+
+#: wp-includes/customize/class-wp-customize-theme-control.php:220
+#: wp-admin/includes/theme.php:1024 wp-admin/theme-install.php:377
+#: wp-admin/theme-install.php:582 wp-admin/themes.php:563
+#: wp-admin/themes.php:960 wp-admin/themes.php:1140
+msgid "This theme does not work with your version of PHP."
+msgstr "Dieses Theme funktioniert nicht mit deiner PHP-Version."
+
+#. translators: %s: Theme name.
+#: wp-includes/customize/class-wp-customize-theme-control.php:116
+#: wp-admin/includes/theme.php:908 wp-admin/includes/update.php:766
+#: wp-admin/themes.php:464 wp-admin/themes.php:857 wp-admin/themes.php:1168
+msgid "There is a new version of %s available, but it does not work with your versions of WordPress and PHP."
+msgstr "Es gibt eine neue Version von %s, aber sie funktioniert nicht mit deiner PHP- und WordPress-Version."
 
 #. translators: %s: Theme name.
 #: wp-includes/customize/class-wp-customize-theme-control.php:146
@@ -20075,6 +20035,46 @@ msgstr "Im Papierkorb wurden keine Seiten gefunden."
 #: wp-includes/class-wp-post-type.php:1000
 msgid "No posts found in Trash."
 msgstr "Im Papierkorb wurden keine Beiträge gefunden."
+
+#: wp-includes/class-wp-taxonomy.php:631
+msgid "Choose from the most used tags"
+msgstr "Aus den meistgenutzten Schlagwörtern auswählen"
+
+#. translators: %s: Previous item name.
+#: wp-includes/class-wp-customize-nav-menus.php:564 wp-admin/nav-menus.php:576
+msgid "Move under %s"
+msgstr "Unter %s einordnen"
+
+#. translators: %s: Previous item name.
+#: wp-includes/class-wp-customize-nav-menus.php:566 wp-admin/nav-menus.php:578
+msgid "Move out from under %s"
+msgstr "Einordnung unter %s aufheben"
+
+#. translators: Hidden accessibility text.
+#: wp-includes/class-wp-customize-nav-menus.php:1102
+#: wp-includes/class-wp-customize-widgets.php:724
+#: wp-includes/js/dist/block-editor.js:45774
+#: wp-includes/js/dist/block-editor.js:45775
+#: wp-includes/js/dist/block-editor.js:48844
+#: wp-includes/js/dist/block-library.js:31728
+#: wp-includes/js/dist/edit-site.js:24560
+#: wp-admin/includes/class-walker-nav-menu-edit.php:148
+#: wp-admin/includes/template.php:1398
+msgid "Move up"
+msgstr "Nach oben verschieben"
+
+#. translators: Hidden accessibility text.
+#: wp-includes/class-wp-customize-nav-menus.php:1103
+#: wp-includes/class-wp-customize-widgets.php:723
+#: wp-includes/js/dist/block-editor.js:45799
+#: wp-includes/js/dist/block-editor.js:45800
+#: wp-includes/js/dist/block-editor.js:48849
+#: wp-includes/js/dist/block-library.js:31739
+#: wp-includes/js/dist/edit-site.js:24571
+#: wp-admin/includes/class-walker-nav-menu-edit.php:165
+#: wp-admin/includes/template.php:1411
+msgid "Move down"
+msgstr "Nach unten verschieben"
 
 #: wp-activate.php:126
 msgid "Activation Key Required"

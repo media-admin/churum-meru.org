@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce PayPal Payments - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-03 23:47:53+0000\n"
+"PO-Revision-Date: 2026-05-11 08:17:37+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -245,6 +245,10 @@ msgstr "Google Pay (über PayPal) "
 #: modules/ppcp-paypal-subscriptions/src/PayPalSubscriptionsModule.php:174
 msgid "Cannot add this product to cart (invalid product)."
 msgstr "Dieses Produkt kann nicht zum Warenkorb hinzugefügt werden (ungültiges Produkt)."
+
+#: modules/ppcp-axo/src/Gateway/AxoGateway.php:143
+msgid "Enter your email address above to continue."
+msgstr "Gib oben deine E-Mail-Adresse ein, um fortzufahren."
 
 #: modules/ppcp-button/src/Helper/WooCommerceOrderCreator.php:216
 msgid "Items"

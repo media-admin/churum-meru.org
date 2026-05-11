@@ -743,18 +743,84 @@ function medialab_register_acf_block_fields(): void {
         'key'    => 'group_block_slider',
         'title'  => 'Slider-Einstellungen',
         'fields' => [
+
+            // ── Folien (Repeater) ─────────────────────────────────────────────
             [
-                'key'     => 'field_slider_msg',
-                'label'   => ' ',
-                'name'    => 'slider_msg',
-                'type'    => 'message',
-                'message' => '<p style="font-size:12px;color:#666;margin:0 0 .5rem;">'
-                           . 'Jeder direkt eingefügte Block wird zu einer eigenen Folie.<br>'
-                           . '<strong>Tipp: Group-Block</strong> pro Folie für strukturierten Inhalt.<br>'
-                           . '<strong>Blöcke einfügen:</strong> In den Slider klicken → „+" verwenden.<br>'
-                           . 'Bestehende Blöcke verschieben: <em>Listenansicht</em> (linkes Panel) nutzen.</p>',
-                'default_value' => '',
+                'key'          => 'field_slider_slides',
+                'label'        => 'Folien',
+                'name'         => 'slider_slides',
+                'type'         => 'repeater',
+                'min'          => 0,
+                'layout'       => 'block',
+                'button_label' => 'Folie hinzufügen',
+                'instructions' => 'Reihenfolge per Drag & Drop ändern.',
+                'wrapper'      => [ 'width' => '100' ],
+                'sub_fields'   => [
+                    [
+                        'key'           => 'field_slide_image',
+                        'label'         => 'Bild',
+                        'name'          => 'slide_image',
+                        'type'          => 'image',
+                        'return_format' => 'array',
+                        'preview_size'  => 'medium',
+                        'instructions'  => 'Hauptbild der Folie (optional)',
+                        'wrapper'       => [ 'width' => '50' ],
+                    ],
+                    [
+                        'key'         => 'field_slide_heading',
+                        'label'       => 'Überschrift',
+                        'name'        => 'slide_heading',
+                        'type'        => 'text',
+                        'placeholder' => 'Folientitel',
+                        'wrapper'     => [ 'width' => '50' ],
+                    ],
+                    [
+                        'key'         => 'field_slide_text',
+                        'label'       => 'Text',
+                        'name'        => 'slide_text',
+                        'type'        => 'wysiwyg',
+                        'tabs'        => 'all',
+                        'toolbar'     => 'basic',
+                        'media_upload'=> 0,
+                        'wrapper'     => [ 'width' => '100' ],
+                    ],
+                    [
+                        'key'         => 'field_slide_btn_label',
+                        'label'       => 'Button-Text',
+                        'name'        => 'slide_btn_label',
+                        'type'        => 'text',
+                        'placeholder' => 'Mehr erfahren',
+                        'wrapper'     => [ 'width' => '33' ],
+                    ],
+                    [
+                        'key'         => 'field_slide_btn_url',
+                        'label'       => 'Button-URL',
+                        'name'        => 'slide_btn_url',
+                        'type'        => 'url',
+                        'placeholder' => 'https://',
+                        'wrapper'     => [ 'width' => '34' ],
+                    ],
+                    [
+                        'key'           => 'field_slide_btn_target',
+                        'label'         => 'In neuem Tab',
+                        'name'          => 'slide_btn_target',
+                        'type'          => 'true_false',
+                        'ui'            => 1,
+                        'default_value' => 0,
+                        'wrapper'       => [ 'width' => '16' ],
+                    ],
+                    [
+                        'key'         => 'field_slide_class',
+                        'label'       => 'CSS-Klasse (opt.)',
+                        'name'        => 'slide_class',
+                        'type'        => 'text',
+                        'placeholder' => 'custom-slide',
+                        'wrapper'     => [ 'width' => '17' ],
+                    ],
+                ],
             ],
+
+            // ── Swiper-Optionen ───────────────────────────────────────────────
             [
                 'key'           => 'field_slider_autoplay',
                 'label'         => 'Autoplay',

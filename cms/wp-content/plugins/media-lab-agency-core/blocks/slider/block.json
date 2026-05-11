@@ -3,13 +3,13 @@
   "apiVersion": 3,
   "name": "medialab/slider",
   "title": "Slider",
-  "description": "Flexibler Swiper-Slider. Jeder direkte InnerBlock wird zu einer eigenen Folie. Swiper-Optionen im Block-Panel konfigurierbar.",
+  "description": "Swiper-Slider mit konfigurierbaren Folien (Bild, Überschrift, Text, Button). Folien werden im Block-Panel als Repeater gepflegt.",
   "category": "design",
   "icon": "slides",
   "keywords": ["slider", "swiper", "karussell", "carousel", "folie", "slide"],
   "textdomain": "media-lab-agency-core",
   "acf": {
-    "mode": "auto",
+    "mode": "preview",
     "renderTemplate": "render.php"
   },
   "supports": {

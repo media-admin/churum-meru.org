@@ -1,0 +1,58 @@
+/**
+ * Slider Block – Strukturelles CSS
+ * Visuelles Styling → Theme SCSS: _block-slider.scss
+ *
+ * Swiper-Core-CSS muss separat geladen sein (bereits via Logo-Slider-Enqueue).
+ */
+
+.ml-block-slider {
+    position: relative;
+}
+
+.ml-slider__swiper {
+    width: 100%;
+}
+
+/* Jede Folie: volle Breite standardmäßig */
+.ml-slider__wrapper > .swiper-slide {
+    height: auto;
+}
+
+/* InnerBlocks-Content in Folien */
+.ml-slider__wrapper > .swiper-slide > * {
+    width: 100%;
+}
+
+/* Navigation Buttons */
+.ml-slider__btn {
+    /* Swiper überschreibt diese – nur z-index sicherstellen */
+    z-index: 10;
+}
+
+/* Wenn nur 1 Folie: Navigation ausblenden */
+.ml-slider__swiper.swiper-initialized.swiper-horizontal > .swiper-button-prev,
+.ml-slider__swiper.swiper-initialized.swiper-horizontal > .swiper-button-next {
+    display: flex;
+}
+
+/* Pagination */
+.ml-slider__pagination {
+    position: relative !important;
+    bottom: auto !important;
+    margin-top: 1rem;
+}
+
+/* Slide-Inhalt automatisch zentrieren */
+.ml-slider--effect-fade .swiper-slide {
+    pointer-events: none;
+}
+.ml-slider--effect-fade .swiper-slide-active {
+    pointer-events: auto;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .ml-slider__swiper {
+        --swiper-transition-duration: 0ms !important;
+    }
+}

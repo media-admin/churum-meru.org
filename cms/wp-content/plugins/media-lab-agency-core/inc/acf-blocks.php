@@ -655,7 +655,7 @@ function medialab_register_acf_block_fields(): void {
         ],
         'location'   => [ [ [ 'param' => 'block', 'operator' => '==', 'value' => 'medialab/parallax' ] ] ],
         'menu_order' => 0,
-        'position'   => 'side',
+        'position'   => 'normal',
         'style'      => 'default',
     ] );
 
@@ -748,7 +748,11 @@ function medialab_register_acf_block_fields(): void {
                 'label'   => ' ',
                 'name'    => 'slider_msg',
                 'type'    => 'message',
-                'message' => '<p style="font-size:12px;color:#666;margin:0;">Jeder direkt eingefügte Block wird zu einer eigenen Folie. Tipp: <strong>Group-Block</strong> pro Folie für strukturierten Inhalt.</p>',
+                'message' => '<p style="font-size:12px;color:#666;margin:0 0 .5rem;">'
+                           . 'Jeder direkt eingefügte Block wird zu einer eigenen Folie.<br>'
+                           . '<strong>Tipp: Group-Block</strong> pro Folie für strukturierten Inhalt.<br>'
+                           . '<strong>Blöcke einfügen:</strong> In den Slider klicken → „+" verwenden.<br>'
+                           . 'Bestehende Blöcke verschieben: <em>Listenansicht</em> (linkes Panel) nutzen.</p>',
                 'default_value' => '',
             ],
             [
@@ -853,7 +857,7 @@ function medialab_register_acf_block_fields(): void {
         ],
         'location'   => [ [ [ 'param' => 'block', 'operator' => '==', 'value' => 'medialab/slider' ] ] ],
         'menu_order' => 0,
-        'position'   => 'side',
+        'position'   => 'normal',
         'style'      => 'default',
     ] );
 }

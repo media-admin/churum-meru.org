@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "medialab/parallax",
+  "title": "Parallax-Sektion",
+  "description": "Hintergrundbild mit Parallax-Scrolleffekt. Beliebiger Content (Text, Buttons, …) kann per InnerBlocks eingefügt werden.",
+  "category": "design",
+  "icon": "image-rotate",
+  "keywords": ["parallax", "sektion", "hintergrund", "scroll", "banner"],
+  "textdomain": "media-lab-agency-core",
+  "acf": {
+    "mode": "auto",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "anchor": true,
+    "align": ["full", "wide"],
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "example": {}
+}

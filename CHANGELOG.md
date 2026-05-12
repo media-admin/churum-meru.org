@@ -6,6 +6,54 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
+## [1.19.0] - 2026-05-12
+
+### media-lab-agency-core 1.8.6
+
+#### Added
+- **Top Header – Drag & Drop Reihenfolge** (`inc/top-header-order.php`) –
+  Neue Seite auf Agency Core → Top Header: Kontakt-Elemente (Adresse,
+  Öffnungszeiten, Telefon, E-Mail) und Social-Media-Kanäle (Facebook,
+  Instagram, LinkedIn, X/Twitter, YouTube, Xing) sind per Drag & Drop
+  sortierbar. Reihenfolge wird in `wp_options` als JSON gespeichert
+  (`medialab_top_header_item_order`, `medialab_top_header_social_order`).
+  AJAX-Handler mit Nonce-Schutz; `jquery-ui-sortable` aus WP Core.
+
+#### Changed
+- **Social Share Buttons** (`assets/css/social-share.css`) – Standard-Button-
+  Größe von `2.5rem` auf `1.75rem` reduziert; Padding von `0 0.75rem` auf
+  `0 0.5rem`; SVG-Größe von `1.125rem` auf `1rem` verkleinert.
+
+### custom-theme
+
+#### Added
+- **Notifications – Rich Content Popup** (`assets/src/scss/components/_notifications.scss`) –
+  Neue Modifier-Klassen `.notification-popup--rich` und
+  `.notification-popup__body--rich` mit scoped Gutenberg-Block-Styles
+  (wp:image, wp:buttons, Überschriften, Listen, Separator). Overlay-Opacity
+  von `0.5` auf `0.85` erhöht.
+
+#### Changed
+- **Notifications – Gutenberg-Content** (`assets/src/js/components/notifications.js`) –
+  `showPopup()` rendert jetzt `n.content` (Gutenberg-HTML) vorrangig vor
+  `n.message` (ACF-Kurztext). Bei Rich Content: kein Dashicon-Icon,
+  Popup-Breite auf Container ausgedehnt.
+- **Notifications – Popup-Sizing** (`_notifications.scss`) –
+  Popup-Breite auf `$container-width` gesetzt; Overlay-Padding dynamisch:
+  `max($spacing-4, calc((100vw - $container-width) / 2))` → Popup sitzt
+  pixel-genau im Container-Raster.
+- **Notifications – Text-Ausrichtung** (`_notifications.scss`) –
+  `text-align: center` auf `.notification-popup` greift nur noch wenn kein
+  Rich Content vorhanden (`&:not(.notification-popup--rich)`); Gutenberg-
+  Ausrichtungsklassen (`.has-text-align-*`) werden vollständig respektiert.
+- **Top Header – Reihenfolge** (`header.php`) –
+  Feste `if/endif`-Blöcke für Kontakt-Elemente durch Render-Map + Loop
+  ersetzt. Reihenfolge kommt aus `medialab_get_top_header_order()` und
+  `medialab_get_top_header_social_order()` (Fallback: bisherige
+  Standard-Reihenfolge). Social Media bleibt rechtsbündig.
+
+---
+
 ## [1.19.0] - 2026-05-07
 
 ### media-lab-agency-core 1.9.0

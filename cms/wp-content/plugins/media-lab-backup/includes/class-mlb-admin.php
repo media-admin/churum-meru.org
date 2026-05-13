@@ -1,0 +1,238 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * MLBKP_Admin
+ *
+ * Registriert Admin-Menü, Einstellungsseiten und AJAX-Handler.
+ */
+class MLBKP_Admin {
+
+    const MENU_SLUG     = 'media-lab-backup';
+    const SETTINGS_KEY  = 'mlbkp_settings';
+    const NONCE_ACTION  = 'mlbkp_admin_nonce';
+
+    public static function init(): void {
+        if ( ! is_admin() ) return;
+
+        add_action( 'admin_menu',           [ self::class, 'register_menu' ] );
+        add_action( 'admin_enqueue_scripts', [ self::class, 'enqueue_assets' ] );
+
+        // AJAX: Backup starten
+        add_action( 'wp_ajax_mlbkp_run_backup',        [ self::class, 'ajax_run_backup' ] );
+        // AJAX: SFTP-Verbindung testen
+        add_action( 'wp_ajax_mlbkp_test_connection',   [ self::class, 'ajax_test_connection' ] );
+        // AJAX: Einstellungen speichern
+        add_action( 'wp_ajax_mlbkp_save_settings',     [ self::class, 'ajax_save_settings' ] );
+    }
+
+    // ── Menü ─────────────────────────────────────────────────────────────────
+
+    public static function register_menu(): void {
+        add_menu_page(
+            'Media Lab Backup',
+            'ML Backup',
+            'manage_options',
+            self::MENU_SLUG,
+            [ self::class, 'render_page' ],
+            'dashicons-backup',
+            81
+        );
+    }
+
+    // ── Assets ───────────────────────────────────────────────────────────────
+
+    public static function enqueue_assets( string $hook ): void {
+        if ( ! str_contains( $hook, self::MENU_SLUG ) ) return;
+
+        wp_enqueue_style(
+            'mlbkp-admin',
+            MLBKP_PLUGIN_URL . 'admin/css/admin.css',
+            [],
+            MLBKP_VERSION
+        );
+
+        wp_enqueue_script(
+            'mlbkp-admin',
+            MLBKP_PLUGIN_URL . 'admin/js/admin.js',
+            [ 'jquery' ],
+            MLBKP_VERSION,
+            true
+        );
+
+        wp_localize_script( 'mlbkp-admin', 'mlbkpData', [
+            'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+            'nonce'     => wp_create_nonce( self::NONCE_ACTION ),
+            'strings'   => [
+                'running'       => 'Backup läuft …',
+                'success'       => '✅ Backup erfolgreich abgeschlossen.',
+                'error'         => '❌ Fehler beim Backup.',
+                'testing'       => 'Verbindung wird getestet …',
+                'conn_success'  => '✅ SFTP-Verbindung erfolgreich.',
+                'conn_error'    => '❌ Verbindungsfehler: ',
+                'saving'        => 'Einstellungen werden gespeichert …',
+                'saved'         => '✅ Einstellungen gespeichert.',
+            ],
+        ] );
+    }
+
+    // ── Seiten-Rendering ─────────────────────────────────────────────────────
+
+    public static function render_page(): void {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( 'Keine Berechtigung.' );
+        }
+
+        $tab = sanitize_key( $_GET['tab'] ?? 'settings' );
+        $tabs = [
+            'settings' => 'Einstellungen',
+            'run'      => 'Backup starten',
+            'logs'     => 'Protokoll',
+        ];
+
+        echo '<div class="wrap mlb-wrap">';
+        echo '<h1><span class="dashicons dashicons-backup"></span> Media Lab Backup</h1>';
+
+        // Tab-Navigation
+        echo '<nav class="nav-tab-wrapper mlb-tabs">';
+        foreach ( $tabs as $key => $label ) {
+            $active = $tab === $key ? ' nav-tab-active' : '';
+            $url    = admin_url( 'admin.php?page=' . self::MENU_SLUG . '&tab=' . $key );
+            echo "<a href=\"{$url}\" class=\"nav-tab{$active}\">{$label}</a>";
+        }
+        echo '</nav>';
+
+        echo '<div class="mlb-tab-content">';
+
+        switch ( $tab ) {
+            case 'run':
+                require MLBKP_PLUGIN_DIR . 'admin/views/page-run.php';
+                break;
+            case 'logs':
+                require MLBKP_PLUGIN_DIR . 'admin/views/page-logs.php';
+                break;
+            default:
+                require MLBKP_PLUGIN_DIR . 'admin/views/page-settings.php';
+        }
+
+        echo '</div></div>';
+    }
+
+    // ── AJAX: Backup starten ─────────────────────────────────────────────────
+
+    public static function ajax_run_backup(): void {
+        check_ajax_referer( self::NONCE_ACTION, 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => 'Keine Berechtigung.' ] );
+        }
+
+        $type = sanitize_key( $_POST['backup_type'] ?? 'full' );
+        $allowed_types = [ 'database', 'wpcontent', 'wpcore', 'full' ];
+
+        if ( ! in_array( $type, $allowed_types, true ) ) {
+            wp_send_json_error( [ 'message' => 'Ungültiger Backup-Typ.' ] );
+        }
+
+        $runner = new MLBKP_Backup_Runner();
+        $result = $runner->run( $type, 'manual' );
+
+        if ( $result['success'] ) {
+            wp_send_json_success( [
+                'message' => $result['message'],
+                'log'     => $result['log'],
+            ] );
+        } else {
+            wp_send_json_error( [
+                'message' => $result['message'],
+                'log'     => $result['log'],
+            ] );
+        }
+    }
+
+    // ── AJAX: SFTP testen ────────────────────────────────────────────────────
+
+    public static function ajax_test_connection(): void {
+        check_ajax_referer( self::NONCE_ACTION, 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => 'Keine Berechtigung.' ] );
+        }
+
+        $settings = mlbkp_get_settings();
+
+        // Ggf. Live-Daten aus dem Formular verwenden (vor dem Speichern testen)
+        if ( ! empty( $_POST['sftp_host'] ) ) {
+            $settings['sftp_host']     = sanitize_text_field( $_POST['sftp_host'] );
+            $settings['sftp_port']     = (int) ( $_POST['sftp_port'] ?? 22 );
+            $settings['sftp_username'] = sanitize_text_field( $_POST['sftp_username'] );
+            $settings['sftp_password'] = $_POST['sftp_password'] ?? $settings['sftp_password'];
+            $settings['sftp_path']     = sanitize_text_field( $_POST['sftp_path'] ?? '/backups' );
+        }
+
+        $result = MLBKP_SFTP::test_connection( $settings );
+
+        if ( $result === true ) {
+            wp_send_json_success( [ 'message' => 'SFTP-Verbindung erfolgreich.' ] );
+        } else {
+            wp_send_json_error( [ 'message' => $result ] );
+        }
+    }
+
+    // ── AJAX: Einstellungen speichern ────────────────────────────────────────
+
+    public static function ajax_save_settings(): void {
+        check_ajax_referer( self::NONCE_ACTION, 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => 'Keine Berechtigung.' ] );
+        }
+
+        $current  = mlbkp_get_settings();
+        $password = sanitize_text_field( $_POST['sftp_password'] ?? '' );
+
+        // Leeres Passwort = altes Passwort behalten
+        if ( empty( $password ) ) {
+            $password = $current['sftp_password'];
+        }
+
+        $new_settings = [
+            // SFTP
+            'sftp_host'     => sanitize_text_field( $_POST['sftp_host'] ?? '' ),
+            'sftp_port'     => (int) ( $_POST['sftp_port'] ?? 22 ),
+            'sftp_username' => sanitize_text_field( $_POST['sftp_username'] ?? '' ),
+            'sftp_password' => $password,
+            'sftp_path'     => sanitize_text_field( $_POST['sftp_path'] ?? '/backups' ),
+
+            // Scope
+            'backup_database'  => ! empty( $_POST['backup_database'] )  ? '1' : '0',
+            'backup_wpcontent' => ! empty( $_POST['backup_wpcontent'] ) ? '1' : '0',
+            'backup_wpcore'    => ! empty( $_POST['backup_wpcore'] )    ? '1' : '0',
+
+            // Ausschlüsse
+            'exclude_paths' => sanitize_textarea_field( $_POST['exclude_paths'] ?? '' ),
+
+            // Schedule
+            'schedule'      => sanitize_key( $_POST['schedule'] ?? 'daily' ),
+            'schedule_time' => sanitize_text_field( $_POST['schedule_time'] ?? '02:00' ),
+            'schedule_day'  => sanitize_key( $_POST['schedule_day'] ?? 'monday' ),
+
+            // Retention
+            'retention_count' => max( 1, (int) ( $_POST['retention_count'] ?? 7 ) ),
+
+            // Benachrichtigung
+            'notify_email' => sanitize_email( $_POST['notify_email'] ?? '' ),
+            'notify_on'    => sanitize_key( $_POST['notify_on'] ?? 'error' ),
+        ];
+
+        update_option( self::SETTINGS_KEY, $new_settings );
+
+        // Cron neu planen
+        MLBKP_Scheduler::reschedule();
+
+        wp_send_json_success( [
+            'message'  => 'Einstellungen gespeichert.',
+            'next_run' => MLBKP_Scheduler::get_next_run() ?? '—',
+        ] );
+    }
+}

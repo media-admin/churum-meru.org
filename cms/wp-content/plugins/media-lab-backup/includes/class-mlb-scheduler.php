@@ -1,0 +1,155 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * MLBKP_Scheduler
+ *
+ * Verwaltet WP-Cron-Jobs für automatische Backups.
+ */
+class MLBKP_Scheduler {
+
+    const CRON_HOOK_DAILY   = 'mlbkp_cron_backup_daily';
+    const CRON_HOOK_WEEKLY  = 'mlbkp_cron_backup_weekly';
+
+    public static function init(): void {
+        add_action( self::CRON_HOOK_DAILY,  [ self::class, 'run_scheduled_backup' ] );
+        add_action( self::CRON_HOOK_WEEKLY, [ self::class, 'run_scheduled_backup' ] );
+
+        // Benutzerdefinierter WP-Cron-Interval
+        add_filter( 'cron_schedules', [ self::class, 'add_cron_intervals' ] );
+    }
+
+    public static function activate(): void {
+        self::reschedule();
+    }
+
+    public static function deactivate(): void {
+        self::clear_all();
+    }
+
+    /**
+     * Wird von der Einstellungsseite aufgerufen, nachdem Settings gespeichert wurden.
+     */
+    public static function reschedule(): void {
+        self::clear_all();
+
+        $settings = mlbkp_get_settings();
+        $schedule = $settings['schedule'] ?? 'none';
+
+        if ( $schedule === 'none' ) return;
+
+        $time = self::calculate_next_run( $settings );
+
+        if ( $schedule === 'daily' ) {
+            wp_schedule_event( $time, 'mlbkp_daily', self::CRON_HOOK_DAILY );
+        } elseif ( $schedule === 'weekly' ) {
+            wp_schedule_event( $time, 'mlbkp_weekly', self::CRON_HOOK_WEEKLY );
+        }
+    }
+
+    public static function run_scheduled_backup(): void {
+        $settings = mlbkp_get_settings();
+
+        // Backup-Typ aus Einstellungen bestimmen
+        $type = self::determine_backup_type( $settings );
+
+        $runner = new MLBKP_Backup_Runner();
+        $runner->run( $type, 'cron' );
+    }
+
+    public static function add_cron_intervals( array $schedules ): array {
+        $schedules['mlbkp_daily'] = [
+            'interval' => DAY_IN_SECONDS,
+            'display'  => __( 'Media Lab Backup — Täglich', 'media-lab-backup' ),
+        ];
+        $schedules['mlbkp_weekly'] = [
+            'interval' => WEEK_IN_SECONDS,
+            'display'  => __( 'Media Lab Backup — Wöchentlich', 'media-lab-backup' ),
+        ];
+        return $schedules;
+    }
+
+    // ── Status ───────────────────────────────────────────────────────────────
+
+    public static function get_next_run(): ?string {
+        $next = wp_next_scheduled( self::CRON_HOOK_DAILY )
+             ?: wp_next_scheduled( self::CRON_HOOK_WEEKLY );
+
+        if ( ! $next ) return null;
+
+        return wp_date( 'd.m.Y H:i', $next );
+    }
+
+    public static function is_scheduled(): bool {
+        return (bool) (
+            wp_next_scheduled( self::CRON_HOOK_DAILY ) ||
+            wp_next_scheduled( self::CRON_HOOK_WEEKLY )
+        );
+    }
+
+    // ── Private ──────────────────────────────────────────────────────────────
+
+    private static function clear_all(): void {
+        wp_clear_scheduled_hook( self::CRON_HOOK_DAILY );
+        wp_clear_scheduled_hook( self::CRON_HOOK_WEEKLY );
+    }
+
+    /**
+     * Berechnet den nächsten Ausführungszeitpunkt basierend auf den Einstellungen.
+     */
+    private static function calculate_next_run( array $settings ): int {
+        $time_str = $settings['schedule_time'] ?? '02:00';
+        $day      = $settings['schedule_day']  ?? 'monday';
+        $schedule = $settings['schedule']      ?? 'daily';
+
+        [ $hour, $minute ] = explode( ':', $time_str );
+
+        $now = time();
+
+        if ( $schedule === 'daily' ) {
+            $next = mktime( (int) $hour, (int) $minute, 0 );
+            if ( $next <= $now ) {
+                $next += DAY_IN_SECONDS;
+            }
+            return $next;
+        }
+
+        // Wöchentlich: nächsten Wochentag finden
+        $days_map = [
+            'monday'    => 'Monday',
+            'tuesday'   => 'Tuesday',
+            'wednesday' => 'Wednesday',
+            'thursday'  => 'Thursday',
+            'friday'    => 'Friday',
+            'saturday'  => 'Saturday',
+            'sunday'    => 'Sunday',
+        ];
+
+        $day_name = $days_map[ $day ] ?? 'Monday';
+        $next     = strtotime( "next {$day_name} {$hour}:{$minute}:00" );
+
+        // Falls heute der richtige Tag ist und die Uhrzeit noch kommt
+        if ( date( 'l' ) === $day_name ) {
+            $today_run = mktime( (int) $hour, (int) $minute, 0 );
+            if ( $today_run > $now ) {
+                $next = $today_run;
+            }
+        }
+
+        return $next;
+    }
+
+    private static function determine_backup_type( array $settings ): string {
+        $db      = ! empty( $settings['backup_database'] );
+        $content = ! empty( $settings['backup_wpcontent'] );
+        $core    = ! empty( $settings['backup_wpcore'] );
+
+        if ( $db && $content && $core ) return 'full';
+        if ( $db && $content )          return 'full';
+        if ( $db )                       return 'database';
+        if ( $content )                  return 'wpcontent';
+        if ( $core )                     return 'wpcore';
+
+        return 'full';
+    }
+}

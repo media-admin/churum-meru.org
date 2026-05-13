@@ -17,8 +17,9 @@ class MLBKP_Database_Backup {
 
     /**
      * Erstellt einen SQL-Dump und gibt den Pfad zur .sql.gz Datei zurück.
+     * Versucht zuerst mysqldump, fällt bei Fehler automatisch auf PHP-Fallback zurück.
      *
-     * @return array{path: string, size: int, method: string}
+     * @return array{path: string, size: int, method: string, fallback_reason: string}
      * @throws RuntimeException
      */
     public function create(): array {
@@ -26,13 +27,22 @@ class MLBKP_Database_Backup {
         $filepath  = $this->temp_dir . $filename;
         $gzip_path = $filepath . '.gz';
 
-        // mysqldump versuchen
+        $method          = 'php';
+        $fallback_reason = '';
+
         if ( $this->is_mysqldump_available() ) {
-            $this->dump_via_mysqldump( $filepath );
-            $method = 'mysqldump';
+            try {
+                $this->dump_via_mysqldump( $filepath );
+                $method = 'mysqldump';
+            } catch ( RuntimeException $e ) {
+                // mysqldump gescheitert → PHP-Fallback
+                $fallback_reason = $e->getMessage();
+                @unlink( $filepath ); // ggf. leere/unvollständige Datei löschen
+                $this->dump_via_php( $filepath );
+            }
         } else {
+            $fallback_reason = 'mysqldump nicht verfügbar (exec/shell_exec deaktiviert oder Binary fehlt)';
             $this->dump_via_php( $filepath );
-            $method = 'php';
         }
 
         // Komprimieren
@@ -44,10 +54,11 @@ class MLBKP_Database_Backup {
         }
 
         return [
-            'path'     => $gzip_path,
-            'filename' => basename( $gzip_path ),
-            'size'     => filesize( $gzip_path ),
-            'method'   => $method,
+            'path'            => $gzip_path,
+            'filename'        => basename( $gzip_path ),
+            'size'            => filesize( $gzip_path ),
+            'method'          => $method,
+            'fallback_reason' => $fallback_reason,
         ];
     }
 
@@ -67,34 +78,76 @@ class MLBKP_Database_Backup {
      * @throws RuntimeException
      */
     private function dump_via_mysqldump( string $filepath ): void {
-        global $wpdb;
-
         $host     = DB_HOST;
         $dbname   = DB_NAME;
         $username = DB_USER;
         $password = DB_PASSWORD;
 
-        // Host und Port trennen
-        $port = '3306';
-        if ( str_contains( $host, ':' ) ) {
+        // Host und Port / Socket trennen
+        $port   = '3306';
+        $socket = '';
+
+        if ( str_starts_with( $host, '/' ) ) {
+            // Unix-Socket (z.B. /var/run/mysqld/mysqld.sock)
+            $socket = $host;
+            $host   = '127.0.0.1';
+        } elseif ( str_contains( $host, ':' ) ) {
             [ $host, $port ] = explode( ':', $host, 2 );
         }
 
-        $cmd = sprintf(
-            'mysqldump --host=%s --port=%s --user=%s --password=%s --single-transaction --routines --triggers --events --set-gtid-purged=OFF %s > %s 2>&1',
-            escapeshellarg( $host ),
-            escapeshellarg( $port ),
-            escapeshellarg( $username ),
-            escapeshellarg( $password ),
-            escapeshellarg( $dbname ),
-            escapeshellarg( $filepath )
-        );
+        // Command zusammenbauen
+        $args = [
+            'mysqldump',
+            '--host=' . escapeshellarg( $host ),
+            '--port=' . escapeshellarg( $port ),
+            '--user=' . escapeshellarg( $username ),
+            '--password=' . escapeshellarg( $password ),
+            '--single-transaction',
+            '--routines',
+            '--triggers',
+            '--skip-column-statistics',
+            '--set-gtid-purged=OFF',
+        ];
 
-        exec( $cmd, $output, $return_code );
+        if ( $socket !== '' ) {
+            $args[] = '--socket=' . escapeshellarg( $socket );
+        }
 
-        if ( $return_code !== 0 ) {
+        $args[] = escapeshellarg( $dbname );
+
+        $cmd = implode( ' ', $args );
+
+        // proc_open für sauberes stdout/stderr-Handling
+        if ( ! function_exists( 'proc_open' ) ) {
+            throw new RuntimeException( 'proc_open ist auf diesem Server deaktiviert.' );
+        }
+
+        $spec = [
+            0 => [ 'pipe', 'r' ],  // stdin
+            1 => [ 'file', $filepath, 'w' ],  // stdout → direkt in Datei
+            2 => [ 'pipe', 'w' ],  // stderr
+        ];
+
+        $proc = proc_open( $cmd, $spec, $pipes );
+
+        if ( ! is_resource( $proc ) ) {
+            throw new RuntimeException( 'proc_open: mysqldump konnte nicht gestartet werden.' );
+        }
+
+        fclose( $pipes[0] );
+        $stderr   = stream_get_contents( $pipes[2] );
+        fclose( $pipes[2] );
+        $exit_code = proc_close( $proc );
+
+        // Passwort aus Log-Ausgabe entfernen
+        $cmd_log = preg_replace( '/--password=\S+/', '--password=***', $cmd );
+
+        if ( $exit_code !== 0 ) {
+            $stderr_clean = trim( $stderr );
             throw new RuntimeException(
-                'mysqldump fehlgeschlagen (Exit-Code ' . $return_code . '): ' . implode( ' ', $output )
+                "mysqldump fehlgeschlagen (Exit-Code {$exit_code}):" .
+                ( $stderr_clean !== '' ? "\n   stderr: {$stderr_clean}" : '' ) .
+                "\n   cmd: {$cmd_log}"
             );
         }
 

@@ -53,6 +53,10 @@ class MLBKP_Backup_Runner {
                 $result    = $db_backup->create();
 
                 $this->log( "   Methode: {$result['method']}" );
+                if ( ! empty( $result['fallback_reason'] ) ) {
+                    $this->log( "   ⚠ mysqldump fehlgeschlagen, PHP-Fallback verwendet." );
+                    $this->log( "   Grund: {$result['fallback_reason']}" );
+                }
                 $this->log( '   Größe:   ' . MLBKP_Logger::format_bytes( $result['size'] ) );
                 $this->log( '📤 DB-Dump hochladen …' );
 

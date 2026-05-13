@@ -8,14 +8,18 @@ Entwickelt von [Media Lab Tritremmel GmbH](https://media-lab.at).
 
 ## Features
 
-- ✅ **Datenbank-Backup** — SQL-Dump via `mysqldump` (mit PHP-Fallback)
+- ✅ **Datenbank-Backup** — SQL-Dump via `mysqldump` (mit reinem PHP-Fallback + GZIP)
 - ✅ **Datei-Backup** — `wp-content/` oder vollständiges WP-Verzeichnis als ZIP
-- ✅ **SFTP-Upload** — via phpseclib (Port 22, kein SSH2-Extension nötig)
-- ✅ **Retention** — automatisches Löschen alter Backups
-- ✅ **WP-Cron** — täglich oder wöchentlich, konfigurierbare Uhrzeit
-- ✅ **Manuelles Backup** — jederzeit aus dem Admin-Bereich
-- ✅ **E-Mail-Benachrichtigung** — bei Fehler oder immer
-- ✅ **Verbindungstest** — SFTP-Verbindung vor dem ersten Backup prüfen
+- ✅ **SFTP-Upload** — via phpseclib3, Port 22, keine Server-Extension nötig
+- ✅ **Passwort- & SSH-Key-Authentifizierung** — RSA, Ed25519, ECDSA
+- ✅ **Konfigurierbarer Website-Unterordner** — frei wählbar, mit Domain-Vorschlag
+- ✅ **Retention** — automatisches Löschen alter Backups auf der Storage Box
+- ✅ **WP-Cron** — täglich oder wöchentlich, konfigurierbare Uhrzeit & Wochentag
+- ✅ **Manuelles Backup** — jederzeit aus dem Admin-Bereich mit Live-Log
+- ✅ **Interaktiver Ausschluss-Picker** — Verzeichnisbaum mit Checkboxen, Textarea-Sync
+- ✅ **E-Mail-Benachrichtigung** — bei Fehler, immer oder nie
+- ✅ **WP-CLI-Integration** — 4 Befehle für Automatisierung & Monitoring
+- ✅ **Backup-Protokoll** — alle Runs mit Status, Größe, Dauer und Fehlermeldung
 
 ---
 
@@ -23,21 +27,26 @@ Entwickelt von [Media Lab Tritremmel GmbH](https://media-lab.at).
 
 - WordPress 6.0+
 - PHP 8.0+
-- Composer
-- PHP-Extension: `zip`, `zlib`
-- Hetzner Storage Box mit SFTP-Zugang
+- Composer (für lokale Entwicklung)
+- PHP-Extensions: `zip`, `zlib`
+- Hetzner Storage Box mit SFTP-Zugang (Sub-Account empfohlen)
 
 ---
 
 ## Installation
 
-### 1. Plugin hochladen
+### 1. Plugin-Verzeichnis in wp-content/plugins/ ablegen
 
-```
-wp-content/plugins/media-lab-backup/
+```bash
+# Via Git (Starter Kit)
+git pull
+
+# Oder ZIP manuell hochladen via WP-Admin → Plugins → Plugin hochladen
 ```
 
 ### 2. Composer-Abhängigkeiten installieren
+
+Nur nötig wenn `vendor/` nicht im Repo liegt:
 
 ```bash
 cd wp-content/plugins/media-lab-backup
@@ -46,89 +55,163 @@ composer install --no-dev --optimize-autoloader
 
 ### 3. Plugin aktivieren
 
-Im WordPress-Admin unter **Plugins → Installierte Plugins**.
+WP-Admin → Plugins → **Media Lab Backup** aktivieren.
 
 ### 4. Konfigurieren
 
 **WP-Admin → ML Backup → Einstellungen**
 
-- Hetzner Storage Box Hostname eintragen (z.B. `u123456.your-storagebox.de`)
-- Port: `22`
-- Benutzername & Passwort der Storage Box
-- Remote-Pfad (z.B. `/backups`)
-- Backup-Scope auswählen
-- Zeitplan konfigurieren
-- **Verbindung testen** — dann speichern
-
 ---
 
 ## Hetzner Storage Box einrichten
 
-1. Im Hetzner Robot unter **Storage Box** → **Zugangsdaten**
-2. SFTP-Zugang ist standardmäßig aktiv
-3. Hostname: `uXXXXXX.your-storagebox.de`
-4. Port: `22`
-5. Benutzername: `uXXXXXX`
+### Empfohlen: Sub-Account
 
-Optional: Sub-Account für Backups anlegen (empfohlen).
+1. Hetzner Robot → Storage Box → **Sub-Account erstellen**
+2. Basisverzeichnis auf gewünschten Backup-Ordner setzen (z.B. `website-backups`)
+3. Folgende Optionen aktivieren:
+   - ✅ **SSH erlauben**
+   - ✅ **Externe Erreichbarkeit**
+4. Speichern und 2–3 Minuten warten (Propagation)
+
+### Verbindungsdaten im Plugin
+
+| Feld | Wert |
+|---|---|
+| Hostname | `uXXXXXX.your-storagebox.de` |
+| Port | `22` |
+| Benutzername | `uXXXXXX-sub1` (Sub-Account) |
+| Remote-Basispfad | `/` (wenn Sub-Account mit eingeschränktem Root) |
+| Website-Unterordner | z.B. `meinekunde.at` |
+
+> **Wichtig:** Wenn der Sub-Account ein Basisverzeichnis hat (z.B. `website-backups`), ist sein Root bereits dieses Verzeichnis → Basispfad im Plugin auf `/` setzen.
+
+---
+
+## SSH-Key-Authentifizierung
+
+### Key generieren
+
+```bash
+ssh-keygen -t ed25519 -C "media-lab-backup" -f ~/.ssh/hetzner_backup
+```
+
+### Public Key auf der Storage Box hinterlegen
+
+```bash
+# Via SFTP (Beispiel mit sftp-Kommando)
+sftp uXXXXXX-sub1@uXXXXXX.your-storagebox.de
+sftp> mkdir .ssh
+sftp> put ~/.ssh/hetzner_backup.pub .ssh/authorized_keys
+sftp> chmod 600 .ssh/authorized_keys
+```
+
+### Im Plugin konfigurieren
+
+1. Einstellungen → Authentifizierung → **SSH-Key** auswählen
+2. Inhalt von `~/.ssh/hetzner_backup` (Private Key, **nicht** `.pub`) in das Textarea einfügen
+3. Passphrase eintragen falls vorhanden
+4. Verbindung testen
+
+---
+
+## Ausschlüsse konfigurieren
+
+Im Tab **Einstellungen → Was soll gesichert werden?** den Verzeichnisbaum laden und gewünschte Ordner per Checkbox ausschließen. Alternativ direkt in die Textarea eintragen.
+
+Pfade sind **relativ zu `wp-content/`**, ein Pfad pro Zeile:
+
+```
+cache
+uploads/2020
+uploads/2021
+plugins/unused-plugin
+themes/old-theme
+```
 
 ---
 
 ## Verzeichnisstruktur auf der Storage Box
 
 ```
-/backups/
-└── meinedomain-at/          ← automatisch nach Site-Domain benannt
-    ├── db-backup-2025-01-15_02-00-00.sql.gz
-    ├── db-backup-2025-01-16_02-00-00.sql.gz
-    ├── files-wpcontent-2025-01-15_02-00-00.zip
-    └── files-wpcontent-2025-01-16_02-00-00.zip
+/                                    ← Sub-Account Root (= Basisverzeichnis)
+└── stadtwirt-berndorf.at/           ← Website-Unterordner (frei konfigurierbar)
+    ├── db-backup-2026-05-13_02-00-00.sql.gz
+    ├── db-backup-2026-05-14_02-00-00.sql.gz
+    ├── files-wpcontent-2026-05-13_02-00-00.zip
+    └── files-wpcontent-2026-05-14_02-00-00.zip
+```
+
+---
+
+## WP-CLI
+
+```bash
+# Vollständiges Backup ausführen
+wp mlbkp backup
+
+# Nur Datenbank sichern
+wp mlbkp backup --type=database
+
+# Nur wp-content sichern
+wp mlbkp backup --type=wpcontent
+
+# Nur WP-Core sichern
+wp mlbkp backup --type=wpcore
+
+# SFTP-Verbindung testen
+wp mlbkp test
+
+# Status & Konfiguration anzeigen
+wp mlbkp status
+
+# Backup-Protokoll anzeigen (Standard: 20 Einträge)
+wp mlbkp logs
+wp mlbkp logs --limit=50
+wp mlbkp logs --format=json
+wp mlbkp logs --format=csv
+```
+
+### Automatisierung via System-Cron (Alternative zu WP-Cron)
+
+```bash
+# Täglich um 02:00 Uhr (in crontab -e eintragen)
+0 2 * * * cd /var/www/html && wp mlbkp backup --type=full --path=/var/www/html/cms --quiet
 ```
 
 ---
 
 ## Temp-Dateien
 
-Backup-Dateien werden temporär in gespeichert in:
+Backup-Dateien werden temporär gespeichert in:
 
 ```
 wp-content/uploads/media-lab-backup/temp/
 ```
 
-Das Verzeichnis ist durch `.htaccess` gegen direkten Zugriff geschützt.
-Temp-Dateien werden nach dem Upload automatisch gelöscht.
-
----
-
-## WP-CLI
-
-Manuelles Backup via WP-CLI (optional, für Cron via System-Cron):
-
-```bash
-wp eval "require_once WP_PLUGIN_DIR . '/media-lab-backup/media-lab-backup.php'; (new MLB_Backup_Runner())->run('full', 'cron');"
-```
+Das Verzeichnis ist durch `.htaccess` gegen direkten Webzugriff geschützt. Temp-Dateien werden nach erfolgreichem Upload automatisch gelöscht.
 
 ---
 
 ## Troubleshooting
 
 **„phpseclib ist nicht installiert"**
-→ `composer install` im Plugin-Verzeichnis ausführen.
+→ `composer install --no-dev` im Plugin-Verzeichnis ausführen.
 
 **„SFTP-Login fehlgeschlagen"**
-→ Zugangsdaten prüfen, Port 22 muss offen sein. Verbindungstest nutzen.
+→ Verbindungstest nutzen. Zugangsdaten, Port (22) und „SSH erlauben" im Hetzner Robot prüfen.
+
+**„Connection closed by server"**
+→ „Externe Erreichbarkeit" im Sub-Account aktivieren. Danach 2–3 Minuten warten.
 
 **Backup timeout im Browser**
-→ Für sehr große Sites: Backup über WP-Cron oder WP-CLI starten.
+→ Für sehr große Sites Backup via WP-CLI oder WP-Cron starten.
 
 **mysqldump nicht verfügbar**
-→ Plugin verwendet automatisch den PHP-Fallback-Dump. Funktioniert auf Shared Hosting.
+→ Plugin verwendet automatisch den PHP-Fallback-Dump. Auf Shared Hosting normal.
 
----
-
-## Changelog
-
-Siehe [CHANGELOG.md](CHANGELOG.md).
+**Website-Unterordner wird verändert**
+→ Sonderzeichen außer `a-z A-Z 0-9 . - _` werden durch `-` ersetzt. Punkte bleiben erhalten.
 
 ---
 

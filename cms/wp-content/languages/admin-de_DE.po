@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.9.x - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-10 22:14:34+0000\n"
+"PO-Revision-Date: 2026-05-12 20:20:31+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -333,7 +333,7 @@ msgstr "Du kannst dir alle Beiträge eines bestimmten Benutzers anschauen, indem
 
 #: wp-admin/users.php:47
 msgid "You can filter the list of users by User Role using the text links above the users list to show All, Administrator, Editor, Author, Contributor, or Subscriber. The default view is to show all users. Unused User Roles are not listed."
-msgstr "Du kannst die Liste der Benutzer nach ihrer Rolle filtern. Benutze die Links über der Liste, um alle Benutzer, Administratoren, Redakteure, Autoren, Mitarbeiter oder Abonnenten anzuzeigen. Standardmäßig werden alle Benutzer angezeigt. Unbenutzte Rollen werden nicht aufgezählt."
+msgstr "Du kannst die Benutzerliste nach Benutzerrollen filtern. Nutze die Textlinks über der Liste, um alle Benutzer, Administratoren, Redakteure, Autoren, Mitarbeiter oder Abonnenten anzuzeigen. Standardmäßig werden alle Benutzer angezeigt. Ungenutzte Rollen werden nicht aufgeführt."
 
 #: wp-admin/users.php:46
 msgid "You can hide/display columns based on your needs and decide how many users to list per screen using the Screen Options tab."
@@ -1530,7 +1530,7 @@ msgstr "Du bist leider nicht berechtigt, die Ausführung dieses Themes fortzuset
 
 #: wp-admin/theme-install.php:531
 msgid "This theme has not been rated yet."
-msgstr "Dieses Theme hat noch keine Bewertung."
+msgstr "Dieses Theme wurde noch nicht bewertet."
 
 #. translators: Hidden accessibility text.
 #: wp-admin/theme-install.php:480
@@ -1708,7 +1708,7 @@ msgstr "Wenn du mehr als das CSS deines Themes optimieren musst, solltest du vie
 
 #: wp-admin/theme-editor.php:447
 msgid "You appear to be making direct edits to your theme in the WordPress dashboard. It is not recommended! Editing your theme directly could break your site and your changes may be lost in future updates."
-msgstr "Du scheinst im WordPress-Dashboard direkte Änderungen an deinem Theme vorzunehmen. Das wird nicht empfohlen! Direkte Änderungen an deinem Theme können zu Fehlern auf deiner Website führen, außerdem können deine Änderungen bei zukünftigen Updates verloren gehen."
+msgstr "Es scheint, dass du dein Theme direkt im WordPress-Dashboard bearbeitest. Davon wird abgeraten! Das direkte Bearbeiten deines Themes könnte deine Website unbrauchbar machen und deine Änderungen könnten bei zukünftigen Updates verloren gehen."
 
 #: wp-admin/theme-editor.php:381
 msgid "This is a file in your current parent theme."
@@ -1907,7 +1907,7 @@ msgstr "Bericht in die Zwischenablage kopieren"
 
 #: wp-admin/site-health-info.php:51
 msgid "If you want to export a handy list of all the information on this page, you can use the button below to copy it to the clipboard. You can then paste it in a text file and save it to your device, or paste it in an email exchange with a support engineer or theme/plugin developer for example."
-msgstr "Wenn du eine praktische Liste aller Informationen von dieser Seite exportieren möchtest, kannst du sie über den Button unten in die Zwischenablage kopieren. Du kannst diese Liste dann in eine Textdatei einfügen und auf deinem Gerät speichern oder sie in einen E-Mail-Austausch mit einem Support-Techniker oder Theme-/Plugin-Entwickler einfügen."
+msgstr "Wenn du eine praktische Liste aller Informationen von dieser Seite exportieren möchtest, kannst du sie über den Button unten in die Zwischenablage kopieren. Du kannst diese Liste dann in eine Textdatei einfügen und auf deinem Gerät speichern oder sie in einen E-Mail-Austausch mit einem Support-Mitarbeiter oder Theme-/Plugin-Entwickler einfügen."
 
 #. translators: %s: URL to Site Health Status page.
 #: wp-admin/site-health-info.php:47
@@ -1933,7 +1933,7 @@ msgstr "Editor"
 
 #: wp-admin/setup-config.php:509
 msgid "All right, sparky! You&#8217;ve made it through this part of the installation. WordPress can now communicate with your database. If you are ready, time now to&hellip;"
-msgstr "Alles klar! Diesen Teil der Installation hast du geschafft. WordPress kann jetzt mit deiner Datenbank kommunizieren. Wenn du bereit bist, kannst du jetzt die &hellip;"
+msgstr "Sehr gut! Dieser Teil der Installation ist geschafft. WordPress kann jetzt mit deiner Datenbank kommunizieren. Wenn du bereit bist, kannst du jetzt die &hellip;"
 
 #. translators: Hidden accessibility text.
 #: wp-admin/setup-config.php:506
@@ -1982,7 +1982,7 @@ msgstr "<strong>Fehler:</strong> „Tabellenpräfix“ darf nicht leer sein."
 
 #: wp-admin/setup-config.php:264
 msgid "If you want to run multiple WordPress installations in a single database, change this."
-msgstr "Falls du mehrere WordPress-Installationen innerhalb einer Datenbank aufbauen möchtest, ändere diesen Eintrag."
+msgstr "Falls du mehrere WordPress-Installationen innerhalb einer Datenbank betreiben möchtest, ändere jeweils diesen Wert."
 
 #: wp-admin/setup-config.php:262
 msgid "Table Prefix"
@@ -1991,7 +1991,7 @@ msgstr "Tabellen-Präfix"
 #. translators: %s: localhost
 #: wp-admin/setup-config.php:257
 msgid "You should be able to get this info from your web host, if %s does not work."
-msgstr "Sollte %s nicht funktionieren, erfrage bitte die benötigte Information beim Support deines Webhostings."
+msgstr "Sollte %s nicht funktionieren, erfrage bitte die benötigten Informationen beim Support deines Webhostings."
 
 #: wp-admin/setup-config.php:252
 msgid "Database Host"
@@ -2108,7 +2108,7 @@ msgstr "Über diese Ansicht kannst du Revisionen überprüfen, vergleichen und w
 
 #: wp-admin/revision.php:143
 msgid "Revisions are saved copies of your post or page, which are periodically created as you update your content. The red text on the left shows the content that was removed. The green text on the right shows the content that was added."
-msgstr "Revisionen sind gespeicherte Kopien deines Beitrags oder deiner Seite, die periodisch erstellt werden, wenn du deine Inhalte aktualisierst. Der rote Text auf der linken Seite zeigt entfernte Inhalte. Der grüne Text auf der rechten Seite zeigt neu hinzugefügte Inhalte."
+msgstr "Revisionen sind gesicherte Kopien deines Beitrags oder deiner Seite, die periodisch erstellt werden, wenn du deren Inhalt aktualisierst. Der rote Text auf der linken Seite zeigt entfernte Inhalte. Der grüne Text auf der rechten Seite zeigt neu hinzugefügte Inhalte."
 
 #: wp-admin/revision.php:142
 msgid "This screen is used for managing your content revisions."
@@ -2513,7 +2513,7 @@ msgstr "Falls du dieses Plugin tatsächlich direkt ändern musst, empfehlen wir 
 
 #: wp-admin/plugin-editor.php:372
 msgid "You appear to be making direct edits to your plugin in the WordPress dashboard. Editing plugins directly is not recommended as it may introduce incompatibilities that break your site and your changes may be lost in future updates."
-msgstr "Du scheinst im WordPress-Dashboard direkte Änderungen an deinem Plugin vorzunehmen. Das wird nicht empfohlen! Direkte Änderungen an Plugins können Inkompatibilitäten verursachen, die dazu führen, dass deine Website nicht mehr funktioniert, außerdem können deine Änderungen bei zukünftigen Updates verloren gehen."
+msgstr "Es scheint, dass du dein Plugin direkt im WordPress-Dashboard bearbeitest. Das direkte Bearbeiten von Plugins wird nicht empfohlen, da dies Inkompatibilitäten verursachen kann, die deine Website unbrauchbar machen. Außerdem können deine Änderungen bei zukünftigen Updates verloren gehen."
 
 #: wp-admin/plugin-editor.php:371 wp-admin/theme-editor.php:444
 msgid "Heads up!"
@@ -2608,7 +2608,7 @@ msgstr "Wähle zuerst im Drop-down-Menü das zu bearbeitende Plugin und klicke d
 
 #: wp-admin/plugin-editor.php:141
 msgid "You can use the plugin file editor to make changes to any of your plugins&#8217; individual PHP files. Be aware that if you make changes, plugins updates will overwrite your customizations."
-msgstr "Du kannst den Plugin-Datei-Editor verwenden, um Änderungen in den individuellen PHP-Dateien deines Plugins vorzunehmen. Beachte aber, dass deine Anpassungen überschrieben werden, wenn du ein Plugin aktualisierst."
+msgstr "Mit dem Plugin-Datei-Editor kannst du Änderungen an den einzelnen PHP-Dateien deiner Plugins vornehmen. Beachte jedoch, dass deine Änderungen durch Plugin-Aktualisierungen überschrieben werden."
 
 #: wp-admin/plugin-editor.php:22
 msgid "Edit Plugins"
@@ -2616,7 +2616,7 @@ msgstr "Plugins bearbeiten"
 
 #: wp-admin/options.php:387
 msgid "This page allows direct access to your site settings. You can break things here. Please be cautious!"
-msgstr "Diese Seite ermöglicht den direkten Zugriff auf deine Website-Einstellungen. Du kannst hier Dinge zerstören. Bitte sei vorsichtig!"
+msgstr "Diese Seite bietet direkten Zugriff auf deine Website-Einstellungen. Du kannst hier einiges kaputtmachen. Bitte sei vorsichtig!"
 
 #: wp-admin/options.php:383
 msgid "All Settings"
@@ -3750,7 +3750,7 @@ msgstr "Menü speichern"
 
 #: wp-admin/nav-menus.php:1086
 msgid "Menu 1"
-msgstr "Menu 1"
+msgstr "Menü 1"
 
 #: wp-admin/nav-menus.php:1075
 msgid "Menu structure"
@@ -3891,7 +3891,7 @@ msgstr "Du kannst ein Menü einer Menüposition im Theme zuweisen, indem du die 
 
 #: wp-admin/nav-menus.php:731
 msgid "If you have not yet created any menus, <strong>click the &#8217;create a new menu&#8217; link</strong> to get started"
-msgstr "Du hast noch keine Menüs angelegt. <strong>Klicke auf Link &#8222;Menü hinzufügen&#8220;</strong>, um ein neues Menü anzulegen"
+msgstr "Du hast noch keine Menüs erstellt. <strong>Klicke auf Link &#8222;Menü hinzufügen&#8220;</strong>, um ein neues Menü anzulegen"
 
 #: wp-admin/nav-menus.php:730
 msgid "To edit an existing menu, <strong>choose a menu from the dropdown and click Select</strong>"
@@ -4652,7 +4652,7 @@ msgstr "Das Dashboard wird dir bei jeder Anmeldung auf deiner Website als Erstes
 
 #: wp-admin/index.php:36
 msgid "Welcome to your WordPress Dashboard!"
-msgstr "Willkommen in deinem WordPress-Dashboard!"
+msgstr "Willkommen auf deinem WordPress-Dashboard!"
 
 #: wp-admin/includes/widgets.php:264
 msgctxt "widget"
@@ -5008,7 +5008,7 @@ msgstr "Kopieren der erforderlichen Dateien &#8230;"
 #: wp-admin/includes/update-core.php:1305
 #: wp-admin/includes/update-core.php:1341
 msgid "The update cannot be installed because your site is unable to copy some files. This is usually due to inconsistent file permissions."
-msgstr "Die Aktualisierung kann nicht installiert werden, weil deine Website einige Dateien nicht kopieren kann. Dies liegt meist an inkonsistenten Dateiberechtigungen."
+msgstr "Die Aktualisierung konnte nicht installiert werden, da auf deiner Website einige Dateien nicht kopiert werden konnten. Dies liegt in der Regel an inkonsistenten Dateiberechtigungen."
 
 #: wp-admin/includes/update-core.php:1229
 msgid "Preparing to install the latest version&#8230;"
@@ -6406,11 +6406,11 @@ msgstr "Löschen bestätigen"
 
 #: wp-admin/includes/ms.php:995
 msgid "Once you hit &#8220;Confirm Deletion&#8221;, these users will be permanently removed."
-msgstr "Sobald du &#8222;Löschen bestätigen&#8220; klickst, werden diese Benutzer endgültig entfernt."
+msgstr "Sobald du auf &#8222;Löschen bestätigen&#8220; klickst, werden diese Benutzer endgültig entfernt."
 
 #: wp-admin/includes/ms.php:993
 msgid "Once you hit &#8220;Confirm Deletion&#8221;, the user will be permanently removed."
-msgstr "Sobald du &#8222;Löschen bestätigen&#8220; klickst, wird der Benutzer endgültig entfernt."
+msgstr "Sobald du auf &#8222;Löschen bestätigen&#8220; klickst, wird der Benutzer endgültig entfernt."
 
 #: wp-admin/includes/ms.php:978
 msgid "User has no sites or content and will be deleted."
@@ -6494,7 +6494,7 @@ msgstr "Falls du diese Ansicht aus Versehen aufgerufen hast und eigentlich eine 
 #. translators: 1: Site title.
 #: wp-admin/includes/ms.php:578 wp-admin/includes/ms.php:587
 msgid "You attempted to access the \"%1$s\" dashboard, but you do not currently have privileges on this site. If you believe you should be able to access the \"%1$s\" dashboard, please contact your network administrator."
-msgstr "Du hast versucht, auf das „%1$s“ Dashboard zuzugreifen, hast dazu aber nicht ausreichende Rechte. Falls du glaubst, du müsstest Zugriff auf das „%1$s“ Dashboard haben, dann kontaktiere bitte den Netzwerk-Administrator."
+msgstr "Du hast versucht, auf das Dashboard von „%1$s“ zuzugreifen, verfügst jedoch derzeit nicht über die erforderlichen Berechtigungen für diese Website. Wenn du der Meinung bist, dass du Zugriff auf das Dashboard von „%1$s“ haben solltest, wende dich bitte an deinen Netzwerkadministrator."
 
 #: wp-admin/includes/ms.php:316
 msgid "MB (Leave blank for network default)"
@@ -8033,7 +8033,7 @@ msgstr "Stile bearbeiten"
 
 #: wp-admin/includes/dashboard.php:2121
 msgid "Tweak your site, or give it a whole new look! Get creative &#8212; how about a new color palette or font?"
-msgstr "Justiere deine Website oder gib ihr einen ganz neuen Look! Werde kreativ – wie wäre es mit einer neuen Farbpalette oder Schrift?"
+msgstr "Peppe deine Website auf oder gib ihr einen ganz neuen Look! Werde kreativ – wie wäre es mit einer neuen Farbpalette oder Schrift?"
 
 #: wp-admin/includes/dashboard.php:2120
 msgid "Switch up your site&#8217;s look & feel with Styles"
@@ -8131,17 +8131,17 @@ msgstr "Was ist PHP und inwiefern betrifft es meine Website?"
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/dashboard.php:1895
 msgid "Your site is running on an outdated version of PHP (%s), which should be updated."
-msgstr "Auf deiner Website läuft eine veraltete Version von PHP (%s), die aktualisiert werden sollte."
+msgstr "Deine Website wird mit einer veralteten PHP-Version (%s) ausgeführt, die aktualisiert werden sollte."
 
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/dashboard.php:1889
 msgid "Your site is running on an outdated version of PHP (%s), which soon will not be supported by WordPress. Ensure that PHP is updated on your server as soon as possible. Otherwise you will not be able to upgrade WordPress."
-msgstr "Deine Website läuft mit einer veralteten Version von PHP (%s), die bald nicht mehr von WordPress unterstützt wird. Stelle sicher, dass PHP auf deinem Server so bald wie möglich aktualisiert wird. Andernfalls wirst du kein Upgrade für WordPress installieren können."
+msgstr "Deine Website wird mit einer veralteten Version von PHP (%s) ausgeführt, die bald nicht mehr von WordPress unterstützt wird. Stelle sicher, dass PHP auf deinem Server so bald wie möglich aktualisiert wird. Andernfalls wirst du kein Upgrade für WordPress installieren können."
 
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/dashboard.php:1876
 msgid "Your site is running on an outdated version of PHP (%s), which does not receive security updates and soon will not be supported by WordPress. Ensure that PHP is updated on your server as soon as possible. Otherwise you will not be able to upgrade WordPress."
-msgstr "Deine Website läuft mit einer veralteten Version von PHP (%s), die keine Sicherheitsupdates erhält und bald nicht mehr von WordPress unterstützt wird. Stelle sicher, dass PHP auf deinem Server so bald wie möglich aktualisiert wird. Andernfalls wirst du kein Upgrade für WordPress installieren können."
+msgstr "Deine Website wird mit einer veralteten Version von PHP (%s) ausgeführt, die keine Sicherheitsaktualisierungen erhält und bald nicht mehr von WordPress unterstützt wird. Stelle sicher, dass PHP auf deinem Server so bald wie möglich aktualisiert wird. Andernfalls wirst du kein Upgrade für WordPress installieren können."
 
 #: wp-admin/includes/dashboard.php:1767
 msgid "Dismiss the browser warning panel"
@@ -8155,7 +8155,7 @@ msgstr "<a href=\"%1$s\" class=\"update-browser-link\">Aktualisiere %2$s</a> ode
 #. translators: %s: Browse Happy URL.
 #: wp-admin/includes/dashboard.php:1753
 msgid "Learn how to <a href=\"%s\" class=\"update-browser-link\">browse happy</a>"
-msgstr "Lerne, wie du <a href=\"%s\" class=\"update-browser-link\">unbeschwert surfen</a> kannst"
+msgstr "Erfahre, wie du <a href=\"%s\" class=\"update-browser-link\">unbeschwert surfen</a> kannst"
 
 #. translators: %s: Browser name and link.
 #: wp-admin/includes/dashboard.php:1730
@@ -9698,12 +9698,12 @@ msgstr "Deine Website läuft mit einer veralteten Version von PHP (%s), die kein
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/class-wp-site-health.php:834
 msgid "Your site is running on an outdated version of PHP (%s), which does not receive security updates and soon will not be supported by WordPress."
-msgstr "Deine Website läuft mit einer veralteten Version von PHP (%s), die keine Sicherheitsaktualisierungen mehr erhält und in Kürze nicht mehr von WordPress unterstützt wird."
+msgstr "Deine Website wird mit einer veralteten Version von PHP (%s) ausgeführt, die keine Sicherheitsaktualisierungen mehr erhält und in Kürze nicht mehr von WordPress unterstützt wird."
 
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/class-wp-site-health.php:822
 msgid "Your site is running on an older version of PHP (%s), which should be updated"
-msgstr "Auf deiner Website läuft eine ältere Version von PHP (%s), die aktualisiert werden sollte"
+msgstr "Deine Website wird mit einer älteren PHP-Version (%s) ausgeführt, die aktualisiert werden sollte"
 
 #: wp-admin/includes/class-wp-site-health.php:813
 msgid "Requirements"
@@ -9712,12 +9712,12 @@ msgstr "Anforderungen"
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/class-wp-site-health.php:808
 msgid "Your site is running on an outdated version of PHP (%s), which soon will not be supported by WordPress."
-msgstr "Deine Website läuft mit einer veralteten Version von PHP (%s), die in Kürze nicht mehr von WordPress unterstützt wird."
+msgstr "Deine Website wird mit einer veralteten PHP-Version (%s) ausgeführt, die in Kürze nicht mehr von WordPress unterstützt wird."
 
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/class-wp-site-health.php:791
 msgid "Your site is running on an older version of PHP (%s)"
-msgstr "Auf deiner Website läuft eine ältere Version von PHP (%s)"
+msgstr "Deine Website wird mit einer älteren PHP-Version ausgeführt (%s)"
 
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/class-wp-site-health.php:779
@@ -9748,7 +9748,7 @@ msgstr "Mehr über die Aktualisierung von PHP erfahren"
 #: wp-admin/includes/class-wp-site-health.php:742
 #: wp-admin/includes/dashboard.php:1904
 msgid "PHP is one of the programming languages used to build WordPress. Newer versions of PHP receive regular security updates and may increase your site&#8217;s performance."
-msgstr "PHP ist eine der Programmiersprachen, die für die Erstellung von WordPress verwendet werden. Neuere Versionen von PHP erhalten regelmäßig Sicherheitsupdates und können die Leistung deiner Website verbessern."
+msgstr "PHP ist eine der Programmiersprachen, die für die Erstellung von WordPress verwendet werden. Neuere Versionen von PHP erhalten regelmäßig Sicherheitsaktualisierungen und können die Leistung deiner Website verbessern."
 
 #. translators: %s: The server PHP version.
 #: wp-admin/includes/class-wp-site-health.php:732
@@ -9837,7 +9837,7 @@ msgstr "Es gibt Themes, die darauf warten, aktualisiert zu werden"
 
 #: wp-admin/includes/class-wp-site-health.php:504
 msgid "Manage your themes"
-msgstr "Deine Themes verwalten"
+msgstr "Themes verwalten"
 
 #: wp-admin/includes/class-wp-site-health.php:499
 msgid "Themes add your site&#8217;s look and feel. It&#8217;s important to keep them up to date, to stay consistent with your brand and keep your site secure."
@@ -9883,7 +9883,7 @@ msgstr "Deine Website hat 1 installiertes Plugin und ist auf dem neuesten Stand.
 
 #: wp-admin/includes/class-wp-site-health.php:417
 msgid "Update your plugins"
-msgstr "Deine Plugins aktualisieren"
+msgstr "Plugins aktualisieren"
 
 #. translators: %d: The number of outdated plugins.
 #: wp-admin/includes/class-wp-site-health.php:405
@@ -9898,7 +9898,7 @@ msgstr "Es gibt Plugins, die darauf warten, aktualisiert zu werden"
 
 #: wp-admin/includes/class-wp-site-health.php:370
 msgid "Manage your plugins"
-msgstr "Deine Plugins verwalten"
+msgstr "Plugins verwalten"
 
 #: wp-admin/includes/class-wp-site-health.php:365
 msgid "Plugins extend your site&#8217;s functionality with things like contact forms, ecommerce and much more. That means they have deep access to your site, so it&#8217;s vital to keep them up to date."
@@ -9910,7 +9910,7 @@ msgstr "Deine Plugins sind aktuell"
 
 #: wp-admin/includes/class-wp-site-health.php:336
 msgid "You are currently running the latest version of WordPress available, keep it up!"
-msgstr "Du benutzt die neueste WordPress-Version, die verfügbar ist. Weiter so!"
+msgstr "Du verwendest die neueste WordPress-Version, die verfügbar ist. Weiter so!"
 
 #. translators: %s: The current version of WordPress installed on this site.
 #: wp-admin/includes/class-wp-site-health.php:330
@@ -10064,7 +10064,7 @@ msgstr "Du solltest deshalb eine E-Mail erhalten haben."
 
 #: wp-admin/includes/class-wp-site-health-auto-updates.php:178
 msgid "A previous automatic background update ended with a critical failure, so updates are now disabled."
-msgstr "Eine vorherige automatische Aktualisierung im Hintergrund endete mit einem kritischen Fehler, weshalb Aktualisierungen nun deaktiviert sind."
+msgstr "Eine vorherige automatische Hintergrundaktualisierungen endete mit einem kritischen Fehler, weshalb Aktualisierungen nun deaktiviert sind."
 
 #: wp-admin/includes/class-wp-site-health-auto-updates.php:158
 msgid "All automatic updates are disabled."
@@ -13618,7 +13618,7 @@ msgstr "Vergiss nicht, auf &#8222;Änderungen speichern&#8220; zu klicken, wenn 
 
 #: wp-admin/includes/class-custom-image-header.php:138
 msgid "In the Header Text section of this page, you can choose whether to display this text or hide it. You can also choose a color for the text by clicking the Select Color button and either typing in a legitimate HTML hex value, e.g. &#8220;#ff0000&#8221; for red, or by choosing a color using the color picker."
-msgstr "Du kannst wählen, ob du den Header-Text anzeigen lassen möchtest oder nicht. Du kannst auch eine Farbe für den Text auswählen, indem du auf den Button &#8222;Farbe wählen&#8220; klickst und entweder einen HTML-Hex-Wert eingibst, z. B. &#8222;#ff0000&#8220; für Rot, oder indem du mit dem Farbwähler eine Farbe auswählst."
+msgstr "Du kannst wählen, ob du den Header-Text anzeigen lassen möchtest oder nicht. Du kannst auch eine Farbe für den Text auswählen, indem du auf den Button &#8222;Farbe wählen&#8220; klickst und entweder einen HTML-Hex-Wert eingibst, z. B. &#8222;#ff0000&#8220; für Rot, oder indem du mit dem Farbwähler eine Farbe auswählst."
 
 #. translators: %s: URL to General Settings screen.
 #: wp-admin/includes/class-custom-image-header.php:134
@@ -13633,7 +13633,7 @@ msgstr "Header-Text"
 
 #: wp-admin/includes/class-custom-image-header.php:123
 msgid "If you do not want a header image to be displayed on your site at all, click the &#8220;Remove Header Image&#8221; button at the bottom of the Header Image section of this page. If you want to re-enable the header image later, you just have to select one of the other image options and click &#8220;Save Changes&#8221;."
-msgstr "Wenn du nicht möchtest, dass das Header-Bild auf deiner Website angezeigt wird, klick auf den Button &#8222;Header-Bild entfernen&#8220; unten im Header-Bild-Abschnitt auf dieser Seite. Falls du das Header-Bild wieder aktivieren möchtest, genügt es, eine der anderen Bildoptionen auszuwählen und auf &#8222;Änderungen speichern&#8220; zu klicken."
+msgstr "Wenn du nicht möchtest, dass das Header-Bild auf deiner Website angezeigt wird, klick auf den Button &#8222;Header-Bild entfernen&#8220; unten im Header-Bild-Abschnitt auf dieser Seite. Falls du es wieder aktivieren möchtest, genügt es, eine der anderen Bildoptionen auszuwählen und auf &#8222;Änderungen speichern&#8220; zu klicken."
 
 #: wp-admin/includes/class-custom-image-header.php:122
 msgid "If your theme has more than one default header image, or you have uploaded more than one custom header image, you have the option of having WordPress display a randomly different image on each page of your site. Click the &#8220;Random&#8221; radio button next to the Uploaded Images or Default Images section to enable this feature."
@@ -14940,7 +14940,7 @@ msgstr "Du kannst über &#8222;Ansicht anpassen&#8220; festlegen, wie viele Elem
 
 #: wp-admin/edit-tags.php:292
 msgid "<strong>Description</strong> &mdash; The description is not prominent by default; however, some themes may display it."
-msgstr "<strong>Beschreibung</strong> &ndash; Die Beschreibung wird normalerweise nicht angezeigt. In manchen Themes kann das aber eventuell der Fall sein."
+msgstr "<strong>Beschreibung</strong> &ndash; Die Beschreibung wird standardmäßig nicht angezeigt. Einige Themes zeigen sie jedoch an."
 
 #: wp-admin/edit-tags.php:289
 msgid "<strong>Parent</strong> &mdash; Categories, unlike tags, can have a hierarchy. You might have a Jazz category, and under that have child categories for Bebop and Big Band. Totally optional. To create a subcategory, just choose another category from the Parent dropdown."

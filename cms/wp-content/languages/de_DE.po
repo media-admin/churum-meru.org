@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.9.x package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-11 02:25:51+0000\n"
+"PO-Revision-Date: 2026-05-13 12:34:37+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2465,6 +2465,10 @@ msgstr "Gib dem Feed einen Titel (optional):"
 msgid "How many items would you like to display?"
 msgstr "Wie viele Einträge sollen angezeigt werden?"
 
+#: wp-includes/widgets.php:1758
+msgid "Display item content?"
+msgstr "Beitrags-Inhalt anzeigen?"
+
 #: wp-includes/widgets/class-wp-widget-text.php:43
 #: wp-includes/js/dist/block-editor.js:20078
 #: wp-includes/js/dist/block-editor.js:24265
@@ -2484,10 +2488,6 @@ msgstr "Wie viele Einträge sollen angezeigt werden?"
 #: wp-includes/js/dist/format-library.js:1282
 msgid "Text"
 msgstr "Text"
-
-#: wp-includes/widgets.php:1758
-msgid "Display item content?"
-msgstr "Beitrags-Inhalt anzeigen?"
 
 #: wp-includes/widgets.php:1761
 msgid "Display item author if available?"
@@ -2558,11 +2558,6 @@ msgstr "E-Mail-Adresse:"
 #: wp-signup.php:375
 msgid "There was a problem, please correct the form below and try again."
 msgstr "Es ist ein Fehler aufgetreten. Bitte korrigiere das untenstehende Formular und versuche es erneut."
-
-#. translators: %s: Name of the network.
-#: wp-signup.php:629
-msgid "Get your own %s account in seconds"
-msgstr "Erhalte dein eigenes %s-Konto in wenigen Sekunden"
 
 #: wp-signup.php:654
 msgid "Just a username, please."
@@ -3156,10 +3151,6 @@ msgstr "Dieses Widget scheint Code zu enthalten, der vermutlich besser im neuen 
 #: wp-includes/widgets/class-wp-widget-text.php:542
 msgid "Did you know there is a &#8220;Custom HTML&#8221; widget now? You can find it by pressing the &#8220;<a class=\"add-widget\" href=\"#\">Add a Widget</a>&#8221; button and searching for &#8220;HTML&#8221;. Check it out to add some custom code to your site!"
 msgstr "Weißt du schon von dem neuen &#8222;individuellen HTML&#8220;-Widget? Du findest es, indem du den &#8220;<a class=\"add-widget\" href=\"#\">Widget hinzufügen</a>&#8221;-Button klickst und nach &#8222;HTML&#8220; suchst. Probiere es aus und füge individuellen Code in deine Website ein!"
-
-#: wp-includes/widgets/class-wp-widget-text.php:544
-msgid "Did you know there is a &#8220;Custom HTML&#8221; widget now? You can find it by scanning the list of available widgets on this screen. Check it out to add some custom code to your site!"
-msgstr "Weißt du schon von dem neuen &#8222;individuellen HTML&#8220;-Widget? Du findest es in der Liste der verfügbaren Widgets auf diesem Bildschirm. Probiere es aus und füge individuellen Code in deine Website ein!"
 
 #: wp-includes/widgets/class-wp-widget-text.php:559
 msgid "Did you just paste HTML?"
@@ -3856,6 +3847,15 @@ msgstr "Schlagwortwolke"
 #: wp-includes/widgets/class-wp-widget-tag-cloud.php:165
 msgid "The tag cloud will not be displayed since there are no taxonomies that support the tag cloud widget."
 msgstr "Die Schlagwortwolke kann nicht angezeigt werden, da keine Taxonomien vorhanden sind, die das Schlagwortwolken-Widget unterstützen."
+
+#: wp-includes/widgets/class-wp-widget-text.php:544
+msgid "Did you know there is a &#8220;Custom HTML&#8221; widget now? You can find it by scanning the list of available widgets on this screen. Check it out to add some custom code to your site!"
+msgstr "Wusstest du, dass es jetzt ein Widget „Individuelles HTML“ gibt? Du findest es, wenn du in dieser Ansicht die Liste der verfügbaren Widgets durchsiehst. Probiere es aus und füge deiner Website individuellen Code hinzu!"
+
+#. translators: %s: Name of the network.
+#: wp-signup.php:629
+msgid "Get your own %s account in seconds"
+msgstr "Registriere dich in nur wenigen Sekunden bei %s"
 
 #. translators: Hidden accessibility text.
 #: wp-includes/revision.php:34 wp-includes/js/dist/block-library.js:25465
@@ -5706,11 +5706,6 @@ msgstr "Etwas scheint schiefgelaufen zu sein. Warte einige Sekunden und versuche
 msgid "%s has taken over and is currently customizing."
 msgstr "%s hat übernommen und passt gerade die Website an."
 
-#. translators: %s: URL to Add Themes admin screen.
-#: wp-includes/script-loader.php:1355
-msgid "You will not be able to install new themes from here yet since your install requires SFTP credentials. For now, please <a href=\"%s\">add themes in the admin</a>."
-msgstr "Du kannst hier leider noch keine neuen Themes installieren, da deine Installation SFTP-Zugangsdaten benötigt. Füge bitte vorerst <a href=\"%s\">Themes im Administrationsbereich hinzu</a>."
-
 #: wp-includes/script-loader.php:1306
 msgctxt "customizer changeset status"
 msgid "Scheduled"
@@ -6194,17 +6189,6 @@ msgstr "Du bist leider nicht berechtigt, Plugins auf dieser Website zu installie
 #: wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php:253
 msgid "Sorry, you are not allowed to activate plugins."
 msgstr "Du bist leider nicht berechtigt, das Plugin zu aktivieren."
-
-#: wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php:349
-#: wp-admin/includes/ajax-actions.php:4221
-#: wp-admin/includes/ajax-actions.php:4354
-#: wp-admin/includes/ajax-actions.php:4418
-#: wp-admin/includes/ajax-actions.php:4518
-#: wp-admin/includes/ajax-actions.php:4695
-#: wp-admin/includes/ajax-actions.php:4764
-#: wp-admin/includes/class-wp-site-health.php:1923
-msgid "Unable to connect to the filesystem. Please confirm your credentials."
-msgstr "Es ist nicht möglich, eine Verbindung mit dem Dateisystem herzustellen. Bitte überprüfe deine Anmeldedaten."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php:359
 msgid "Unable to determine what plugin was installed."
@@ -6972,12 +6956,6 @@ msgstr "Template-Teil-Bereiche"
 msgid "Template Part Area"
 msgstr "Template-Teil-Bereich"
 
-#. translators: 1: Link to Site Editor documentation on HelpHub, 2: HTML
-#. button.
-#: wp-includes/script-loader.php:1363
-msgid "Hurray! Your theme supports site editing with blocks. <a href=\"%1$s\">Tell me more</a>. %2$s"
-msgstr "Hurra! Dein Theme unterstützt die Website-Bearbeitung mit Blöcken. <a href=\"%1$s\">Erzähle mir mehr</a>. %2$s"
-
 #: wp-includes/script-loader.php:1368
 msgid "Use Site Editor"
 msgstr "Den Website-Editor benutzen"
@@ -7498,12 +7476,6 @@ msgstr ""
 "Das Team von ###SITENAME###\n"
 "###SITEURL###"
 
-#. translators: %s: Name of parameter being updated:
-#. font_family_settings[slug]".
-#: wp-includes/rest-api/endpoints/class-wp-rest-font-families-controller.php:114
-msgid "%s cannot be updated."
-msgstr "%s konnte nicht aktualisiert werden."
-
 #. translators: Do not translate USERNAME, ADMIN_EMAIL, NEW_EMAIL, EMAIL,
 #. SITENAME, SITEURL: those are placeholders.
 #: wp-includes/user.php:2820
@@ -7563,6 +7535,12 @@ msgstr ""
 "Viele Grüße\n"
 "Das Team von ###SITENAME###\n"
 "###SITEURL###"
+
+#. translators: %s: Name of parameter being updated:
+#. font_family_settings[slug]".
+#: wp-includes/rest-api/endpoints/class-wp-rest-font-families-controller.php:114
+msgid "%s cannot be updated."
+msgstr "%s konnte nicht aktualisiert werden."
 
 #: wp-includes/theme.php:2469
 msgctxt "Theme starter content"
@@ -7780,6 +7758,28 @@ msgstr "Zulässige Dateitypen"
 #: wp-includes/rest-api/endpoints/class-wp-rest-taxonomies-controller.php:412
 msgid "Whether a taxonomy is intended for use publicly either via the admin interface or by front-end users."
 msgstr "Ob eine Taxonomie für die öffentliche Verwendung bestimmt ist, sei es über die Administrations-Oberfläche oder durch Frontend-Benutzer."
+
+#. translators: 1: Link to Site Editor documentation on HelpHub, 2: HTML
+#. button.
+#: wp-includes/script-loader.php:1363
+msgid "Hurray! Your theme supports site editing with blocks. <a href=\"%1$s\">Tell me more</a>. %2$s"
+msgstr "Hurra! Dein Theme unterstützt die Website-Bearbeitung mit Blöcken. <a href=\"%1$s\">Mehr erfahren</a>. %2$s"
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-plugins-controller.php:349
+#: wp-admin/includes/ajax-actions.php:4221
+#: wp-admin/includes/ajax-actions.php:4354
+#: wp-admin/includes/ajax-actions.php:4418
+#: wp-admin/includes/ajax-actions.php:4518
+#: wp-admin/includes/ajax-actions.php:4695
+#: wp-admin/includes/ajax-actions.php:4764
+#: wp-admin/includes/class-wp-site-health.php:1923
+msgid "Unable to connect to the filesystem. Please confirm your credentials."
+msgstr "Es kann keine Verbindung zum Dateisystem hergestellt werden. Bitte überprüfe deine Zugangsdaten."
+
+#. translators: %s: URL to Add Themes admin screen.
+#: wp-includes/script-loader.php:1355
+msgid "You will not be able to install new themes from here yet since your install requires SFTP credentials. For now, please <a href=\"%s\">add themes in the admin</a>."
+msgstr "Du wirst von hier aus noch keine neuen Themes installieren können, da deine Installation SFTP-Zugangsdaten erfordert. Bitte füge <a href=\"%s\">Themes vorerst über die Administration hinzu.</a>."
 
 #: wp-includes/post.php:1326 wp-includes/post.php:1346
 #: wp-includes/script-loader.php:1301 wp-includes/js/dist/edit-site.js:46420
@@ -8451,11 +8451,6 @@ msgstr "Deine PHP-Installation scheint nicht über die von WordPress benötigte 
 #: wp-includes/ms-load.php:478
 msgid "If your site does not display, please contact the owner of this network."
 msgstr "Wenn deine Website nicht angezeigt wird, nimm bitte Kontakt zum Betreiber des Netzwerks auf."
-
-#. translators: %s: Post title.
-#: wp-includes/pluggable.php:1915
-msgid "New comment on your post \"%s\""
-msgstr "Neuer Kommentar zum Beitrag „%s“"
 
 #. translators: %s: Post title.
 #: wp-includes/pluggable.php:1873
@@ -10395,11 +10390,6 @@ msgstr "Die übergeordnete ID des Beitrags ist ungültig."
 msgid "Offset the result set by a specific number of items."
 msgstr "Verschiebt den Ergebnissatz um eine bestimmte Elementanzahl."
 
-#: wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php:702
-#: wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php:542
-msgid "You are not currently logged in."
-msgstr "Du bist im Moment nicht angemeldet."
-
 #. translators: 1: Parameter, 2: List of types.
 #. translators: 1: Parameter, 2: Type name.
 #: wp-includes/rest-api.php:2210 wp-includes/rest-api.php:2322
@@ -11892,10 +11882,6 @@ msgstr "Eindeutige Kennung für den Anhang."
 msgid "The ID for the autosave."
 msgstr "Die ID für die automatische Speicherung."
 
-#: wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php:670
-msgid "Block variations."
-msgstr "Block-Variationen."
-
 #: wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php:676
 msgid "The unique and machine-readable name."
 msgstr "Der eindeutige und maschinenlesbare Name."
@@ -12319,10 +12305,6 @@ msgstr "Die Datei %1$s ist seit Version %2$s <strong>veraltet</strong> und es i
 #: wp-includes/option.php:2909
 msgid "What to show on the front page"
 msgstr "Was auf der Homepage angezeigt werden soll"
-
-#: wp-includes/option.php:2920
-msgid "The ID of the page that should be displayed on the front page"
-msgstr "Die ID der Seite, die auf der Startseite angezeigt werden soll"
 
 #: wp-includes/option.php:2930
 msgid "The ID of the page that should display the latest posts"
@@ -13284,34 +13266,6 @@ msgstr ""
 "Das Team von ###SITENAME###\n"
 "###SITEURL###"
 
-#. translators: Do not translate OLD_EMAIL, NEW_EMAIL, SITENAME, SITEURL: those
-#. are placeholders.
-#: wp-includes/functions.php:8167
-msgid ""
-"Hi,\n"
-"\n"
-"This notice confirms that the admin email address was changed on ###SITENAME###.\n"
-"\n"
-"The new admin email address is ###NEW_EMAIL###.\n"
-"\n"
-"This email has been sent to ###OLD_EMAIL###\n"
-"\n"
-"Regards,\n"
-"All at ###SITENAME###\n"
-"###SITEURL###"
-msgstr ""
-"Hallo,\n"
-"\n"
-"diese Mitteilung bestätigt die Änderung der E-Mail-Adresse des Administrators auf ###SITENAME###.\n"
-"\n"
-"Die neue E-Mail-Adresse des Administrators lautet ###NEW_EMAIL###.\n"
-"\n"
-"Diese E-Mail wurde an ###OLD_EMAIL### gesendet.\n"
-"\n"
-"Viele Grüße\n"
-"Das Team von ###SITENAME###\n"
-"###SITEURL###"
-
 #. translators: Do not translate USERNAME, ADMIN_URL, EMAIL, SITENAME, SITEURL:
 #. those are placeholders.
 #: wp-includes/ms-functions.php:2796
@@ -13343,6 +13297,34 @@ msgstr ""
 "Du kannst diese E-Mail ruhig ignorieren und löschen, wenn du das nicht tun möchtest.\n"
 "\n"
 "Diese E-Mail wurde an ###EMAIL### gesendet.\n"
+"\n"
+"Viele Grüße\n"
+"Das Team von ###SITENAME###\n"
+"###SITEURL###"
+
+#. translators: Do not translate OLD_EMAIL, NEW_EMAIL, SITENAME, SITEURL: those
+#. are placeholders.
+#: wp-includes/functions.php:8167
+msgid ""
+"Hi,\n"
+"\n"
+"This notice confirms that the admin email address was changed on ###SITENAME###.\n"
+"\n"
+"The new admin email address is ###NEW_EMAIL###.\n"
+"\n"
+"This email has been sent to ###OLD_EMAIL###\n"
+"\n"
+"Regards,\n"
+"All at ###SITENAME###\n"
+"###SITEURL###"
+msgstr ""
+"Hallo,\n"
+"\n"
+"diese Mitteilung bestätigt die Änderung der E-Mail-Adresse des Administrators auf ###SITENAME###.\n"
+"\n"
+"Die neue E-Mail-Adresse des Administrators lautet ###NEW_EMAIL###.\n"
+"\n"
+"Diese E-Mail wurde an ###OLD_EMAIL### gesendet.\n"
 "\n"
 "Viele Grüße\n"
 "Das Team von ###SITENAME###\n"
@@ -13631,6 +13613,24 @@ msgstr "Im Papierkorb wurden keine Vorlagen gefunden."
 #: wp-includes/general-template.php:1250
 msgid "Page %s"
 msgstr "Seite %s"
+
+#: wp-includes/option.php:2920
+msgid "The ID of the page that should be displayed on the front page"
+msgstr "Die ID der Seite, die auf der Homepage angezeigt werden soll"
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-block-types-controller.php:670
+msgid "Block variations."
+msgstr "Block-Varianten."
+
+#: wp-includes/rest-api/endpoints/class-wp-rest-application-passwords-controller.php:702
+#: wp-includes/rest-api/endpoints/class-wp-rest-users-controller.php:542
+msgid "You are not currently logged in."
+msgstr "Du bist derzeit nicht angemeldet."
+
+#. translators: %s: Post title.
+#: wp-includes/pluggable.php:1915
+msgid "New comment on your post \"%s\""
+msgstr "Neuer Kommentar zu deinem Beitrag „%s“"
 
 #: wp-includes/class-wp-post-type.php:999
 #: wp-includes/js/dist/block-library.js:25843
@@ -14376,10 +14376,6 @@ msgstr "Kommentar abschicken"
 #: wp-includes/comment.php:285
 msgid "Unapproved"
 msgstr "Nicht freigegeben"
-
-#: wp-includes/comment.php:746
-msgid "Duplicate comment detected; it looks as though you&#8217;ve already said that!"
-msgstr "Doppelter Kommentar entdeckt; sieht aus, als hättest du das schon gesagt!"
 
 #: wp-includes/comment.php:2560
 msgid "Could not update comment status."
@@ -15395,6 +15391,10 @@ msgstr "Standard-Bildlink"
 msgid "Image default size"
 msgstr "Standard-Bildgröße"
 
+#: wp-includes/class-wp-xmlrpc-server.php:572
+msgid "Image default align"
+msgstr "Standard-Bildausrichtung"
+
 #: wp-includes/class-wp-xmlrpc-server.php:1464
 #: wp-includes/class-wp-xmlrpc-server.php:1952
 #: wp-includes/class-wp-xmlrpc-server.php:4804
@@ -15412,10 +15412,6 @@ msgstr "Standard-Bildgröße"
 #: wp-admin/includes/post.php:2095
 msgid "Sorry, you are not allowed to edit this post."
 msgstr "Du bist leider nicht berechtigt, diesen Beitrag zu bearbeiten."
-
-#: wp-includes/class-wp-xmlrpc-server.php:572
-msgid "Image default align"
-msgstr "Standard-Bildausrichtung"
 
 #: wp-includes/class-wp-customize-manager.php:5663
 #: wp-admin/options-reading.php:94
@@ -18029,6 +18025,10 @@ msgstr "WordPress.org-Themes"
 msgid "Homepage Settings"
 msgstr "Homepage-Einstellungen"
 
+#: wp-includes/class-wp-customize-manager.php:5642
+msgid "You can choose what&#8217;s displayed on the homepage of your site. It can be posts in reverse chronological order (classic blog), or a fixed/static page. To set a static homepage, you first need to create two Pages. One will become the homepage, and the other will be where your posts are displayed."
+msgstr "Du kannst auswählen, was auf der Homepage deiner Website angezeigt wird. Das können Beiträge in umgekehrter chronologischer Reihenfolge (klassischer Blog) oder eine feststehende/statische Seite sein. Um eine statische Homepage festzulegen, musst du erst zwei Seiten erstellen. Eine wird die Homepage und die andere wird die, auf der deine Beiträge angezeigt werden."
+
 #: wp-includes/class-wp-customize-manager.php:5659
 #: wp-admin/options-reading.php:85
 msgid "Your homepage displays"
@@ -18049,10 +18049,6 @@ msgstr "Bei der Navigation mit der Tastatur:"
 #: wp-admin/plugin-editor.php:146 wp-admin/theme-editor.php:35
 msgid "In the editing area, the Tab key enters a tab character."
 msgstr "Im Bearbeitungsbereich fügt die Tab-Taste ein Tab-Zeichen ein."
-
-#: wp-includes/class-wp-customize-manager.php:5642
-msgid "You can choose what&#8217;s displayed on the homepage of your site. It can be posts in reverse chronological order (classic blog), or a fixed/static page. To set a static homepage, you first need to create two Pages. One will become the homepage, and the other will be where your posts are displayed."
-msgstr "Du kannst auswählen, was auf der Homepage deiner Website angezeigt wird. Das können Beiträge in umgekehrter chronologischer Reihenfolge (klassischer Blog) oder eine feststehende/statische Seite sein. Um eine statische Homepage festzulegen, musst du erst zwei Seiten erstellen. Eine wird die Homepage und die andere wird die, auf der deine Beiträge angezeigt werden."
 
 #: wp-includes/class-wp-customize-manager.php:5720
 #: wp-includes/widgets/class-wp-widget-custom-html.php:327
@@ -18527,6 +18523,11 @@ msgstr "Bitte kontaktiere dein Hosting-Unternehmen, um Unterstützung bei der we
 msgid "In this case, WordPress caught an error with one of your plugins, %s."
 msgstr "In diesem Fall hat WordPress einen Fehler in einem deiner Plugins, %s, abgefangen."
 
+#. translators: %s: Theme name.
+#: wp-includes/class-wp-recovery-mode-email-service.php:286
+msgid "In this case, WordPress caught an error with your theme, %s."
+msgstr "In diesem Fall hat WordPress einen Fehler in deinem Theme „%s“ abgefangen."
+
 #. translators: Do not translate LINK, EXPIRES, CAUSE, DETAILS, SITEURL,
 #. PAGEURL, SUPPORT. DEBUG: those are placeholders.
 #: wp-includes/class-wp-recovery-mode-email-service.php:153
@@ -18568,11 +18569,6 @@ msgstr ""
 "###DEBUG###\n"
 "\n"
 "###DETAILS###"
-
-#. translators: %s: Theme name.
-#: wp-includes/class-wp-recovery-mode-email-service.php:286
-msgid "In this case, WordPress caught an error with your theme, %s."
-msgstr "In diesem Fall hat WordPress einen Fehler in deinem Theme „%s“ abgefangen."
 
 #: wp-includes/customize/class-wp-customize-theme-control.php:98
 #: wp-admin/themes.php:450 wp-admin/themes.php:848
@@ -18724,19 +18720,26 @@ msgstr "Benachrichtigungen"
 msgid "This theme does not work with your versions of WordPress and PHP."
 msgstr "Dieses Theme funktioniert nicht mit deinen Versionen von WordPress und PHP."
 
-#. translators: 1: URL to WordPress Updates screen, 2: URL to Update PHP page.
-#: wp-includes/customize/class-wp-customize-theme-control.php:122
-#: wp-includes/customize/class-wp-customize-theme-control.php:187
-#: wp-admin/includes/class-wp-plugin-install-list-table.php:617
-#: wp-admin/includes/class-wp-plugins-list-table.php:1424
-#: wp-admin/includes/theme.php:914 wp-admin/includes/theme.php:991
-#: wp-admin/includes/update.php:772 wp-admin/theme-install.php:344
-#: wp-admin/theme-install.php:549 wp-admin/themes.php:470
-#: wp-admin/themes.php:534 wp-admin/themes.php:863 wp-admin/themes.php:927
-#: wp-admin/themes.php:1107 wp-admin/themes.php:1174
-#: wp-admin/update-core.php:703
-msgid "<a href=\"%1$s\">Please update WordPress</a>, and then <a href=\"%2$s\">learn more about updating PHP</a>."
-msgstr "<a href=\"%1$s\">Bitte aktualisiere WordPress</a> und dann <a href=\"%2$s\">lerne mehr über die PHP-Aktualisierung (engl.)</a>."
+#: wp-includes/customize/class-wp-customize-theme-control.php:209
+#: wp-admin/includes/theme.php:1013 wp-admin/theme-install.php:366
+#: wp-admin/theme-install.php:571 wp-admin/themes.php:554
+#: wp-admin/themes.php:949 wp-admin/themes.php:1129
+msgid "This theme does not work with your version of WordPress."
+msgstr "Dieses Theme funktioniert nicht mit deiner WordPress-Version."
+
+#: wp-includes/customize/class-wp-customize-theme-control.php:220
+#: wp-admin/includes/theme.php:1024 wp-admin/theme-install.php:377
+#: wp-admin/theme-install.php:582 wp-admin/themes.php:563
+#: wp-admin/themes.php:960 wp-admin/themes.php:1140
+msgid "This theme does not work with your version of PHP."
+msgstr "Dieses Theme funktioniert nicht mit deiner PHP-Version."
+
+#. translators: %s: Theme name.
+#: wp-includes/customize/class-wp-customize-theme-control.php:116
+#: wp-admin/includes/theme.php:908 wp-admin/includes/update.php:766
+#: wp-admin/themes.php:464 wp-admin/themes.php:857 wp-admin/themes.php:1168
+msgid "There is a new version of %s available, but it does not work with your versions of WordPress and PHP."
+msgstr "Es gibt eine neue Version von %s, aber sie funktioniert nicht mit deiner PHP- und WordPress-Version."
 
 #. translators: %s: URL to WordPress Updates screen.
 #: wp-includes/customize/class-wp-customize-theme-control.php:130
@@ -18759,27 +18762,6 @@ msgstr "<a href=\"%1$s\">Bitte aktualisiere WordPress</a> und dann <a href=\"%2$
 #: wp-admin/update-core.php:716 wp-admin/update-core.php:737
 msgid "<a href=\"%s\">Please update WordPress</a>."
 msgstr "<a href=\"%s\">Bitte aktualisiere WordPress</a>."
-
-#: wp-includes/customize/class-wp-customize-theme-control.php:209
-#: wp-admin/includes/theme.php:1013 wp-admin/theme-install.php:366
-#: wp-admin/theme-install.php:571 wp-admin/themes.php:554
-#: wp-admin/themes.php:949 wp-admin/themes.php:1129
-msgid "This theme does not work with your version of WordPress."
-msgstr "Dieses Theme funktioniert nicht mit deiner WordPress-Version."
-
-#: wp-includes/customize/class-wp-customize-theme-control.php:220
-#: wp-admin/includes/theme.php:1024 wp-admin/theme-install.php:377
-#: wp-admin/theme-install.php:582 wp-admin/themes.php:563
-#: wp-admin/themes.php:960 wp-admin/themes.php:1140
-msgid "This theme does not work with your version of PHP."
-msgstr "Dieses Theme funktioniert nicht mit deiner PHP-Version."
-
-#. translators: %s: Theme name.
-#: wp-includes/customize/class-wp-customize-theme-control.php:116
-#: wp-admin/includes/theme.php:908 wp-admin/includes/update.php:766
-#: wp-admin/themes.php:464 wp-admin/themes.php:857 wp-admin/themes.php:1168
-msgid "There is a new version of %s available, but it does not work with your versions of WordPress and PHP."
-msgstr "Es gibt eine neue Version von %s, aber sie funktioniert nicht mit deiner PHP- und WordPress-Version."
 
 #. translators: %s: Theme name.
 #: wp-includes/customize/class-wp-customize-theme-control.php:146
@@ -20075,6 +20057,24 @@ msgstr "Nach oben verschieben"
 #: wp-admin/includes/template.php:1411
 msgid "Move down"
 msgstr "Nach unten verschieben"
+
+#. translators: 1: URL to WordPress Updates screen, 2: URL to Update PHP page.
+#: wp-includes/customize/class-wp-customize-theme-control.php:122
+#: wp-includes/customize/class-wp-customize-theme-control.php:187
+#: wp-admin/includes/class-wp-plugin-install-list-table.php:617
+#: wp-admin/includes/class-wp-plugins-list-table.php:1424
+#: wp-admin/includes/theme.php:914 wp-admin/includes/theme.php:991
+#: wp-admin/includes/update.php:772 wp-admin/theme-install.php:344
+#: wp-admin/theme-install.php:549 wp-admin/themes.php:470
+#: wp-admin/themes.php:534 wp-admin/themes.php:863 wp-admin/themes.php:927
+#: wp-admin/themes.php:1107 wp-admin/themes.php:1174
+#: wp-admin/update-core.php:703
+msgid "<a href=\"%1$s\">Please update WordPress</a>, and then <a href=\"%2$s\">learn more about updating PHP</a>."
+msgstr "<a href=\"%1$s\">Bitte aktualisiere WordPress</a> und informiere dich bitte danach über <a href=\"%2$s\">die Aktualisierung von PHP (engl.)</a>."
+
+#: wp-includes/comment.php:746
+msgid "Duplicate comment detected; it looks as though you&#8217;ve already said that!"
+msgstr "Doppelter Kommentar wurde entdeckt. Es sieht stark danach aus, dass du das schon einmal geschrieben hast!"
 
 #: wp-activate.php:126
 msgid "Activation Key Required"
@@ -21949,10 +21949,6 @@ msgstr "Zeigt ein Archiv für Beiträge eines einzelnen Autors an. Dieses Templa
 msgid "Displays a post category archive. This template will serve as a fallback when a more specific template (e.g. Category: Recipes) cannot be found."
 msgstr "Zeigt ein Archiv für eine Beitragskategorie an. Dieses Template wird als Fallback ausgeliefert, wenn kein spezifischeres Template (z. B. Kategorie: Rezepte) gefunden werden kann."
 
-#: wp-includes/block-template-utils.php:181
-msgid "Displays a custom taxonomy archive. Like categories and tags, taxonomies have terms which you use to classify things. For example: a taxonomy named \"Art\" can have multiple terms, such as \"Modern\" and \"18th Century.\" This template will serve as a fallback when a more specific template (e.g. Taxonomy: Art) cannot be found."
-msgstr "Zeigt ein Archiv für eine individuelle Taxonomie an. Wie Kategorien und Schlagwörter haben Taxonomien Begriffe, die du benutzt, um Dinge zu klassifizieren. Zum Beispiel: Eine Taxonomie namens „Kunst“ kann mehrere Begriffe beinhalten, wie „Modern“ und „18. Jahrhundert“. Dieses Template wird als Fallback ausgeliefert, wenn kein spezifischeres Template (z. B. Taxonomie: Kunst) gefunden werden kann."
-
 #: wp-includes/block-template-utils.php:185
 msgid "Displays a post archive when a specific date is visited (e.g., example.com/2023/)."
 msgstr "Zeigt ein Beitragsarchiv an, wenn ein spezifisches Datum angegeben ist (z. B. example.com/2023/)."
@@ -21976,6 +21972,10 @@ msgstr "Zeigt die Datenschutzerklärungs-Seite deiner Website an."
 #: wp-includes/block-template-utils.php:205
 msgid "Displays when a visitor views a non-existent page, such as a dead link or a mistyped URL."
 msgstr "Wird angezeigt, wenn ein Besucher eine nicht vorhandene Seite anzeigt, wie etwa einen toten Link oder eine falsch getippte URL."
+
+#: wp-includes/block-template-utils.php:181
+msgid "Displays a custom taxonomy archive. Like categories and tags, taxonomies have terms which you use to classify things. For example: a taxonomy named \"Art\" can have multiple terms, such as \"Modern\" and \"18th Century.\" This template will serve as a fallback when a more specific template (e.g. Taxonomy: Art) cannot be found."
+msgstr "Zeigt ein Archiv für eine individuelle Taxonomie an. Wie Kategorien und Schlagwörter haben Taxonomien Begriffe, die du benutzt, um Dinge zu klassifizieren. Zum Beispiel: Eine Taxonomie namens „Kunst“ kann mehrere Begriffe beinhalten, wie „Modern“ und „18. Jahrhundert“. Dieses Template wird als Fallback ausgeliefert, wenn kein spezifischeres Template (z. B. Taxonomie: Kunst) gefunden werden kann."
 
 #: wp-includes/admin-bar.php:176 wp-admin/about.php:60
 #: wp-admin/contribute.php:13 wp-admin/contribute.php:33

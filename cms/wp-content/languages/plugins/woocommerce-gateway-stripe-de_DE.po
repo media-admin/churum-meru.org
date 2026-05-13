@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce Stripe Payment Gateway - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-11 08:40:35+0000\n"
+"PO-Revision-Date: 2026-05-13 12:09:05+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -918,6 +918,11 @@ msgstr "Visa"
 msgid "Credit / Debit Card"
 msgstr "Kredit-/Debitkarte"
 
+#. translators: 1) is a link to the payment re-authentication URL.
+#: templates/emails/plain/failed-preorder-authentication.php:10
+msgid "Your pre-order is now available, but payment cannot be completed automatically. Please complete the payment now: %1$s"
+msgstr "Deine Vorbestellung ist jetzt verfügbar, die Zahlung kann jedoch nicht automatisch abgewickelt werden. Bitte schließe die Zahlung jetzt ab: %1$s"
+
 #: includes/class-wc-stripe-webhook-state.php:202
 msgid "Unknown error."
 msgstr "Unbekannter Fehler."
@@ -990,6 +995,18 @@ msgstr "Seit Beginn der Überwachung um %s sind keine Live-Webhooks eingegangen.
 msgid "No test webhooks have been received since monitoring began at %s."
 msgstr "Seit Beginn der Überwachung um %s sind keine Test-Webhooks eingegangen."
 
+#: includes/class-wc-stripe-webhook-state.php:170
+msgid "The webhook was missing expected headers"
+msgstr "Dem Webhook fehlten die erwarteten Header"
+
+#: includes/class-wc-stripe-webhook-state.php:174
+msgid "The webhook was missing expected body"
+msgstr "Dem Webhook fehlte der erwartete Inhalt"
+
+#: includes/class-wc-stripe-webhook-state.php:183
+msgid "The webhook received did not come from Stripe"
+msgstr "Der empfangene Webhook stammt nicht von Stripe"
+
 #: includes/class-wc-stripe-webhook-handler.php:486
 msgid "The dispute was resolved in your favor."
 msgstr "Die Anfechtung wurde zu deinen Gunsten gelöst."
@@ -1014,6 +1031,14 @@ msgstr "Steigere deinen Umsatz mit Apple Pay!"
 #: includes/class-wc-stripe-intent-controller.php:320
 msgid "Failed to save payment method."
 msgstr "Zahlungsart konnte nicht gespeichert werden."
+
+#: includes/class-wc-stripe-intent-controller.php:303
+msgid "Your card could not be set up for future usage."
+msgstr "Deine Karte konnte nicht für die zukünftige Nutzung eingerichtet werden."
+
+#: includes/class-wc-stripe-helper.php:354
+msgid "Unable to save this payment method, please try again or use alternative method."
+msgstr "Diese Zahlungsart konnte nicht gespeichert werden. Bitte versuche es erneut oder wähle eine andere Zahlungsart."
 
 #: includes/admin/class-wc-stripe-inbox-notes.php:214
 #: includes/notes/class-wc-stripe-bnpl-promotion-note.php:47
@@ -1063,9 +1088,26 @@ msgstr "Dokumentation anzeigen"
 msgid "Enter the custom text you would like the button to have."
 msgstr "Gib den individuellen Text ein, der auf dem Button angezeigt werden soll."
 
+#: includes/admin/class-wc-rest-stripe-account-keys-controller.php:278
+msgid "The \"Test Secret Key\" should start with \"sk_test\" or \"rk_test\", enter the correct key."
+msgstr "Der „Geheime Testschlüssel“ sollte mit „sk_test“ oder „rk_test“ beginnen; gib den richtigen Schlüssel ein."
+
+#: includes/admin/class-wc-rest-stripe-account-keys-controller.php:238
+msgid "The \"Live Secret Key\" should start with \"sk_live\" or \"rk_live\", enter the correct key."
+msgstr "Der „Geheime Live-Schlüssel“ sollte mit „sk_live“ oder „rk_live“ beginnen; gib den richtigen Schlüssel ein."
+
 #: includes/compat/trait-wc-stripe-subscriptions.php:1319
 msgid "Your early renewal order was successful."
 msgstr "Deine frühe Erneuerungsbestellung war erfolgreich."
+
+#. translators: 1) HTML anchor open tag 2) HTML anchor closing tag
+#: includes/admin/class-wc-stripe-admin-notices.php:355
+msgid "Credentials used for the Stripe gateway have been changed. This might cause errors for existing customers and saved payment methods. %1$sClick here to learn more%2$s."
+msgstr "Die für die Stripe-Zahlungsschnittstelle verwendeten Zugangsdaten wurden geändert. Dies kann bei bestehenden Kunden und gespeicherten Zahlungsarten zu Fehlern führen. %1$sKlicke hier, um mehr zu erfahren%2$s."
+
+#: includes/class-wc-stripe-customer.php:543
+msgid "Attempting to update a Stripe customer without a customer ID."
+msgstr "Es wird versucht, einen Stripe-Kunden ohne Kunden-ID zu aktualisieren."
 
 #: includes/compat/class-wc-stripe-email-failed-authentication.php:84
 msgctxt "an email notification"
@@ -1110,6 +1152,10 @@ msgstr "Die automatische Verlängerung der Zahlung ist fehlgeschlagen, da eine A
 msgid "Payment authentication requested emails are sent to chosen recipient(s) when an attempt to automatically process a subscription renewal payment fails because the transaction requires an SCA verification, the customer is requested to authenticate the payment, and a retry rule has been applied to notify the customer again within a certain time period."
 msgstr "Die E-Mails zur Zahlungsauthentifizierung werden an (einen) ausgewählte(n) Empfänger geschickt, wenn der Versuch, eine Abonnementverlängerung automatisch zu bearbeiten, fehlschlägt, weil eine SCA-Verifizierung erforderlich ist. Der Kunde wird dann aufgefordert, die Zahlung zu authentifizieren und es wird eine Regel für erneute Versuche angewandt, um den Kunden innerhalb eines bestimmten Zeitrahmens noch einmal zu benachrichtigen."
 
+#: includes/compat/class-wc-stripe-email-failed-authentication-retry.php:39
+msgid "[{site_title}] Automatic payment failed for {order_number}. Customer asked to authenticate payment and will be notified again in {retry_time}"
+msgstr "[{site_title}] Die automatische Zahlung für {order_number} ist fehlgeschlagen. Der Kunde wurde gebeten, die Zahlung zu bestätigen, und wird in {retry_time} erneut benachrichtigt."
+
 #: templates/emails/failed-preorder-authentication.php:57
 msgid "Thanks for shopping with us."
 msgstr "Danke, dass du bei uns eingekauft hast!"
@@ -1147,6 +1193,12 @@ msgstr "Die automatische wiederkehrende Zahlung für Bestellung %1$s von %2$s is
 #: templates/emails/plain/failed-renewal-authentication-requested.php:26
 msgid "The renewal order is as follows:"
 msgstr "Die Verlängerungsbestellung lautet wie folgt:"
+
+#. translators: 1) is a link to the payment re-authentication URL.
+#: templates/emails/failed-preorder-authentication.php:19
+msgctxt "In failed SCA authentication for a pre-order."
+msgid "Your pre-order is now available, but payment cannot be completed automatically. %1$s"
+msgstr "Deine Vorbestellung ist jetzt verfügbar, die Zahlung kann jedoch nicht automatisch abgewickelt werden. %1$s"
 
 #: includes/class-wc-stripe-helper.php:352
 msgid "Invalid email address, please correct and try again."
@@ -1194,6 +1246,11 @@ msgstr "Stripe starke Kundenauthentifizierung (SCA) fehlgeschlagen. Grund: %s"
 #: includes/class-wc-stripe-intent-controller.php:100
 msgid "Missing order ID for payment confirmation"
 msgstr "Zur Bestätigung der Zahlung fehlt die Bestellnummer"
+
+#. translators: 1) HTML anchor open tag 2) HTML anchor closing tag
+#: includes/admin/class-wc-stripe-admin-notices.php:213
+msgid "WooCommerce Stripe - We see that you had the \"Require 3D secure when applicable\" setting turned on. This setting is not available here anymore, because it is now replaced by Stripe Radar. You can learn more about it %1$shere%2$s "
+msgstr "WooCommerce Stripe – Es wurde erkannt, dass du die Einstellung „3D Secure erforderlich, wenn zutreffend“ aktiviert hattest. Diese Einstellung ist hier nicht mehr verfügbar, da sie durch Stripe Radar ersetzt wurde. Du kannst %1$shier%2$s mehr darüber erfahren. "
 
 #: includes/admin/stripe-settings.php:103
 msgid "Statement descriptors are limited to 22 characters, cannot use the special characters >, <, \", \\, ', *, /, (, ), {, }, and must not consist solely of numbers. This will appear on your customer's statement in capital letters."
@@ -1295,6 +1352,11 @@ msgstr "Stripe Abonnementdaten gelöscht."
 msgid "WooCommerce Stripe Subscriptions Data"
 msgstr "WooCommerce Stripe Abonnementdaten"
 
+#. translators: 1) HTML anchor open tag 2) HTML anchor closing tag
+#: includes/admin/class-wc-stripe-privacy.php:105
+msgid "By using this extension, you may be storing personal data or sharing data with an external service. %1$sLearn more about how this works, including what you may want to include in your privacy policy%2$s."
+msgstr "Durch die Verwendung dieser Erweiterung speicherst du möglicherweise personenbezogene Daten oder teilst diese mit einem externen Dienst. %1$sErfahre mehr über dieses Thema und was du in deine Datenschutzerklärung aufnehmen solltest%2$s."
+
 #. translators: partial captured amount
 #: includes/class-wc-stripe-webhook-handler.php:559
 msgid "This charge was partially captured via Stripe Dashboard in the amount of: %s"
@@ -1361,6 +1423,11 @@ msgstr "EPS"
 msgid "Save payment information to my account for future purchases."
 msgstr "Zahlungsinformationen für zukünftige Einkäufe in meinem Konto speichern."
 
+#. translators: 1) webhook url
+#: includes/abstracts/abstract-wc-stripe-payment-gateway.php:98
+msgid "You must add the following webhook endpoint <strong style=\"background-color:#ddd;\">&nbsp;%s&nbsp;</strong> to your <a href=\"https://dashboard.stripe.com/account/webhooks\" target=\"_blank\">Stripe account settings</a> (if there isn't one already enabled). This will enable you to receive notifications on the charge statuses."
+msgstr "Du musst den folgenden Webhook-Endpunkt <strong style=\"background-color:#ddd;\">&nbsp;%s&nbsp;</strong> in deinen <a href=\"https://dashboard.stripe.com/account/webhooks\" target=\"_blank\">Stripe-Kontoeinstellungen</a> hinzufügen (falls dort noch keiner aktiviert ist). Dadurch kannst du Benachrichtigungen zum Status der Abrechnungen erhalten."
+
 #. translators: 1) The reason type.
 #: includes/class-wc-stripe-webhook-handler.php:998
 msgid "The opened review for this order is now closed. Reason: (%s)"
@@ -1373,6 +1440,10 @@ msgstr "Ein „Stripe Customer ID“-Wert ist erforderlich."
 #: includes/compat/trait-wc-stripe-subscriptions.php:864
 msgid "Invalid customer ID. A valid \"Stripe Customer ID\" must begin with \"cus_\"."
 msgstr "Ungültige Customer-ID. Eine gültige Stripe Customer-ID muss mit „cus_“ beginnen."
+
+#: includes/class-wc-stripe-helper.php:351
+msgid "The billing country is not accepted by Sofort. Please try another country."
+msgstr "Das Rechnungsland wird von Sofort nicht akzeptiert. Bitte wähle ein anderes Land aus."
 
 #: includes/class-wc-stripe-helper.php:341
 msgid "The card's security code is incomplete."
@@ -1552,6 +1623,10 @@ msgstr "n. a."
 #: includes/admin/class-wc-stripe-admin-notices.php:389
 msgid "%1$s is enabled - it requires store currency to be set to %2$s<br>"
 msgstr "%1$s ist aktiviert - hierfür muss die Shop-Währung auf %2$s eingestellt sein<br>"
+
+#: includes/class-wc-stripe.php:632
+msgid "Stripe giropay"
+msgstr "Stripe Giropay"
 
 #: includes/payment-methods/class-wc-stripe-upe-payment-method-alipay.php:19
 #: includes/payment-methods/class-wc-stripe-upe-payment-method-alipay.php:34

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-10 20:29:08+0000\n"
+"PO-Revision-Date: 2026-05-13 14:00:12+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -414,14 +414,14 @@ msgstr "Das URL-Template für die Sendungsverfolgung muss eine gültige HTTP- od
 msgid "Could not create provider \"%s\" because its auto-generated slug conflicts with a built-in shipping provider. Please specify a different slug."
 msgstr "Der Anbieter „%s“ konnte nicht erstellt werden, da seine automatisch generierte Titelform mit einem integrierten Versanddienstleister in Konflikt steht. Gib eine andere Titelform an."
 
-#: includes/emails/class-wc-email-customer-on-hold-order.php:68
-msgid "Your order from {site_title} is on hold"
-msgstr "Deine Bestellung bei {site_title} ist in Wartestellung"
-
 #. translators: %s: URL to blog post about this change.
 #: includes/admin/views/html-notice-sync-on-read-disabled.php:20
 msgid "Compatibility mode for HPOS no longer pulls order changes made to the posts database back into your orders automatically. If your site uses custom code or plugins that modify orders outside of WooCommerce, this may affect how order data is handled. <a href=\"%s\">Learn more about this change and what to do</a>."
 msgstr "Der Kompatibilitätsmodus für HPOS zieht Bestelländerungen, die an der Beitragsdatenbank vorgenommen wurden, nicht mehr automatisch in deine Bestellungen zurück. Wenn deine Website individuellen Code oder Plugins verwendet, die Bestellungen außerhalb von WooCommerce ändern, kann dies Auswirkungen auf die Verarbeitung von Bestelldaten haben. <a href=\"%s\">Weitere Informationen zu dieser Änderung und was du tun kannst</a>."
+
+#: includes/emails/class-wc-email-customer-on-hold-order.php:68
+msgid "Your order from {site_title} is on hold"
+msgstr "Deine Bestellung bei {site_title} ist in Wartestellung"
 
 #. translators: %s: gateway title
 #: includes/emails/class-wc-email-admin-payment-gateway-enabled.php:293
@@ -3776,6 +3776,18 @@ msgstr "Der Typ der Entität, für die die Abwicklung erstellt wird."
 msgid "Whether to notify the customer about the fulfillment update."
 msgstr "Ob der Kunde über die Aktualisierung der Abwicklung benachrichtigt werden soll."
 
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:751
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:809
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:857
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:897
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:947
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1044
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1117
+#: src/Internal/RestApi/Routes/V4/Fulfillments/Controller.php:113
+#: src/Internal/RestApi/Routes/V4/Fulfillments/Schema/FulfillmentSchema.php:41
+msgid "Unique identifier for the fulfillment."
+msgstr "Eindeutige Kennung für die Abwicklung."
+
 #: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:510
 msgid "Fulfillment deleted successfully."
 msgstr "Die Abwicklung wurde erfolgreich gelöscht."
@@ -3792,18 +3804,6 @@ msgstr "Nicht abgewickelt"
 #: src/Admin/Features/Fulfillments/FulfillmentUtils.php:473
 msgid "Partially fulfilled"
 msgstr "Teilweise abgewickelt"
-
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:751
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:809
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:857
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:897
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:947
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1044
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1117
-#: src/Internal/RestApi/Routes/V4/Fulfillments/Controller.php:113
-#: src/Internal/RestApi/Routes/V4/Fulfillments/Schema/FulfillmentSchema.php:41
-msgid "Unique identifier for the fulfillment."
-msgstr "Eindeutige Kennung für die Abwicklung."
 
 #: src/Admin/Features/Fulfillments/FulfillmentUtils.php:468
 #: src/Admin/Features/Fulfillments/FulfillmentUtils.php:502
@@ -15013,14 +15013,6 @@ msgstr "Der Marketingkanal, zu dem dieser Kampagnentyp gehört."
 msgid "The unique identifier for the marketing channel that this campaign belongs to."
 msgstr "Die eindeutige Kennung des Marketingkanals, zu dem diese Kampagne gehört."
 
-#. translators: 1) is the number of affected actions, 2) is a link to an admin
-#. screen.
-#: packages/action-scheduler/classes/ActionScheduler_AdminView.php:220
-msgid "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due action</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
-msgid_plural "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due actions</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
-msgstr[0] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktion</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
-msgstr[1] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktionen</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
-
 #: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1842
 #: src/Internal/RestApi/Routes/V4/Products/Controller.php:1909
 msgid "Slug automatically generated from the product name."
@@ -15035,6 +15027,14 @@ msgstr "Permalink-Template für das Produkt."
 #: includes/export/abstract-wc-csv-batch-exporter.php:133
 msgid "Unable to create or write to %s during CSV export. Please check file permissions."
 msgstr "Erstellen oder Schreiben unter %s während CSV-Export nicht möglich. Bitte überprüfe die Dateiberechtigungen."
+
+#. translators: 1) is the number of affected actions, 2) is a link to an admin
+#. screen.
+#: packages/action-scheduler/classes/ActionScheduler_AdminView.php:220
+msgid "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due action</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
+msgid_plural "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due actions</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
+msgstr[0] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktion</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
+msgstr[1] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktionen</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
 
 #. translators: %d: shipping package number.
 #: includes/class-wc-cart.php:1735
@@ -18874,19 +18874,9 @@ msgstr "Wähle Zahlungsanbieter aus und aktiviere Zahlungsarten an der Kasse."
 msgid "Set your store location and configure tax rate settings."
 msgstr "Richte den Standort deines Stores ein und konfiguriere die Steuersatzeinstellungen."
 
-#: src/Internal/Admin/RemoteFreeExtensions/DefaultFreeExtensions.php:48
-#: src/Internal/Admin/RemoteFreeExtensions/DefaultFreeExtensions.php:69
-#: src/Internal/Admin/RemoteFreeExtensions/DefaultFreeExtensions.php:79
-msgid "Grow your store"
-msgstr "Lass deinen Store wachsen"
-
 #: src/Internal/Admin/Notes/MarketingJetpack.php:116
 msgid "Get backups"
 msgstr "Backups erhalten"
-
-#: src/Internal/Admin/Notes/MarketingJetpack.php:105
-msgid "Store downtime means lost sales. One-click restores get you back online quickly if something goes wrong."
-msgstr "Ausfallzeiten bedeuten für deinen Store entgangene Einnahmen. Mit Ein-Klick-Wiederherstellungen ist dein Store schnell wieder online, wenn ein Fehler auftritt."
 
 #: src/Internal/Admin/Notes/MarketingJetpack.php:104
 msgid "Protect your WooCommerce Store with Jetpack Backup."
@@ -18908,6 +18898,16 @@ msgstr "Der angewandte Steuersatz."
 #: src/Admin/Features/OnboardingTasks/Tasks/StoreDetails.php:42
 msgid "Your store address is required to set the origin country for shipping, currencies, and payment options."
 msgstr "Deine Shop-Adresse ist für die Einrichtung des Ursprungslandes für den Versand, von Währungen und Zahlungsoptionen erforderlich."
+
+#: src/Internal/Admin/Notes/MarketingJetpack.php:105
+msgid "Store downtime means lost sales. One-click restores get you back online quickly if something goes wrong."
+msgstr "Ausfallzeiten bedeuten für deinen Shop entgangene Einnahmen. Mit Ein-Klick-Wiederherstellungen ist dein Shop schnell wieder online, wenn ein Fehler auftritt."
+
+#: src/Internal/Admin/RemoteFreeExtensions/DefaultFreeExtensions.php:48
+#: src/Internal/Admin/RemoteFreeExtensions/DefaultFreeExtensions.php:69
+#: src/Internal/Admin/RemoteFreeExtensions/DefaultFreeExtensions.php:79
+msgid "Grow your store"
+msgstr "Lass deinen Shop wachsen"
 
 #: src/Admin/Features/PaymentGatewaySuggestions/DefaultPaymentGateways.php:309
 #: src/Internal/Admin/Suggestions/PaymentsExtensionSuggestions.php:3340
@@ -23014,14 +23014,14 @@ msgstr "Akzeptiere Kredit- und Debitkarten sicher auf deiner Website. Verwalte T
 msgid "Try the new way to get paid"
 msgstr "Die neue Art, Zahlungen zu erhalten"
 
-#. translators: %s: Link to settings page.
-#: includes/admin/views/html-notice-redirect-only-download.php:18
-msgid "Your store is configured to serve digital products using \"Redirect only\" method. This method is deprecated, <a href=\"%s\">please switch to a different method instead.</a><br><em>If you use a remote server for downloadable files (such as Google Drive, Dropbox, Amazon S3), you may optionally wish to \"allow using redirects as a last resort\". Enabling that and/or selecting any of the other options will make this notice go away.</em>"
-msgstr "Dein Store ist darauf konfiguriert, digitale Produkte mit der Methode „Nur weiterleiten“ bereitzustellen. Diese Methode ist veraltet, <a href=\"%s\">wechsle bitte zu einer anderen Methode.</a><br><em>Wenn du für herunterladbare Dateien (wie Google Drive, Dropbox, Amazon S3) einen Remote-Server nutzt, kannst du optional auch den „Weiterleitungsmodus (unsicher) als letzte Option erlauben“. Wenn du diese und/oder andere Optionen aktivierst, wird diese Benachrichtigung nicht mehr angezeigt.</em>"
-
 #: packages/action-scheduler/classes/ActionScheduler_ListTable.php:365
 msgid "It appears one or more database tables were missing. Attempting to re-create the missing table(s)."
 msgstr "Anscheinend fehlt mindestens eine Datenbanktabelle. Es wird versucht, die fehlende(n) Tabelle(n) wiederherzustellen."
+
+#. translators: %s: Link to settings page.
+#: includes/admin/views/html-notice-redirect-only-download.php:18
+msgid "Your store is configured to serve digital products using \"Redirect only\" method. This method is deprecated, <a href=\"%s\">please switch to a different method instead.</a><br><em>If you use a remote server for downloadable files (such as Google Drive, Dropbox, Amazon S3), you may optionally wish to \"allow using redirects as a last resort\". Enabling that and/or selecting any of the other options will make this notice go away.</em>"
+msgstr "Dein Shop ist darauf konfiguriert, digitale Produkte mit der Methode „Nur weiterleiten“ bereitzustellen. Diese Methode ist veraltet, <a href=\"%s\">wechsle bitte zu einer anderen Methode.</a><br><em>Wenn du für herunterladbare Dateien (wie Google Drive, Dropbox, Amazon S3) einen Remote-Server nutzt, kannst du optional auch den „Weiterleitungsmodus (unsicher) als letzte Option erlauben“. Wenn du diese und/oder andere Optionen aktivierst, wird diese Benachrichtigung nicht mehr angezeigt.</em>"
 
 #: patterns/heading-with-three-columns-of-content-with-link.php:12
 #: src/Internal/Admin/Notes/WooCommercePayments.php:122
@@ -25118,11 +25118,6 @@ msgstr "Aktualisierung der WooCommerce-Datenbank läuft"
 msgid "Country / Region"
 msgstr "Land / Region"
 
-#: includes/class-wc-privacy-erasers.php:65
-#: includes/class-wc-privacy-exporters.php:204
-msgid "Shipping Country / Region"
-msgstr "Versand Land / Region"
-
 #: includes/admin/class-wc-admin-profile.php:78
 #: includes/admin/class-wc-admin-profile.php:138
 #: includes/admin/meta-boxes/class-wc-meta-box-order-data.php:91
@@ -25140,6 +25135,11 @@ msgstr "Land/Region für Abrechnung"
 #: includes/admin/notes/class-wc-notes-run-db-update.php:213
 msgid "View progress →"
 msgstr "Fortschritt anzeigen →"
+
+#: includes/class-wc-privacy-erasers.php:65
+#: includes/class-wc-privacy-exporters.php:204
+msgid "Shipping Country / Region"
+msgstr "Versandland / -region"
 
 #: src/Blocks/BlockTypes/AbstractProductGrid.php:631
 #: src/Blocks/BlockTypes/ProductSaleBadge.php:86
@@ -44679,10 +44679,6 @@ msgstr "Keine Kunden gefunden."
 msgid "Refreshed stats for %s"
 msgstr "Statistik für %s aktualisiert"
 
-#: includes/admin/reports/class-wc-report-customer-list.php:72
-msgid "Search customers"
-msgstr "Suche nach Kunden"
-
 #: includes/admin/reports/class-wc-report-customer-list.php:157
 msgid "Refresh stats"
 msgstr "Statistik aktualisieren"
@@ -45614,6 +45610,10 @@ msgstr[1] "%s frühere Bestellungen verknüpft"
 #: assets/client/admin/chunks/shipping-recommendations.js:1
 msgid "Shipping methods"
 msgstr "Versandarten"
+
+#: includes/admin/reports/class-wc-report-customer-list.php:72
+msgid "Search customers"
+msgstr "Kunden suchen"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:1834
 msgid "Offline Payments"

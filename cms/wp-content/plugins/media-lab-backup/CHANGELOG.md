@@ -6,7 +6,29 @@ Versionierung: [Semantic Versioning](https://semver.org/)
 
 ---
 
-## [1.0.0] — 2025-05-13
+## [1.1.0] — 2026-05-13
+
+### Added
+- **SSH-Key-Authentifizierung** als Alternative zu Passwort (via phpseclib3 `PublicKeyLoader`)
+- **Konfigurierbarer Website-Unterordner** (`sftp_site_folder`) mit automatisch generiertem Vorschlag aus der Domain
+- **WP-CLI-Integration** mit vier Befehlen:
+  - `wp mlbkp backup [--type=<type>]` — Backup ausführen
+  - `wp mlbkp status` — Konfiguration und letzten Backup-Status anzeigen
+  - `wp mlbkp test` — SFTP-Verbindung testen
+  - `wp mlbkp logs [--limit=<n>] [--format=<format>]` — Protokoll anzeigen
+
+### Changed
+- Standard-Remote-Basispfad von `/backups` auf `/` geändert (passend für Sub-Account-Root)
+- SFTP-Einstellungen um Auth-Methode, Private Key und Key-Passphrase erweitert
+- Settings-UI: Auth-Tabs (Passwort / SSH-Key) mit Panel-Toggle
+
+### Fixed
+- Doppeltes Plugin-Loading beim ZIP-Upload im WP-Admin verhindert (`defined()`-Guard)
+- Klassenprefix von `MLB_` auf `MLBKP_` geändert (Kollision mit `media-lab-bookings`)
+
+---
+
+
 
 ### Added
 - Initiale Veröffentlichung

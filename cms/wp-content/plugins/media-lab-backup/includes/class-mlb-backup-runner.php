@@ -209,11 +209,15 @@ class MLBKP_Backup_Runner {
 function mlbkp_get_settings(): array {
     $defaults = [
         // SFTP
-        'sftp_host'     => '',
-        'sftp_port'     => 22,
-        'sftp_username' => '',
-        'sftp_password' => '',
-        'sftp_path'     => '/backups',
+        'sftp_host'         => '',
+        'sftp_port'         => 22,
+        'sftp_username'     => '',
+        'sftp_password'     => '',
+        'sftp_path'         => '/',
+        'sftp_site_folder'  => '',
+        'sftp_auth_method'  => 'password',
+        'sftp_private_key'  => '',
+        'sftp_key_passphrase' => '',
 
         // Backup-Scope
         'backup_database'  => '1',

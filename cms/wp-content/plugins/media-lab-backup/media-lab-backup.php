@@ -3,7 +3,7 @@
  * Plugin Name: Media Lab Backup
  * Plugin URI:  https://media-lab.at
  * Description: Automatische WordPress-Backups (Datenbank + Dateien) zur Hetzner Storage Box via SFTP. Unterstützt manuelle und geplante Backups mit konfigurierbarer Aufbewahrungszeit.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Author:      Media Lab Tritremmel GmbH
@@ -21,7 +21,7 @@ if ( defined( 'MLBKP_VERSION' ) ) {
 }
 
 // ─── Plugin-Konstanten ───────────────────────────────────────────────────────
-define( 'MLBKP_VERSION',       '1.0.0' );
+define( 'MLBKP_VERSION',       '1.1.0' );
 define( 'MLBKP_PLUGIN_FILE',   __FILE__ );
 define( 'MLBKP_PLUGIN_DIR',    plugin_dir_path( __FILE__ ) );
 define( 'MLBKP_PLUGIN_URL',    plugin_dir_url( __FILE__ ) );
@@ -40,6 +40,12 @@ if ( ! class_exists( 'MLBKP_File_Backup' ) )     require_once MLBKP_PLUGIN_DIR .
 if ( ! class_exists( 'MLBKP_Backup_Runner' ) )   require_once MLBKP_PLUGIN_DIR . 'includes/class-mlb-backup-runner.php';
 if ( ! class_exists( 'MLBKP_Scheduler' ) )       require_once MLBKP_PLUGIN_DIR . 'includes/class-mlb-scheduler.php';
 if ( ! class_exists( 'MLBKP_Admin' ) )           require_once MLBKP_PLUGIN_DIR . 'includes/class-mlb-admin.php';
+
+// ─── WP-CLI ──────────────────────────────────────────────────────────────────
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    require_once MLBKP_PLUGIN_DIR . 'includes/class-mlbkp-cli.php';
+    WP_CLI::add_command( 'mlbkp', 'MLBKP_CLI' );
+}
 
 // ─── Plugin initialisieren ───────────────────────────────────────────────────
 add_action( 'plugins_loaded', static function () {

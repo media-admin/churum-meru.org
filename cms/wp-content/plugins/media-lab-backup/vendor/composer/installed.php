@@ -3,7 +3,7 @@
         'name' => 'media-lab/media-lab-backup',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'ec58bbf8b42304f82b0c39980e78f07c7ec09470',
+        'reference' => '4134585eca53a3bb6fb8abeacf22f980f7a18d28',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'media-lab/media-lab-backup' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ec58bbf8b42304f82b0c39980e78f07c7ec09470',
+            'reference' => '4134585eca53a3bb6fb8abeacf22f980f7a18d28',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

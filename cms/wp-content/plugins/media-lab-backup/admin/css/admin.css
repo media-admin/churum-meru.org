@@ -386,3 +386,282 @@
         gap: 12px;
     }
 }
+
+/* ── Auth Tabs ───────────────────────────────────────────────── */
+
+.mlb-auth-section {
+    margin-top: 20px;
+    border-top: 1px solid var(--mlb-border);
+    padding-top: 16px;
+}
+
+.mlb-auth-section h3 {
+    margin: 0 0 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.mlb-auth-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.mlb-auth-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 2px solid var(--mlb-border);
+    border-radius: var(--mlb-radius);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: border-color .15s, background .15s;
+}
+
+.mlb-auth-tab:has(input:checked) {
+    border-color: var(--mlb-primary);
+    background: #f0f6fc;
+}
+
+.mlb-auth-tab input[type="radio"] {
+    display: none;
+}
+
+.mlb-auth-panel {
+    display: none;
+}
+
+.mlb-auth-panel.active {
+    display: block;
+}
+
+.mlb-key-info {
+    margin-top: 12px !important;
+}
+
+.mlb-connection-test-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--mlb-border);
+}
+
+/* ── Excludes Tree Picker ────────────────────────────────────── */
+
+.mlb-excludes-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--mlb-border);
+    border-radius: var(--mlb-radius);
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.mlb-tree-panel {
+    border-right: 1px solid var(--mlb-border);
+    background: var(--mlb-bg);
+    display: flex;
+    flex-direction: column;
+}
+
+.mlb-tree-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 12px;
+    background: #fff;
+    border-bottom: 1px solid var(--mlb-border);
+    font-size: 12px;
+}
+
+.mlb-tree-toolbar strong {
+    font-size: 12px;
+    font-family: monospace;
+    color: #1d2327;
+}
+
+.mlb-tree-toolbar-actions {
+    display: flex;
+    gap: 4px;
+}
+
+#mlb-tree-container {
+    padding: 8px;
+    overflow-y: auto;
+    max-height: 320px;
+    flex: 1;
+}
+
+.mlb-tree-hint,
+.mlb-tree-error {
+    color: #646970;
+    font-style: italic;
+    font-size: 12px;
+    padding: 8px 4px;
+    margin: 0;
+}
+
+.mlb-tree-error { color: var(--mlb-error); }
+
+/* ── Tree Nodes ──────────────────────────────────────────────── */
+
+.mlb-tree,
+.mlb-tree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mlb-tree-children {
+    padding-left: 20px;
+}
+
+.mlb-tree-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 1px 0;
+    position: relative;
+}
+
+.mlb-tree-item > .mlb-tree-children {
+    width: 100%;
+    flex-basis: 100%;
+}
+
+.mlb-tree-toggle {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+    color: #646970;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: background .1s, color .1s;
+}
+
+.mlb-tree-toggle:hover:not(:disabled) {
+    background: #e0e0e0;
+    color: #1d2327;
+}
+
+.mlb-tree-toggle:disabled {
+    cursor: default;
+    color: transparent;
+}
+
+.mlb-tree-item input[type="checkbox"] {
+    flex-shrink: 0;
+    margin: 0 4px 0 0;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.mlb-tree-item label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: normal;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: background .1s;
+    flex: 1;
+    min-width: 0;
+}
+
+.mlb-tree-item label:hover {
+    background: #e8f0f8;
+}
+
+.mlb-tree-item:has(> input:checked) > label {
+    color: var(--mlb-primary);
+    font-weight: 600;
+    text-decoration: line-through;
+    opacity: .7;
+}
+
+.mlb-tree-icon {
+    font-size: 13px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.mlb-tree-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Textarea Panel ──────────────────────────────────────────── */
+
+.mlb-excludes-textarea-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px;
+    background: #fff;
+    gap: 6px;
+}
+
+.mlb-textarea-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.mlb-exclude-count {
+    background: var(--mlb-primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+}
+
+.mlb-excludes-textarea-panel textarea {
+    flex: 1;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    resize: vertical;
+    border: 1px solid var(--mlb-border);
+    border-radius: 4px;
+    padding: 8px;
+    min-height: 180px;
+}
+
+.mlb-excludes-textarea-panel .description {
+    margin: 0;
+    font-size: 11px;
+    color: #646970;
+}
+
+@media (max-width: 780px) {
+    .mlb-excludes-wrap {
+        grid-template-columns: 1fr;
+    }
+    .mlb-tree-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--mlb-border);
+    }
+}

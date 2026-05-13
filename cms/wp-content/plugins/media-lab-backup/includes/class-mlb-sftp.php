@@ -2,11 +2,13 @@
 defined( 'ABSPATH' ) || exit;
 
 use phpseclib3\Net\SFTP;
+use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * MLBKP_SFTP
  *
  * Wrapper um phpseclib3 SFTP für Uploads zur Hetzner Storage Box.
+ * Unterstützt Passwort- und SSH-Key-Authentifizierung.
  */
 class MLBKP_SFTP {
 
@@ -14,10 +16,6 @@ class MLBKP_SFTP {
     private string $remote_base;
     private string $site_slug;
 
-    /**
-     * @param array $settings  Plugin-Einstellungen (sftp_host, sftp_port, sftp_username, sftp_password, sftp_path)
-     * @throws RuntimeException bei Verbindungs- oder Login-Fehler
-     */
     public function __construct( array $settings ) {
         if ( ! class_exists( 'phpseclib3\Net\SFTP' ) ) {
             throw new RuntimeException(
@@ -28,34 +26,27 @@ class MLBKP_SFTP {
         $host     = trim( $settings['sftp_host'] ?? '' );
         $port     = (int) ( $settings['sftp_port'] ?? 22 );
         $username = trim( $settings['sftp_username'] ?? '' );
-        $password = $settings['sftp_password'] ?? '';
 
-        $this->remote_base = rtrim( $settings['sftp_path'] ?? '/backups', '/' );
-        $this->site_slug   = $this->build_site_slug();
+        $this->remote_base = rtrim( $settings['sftp_path'] ?? '/', '/' ) ?: '/';
+        $this->site_slug   = $this->resolve_site_folder( $settings );
 
         if ( empty( $host ) || empty( $username ) ) {
             throw new RuntimeException( 'SFTP-Host und Benutzername dürfen nicht leer sein.' );
         }
 
-        $this->sftp = new SFTP( $host, $port, 60 ); // 60s Timeout
+        $this->sftp = new SFTP( $host, $port, 60 );
 
-        if ( ! $this->sftp->login( $username, $password ) ) {
-            throw new RuntimeException(
-                "SFTP-Login fehlgeschlagen für {$username}@{$host}:{$port}. Bitte Zugangsdaten prüfen."
-            );
+        $auth_method = $settings['sftp_auth_method'] ?? 'password';
+
+        if ( $auth_method === 'key' ) {
+            $this->login_with_key( $username, $settings );
+        } else {
+            $this->login_with_password( $username, $settings['sftp_password'] ?? '', $host, $port );
         }
     }
 
     // ── Upload ───────────────────────────────────────────────────────────────
 
-    /**
-     * Lädt eine lokale Datei auf die Storage Box hoch.
-     *
-     * @param string $local_path      Lokaler Dateipfad
-     * @param string $remote_filename Dateiname auf dem Remote-Server
-     * @return string                 Vollständiger Remote-Pfad
-     * @throws RuntimeException
-     */
     public function upload( string $local_path, string $remote_filename ): string {
         if ( ! file_exists( $local_path ) ) {
             throw new RuntimeException( "Lokale Datei nicht gefunden: {$local_path}" );
@@ -66,18 +57,7 @@ class MLBKP_SFTP {
 
         $this->ensure_remote_dir( $remote_dir );
 
-        $result = $this->sftp->put(
-            $remote_path,
-            $local_path,
-            SFTP::SOURCE_LOCAL_FILE,
-            -1,
-            -1,
-            static function ( $sent ) use ( $local_path ) {
-                // Progress-Callback (für zukünftige Nutzung)
-            }
-        );
-
-        if ( ! $result ) {
+        if ( ! $this->sftp->put( $remote_path, $local_path, SFTP::SOURCE_LOCAL_FILE ) ) {
             throw new RuntimeException( "SFTP-Upload fehlgeschlagen: {$remote_path}" );
         }
 
@@ -86,18 +66,11 @@ class MLBKP_SFTP {
 
     // ── Retention ────────────────────────────────────────────────────────────
 
-    /**
-     * Wendet die Aufbewahrungsregel an: Hält nur die neuesten $keep Dateien
-     * die auf $prefix beginnen.
-     *
-     * @param string $prefix  z.B. 'db-backup-' oder 'files-backup-'
-     * @param int    $keep    Anzahl zu behaltender Backups
-     */
     public function apply_retention( string $prefix, int $keep ): void {
         if ( $keep <= 0 ) return;
 
         $files = $this->list_site_files( $prefix );
-        sort( $files ); // Älteste zuerst (alphabetisch / Datum im Dateinamen)
+        sort( $files );
 
         $to_delete = array_slice( $files, 0, max( 0, count( $files ) - $keep ) );
 
@@ -108,27 +81,59 @@ class MLBKP_SFTP {
 
     // ── Verbindungstest ──────────────────────────────────────────────────────
 
-    /**
-     * Testet die SFTP-Verbindung und gibt true oder eine Fehlermeldung zurück.
-     *
-     * @param array $settings
-     * @return true|string
-     */
     public static function test_connection( array $settings ): true|string {
         try {
             $instance = new self( $settings );
-            // Versuche, das Remote-Verzeichnis zu lesen
-            $dir = rtrim( $settings['sftp_path'] ?? '/backups', '/' );
-            $instance->sftp->nlist( $dir );
+            $instance->sftp->nlist( $instance->remote_base );
             return true;
         } catch ( \Throwable $e ) {
             return $e->getMessage();
         }
     }
 
+    /**
+     * Gibt den vorgeschlagenen Site-Ordner-Namen zurück (für Admin-UI Placeholder).
+     */
+    public static function get_suggested_folder(): string {
+        $host = parse_url( get_site_url(), PHP_URL_HOST ) ?? 'wordpress';
+        return preg_replace( '/[^a-z0-9\-]/', '-', strtolower( $host ) );
+    }
+
+    // ── Authentifizierung ─────────────────────────────────────────────────────
+
+    private function login_with_password( string $username, string $password, string $host, int $port ): void {
+        if ( ! $this->sftp->login( $username, $password ) ) {
+            throw new RuntimeException(
+                "SFTP-Login fehlgeschlagen für {$username}@{$host}:{$port}. Bitte Zugangsdaten prüfen."
+            );
+        }
+    }
+
+    private function login_with_key( string $username, array $settings ): void {
+        $private_key = trim( $settings['sftp_private_key'] ?? '' );
+        $passphrase  = $settings['sftp_key_passphrase'] ?? '';
+
+        if ( empty( $private_key ) ) {
+            throw new RuntimeException( 'SSH-Key-Authentifizierung: Kein Private Key angegeben.' );
+        }
+
+        try {
+            $key = PublicKeyLoader::load( $private_key, $passphrase ?: false );
+        } catch ( \Throwable $e ) {
+            throw new RuntimeException( 'SSH-Key konnte nicht geladen werden: ' . $e->getMessage() );
+        }
+
+        if ( ! $this->sftp->login( $username, $key ) ) {
+            throw new RuntimeException( 'SFTP-Login mit SSH-Key fehlgeschlagen. Bitte Key und Benutzername prüfen.' );
+        }
+    }
+
     // ── Private Hilfsmethoden ─────────────────────────────────────────────────
 
     private function get_remote_site_dir(): string {
+        if ( $this->remote_base === '/' ) {
+            return '/' . $this->site_slug;
+        }
         return $this->remote_base . '/' . $this->site_slug;
     }
 
@@ -148,13 +153,9 @@ class MLBKP_SFTP {
     }
 
     private function delete_site_file( string $filename ): void {
-        $path = $this->get_remote_site_dir() . '/' . $filename;
-        $this->sftp->delete( $path );
+        $this->sftp->delete( $this->get_remote_site_dir() . '/' . $filename );
     }
 
-    /**
-     * Stellt sicher, dass ein Remote-Verzeichnis (inkl. aller Eltern) existiert.
-     */
     private function ensure_remote_dir( string $path ): void {
         if ( $this->sftp->is_dir( $path ) ) return;
 
@@ -170,11 +171,18 @@ class MLBKP_SFTP {
     }
 
     /**
-     * Erstellt einen sicheren Site-Slug aus der Home-URL.
-     * z.B. "meinekunde.at" → "meinekunde-at"
+     * Unterordner: aus Einstellungen (sftp_site_folder) oder auto-generiert.
+     * Erlaubt Buchstaben, Zahlen, Punkte, Bindestriche und Unterstriche.
+     * Verhindert Path-Traversal (../) und Null-Bytes.
      */
-    private function build_site_slug(): string {
-        $host = parse_url( get_site_url(), PHP_URL_HOST ) ?? 'wordpress';
-        return preg_replace( '/[^a-z0-9\-]/', '-', strtolower( $host ) );
+    private function resolve_site_folder( array $settings ): string {
+        $custom = trim( $settings['sftp_site_folder'] ?? '' );
+        if ( $custom !== '' ) {
+            // Path-Traversal verhindern, erlaubte Zeichen beibehalten (inkl. Punkte)
+            $clean = preg_replace( '/[^a-zA-Z0-9.\-_]/', '-', $custom );
+            $clean = preg_replace( '/\.{2,}/', '.', $clean ); // ".." → "."
+            return trim( $clean, '-' );
+        }
+        return self::get_suggested_folder();
     }
 }

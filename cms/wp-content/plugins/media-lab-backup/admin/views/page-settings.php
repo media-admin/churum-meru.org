@@ -2,7 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 
 $s = mlbkp_get_settings();
-$next_run = MLBKP_Scheduler::get_next_run();
+$next_run        = MLBKP_Scheduler::get_next_run();
+$suggested_folder = MLBKP_SFTP::get_suggested_folder();
 ?>
 
 <form id="mlb-settings-form" class="mlb-settings-form">
@@ -13,10 +14,7 @@ $next_run = MLBKP_Scheduler::get_next_run();
             <span class="mlb-status-label">Nächstes Backup</span>
             <strong><?php echo esc_html( $next_run ?? 'Kein Zeitplan aktiv' ); ?></strong>
         </div>
-        <?php
-        $last = MLBKP_Logger::get_last_successful();
-        if ( $last ):
-        ?>
+        <?php $last = MLBKP_Logger::get_last_successful(); if ( $last ): ?>
         <div class="mlb-status-item">
             <span class="mlb-status-label">Letztes erfolgreiches Backup</span>
             <strong><?php echo esc_html( wp_date( 'd.m.Y H:i', strtotime( $last['finished_at'] ) ) ); ?></strong>
@@ -40,14 +38,13 @@ $next_run = MLBKP_Scheduler::get_next_run();
                 <input type="text" id="sftp_host" name="sftp_host"
                        value="<?php echo esc_attr( $s['sftp_host'] ); ?>"
                        placeholder="u123456.your-storagebox.de" />
-                <p class="description">Dein Hetzner Storage Box Hostname.</p>
             </div>
 
             <div class="mlb-field">
                 <label for="sftp_port">Port</label>
                 <input type="number" id="sftp_port" name="sftp_port"
                        value="<?php echo esc_attr( $s['sftp_port'] ); ?>"
-                       min="1" max="65535" style="width: 120px;" />
+                       min="1" max="65535" style="width:120px;" />
                 <p class="description">Standard: 22 (SFTP)</p>
             </div>
 
@@ -59,26 +56,87 @@ $next_run = MLBKP_Scheduler::get_next_run();
             </div>
 
             <div class="mlb-field">
-                <label for="sftp_password">Passwort</label>
-                <input type="password" id="sftp_password" name="sftp_password"
-                       value="" placeholder="<?php echo ! empty( $s['sftp_password'] ) ? '(gespeichert – leer lassen zum Beibehalten)' : ''; ?>"
-                       autocomplete="new-password" />
+                <label for="sftp_path">Remote-Basispfad</label>
+                <input type="text" id="sftp_path" name="sftp_path"
+                       value="<?php echo esc_attr( $s['sftp_path'] ); ?>"
+                       placeholder="/" />
+                <p class="description">Basisverzeichnis auf der Storage Box (z.B. <code>/</code> oder <code>/backups</code>).</p>
             </div>
 
             <div class="mlb-field mlb-span-2">
-                <label for="sftp_path">Remote-Pfad</label>
-                <input type="text" id="sftp_path" name="sftp_path"
-                       value="<?php echo esc_attr( $s['sftp_path'] ); ?>"
-                       placeholder="/backups" />
-                <p class="description">Basisverzeichnis auf der Storage Box. Pro Website wird automatisch ein Unterordner angelegt.</p>
+                <label for="sftp_site_folder">Website-Unterordner</label>
+                <input type="text" id="sftp_site_folder" name="sftp_site_folder"
+                       value="<?php echo esc_attr( $s['sftp_site_folder'] ); ?>"
+                       placeholder="<?php echo esc_attr( $suggested_folder ); ?>" />
+                <p class="description">
+                    Unterordner innerhalb des Basispfads für diese Website.
+                    Leer lassen für automatische Generierung aus der Domain
+                    <strong>(Vorschlag: <code><?php echo esc_html( $suggested_folder ); ?></code>)</strong>.
+                </p>
             </div>
 
         </div>
 
-        <button type="button" id="mlb-test-connection" class="button button-secondary">
-            🔍 Verbindung testen
-        </button>
-        <span id="mlb-connection-status" class="mlb-inline-status"></span>
+        <?php /* ── Authentifizierung ── */ ?>
+        <div class="mlb-auth-section">
+            <h3>Authentifizierung</h3>
+            <div class="mlb-auth-tabs">
+                <label class="mlb-auth-tab">
+                    <input type="radio" name="sftp_auth_method" value="password"
+                           <?php checked( $s['sftp_auth_method'] ?? 'password', 'password' ); ?> />
+                    <span>🔑 Passwort</span>
+                </label>
+                <label class="mlb-auth-tab">
+                    <input type="radio" name="sftp_auth_method" value="key"
+                           <?php checked( $s['sftp_auth_method'] ?? 'password', 'key' ); ?> />
+                    <span>🗝 SSH-Key</span>
+                </label>
+            </div>
+
+            <div id="mlb-auth-password" class="mlb-auth-panel <?php echo ( $s['sftp_auth_method'] ?? 'password' ) !== 'key' ? 'active' : ''; ?>">
+                <div class="mlb-field">
+                    <label for="sftp_password">Passwort</label>
+                    <input type="password" id="sftp_password" name="sftp_password"
+                           value=""
+                           placeholder="<?php echo ! empty( $s['sftp_password'] ) ? '(gespeichert – leer lassen zum Beibehalten)' : ''; ?>"
+                           autocomplete="new-password" />
+                </div>
+            </div>
+
+            <div id="mlb-auth-key" class="mlb-auth-panel <?php echo ( $s['sftp_auth_method'] ?? 'password' ) === 'key' ? 'active' : ''; ?>">
+                <div class="mlb-field">
+                    <label for="sftp_private_key">Private Key</label>
+                    <textarea id="sftp_private_key" name="sftp_private_key" rows="8"
+                              placeholder="-----BEGIN OPENSSH PRIVATE KEY-----&#10;...&#10;-----END OPENSSH PRIVATE KEY-----"><?php echo esc_textarea( $s['sftp_private_key'] ?? '' ); ?></textarea>
+                    <p class="description">
+                        Inhalt der privaten Schlüsseldatei (z.B. <code>~/.ssh/id_rsa</code> oder <code>id_ed25519</code>).
+                        Leer lassen um den gespeicherten Key beizubehalten.
+                    </p>
+                </div>
+                <div class="mlb-field">
+                    <label for="sftp_key_passphrase">Key-Passphrase <span style="font-weight:400;color:#646970;">(optional)</span></label>
+                    <input type="password" id="sftp_key_passphrase" name="sftp_key_passphrase"
+                           value=""
+                           placeholder="<?php echo ! empty( $s['sftp_key_passphrase'] ) ? '(gespeichert)' : 'Leer wenn kein Passwort'; ?>"
+                           autocomplete="new-password" />
+                </div>
+                <div class="mlb-key-info notice notice-info inline">
+                    <p>
+                        <strong>Public Key auf der Storage Box hinterlegen:</strong><br>
+                        Den Inhalt der zugehörigen <code>.pub</code>-Datei in
+                        <code>~/.ssh/authorized_keys</code> auf der Storage Box eintragen
+                        (via SFTP/SSH oder Hetzner Robot).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mlb-connection-test-row">
+            <button type="button" id="mlb-test-connection" class="button button-secondary">
+                🔍 Verbindung testen
+            </button>
+            <span id="mlb-connection-status" class="mlb-inline-status"></span>
+        </div>
     </div>
 
     <?php /* ─── Backup-Scope ─────────────────────────────────────────────── */ ?>
@@ -103,10 +161,8 @@ $next_run = MLBKP_Scheduler::get_next_run();
                 <div>
                     <strong>wp-content/</strong>
                     <span>Uploads, Plugins, Themes (ZIP)</span>
-                    <?php
-                    $wpcontent_size = MLBKP_File_Backup::estimate_size( WP_CONTENT_DIR );
-                    if ( $wpcontent_size > 0 ):
-                    ?>
+                    <?php $wpcontent_size = MLBKP_File_Backup::estimate_size( WP_CONTENT_DIR );
+                    if ( $wpcontent_size > 0 ): ?>
                     <em>~<?php echo esc_html( MLBKP_Logger::format_bytes( $wpcontent_size ) ); ?></em>
                     <?php endif; ?>
                 </div>
@@ -124,11 +180,41 @@ $next_run = MLBKP_Scheduler::get_next_run();
 
         </div>
 
-        <div class="mlb-field" style="margin-top: 20px;">
-            <label for="exclude_paths">Ausschlüsse (optional)</label>
-            <textarea id="exclude_paths" name="exclude_paths" rows="5"
-                      placeholder="wp-content/themes/old-theme&#10;wp-content/plugins/heavy-plugin"><?php echo esc_textarea( $s['exclude_paths'] ); ?></textarea>
-            <p class="description">Ein Pfad pro Zeile, relativ zum jeweiligen Backup-Stammverzeichnis.</p>
+        <div class="mlb-field mlb-excludes-field" style="margin-top:20px;">
+            <label>Ausschlüsse <span style="font-weight:400;color:#646970;">(optional)</span></label>
+
+            <div class="mlb-excludes-wrap">
+
+                <div class="mlb-tree-panel">
+                    <div class="mlb-tree-toolbar">
+                        <strong>📂 wp-content/</strong>
+                        <div class="mlb-tree-toolbar-actions">
+                            <button type="button" id="mlb-load-tree" class="button button-small">
+                                Verzeichnisbaum laden
+                            </button>
+                            <button type="button" id="mlb-tree-expand-all" class="button button-small" style="display:none;">↕ Alle aufklappen</button>
+                            <button type="button" id="mlb-tree-collapse-all" class="button button-small" style="display:none;">↕ Alle zuklappen</button>
+                        </div>
+                    </div>
+                    <div id="mlb-tree-container">
+                        <p class="mlb-tree-hint">Lade den Verzeichnisbaum um Ordner per Klick auszuschließen.</p>
+                    </div>
+                </div>
+
+                <div class="mlb-excludes-textarea-panel">
+                    <div class="mlb-textarea-header">
+                        <span>Ausgeschlossene Pfade</span>
+                        <span class="mlb-exclude-count" id="mlb-exclude-count" style="display:none;"></span>
+                    </div>
+                    <textarea id="exclude_paths" name="exclude_paths" rows="12"
+                              placeholder="themes/old-theme&#10;plugins/heavy-plugin&#10;uploads/2020"><?php echo esc_textarea( $s['exclude_paths'] ); ?></textarea>
+                    <p class="description">
+                        Ein Pfad pro Zeile, relativ zu <code>wp-content/</code>.
+                        Baumauswahl und Textarea sind synchronisiert.
+                    </p>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -157,11 +243,8 @@ $next_run = MLBKP_Scheduler::get_next_run();
                 <label for="schedule_day">Wochentag</label>
                 <select id="schedule_day" name="schedule_day">
                     <?php
-                    $days = [
-                        'monday' => 'Montag', 'tuesday' => 'Dienstag', 'wednesday' => 'Mittwoch',
-                        'thursday' => 'Donnerstag', 'friday' => 'Freitag',
-                        'saturday' => 'Samstag', 'sunday' => 'Sonntag',
-                    ];
+                    $days = [ 'monday'=>'Montag','tuesday'=>'Dienstag','wednesday'=>'Mittwoch',
+                              'thursday'=>'Donnerstag','friday'=>'Freitag','saturday'=>'Samstag','sunday'=>'Sonntag' ];
                     foreach ( $days as $val => $label ):
                     ?>
                     <option value="<?php echo esc_attr( $val ); ?>" <?php selected( $s['schedule_day'], $val ); ?>>
@@ -175,7 +258,7 @@ $next_run = MLBKP_Scheduler::get_next_run();
                 <label for="retention_count">Aufbewahrung</label>
                 <input type="number" id="retention_count" name="retention_count"
                        value="<?php echo esc_attr( $s['retention_count'] ); ?>"
-                       min="1" max="365" style="width: 100px;" />
+                       min="1" max="365" style="width:100px;" />
                 <p class="description">Anzahl der Backups, die behalten werden sollen.</p>
             </div>
 

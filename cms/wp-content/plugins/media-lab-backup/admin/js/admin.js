@@ -17,6 +17,183 @@
         $log.scrollTop($log[0].scrollHeight);
     }
 
+    // ── Verzeichnisbaum ───────────────────────────────────────────────────────
+
+    var treeLoaded = false;
+
+    $('#mlb-load-tree').on('click', function () {
+        if (treeLoaded) return;
+        var $btn = $(this).prop('disabled', true).text('Lädt …');
+        var $container = $('#mlb-tree-container');
+
+        $.ajax({
+            url:    mlbkpData.ajaxUrl,
+            method: 'POST',
+            data: { action: 'mlbkp_get_file_tree', nonce: mlbkpData.nonce },
+            success: function (res) {
+                if (!res.success) {
+                    $container.html('<p class="mlb-tree-error">Fehler beim Laden.</p>');
+                    return;
+                }
+                treeLoaded = true;
+                $container.empty().append(renderTree(res.data.tree));
+                syncTreeFromTextarea();
+                $btn.hide();
+                $('#mlb-tree-expand-all, #mlb-tree-collapse-all').show();
+                updateExcludeCount();
+            },
+            error: function () {
+                $container.html('<p class="mlb-tree-error">Verbindungsfehler.</p>');
+                $btn.prop('disabled', false).text('Erneut versuchen');
+            },
+        });
+    });
+
+    // Baum rendern
+    function renderTree(nodes) {
+        if (!nodes || !nodes.length) return null;
+        var $ul = $('<ul class="mlb-tree">');
+
+        nodes.forEach(function (node) {
+            var hasChildren = node.children && node.children.length > 0;
+            var $li = $('<li class="mlb-tree-item">');
+
+            // Toggle-Button
+            var $toggle = $('<button type="button" class="mlb-tree-toggle">')
+                .html(hasChildren ? '▶' : '<span class="mlb-tree-spacer"></span>')
+                .prop('disabled', !hasChildren);
+
+            // Checkbox
+            var $cb = $('<input type="checkbox">')
+                .attr('id', 'mlbtree-' + node.path.replace(/\//g, '-'))
+                .val(node.path);
+
+            // Label
+            var $label = $('<label>')
+                .attr('for', 'mlbtree-' + node.path.replace(/\//g, '-'))
+                .append($('<span class="mlb-tree-icon">').text('📁'))
+                .append($('<span class="mlb-tree-name">').text(node.name));
+
+            $li.append($toggle).append($cb).append($label);
+
+            // Kinder-Container
+            if (hasChildren) {
+                var $children = $('<div class="mlb-tree-children" style="display:none;">');
+                $children.append(renderTree(node.children));
+                $li.append($children);
+
+                $toggle.on('click', function () {
+                    var open = $children.is(':visible');
+                    $children.slideToggle(150);
+                    $toggle.html(open ? '▶' : '▼');
+                    $li.toggleClass('mlb-tree-open', !open);
+                });
+            }
+
+            // Checkbox → Textarea sync
+            $cb.on('change', function () {
+                var path = $(this).val();
+                var checked = this.checked;
+
+                // Kinder-Checkboxen mitziehen
+                $li.find('input[type="checkbox"]').prop('checked', checked).each(function () {
+                    syncCheckboxToTextarea($(this).val(), checked);
+                });
+
+                syncCheckboxToTextarea(path, checked);
+                updateExcludeCount();
+            });
+
+            $ul.append($li);
+        });
+
+        return $ul;
+    }
+
+    // Checkbox-Zustand in Textarea spiegeln
+    function syncCheckboxToTextarea(path, checked) {
+        var lines = getExcludeLines();
+        if (checked) {
+            if (!lines.includes(path)) {
+                lines.push(path);
+                // Redundante Kind-Pfade entfernen
+                lines = lines.filter(function (l) {
+                    return l === path || !l.startsWith(path + '/');
+                });
+            }
+        } else {
+            lines = lines.filter(function (l) { return l !== path; });
+        }
+        setExcludeLines(lines);
+    }
+
+    // Textarea → Baum-Checkboxen synchronisieren
+    function syncTreeFromTextarea() {
+        var lines = getExcludeLines();
+        $('#mlb-tree-container input[type="checkbox"]').each(function () {
+            var path = $(this).val();
+            var shouldCheck = lines.some(function (l) {
+                return l === path || path.startsWith(l + '/');
+            });
+            $(this).prop('checked', shouldCheck);
+        });
+    }
+
+    // Textarea → Baum bei manueller Eingabe aktualisieren
+    $('#exclude_paths').on('input', function () {
+        if (treeLoaded) syncTreeFromTextarea();
+        updateExcludeCount();
+    });
+
+    // Alle aufklappen / zuklappen
+    $('#mlb-tree-expand-all').on('click', function () {
+        $('#mlb-tree-container .mlb-tree-children').slideDown(100);
+        $('#mlb-tree-container .mlb-tree-toggle').html('▼');
+        $('#mlb-tree-container .mlb-tree-item').addClass('mlb-tree-open');
+    });
+
+    $('#mlb-tree-collapse-all').on('click', function () {
+        $('#mlb-tree-container .mlb-tree-children').slideUp(100);
+        $('#mlb-tree-container .mlb-tree-toggle:not(:disabled)').html('▶');
+        $('#mlb-tree-container .mlb-tree-item').removeClass('mlb-tree-open');
+    });
+
+    function getExcludeLines() {
+        var val = $('#exclude_paths').val();
+        if ( !val ) return [];
+        return val
+            .split('\n')
+            .map(function (l) { return l.trim(); })
+            .filter(function (l) { return l !== ''; });
+    }
+
+    function setExcludeLines(lines) {
+        $('#exclude_paths').val(lines.join('\n'));
+    }
+
+    function updateExcludeCount() {
+        var count = getExcludeLines().length;
+        var $badge = $('#mlb-exclude-count');
+        if (count > 0) {
+            $badge.text(count + ' ausgeschlossen').show();
+        } else {
+            $badge.hide();
+        }
+    }
+
+    updateExcludeCount();
+
+    // ── Auth-Methode umschalten ───────────────────────────────────────────────
+
+    function updateAuthPanel() {
+        var method = $('input[name="sftp_auth_method"]:checked').val();
+        $('#mlb-auth-password').toggleClass('active', method === 'password');
+        $('#mlb-auth-key').toggleClass('active', method === 'key');
+    }
+
+    $(document).on('change', 'input[name="sftp_auth_method"]', updateAuthPanel);
+    updateAuthPanel();
+
     // ── Einstellungen speichern ───────────────────────────────────────────────
 
     $('#mlb-settings-form').on('submit', function (e) {
@@ -75,11 +252,15 @@
             data: {
                 action:        'mlbkp_test_connection',
                 nonce:         mlbkpData.nonce,
-                sftp_host:     $('#sftp_host').val(),
-                sftp_port:     $('#sftp_port').val(),
-                sftp_username: $('#sftp_username').val(),
-                sftp_password: $('#sftp_password').val(),
-                sftp_path:     $('#sftp_path').val(),
+                sftp_host:          $('#sftp_host').val(),
+                sftp_port:          $('#sftp_port').val(),
+                sftp_username:      $('#sftp_username').val(),
+                sftp_password:      $('#sftp_password').val(),
+                sftp_path:          $('#sftp_path').val(),
+                sftp_site_folder:   $('#sftp_site_folder').val(),
+                sftp_auth_method:   $('input[name="sftp_auth_method"]:checked').val(),
+                sftp_private_key:   $('#sftp_private_key').val(),
+                sftp_key_passphrase: $('#sftp_key_passphrase').val(),
             },
             success: function (res) {
                 if (res.success) {

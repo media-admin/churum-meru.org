@@ -24,6 +24,8 @@ class MLBKP_Admin {
         add_action( 'wp_ajax_mlbkp_test_connection',   [ self::class, 'ajax_test_connection' ] );
         // AJAX: Einstellungen speichern
         add_action( 'wp_ajax_mlbkp_save_settings',     [ self::class, 'ajax_save_settings' ] );
+        // AJAX: Verzeichnisbaum laden
+        add_action( 'wp_ajax_mlbkp_get_file_tree',    [ self::class, 'ajax_get_file_tree' ] );
     }
 
     // ── Menü ─────────────────────────────────────────────────────────────────
@@ -163,11 +165,15 @@ class MLBKP_Admin {
 
         // Ggf. Live-Daten aus dem Formular verwenden (vor dem Speichern testen)
         if ( ! empty( $_POST['sftp_host'] ) ) {
-            $settings['sftp_host']     = sanitize_text_field( $_POST['sftp_host'] );
-            $settings['sftp_port']     = (int) ( $_POST['sftp_port'] ?? 22 );
-            $settings['sftp_username'] = sanitize_text_field( $_POST['sftp_username'] );
-            $settings['sftp_password'] = $_POST['sftp_password'] ?? $settings['sftp_password'];
-            $settings['sftp_path']     = sanitize_text_field( $_POST['sftp_path'] ?? '/backups' );
+            $settings['sftp_host']          = sanitize_text_field( $_POST['sftp_host'] );
+            $settings['sftp_port']          = (int) ( $_POST['sftp_port'] ?? 22 );
+            $settings['sftp_username']      = sanitize_text_field( $_POST['sftp_username'] );
+            $settings['sftp_password']      = $_POST['sftp_password'] ?? $settings['sftp_password'];
+            $settings['sftp_path']          = sanitize_text_field( $_POST['sftp_path'] ?? '/' );
+            $settings['sftp_site_folder']   = sanitize_text_field( $_POST['sftp_site_folder'] ?? '' );
+            $settings['sftp_auth_method']   = sanitize_key( $_POST['sftp_auth_method'] ?? 'password' );
+            $settings['sftp_private_key']   = $_POST['sftp_private_key'] ?? $settings['sftp_private_key'];
+            $settings['sftp_key_passphrase'] = $_POST['sftp_key_passphrase'] ?? $settings['sftp_key_passphrase'];
         }
 
         $result = MLBKP_SFTP::test_connection( $settings );
@@ -177,6 +183,61 @@ class MLBKP_Admin {
         } else {
             wp_send_json_error( [ 'message' => $result ] );
         }
+    }
+
+    // ── AJAX: Verzeichnisbaum ────────────────────────────────────────────────
+
+    public static function ajax_get_file_tree(): void {
+        check_ajax_referer( self::NONCE_ACTION, 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => 'Keine Berechtigung.' ] );
+        }
+
+        $root = WP_CONTENT_DIR;
+        $tree = self::scan_dir_tree( $root, '', 0, 3 );
+
+        wp_send_json_success( [ 'tree' => $tree, 'root_label' => 'wp-content' ] );
+    }
+
+    /**
+     * Scannt ein Verzeichnis rekursiv und gibt einen JSON-kompatiblen Baum zurück.
+     * Gibt nur Verzeichnisse zurück (keine Dateien), max. $max_depth Ebenen tief.
+     *
+     * @return array<int, array{name: string, path: string, type: string, children: array}>
+     */
+    public static function scan_dir_tree( string $base, string $relative, int $depth, int $max_depth ): array {
+        $skip = [ '.', '..', '.git', '.DS_Store', 'node_modules', '.sass-cache', '__MACOSX' ];
+
+        $scan_path = $base . ( $relative !== '' ? DIRECTORY_SEPARATOR . $relative : '' );
+        $entries   = @scandir( $scan_path );
+
+        if ( ! $entries ) return [];
+
+        $result = [];
+
+        foreach ( $entries as $entry ) {
+            if ( in_array( $entry, $skip, true ) ) continue;
+            if ( str_starts_with( $entry, '.' ) ) continue;
+
+            $full_path     = $scan_path . DIRECTORY_SEPARATOR . $entry;
+            $relative_path = $relative !== '' ? $relative . '/' . $entry : $entry;
+
+            if ( ! is_dir( $full_path ) ) continue;
+
+            $children = ( $depth < $max_depth )
+                ? self::scan_dir_tree( $base, $relative_path, $depth + 1, $max_depth )
+                : [];
+
+            $result[] = [
+                'name'     => $entry,
+                'path'     => $relative_path,
+                'type'     => 'dir',
+                'children' => $children,
+            ];
+        }
+
+        return $result;
     }
 
     // ── AJAX: Einstellungen speichern ────────────────────────────────────────
@@ -190,19 +251,26 @@ class MLBKP_Admin {
 
         $current  = mlbkp_get_settings();
         $password = sanitize_text_field( $_POST['sftp_password'] ?? '' );
+        $pk       = trim( $_POST['sftp_private_key'] ?? '' );
+        $kp       = $_POST['sftp_key_passphrase'] ?? '';
 
-        // Leeres Passwort = altes Passwort behalten
-        if ( empty( $password ) ) {
-            $password = $current['sftp_password'];
-        }
+        // Leere Felder = gespeicherte Werte beibehalten
+        if ( empty( $password ) ) $password = $current['sftp_password'];
+        if ( empty( $pk ) )       $pk       = $current['sftp_private_key'];
+        if ( empty( $kp ) )       $kp       = $current['sftp_key_passphrase'];
 
         $new_settings = [
             // SFTP
-            'sftp_host'     => sanitize_text_field( $_POST['sftp_host'] ?? '' ),
-            'sftp_port'     => (int) ( $_POST['sftp_port'] ?? 22 ),
-            'sftp_username' => sanitize_text_field( $_POST['sftp_username'] ?? '' ),
-            'sftp_password' => $password,
-            'sftp_path'     => sanitize_text_field( $_POST['sftp_path'] ?? '/backups' ),
+            'sftp_host'          => sanitize_text_field( $_POST['sftp_host'] ?? '' ),
+            'sftp_port'          => (int) ( $_POST['sftp_port'] ?? 22 ),
+            'sftp_username'      => sanitize_text_field( $_POST['sftp_username'] ?? '' ),
+            'sftp_password'      => $password,
+            'sftp_path'          => sanitize_text_field( $_POST['sftp_path'] ?? '/' ),
+            'sftp_site_folder'   => sanitize_text_field( $_POST['sftp_site_folder'] ?? '' ),
+            'sftp_auth_method'   => in_array( $_POST['sftp_auth_method'] ?? '', [ 'password', 'key' ], true )
+                                        ? $_POST['sftp_auth_method'] : 'password',
+            'sftp_private_key'   => $pk,
+            'sftp_key_passphrase' => $kp,
 
             // Scope
             'backup_database'  => ! empty( $_POST['backup_database'] )  ? '1' : '0',

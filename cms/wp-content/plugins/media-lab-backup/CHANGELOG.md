@@ -6,7 +6,19 @@ Versionierung: [Semantic Versioning](https://semver.org/)
 
 ---
 
-## [1.1.1] — 2026-05-13
+## [1.2.0] — 2026-05-13
+
+### Changed
+- **Asynchrones Backup via WP-Cron** — AJAX-Handler startet das Backup als sofortigen Einzel-Cron-Job und gibt umgehend zurück (kein 504 Gateway Timeout mehr auf Shared Hosting wie IONOS). Die Admin-UI pollt alle 4 Sekunden den Status und zeigt Ergebnis und Größe sobald der Job abgeschlossen ist.
+
+### Added
+- Neuer AJAX-Endpoint `mlbkp_check_status` — gibt Status, Fehlermeldung, Dateigröße und Dauer eines laufenden oder abgeschlossenen Backup-Jobs zurück
+- `MLBKP_Backup_Runner::run_from_log_id()` — führt Backup mit bereits existierendem Log-Eintrag fort (für asynchronen Aufruf via Cron)
+- `MLBKP_Scheduler::run_async_backup()` — Cron-Hook-Handler für manuelle Backups
+
+---
+
+
 
 ### Fixed
 - **mysqldump-Fallback greift jetzt automatisch** — wenn `mysqldump` zwar verfügbar ist aber beim Dump-Aufruf scheitert (Exit-Code 7, falscher Socket, fehlende Rechte etc.), wird automatisch auf den PHP-Fallback umgeschaltet statt das Backup abzubrechen

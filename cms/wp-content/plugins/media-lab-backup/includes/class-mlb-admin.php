@@ -20,6 +20,7 @@ class MLBKP_Admin {
 
         // AJAX: Backup starten
         add_action( 'wp_ajax_mlbkp_run_backup',        [ self::class, 'ajax_run_backup' ] );
+        add_action( 'wp_ajax_mlbkp_check_status',      [ self::class, 'ajax_backup_status' ] );
         // AJAX: SFTP-Verbindung testen
         add_action( 'wp_ajax_mlbkp_test_connection',   [ self::class, 'ajax_test_connection' ] );
         // AJAX: Einstellungen speichern
@@ -120,7 +121,7 @@ class MLBKP_Admin {
         echo '</div></div>';
     }
 
-    // ── AJAX: Backup starten ─────────────────────────────────────────────────
+    // ── AJAX: Backup starten (asynchron via WP-Cron) ─────────────────────────
 
     public static function ajax_run_backup(): void {
         check_ajax_referer( self::NONCE_ACTION, 'nonce' );
@@ -130,26 +131,58 @@ class MLBKP_Admin {
         }
 
         $type = sanitize_key( $_POST['backup_type'] ?? 'full' );
-        $allowed_types = [ 'database', 'wpcontent', 'wpcore', 'full' ];
-
-        if ( ! in_array( $type, $allowed_types, true ) ) {
+        if ( ! in_array( $type, [ 'database', 'wpcontent', 'wpcore', 'full' ], true ) ) {
             wp_send_json_error( [ 'message' => 'Ungültiger Backup-Typ.' ] );
         }
 
-        $runner = new MLBKP_Backup_Runner();
-        $result = $runner->run( $type, 'manual' );
+        // Log-Eintrag sofort erstellen → gibt die ID zurück für Polling
+        $log_id = MLBKP_Logger::start( $type, 'manual' );
 
-        if ( $result['success'] ) {
-            wp_send_json_success( [
-                'message' => $result['message'],
-                'log'     => $result['log'],
-            ] );
-        } else {
-            wp_send_json_error( [
-                'message' => $result['message'],
-                'log'     => $result['log'],
-            ] );
+        // Backup als sofortigen Cron-Job einplanen (läuft außerhalb des HTTP-Requests)
+        wp_schedule_single_event( time(), 'mlbkp_run_async_backup', [ $log_id, $type ] );
+
+        // WP-Cron sofort triggern ohne auf den nächsten Seitenaufruf zu warten
+        spawn_cron();
+
+        wp_send_json_success( [
+            'log_id'  => $log_id,
+            'message' => 'Backup gestartet.',
+        ] );
+    }
+
+    // ── AJAX: Backup-Status pollen ────────────────────────────────────────────
+
+    public static function ajax_backup_status(): void {
+        check_ajax_referer( self::NONCE_ACTION, 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => 'Keine Berechtigung.' ] );
         }
+
+        $log_id = (int) ( $_POST['log_id'] ?? 0 );
+        if ( $log_id <= 0 ) {
+            wp_send_json_error( [ 'message' => 'Ungültige Log-ID.' ] );
+        }
+
+        global $wpdb;
+        $row = $wpdb->get_row(
+            $wpdb->prepare(
+                'SELECT status, error_message, file_size, duration_sec FROM ' . MLBKP_Logger::get_table() . ' WHERE id = %d',
+                $log_id
+            ),
+            ARRAY_A
+        );
+
+        if ( ! $row ) {
+            wp_send_json_error( [ 'message' => 'Log-Eintrag nicht gefunden.' ] );
+        }
+
+        wp_send_json_success( [
+            'status'        => $row['status'],
+            'error_message' => $row['error_message'] ?? '',
+            'file_size'     => $row['file_size'] ? MLBKP_Logger::format_bytes( (int) $row['file_size'] ) : '',
+            'duration'      => MLBKP_Logger::format_duration( isset( $row['duration_sec'] ) ? (int) $row['duration_sec'] : null ),
+        ] );
     }
 
     // ── AJAX: SFTP testen ────────────────────────────────────────────────────

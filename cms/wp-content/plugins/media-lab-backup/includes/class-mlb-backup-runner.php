@@ -21,18 +21,30 @@ class MLBKP_Backup_Runner {
     // ── Öffentliche API ───────────────────────────────────────────────────────
 
     /**
-     * Führt ein Backup des gewählten Typs aus.
-     *
-     * @param string $type     'database' | 'wpcontent' | 'wpcore' | 'full'
-     * @param string $triggered_by  'manual' | 'cron'
-     * @return array{success: bool, message: string, log: array}
+     * Startet ein Backup und erstellt einen neuen Log-Eintrag.
+     * Für geplante Cron-Jobs.
      */
     public function run( string $type = 'full', string $triggered_by = 'manual' ): array {
+        $log_id = MLBKP_Logger::start( $type, $triggered_by );
+        return $this->execute( $log_id, $type );
+    }
+
+    /**
+     * Führt ein Backup mit einem bereits existierenden Log-Eintrag fort.
+     * Für asynchrone manuelle Backups (AJAX → Cron).
+     */
+    public function run_from_log_id( int $log_id, string $type ): array {
+        return $this->execute( $log_id, $type );
+    }
+
+    // ── Interner Backup-Ablauf ────────────────────────────────────────────────
+
+    private function execute( int $log_id, string $type ): array {
         @set_time_limit( 0 );
         @ini_set( 'memory_limit', '512M' );
 
-        $log_id = MLBKP_Logger::start( $type, $triggered_by );
-        $this->log( "▶ Backup gestartet [Typ: {$type}] [Via: {$triggered_by}]" );
+        $triggered_by = 'manual';
+        $this->log( "▶ Backup gestartet [Typ: {$type}]" );
         $this->log( '🖥  Site: ' . get_site_url() );
         $this->log( '📁 Temp: ' . $this->temp_dir );
 

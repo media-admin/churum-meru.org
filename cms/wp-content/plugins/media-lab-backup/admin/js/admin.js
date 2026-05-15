@@ -278,55 +278,81 @@
         });
     });
 
-    // ── Backup starten ────────────────────────────────────────────────────────
+    // ── Backup starten (asynchron) ────────────────────────────────────────────
 
     $('#mlb-start-backup').on('click', function () {
-        const $btn      = $(this).prop('disabled', true).text('⏳ Läuft …');
-        const $status   = $('#mlb-run-status');
-        const $logCard  = $('#mlb-log-card').show();
-        const $logOut   = $('#mlb-log-output').empty();
-        const backupType = $('input[name="backup_type"]:checked').val() || 'full';
+        var $btn      = $(this).prop('disabled', true).text('⏳ Wird gestartet …');
+        var $status   = $('#mlb-run-status');
+        var $logCard  = $('#mlb-log-card').show();
+        var $logOut   = $('#mlb-log-output').empty();
+        var backupType = $('input[name="backup_type"]:checked').val() || 'full';
 
         setStatus($status, mlbkpData.strings.running, 'info');
-
         appendLog('[' + new Date().toLocaleTimeString('de-AT') + '] Backup wird gestartet …');
 
+        // Schritt 1: Backup anstoßen — gibt sofort log_id zurück
         $.ajax({
-            url:     mlbkpData.ajaxUrl,
-            method:  'POST',
-            timeout: 0, // Kein Timeout – Backup kann lange dauern
+            url:    mlbkpData.ajaxUrl,
+            method: 'POST',
             data: {
                 action:      'mlbkp_run_backup',
                 nonce:       mlbkpData.nonce,
                 backup_type: backupType,
             },
             success: function (res) {
-                // Server-Log-Zeilen ausgeben
-                if (res.data && Array.isArray(res.data.log)) {
-                    $logOut.empty();
-                    res.data.log.forEach(function (line) {
-                        appendLog(line);
-                    });
+                if (!res.success) {
+                    setStatus($status, '❌ ' + (res.data.message || 'Fehler.'), 'error');
+                    $btn.prop('disabled', false).text('▶ Backup starten');
+                    return;
                 }
 
-                if (res.success) {
-                    setStatus($status, mlbkpData.strings.success, 'ok');
-                    $logCard.addClass('mlb-log-success');
-                } else {
-                    setStatus($status, mlbkpData.strings.error + ' ' + (res.data.message || ''), 'error');
-                    $logCard.addClass('mlb-log-error');
-                }
+                var logId = res.data.log_id;
+                appendLog('[' + new Date().toLocaleTimeString('de-AT') + '] Backup läuft im Hintergrund (ID: ' + logId + ') …');
+                $btn.text('⏳ Läuft …');
+
+                // Schritt 2: Alle 4 Sekunden Status pollen
+                var pollInterval = setInterval(function () {
+                    $.ajax({
+                        url:    mlbkpData.ajaxUrl,
+                        method: 'POST',
+                        data: {
+                            action:  'mlbkp_check_status',
+                            nonce:   mlbkpData.nonce,
+                            log_id:  logId,
+                        },
+                        success: function (poll) {
+                            if (!poll.success) return;
+
+                            var s = poll.data.status;
+
+                            if (s === 'running') {
+                                // Noch läuft — warten
+                                return;
+                            }
+
+                            // Fertig — Polling stoppen
+                            clearInterval(pollInterval);
+                            $btn.prop('disabled', false).text('▶ Backup starten');
+
+                            if (s === 'success') {
+                                appendLog('[' + new Date().toLocaleTimeString('de-AT') + '] 🎉 Backup erfolgreich abgeschlossen.');
+                                if (poll.data.file_size) appendLog('   Größe: ' + poll.data.file_size + ' | Dauer: ' + poll.data.duration);
+                                setStatus($status, mlbkpData.strings.success, 'ok');
+                                $logCard.addClass('mlb-log-success');
+                            } else {
+                                appendLog('[' + new Date().toLocaleTimeString('de-AT') + '] ❌ Fehler: ' + (poll.data.error_message || 'Unbekannter Fehler'));
+                                setStatus($status, mlbkpData.strings.error, 'error');
+                                $logCard.addClass('mlb-log-error');
+                            }
+                        },
+                        error: function () {
+                            // Polling-Fehler ignorieren, weiter versuchen
+                        }
+                    });
+                }, 4000);
             },
-            error: function (xhr, status) {
-                if (status === 'timeout') {
-                    appendLog('[!] Timeout — Das Backup könnte im Hintergrund noch laufen. Bitte Protokoll prüfen.');
-                    setStatus($status, '⚠ Timeout — Bitte Protokoll prüfen.', 'error');
-                } else {
-                    appendLog('[!] AJAX-Fehler: ' + status);
-                    setStatus($status, 'AJAX-Fehler: ' + status, 'error');
-                }
-            },
-            complete: function () {
+            error: function () {
+                setStatus($status, 'AJAX-Fehler beim Starten.', 'error');
                 $btn.prop('disabled', false).text('▶ Backup starten');
             },
         });

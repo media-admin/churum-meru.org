@@ -14,6 +14,7 @@ class MLBKP_Scheduler {
     public static function init(): void {
         add_action( self::CRON_HOOK_DAILY,  [ self::class, 'run_scheduled_backup' ] );
         add_action( self::CRON_HOOK_WEEKLY, [ self::class, 'run_scheduled_backup' ] );
+        add_action( 'mlbkp_run_async_backup', [ self::class, 'run_async_backup' ], 10, 2 );
 
         // Benutzerdefinierter WP-Cron-Interval
         add_filter( 'cron_schedules', [ self::class, 'add_cron_intervals' ] );
@@ -45,6 +46,15 @@ class MLBKP_Scheduler {
         } elseif ( $schedule === 'weekly' ) {
             wp_schedule_event( $time, 'mlbkp_weekly', self::CRON_HOOK_WEEKLY );
         }
+    }
+
+    /**
+     * Wird vom asynchronen Cron-Job aufgerufen (manuelles Backup via Admin-UI).
+     * Log-Eintrag existiert bereits — Runner übernimmt ab dem SFTP-Schritt.
+     */
+    public static function run_async_backup( int $log_id, string $type ): void {
+        $runner = new MLBKP_Backup_Runner();
+        $runner->run_from_log_id( $log_id, $type );
     }
 
     public static function run_scheduled_backup(): void {

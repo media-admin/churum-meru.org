@@ -29,7 +29,7 @@ export default defineConfig({
         blocks:              path.resolve(pluginDir, 'assets/src/js/blocks.js'),
         'block-accordion':   path.resolve(pluginDir, 'assets/src/js/block-accordion.js'),
         'block-logo-slider': path.resolve(pluginDir, 'assets/src/js/block-logo-slider.js'),
-        'blocks-scss':       path.resolve(pluginDir, 'assets/src/scss/blocks.scss'),
+        // 'blocks-scss': wird via sass CLI gebaut – Vite 8 Bug mit SCSS als Rollup-Input
       },
       output: {
         entryFileNames: 'js/[name].js',

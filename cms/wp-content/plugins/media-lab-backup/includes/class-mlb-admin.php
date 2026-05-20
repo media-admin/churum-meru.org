@@ -21,6 +21,7 @@ class MLBKP_Admin {
         // AJAX: Backup starten
         add_action( 'wp_ajax_mlbkp_run_backup',        [ self::class, 'ajax_run_backup' ] );
         add_action( 'wp_ajax_mlbkp_check_status',      [ self::class, 'ajax_backup_status' ] );
+        add_action( 'wp_ajax_mlbkp_cancel_backup',     [ self::class, 'ajax_cancel_backup' ] );
         // AJAX: SFTP-Verbindung testen
         add_action( 'wp_ajax_mlbkp_test_connection',   [ self::class, 'ajax_test_connection' ] );
         // AJAX: Einstellungen speichern
@@ -177,12 +178,40 @@ class MLBKP_Admin {
             wp_send_json_error( [ 'message' => 'Log-Eintrag nicht gefunden.' ] );
         }
 
+        // Automatischer Timeout: Job läuft zu lange → als Fehler markieren
+        if ( $row['status'] === 'running' && MLBKP_Logger::is_timed_out( $log_id ) ) {
+            MLBKP_Logger::finish( $log_id, 'error', [
+                'error_message' => 'Job-Timeout: Prozess nach ' . MLBKP_Logger::JOB_TIMEOUT_MINUTES . ' Minuten automatisch beendet.',
+            ] );
+            $row['status']        = 'error';
+            $row['error_message'] = 'Job-Timeout nach ' . MLBKP_Logger::JOB_TIMEOUT_MINUTES . ' Minuten.';
+        }
+
         wp_send_json_success( [
             'status'        => $row['status'],
             'error_message' => $row['error_message'] ?? '',
             'file_size'     => $row['file_size'] ? MLBKP_Logger::format_bytes( (int) $row['file_size'] ) : '',
             'duration'      => MLBKP_Logger::format_duration( isset( $row['duration_sec'] ) ? (int) $row['duration_sec'] : null ),
         ] );
+    }
+
+    // ── AJAX: Backup abbrechen ────────────────────────────────────────────────
+
+    public static function ajax_cancel_backup(): void {
+        check_ajax_referer( self::NONCE_ACTION, 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( [ 'message' => 'Keine Berechtigung.' ] );
+        }
+
+        $log_id = (int) ( $_POST['log_id'] ?? 0 );
+        if ( $log_id <= 0 ) {
+            wp_send_json_error( [ 'message' => 'Ungültige Log-ID.' ] );
+        }
+
+        MLBKP_Logger::set_cancel_flag( $log_id );
+
+        wp_send_json_success( [ 'message' => 'Abbruch-Signal gesendet. Job wird beim nächsten Checkpoint gestoppt.' ] );
     }
 
     // ── AJAX: SFTP testen ────────────────────────────────────────────────────

@@ -10,11 +10,13 @@ class MLBKP_Scheduler {
 
     const CRON_HOOK_DAILY   = 'mlbkp_cron_backup_daily';
     const CRON_HOOK_WEEKLY  = 'mlbkp_cron_backup_weekly';
+    const CRON_HOOK_CLEANUP = 'mlbkp_cron_cleanup';
 
     public static function init(): void {
         add_action( self::CRON_HOOK_DAILY,  [ self::class, 'run_scheduled_backup' ] );
         add_action( self::CRON_HOOK_WEEKLY, [ self::class, 'run_scheduled_backup' ] );
         add_action( 'mlbkp_run_async_backup', [ self::class, 'run_async_backup' ], 10, 2 );
+        add_action( self::CRON_HOOK_CLEANUP,  [ self::class, 'run_cleanup' ] );
 
         // Benutzerdefinierter WP-Cron-Interval
         add_filter( 'cron_schedules', [ self::class, 'add_cron_intervals' ] );
@@ -22,10 +24,19 @@ class MLBKP_Scheduler {
 
     public static function activate(): void {
         self::reschedule();
+        if ( ! wp_next_scheduled( self::CRON_HOOK_CLEANUP ) ) {
+            wp_schedule_event( time(), 'hourly', self::CRON_HOOK_CLEANUP );
+        }
     }
 
     public static function deactivate(): void {
         self::clear_all();
+        wp_clear_scheduled_hook( self::CRON_HOOK_CLEANUP );
+    }
+
+    public static function run_cleanup(): void {
+        MLBKP_Logger::cleanup_timed_out_jobs();
+        MLBKP_Logger::prune( 200 );
     }
 
     /**

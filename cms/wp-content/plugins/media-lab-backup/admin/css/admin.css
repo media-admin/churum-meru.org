@@ -665,3 +665,19 @@
         border-bottom: 1px solid var(--mlb-border);
     }
 }
+
+/* ── Cancel Button & Cancelled Badge ────────────────────────── */
+
+.mlb-cancel-btn {
+    border-color: var(--mlb-error) !important;
+    color: var(--mlb-error) !important;
+}
+
+.mlb-cancel-btn:hover {
+    background: #fce8e8 !important;
+}
+
+.mlb-badge-cancelled {
+    background: #f5f0ff;
+    color: #6d3fc8;
+}

@@ -1,6 +1,9 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+/** Wird geworfen wenn der Benutzer ein Backup abbricht. */
+class MLBKP_CancelledException extends RuntimeException {}
+
 /**
  * MLBKP_Backup_Runner
  *
@@ -43,7 +46,6 @@ class MLBKP_Backup_Runner {
         @set_time_limit( 0 );
         @ini_set( 'memory_limit', '512M' );
 
-        $triggered_by = 'manual';
         $this->log( "▶ Backup gestartet [Typ: {$type}]" );
         $this->log( '🖥  Site: ' . get_site_url() );
         $this->log( '📁 Temp: ' . $this->temp_dir );
@@ -51,6 +53,9 @@ class MLBKP_Backup_Runner {
         $uploaded_files = [];
 
         try {
+            // ── Abbruch-Check ─────────────────────────────────────────────────
+            $this->check_cancelled( $log_id );
+
             // ── SFTP verbinden ────────────────────────────────────────────────
             $this->log( '🔌 SFTP-Verbindung aufbauen …' );
             $sftp = new MLBKP_SFTP( $this->settings );
@@ -60,6 +65,7 @@ class MLBKP_Backup_Runner {
 
             // ── Datenbank-Backup ──────────────────────────────────────────────
             if ( in_array( $type, [ 'database', 'full' ], true ) ) {
+                $this->check_cancelled( $log_id );
                 $this->log( '🗄  Datenbank-Dump erstellen …' );
                 $db_backup = new MLBKP_Database_Backup( $this->temp_dir );
                 $result    = $db_backup->create();
@@ -70,8 +76,9 @@ class MLBKP_Backup_Runner {
                     $this->log( "   Grund: {$result['fallback_reason']}" );
                 }
                 $this->log( '   Größe:   ' . MLBKP_Logger::format_bytes( $result['size'] ) );
-                $this->log( '📤 DB-Dump hochladen …' );
 
+                $this->check_cancelled( $log_id );
+                $this->log( '📤 DB-Dump hochladen …' );
                 $remote_path = $sftp->upload( $result['path'], $result['filename'] );
                 $uploaded_files[] = $result;
 
@@ -82,14 +89,16 @@ class MLBKP_Backup_Runner {
 
             // ── wp-content Backup ─────────────────────────────────────────────
             if ( in_array( $type, [ 'wpcontent', 'full' ], true ) ) {
+                $this->check_cancelled( $log_id );
                 $this->log( '📦 wp-content ZIP erstellen …' );
                 $extra_excludes = $this->parse_excludes();
                 $file_backup    = new MLBKP_File_Backup( $this->temp_dir );
                 $result         = $file_backup->create( 'wpcontent', $extra_excludes );
 
                 $this->log( '   Größe: ' . MLBKP_Logger::format_bytes( $result['size'] ) );
-                $this->log( '📤 wp-content ZIP hochladen …' );
 
+                $this->check_cancelled( $log_id );
+                $this->log( '📤 wp-content ZIP hochladen …' );
                 $remote_path = $sftp->upload( $result['path'], $result['filename'] );
                 $uploaded_files[] = $result;
 
@@ -99,13 +108,15 @@ class MLBKP_Backup_Runner {
 
             // ── WP-Core Backup ────────────────────────────────────────────────
             if ( $type === 'wpcore' ) {
+                $this->check_cancelled( $log_id );
                 $this->log( '📦 WordPress-Core ZIP erstellen …' );
                 $file_backup = new MLBKP_File_Backup( $this->temp_dir );
                 $result      = $file_backup->create( 'wpcore', $this->parse_excludes() );
 
                 $this->log( '   Größe: ' . MLBKP_Logger::format_bytes( $result['size'] ) );
-                $this->log( '📤 WP-Core ZIP hochladen …' );
 
+                $this->check_cancelled( $log_id );
+                $this->log( '📤 WP-Core ZIP hochladen …' );
                 $remote_path = $sftp->upload( $result['path'], $result['filename'] );
                 $uploaded_files[] = $result;
 
@@ -125,9 +136,21 @@ class MLBKP_Backup_Runner {
             ] );
 
             $this->log( '🎉 Backup erfolgreich abgeschlossen.' );
-
-            // ── E-Mail-Benachrichtigung ────────────────────────────────────────
             $this->maybe_send_notification( true, '' );
+
+        } catch ( MLBKP_CancelledException $e ) {
+            $this->log( '🛑 Backup wurde abgebrochen.' );
+            MLBKP_Logger::finish( $log_id, 'cancelled', [
+                'error_message' => 'Manuell abgebrochen.',
+            ] );
+            MLBKP_Logger::clear_cancel_flag( $log_id );
+            $this->cleanup();
+
+            return [
+                'success' => false,
+                'message' => 'Backup abgebrochen.',
+                'log'     => $this->log,
+            ];
 
         } catch ( \Throwable $e ) {
             $error = $e->getMessage();
@@ -138,7 +161,6 @@ class MLBKP_Backup_Runner {
             ] );
 
             $this->maybe_send_notification( false, $error );
-
             $this->cleanup();
 
             return [
@@ -192,6 +214,15 @@ class MLBKP_Backup_Runner {
         $raw = $this->settings['exclude_paths'] ?? '';
         if ( empty( $raw ) ) return [];
         return array_filter( array_map( 'trim', explode( "\n", $raw ) ) );
+    }
+
+    /**
+     * Prüft ob ein Abbruch-Flag gesetzt wurde — wirft MLBKP_CancelledException wenn ja.
+     */
+    private function check_cancelled( int $log_id ): void {
+        if ( MLBKP_Logger::is_cancelled( $log_id ) ) {
+            throw new MLBKP_CancelledException();
+        }
     }
 
     private function log( string $message ): void {

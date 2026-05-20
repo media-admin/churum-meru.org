@@ -45,9 +45,10 @@ $logs = MLBKP_Logger::get_logs( 100 );
                 <td>
                     <?php
                     $status_labels = [
-                        'success' => '<span class="mlb-badge mlb-badge-success">✅ Erfolgreich</span>',
-                        'error'   => '<span class="mlb-badge mlb-badge-error">❌ Fehler</span>',
-                        'running' => '<span class="mlb-badge mlb-badge-running">⏳ Läuft</span>',
+                        'success'   => '<span class="mlb-badge mlb-badge-success">✅ Erfolgreich</span>',
+                        'error'     => '<span class="mlb-badge mlb-badge-error">❌ Fehler</span>',
+                        'running'   => '<span class="mlb-badge mlb-badge-running">⏳ Läuft</span>',
+                        'cancelled' => '<span class="mlb-badge mlb-badge-cancelled">🛑 Abgebrochen</span>',
                     ];
                     echo $status_labels[ $log['status'] ] ?? esc_html( $log['status'] );
                     ?>

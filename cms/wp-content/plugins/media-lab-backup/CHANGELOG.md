@@ -6,7 +6,20 @@ Versionierung: [Semantic Versioning](https://semver.org/)
 
 ---
 
-## [1.2.0] — 2026-05-13
+## [1.3.0] — 2026-05-20
+
+### Added
+- **Abbrechen-Button** — erscheint während ein Backup läuft, setzt ein DB-Flag (`mlbkp_cancel_{id}` in wp_options), Runner prüft es an 6 Checkpoints (vor SFTP-Connect, vor/nach DB-Dump, vor/nach jedem Upload)
+- **Neuer Status `cancelled`** — eigenes Badge in der Protokoll-Tabelle (lila), sauberer Cleanup von Temp-Dateien
+- **Automatischer Job-Timeout** — Polling erkennt Jobs die länger als 60 Minuten laufen und markiert sie automatisch als Fehler; stündlicher WP-Cron (`mlbkp_cron_cleanup`) für serverseitige Bereinigung
+- **`MLBKP_CancelledException`** — eigene Exception-Klasse für saubere Abbruch-Behandlung im Runner, getrennt von echten Fehlern
+
+### Fixed
+- Stündlicher Cleanup-Cron wird jetzt korrekt bei Plugin-Aktivierung eingetragen und bei Deaktivierung entfernt
+
+---
+
+
 
 ### Changed
 - **Asynchrones Backup via WP-Cron** — AJAX-Handler startet das Backup als sofortigen Einzel-Cron-Job und gibt umgehend zurück (kein 504 Gateway Timeout mehr auf Shared Hosting wie IONOS). Die Admin-UI pollt alle 4 Sekunden den Status und zeigt Ergebnis und Größe sobald der Job abgeschlossen ist.

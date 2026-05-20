@@ -10,7 +10,10 @@ class MLBKP_Logger {
 
     const TABLE_SUFFIX = 'mlb_logs';
     const OPTION_DB_VERSION = 'mlbkp_db_version';
-    const DB_VERSION = '1.0';
+    const DB_VERSION = '1.1';
+
+    // Job-Timeout in Minuten — Jobs die länger laufen werden als Fehler markiert
+    const JOB_TIMEOUT_MINUTES = 60;
 
     // ── Tabellen-Management ──────────────────────────────────────────────────
 
@@ -94,6 +97,61 @@ class MLBKP_Logger {
             ], $data ),
             [ 'id' => $id ]
         );
+    }
+
+    // ── Abbruch-Flag ─────────────────────────────────────────────────────────
+
+    public static function set_cancel_flag( int $id ): void {
+        update_option( "mlbkp_cancel_{$id}", '1', false );
+    }
+
+    public static function is_cancelled( int $id ): bool {
+        return (bool) get_option( "mlbkp_cancel_{$id}", false );
+    }
+
+    public static function clear_cancel_flag( int $id ): void {
+        delete_option( "mlbkp_cancel_{$id}" );
+    }
+
+    // ── Timeout-Cleanup ───────────────────────────────────────────────────────
+
+    /**
+     * Markiert alle Jobs als Fehler, die länger als JOB_TIMEOUT_MINUTES laufen.
+     * Wird stündlich via WP-Cron aufgerufen.
+     */
+    public static function cleanup_timed_out_jobs(): int {
+        global $wpdb;
+        $table   = self::get_table();
+        $timeout = self::JOB_TIMEOUT_MINUTES;
+
+        $affected = $wpdb->query(
+            "UPDATE {$table}
+             SET status        = 'error',
+                 finished_at   = NOW(),
+                 error_message = 'Job-Timeout: Prozess nach {$timeout} Minuten automatisch beendet.'
+             WHERE status = 'running'
+               AND started_at < DATE_SUB(NOW(), INTERVAL {$timeout} MINUTE)"
+        );
+
+        return (int) $affected;
+    }
+
+    /**
+     * Prüft ob ein einzelner Job das Timeout überschritten hat.
+     */
+    public static function is_timed_out( int $id ): bool {
+        global $wpdb;
+        $started = $wpdb->get_var(
+            $wpdb->prepare(
+                'SELECT started_at FROM ' . self::get_table() . ' WHERE id = %d AND status = %s',
+                $id, 'running'
+            )
+        );
+
+        if ( ! $started ) return false;
+
+        $running_minutes = ( time() - strtotime( $started ) ) / 60;
+        return $running_minutes > self::JOB_TIMEOUT_MINUTES;
     }
 
     // ── Abfragen ─────────────────────────────────────────────────────────────

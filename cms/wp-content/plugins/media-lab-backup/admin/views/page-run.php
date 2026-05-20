@@ -74,6 +74,9 @@ $has_phpseclib = class_exists( 'phpseclib3\Net\SFTP' );
                     <?php echo ( ! $has_phpseclib || ! $has_sftp ) ? 'disabled' : ''; ?>>
                 ▶ Backup starten
             </button>
+            <button type="button" id="mlb-cancel-backup" class="button button-secondary button-large mlb-cancel-btn" style="display:none;">
+                ⏹ Abbrechen
+            </button>
             <span id="mlb-run-status" class="mlb-inline-status"></span>
         </div>
     </div>

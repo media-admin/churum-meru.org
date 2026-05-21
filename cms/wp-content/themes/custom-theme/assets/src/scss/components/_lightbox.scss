@@ -117,3 +117,14 @@
   60%  { opacity: 1; }
   100% { opacity: 0; }
 }
+
+// Pfeile relativ zur gesamten Lightbox zentrieren
+.lightbox__prev,
+.lightbox__next {
+    position: fixed !important;
+    top: 50vh !important;
+    transform: translateY(-50%) !important;
+}
+
+.lightbox__prev { left: $spacing-4 !important; }
+.lightbox__next { right: $spacing-4 !important; }

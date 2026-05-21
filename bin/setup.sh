@@ -103,7 +103,7 @@ yml_get() {
 yml_get_nested() {
     local file="$1" section="$2" key="$3"
     # Extrahiert key aus einem benannten YAML-Block
-    awk "/^${section}:/{found=1} found && /^\s+${key}:/{print; exit}" "$file" \
+    awk "/^${section}:/{found=1; next} found && /^  ${key}:/{print; exit}" "$file" \
         | sed 's/.*: *//; s/"//g; s/#.*//' | tr -d ' '
 }
 

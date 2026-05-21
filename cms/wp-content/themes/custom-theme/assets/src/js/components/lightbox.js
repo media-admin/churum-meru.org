@@ -28,7 +28,31 @@ export default class Lightbox {
         return;
       }
 
-      // ── 2. WP Gallery Block ──────────────────────────────────────────────
+      // ── 2. Automatisch: <a href="*.jpg/png/webp/gif"> ───────────────────────
+      if (this.lightbox && this.lightbox.classList.contains('is-active')) return;
+      const imgLink = e.target.closest('a[href]');
+      if (imgLink && /\.(jpe?g|png|webp|gif|svg)(\?.*)?$/i.test(imgLink.href)) {
+        e.preventDefault();
+        const container = imgLink.closest('.wp-block-gallery') || imgLink.closest('.entry-content') || imgLink.closest('.project-detail') || document.body;
+        const allLinks = Array.from(container.querySelectorAll('a[href]')).filter(a => /\.(jpe?g|png|webp|gif|svg)(\?.*)?$/i.test(a.href));
+        this.images = allLinks.map(a => ({
+          href: a.href,
+          src: a.href,
+          alt: a.querySelector('img')?.alt || '',
+          dataset: {
+            src: a.href,
+            caption: a.querySelector('figcaption')?.textContent?.trim() || a.querySelector('img')?.alt || ''
+          }
+        }));
+        this.currentIndex = allLinks.findIndex(a => a.href === imgLink.href);
+        this.resetZoom();
+        this.showImage();
+        this.lightbox.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+
+      // ── 3. WP Gallery Block ──────────────────────────────────────────────
       const wpTrigger = e.target.closest(
         '.wp-lightbox-container .lightbox-trigger, .wp-lightbox-container img'
       );
@@ -150,13 +174,14 @@ export default class Lightbox {
     // Touch: Pinch-to-Zoom
     this.initPinchZoom(img);
 
-    this.lightbox.querySelector('.lightbox__close').addEventListener('click', () => this.close());
-    this.lightbox.querySelector('.lightbox__prev').addEventListener('click', () => this.prev());
-    this.lightbox.querySelector('.lightbox__next').addEventListener('click', () => this.next());
+    this.lightbox.querySelector('.lightbox__close').addEventListener('click', (e) => { e.stopPropagation(); this.close(); });
+    this.lightbox.querySelector('.lightbox__prev').addEventListener('click', (e) => { e.stopPropagation(); this.prev(); });
+    this.lightbox.querySelector('.lightbox__next').addEventListener('click', (e) => { e.stopPropagation(); this.next(); });
 
     this.lightbox.addEventListener('click', (e) => {
+      if (e.target.closest('.lightbox__close, .lightbox__prev, .lightbox__next')) return;
       if (e.target === this.lightbox) this.close();
-      if (this.isZoomed) this.resetZoom();
+      else if (this.isZoomed) this.resetZoom();
     });
   }
 

@@ -30,5 +30,15 @@
     "test:all": "npm run test && npm run lighthouse",
     "deploy:staging": "npm run build:staging && node scripts/deploy-staging.js",
     "deploy:production": "npm run build:production && node scripts/deploy-production.js"
+  },
+  "devDependencies": {
+    "@sentry/browser": "^10.53.1",
+    "autoprefixer": "^10.5.0",
+    "sass": "^1.99.0",
+    "swiper": "^12.1.4",
+    "terser": "^5.47.1",
+    "vite": "^8.0.13",
+    "vite-plugin-live-reload": "^3.1.0",
+    "vite-plugin-static-copy": "^3.4.0"
   }
 }

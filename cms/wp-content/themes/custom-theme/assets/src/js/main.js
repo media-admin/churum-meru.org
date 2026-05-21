@@ -56,7 +56,7 @@ const initApp = async () => {
     safeInit('Accordion', () => new Accordion());
   }
 
-  if (has('.lightbox, [data-lightbox], .wp-lightbox-container')) {
+  if (has('.lightbox, [data-lightbox], .wp-lightbox-container, .wp-block-gallery a[href], .wp-block-image a[href], .entry-content a[href*=".jpg"], .entry-content a[href*=".jpeg"], .entry-content a[href*=".png"], .entry-content a[href*=".webp"]')) {
     const { default: Lightbox } = await import('./components/lightbox');
     safeInit('Lightbox', () => new Lightbox());
   }
@@ -96,10 +96,7 @@ const initApp = async () => {
     safeInit('Carousel', () => new Carousel());
   }
 
-  if (has('.lightbox, [data-lightbox]')) {
-    const { default: Lightbox } = await import('./components/lightbox');
-    safeInit('Lightbox', () => new Lightbox());
-  }
+  // Lightbox: bereits in Block 1 initialisiert
 
   if (has('.modal, [data-modal]')) {
     const { default: Modal } = await import('./components/modal');

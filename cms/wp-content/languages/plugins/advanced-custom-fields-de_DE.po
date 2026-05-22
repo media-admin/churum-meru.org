@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Advanced Custom Fields (ACF®) - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-10 20:30:24+0000\n"
+"PO-Revision-Date: 2026-05-16 22:00:18+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -484,6 +484,7 @@ msgstr "Individuelles-Zeichen-Icon"
 #: includes/ajax/class-acf-ajax-local-json-diff.php:46
 #: includes/ajax/class-acf-ajax-query-users.php:42
 #: includes/ajax/class-acf-ajax-upgrade.php:33
+#: includes/ajax/class-acf-ajax-upgrade.php:40
 #: includes/ajax/class-acf-ajax-user-setting.php:47
 #: src/AI/GEO/FieldSettings.php:82
 msgid "Sorry, you do not have permission to do that."
@@ -1274,11 +1275,6 @@ msgstr "Leicht"
 #: includes/fields/class-acf-field-icon_picker.php:696
 msgid "Search Icon"
 msgstr "Such-Icon"
-
-#: src/Blocks/Bindings.php:41
-msgctxt "The core ACF block binding source name for fields on the current page"
-msgid "ACF Fields"
-msgstr "ACF-Felder"
 
 #: includes/admin/views/browse-fields-modal.php:24
 msgid "ACF PRO Feature"
@@ -2763,10 +2759,6 @@ msgstr "Inhaltstyp hinzufügen"
 msgid "Default Term"
 msgstr "Standardbegriff"
 
-#: includes/admin/views/acf-taxonomy/advanced-settings.php:64
-msgid "Term Name"
-msgstr "Name des Begriffs"
-
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:103
 msgid "Term Description"
 msgstr "Beschreibung des Begriffs"
@@ -2838,6 +2830,10 @@ msgstr "Keine Metabox"
 msgid "Invalid post type selected for review."
 msgstr "Der für die Betrachtung ausgewählte Inhaltstyp ist ungültig."
 
+#: includes/admin/tools/class-acf-admin-tool-export.php:363
+msgid "The following code can be used to register a local version of the selected items. Storing field groups, post types, or taxonomies locally can provide many benefits such as faster load times, version control & dynamic fields/settings. Simply copy and paste the following code to your theme's functions.php file or include it within an external file, then deactivate or delete the items from the ACF admin."
+msgstr "Der folgende Code kann verwendet werden, um eine lokale Version der ausgewählten Elemente zu registrieren. Die lokale Speicherung von Feldgruppen, Inhaltstypen oder Taxonomien kann viele Vorteile bieten, wie z. B. schnellere Ladezeiten, Versionskontrolle und dynamische Felder/Einstellungen. Kopiere den folgenden Code in die Datei functions.php deines Themes oder füge ihn in eine externe Datei ein und deaktiviere oder lösche anschließend die Elemente in der ACF-Administration."
+
 #: includes/admin/tools/class-acf-admin-tool-import.php:130
 msgid "Importing a Post Type or Taxonomy with the same key as one that already exists will overwrite the settings for the existing Post Type or Taxonomy with those of the import."
 msgstr "Wenn ein Inhaltstyp oder eine Taxonomie mit einem Schlüssel importiert wird, der bereits vorhanden ist, werden die Einstellungen des vorhandenen Inhaltstyps oder der vorhandenen Taxonomie mit denen des Imports überschrieben."
@@ -2852,10 +2848,6 @@ msgid "Imported %d item from Custom Post Type UI -"
 msgid_plural "Imported %d items from Custom Post Type UI -"
 msgstr[0] "Es wurde %d Element von Custom Post Type UI importiert -"
 msgstr[1] "Es wurden %d Elemente von Custom Post Type UI importiert -"
-
-#: includes/admin/tools/class-acf-admin-tool-export.php:363
-msgid "The following code can be used to register a local version of the selected items. Storing field groups, post types, or taxonomies locally can provide many benefits such as faster load times, version control & dynamic fields/settings. Simply copy and paste the following code to your theme's functions.php file or include it within an external file, then deactivate or delete the items from the ACF admin."
-msgstr "Der folgende Code kann verwendet werden, um eine lokale Version der ausgewählten Elemente zu registrieren. Die lokale Speicherung von Feldgruppen, Inhaltstypen oder Taxonomien kann viele Vorteile bieten, wie z. B. schnellere Ladezeiten, Versionskontrolle und dynamische Felder/Einstellungen. Kopiere den folgenden Code in die Datei functions.php deines Themes oder füge ihn in eine externe Datei ein und deaktiviere oder lösche anschließend die Elemente in der ACF-Administration."
 
 #: includes/admin/views/acf-post-type/basic-settings.php:97
 msgid "Select existing taxonomies to classify items of the post type."
@@ -3429,6 +3421,10 @@ msgstr "Singular-Beschriftung"
 #: includes/admin/views/acf-taxonomy/advanced-settings.php:262
 msgid "Add New %s"
 msgstr "%s hinzufügen"
+
+#: includes/admin/views/acf-taxonomy/advanced-settings.php:64
+msgid "Term Name"
+msgstr "Begriffsname"
 
 #. Author URI of the plugin
 #: acf.php
@@ -5483,10 +5479,6 @@ msgstr "Darstellungsformat"
 msgid "Options Page"
 msgstr "Optionen-Seite"
 
-#: includes/fields/class-acf-field-page_link.php:31
-msgid "Page Link"
-msgstr "Seiten-Link"
-
 #: includes/fields/class-acf-field-textarea.php:143
 msgid "Rows"
 msgstr "Zeilen"
@@ -6151,7 +6143,7 @@ msgid "Add rule group"
 msgstr "Eine Regelgruppe hinzufügen"
 
 #: includes/admin/views/upgrade/upgrade.php:94
-#: includes/ajax/class-acf-ajax-upgrade.php:43
+#: includes/ajax/class-acf-ajax-upgrade.php:57
 msgid "No updates available."
 msgstr "Es sind keine Aktualisierungen verfügbar."
 
@@ -6288,6 +6280,10 @@ msgstr "Zeile"
 #: includes/locations/class-acf-location-page-type.php:120
 msgid "Posts Page"
 msgstr "Beitragsseite"
+
+#: includes/fields/class-acf-field-page_link.php:31
+msgid "Page Link"
+msgstr "Seitenlink"
 
 #. Plugin Name of the plugin
 #: acf.php acf.php:347

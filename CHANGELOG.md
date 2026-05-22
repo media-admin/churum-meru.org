@@ -6,9 +6,60 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
-## [1.19.0] - 2026-05-12
+## [1.20.0] - 2026-05-22
 
-### media-lab-agency-core 1.8.6
+### media-lab-agency-core 1.9.2
+
+#### Added
+- **Honeypot Spam Protection** (`inc/honeypot.php`) – DSGVO-konformer
+  Spam-Schutz ohne externe Requests, Cookies oder personenbezogene Daten.
+  Zwei Schichten:
+  - Schicht 1: Honeypot-Feld `_ml_website` – für echte Nutzer via
+    Off-Screen-CSS vollständig unsichtbar (kein `display:none` –
+    fortgeschrittene Bots erkennen diese Property); Bots, die alle
+    sichtbaren Felder befüllen, verraten sich durch das gefüllte Feld.
+  - Schicht 2: Time-Check mit HMAC-signiertem Zeitstempel (`_ml_form_ts`);
+    prüft Mindest-Ausfüllzeit (3 s) und maximales Formular-Alter (24 h für
+    gecachte Seiten); Signatur via `wp_hash()` + `wp_salt('nonce')`,
+    Vergleich timing-safe mit `hash_equals()`.
+  - CF7: automatische Integration via `wpcf7_form_elements` +
+    `wpcf7_spam`-Filter (Priority 5, läuft vor Akismet).
+  - Öffentliche API für eigene Formulare und das Bookings-Plugin:
+    `medialab_honeypot_render()` und `medialab_honeypot_check()`.
+  - Fehlercodes: `hp_missing`, `hp_filled`, `hp_too_fast`, `hp_expired`,
+    `hp_ts_missing`, `hp_ts_malformed`, `hp_ts_invalid`.
+- **Top Header – Arrow Buttons** (`inc/top-header-order.php`) –
+  Zusätzlich zu Drag & Drop sind jetzt ▲ / ▼ Pfeil-Buttons pro Element
+  verfügbar. Erstes/letztes Element: jeweiliger Button automatisch disabled.
+  Fokus-Management für Tastaturnavigation. Beide Methoden nutzen denselben
+  AJAX-Endpunkt.
+- **Post Order – Arrow Buttons** (`assets/js/post-order.js`,
+  `assets/css/post-order.css`) – Zusätzlich zu Drag & Drop sind jetzt ▲ / ▼
+  Pfeil-Buttons in der Admin-Listenansicht verfügbar. Quick-Edit-kompatibel
+  (Controls werden nach `ajaxComplete` neu eingefügt). Fokus-Management für
+  Tastaturnavigation.
+
+#### Fixed
+- **Top Header – Reihenfolge** (`inc/top-header-order.php`) –
+  `medialab_get_top_header_order()` und `medialab_get_top_header_social_order()`
+  crashten mit `array_merge(): Argument #1 must be of type array, string given`
+  wenn die Option noch im alten JSON-String-Format in `wp_options` gespeichert
+  war. Beide Funktionen normalisieren den gespeicherten Wert jetzt via
+  `is_string()` + `json_decode()` (Rückwärtskompatibilität).
+
+### custom-theme 1.14.1
+
+#### Added
+- **Honeypot CSS** (`assets/src/scss/components/_honeypot.scss`) –
+  Off-Screen-Positionierung für `.ml-hp`-Wrapper (`position: absolute;
+  left: -9999px`), `pointer-events: none`, `opacity: 0`; kein
+  `display:none` aus Sicherheitsgründen.
+
+---
+
+## [1.19.1] - 2026-05-12
+
+### media-lab-agency-core 1.9.1
 
 #### Added
 - **Top Header – Drag & Drop Reihenfolge** (`inc/top-header-order.php`) –
@@ -24,7 +75,7 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   Größe von `2.5rem` auf `1.75rem` reduziert; Padding von `0 0.75rem` auf
   `0 0.5rem`; SVG-Größe von `1.125rem` auf `1rem` verkleinert.
 
-### custom-theme
+### custom-theme 1.14.0
 
 #### Added
 - **Notifications – Rich Content Popup** (`assets/src/scss/components/_notifications.scss`) –
@@ -105,7 +156,7 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
-## [1.8.5] - 2026-04-23
+## [1.18.1] - 2026-04-23
 
 ### media-lab-agency-core 1.8.5
 
@@ -122,7 +173,7 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [1.18.0] - 2026-03-26
 
-### custom-theme 1.14.0
+### custom-theme 1.13.1
 
 #### Added
 - **Footer Legal Navigation** – neue Menu-Location `footer-legal` registriert

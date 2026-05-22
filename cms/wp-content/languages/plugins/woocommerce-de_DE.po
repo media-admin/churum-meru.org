@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WooCommerce - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-13 14:00:12+0000\n"
+"PO-Revision-Date: 2026-05-17 23:43:43+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -34,19 +34,11 @@ msgstr "Diese E-Mail wurde an %s gesendet"
 msgid "Hello,"
 msgstr "Hallo,"
 
-#: src/StoreApi/Schemas/V1/ProductSchema.php:521
-msgid "Product dimensions formatted for display (e.g. \"10 × 5 × 3 cm\")."
-msgstr "Produktabmessungen für die Anzeige formatiert (z. B. „10 × 5 × 3 cm“)."
-
 #. translators: %s: Username
 #: templates/emails/admin-payment-gateway-enabled.php:36
 #: templates/emails/plain/admin-payment-gateway-enabled.php:25
 msgid "Howdy %s,"
 msgstr "Hallo %s,"
-
-#: src/StoreApi/Schemas/V1/ProductSchema.php:515
-msgid "Product weight formatted for display (e.g. \"2.5 kg\")."
-msgstr "Für die Anzeige formatiertes Produktgewicht (z. B. „2,5 kg“)."
 
 #. translators: %s: Site title
 #: templates/emails/block/admin-payment-gateway-enabled.php:37
@@ -58,6 +50,14 @@ msgstr "Eine Zahlungsschnittstelle wurde gerade auf %s aktiviert."
 #: templates/emails/plain/admin-payment-gateway-enabled.php:29
 msgid "The payment gateway \"%1$s\" was just enabled on this site: %2$s"
 msgstr "Die Zahlungsschnittstelle „%1$s“ wurde gerade auf dieser Website aktiviert: %2$s"
+
+#: src/StoreApi/Schemas/V1/ProductSchema.php:515
+msgid "Product weight formatted for display (e.g. \"2.5 kg\")."
+msgstr "Das Produktgewicht in anzeigegerechter Form (z. B. „2,5 kg“)."
+
+#: src/StoreApi/Schemas/V1/ProductSchema.php:521
+msgid "Product dimensions formatted for display (e.g. \"10 × 5 × 3 cm\")."
+msgstr "Produktabmessungen in anzeigegerechter Form (z. B. „10 × 5 × 3 cm“)."
 
 #: src/StoreApi/Schemas/V1/ImageAttachmentSchema.php:52
 msgid "Full size image sizes for responsive images."
@@ -100,14 +100,6 @@ msgstr "Verwalte, wie Scheckzahlungen beim Bezahlen und in Bestell-E-Mails angez
 msgid "Available for shipping methods"
 msgstr "Verfügbar für Versandarten"
 
-#: src/StoreApi/Routes/V1/Products.php:442
-msgid "Limit result set to products related to a specific product ID."
-msgstr "Beschränkt Ergebnismenge auf Produkte, die sich auf eine bestimmte Produkt-ID beziehen."
-
-#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:69
-msgid "Direct bank transfer settings"
-msgstr "Einstellungen für direkte Banküberweisung"
-
 #: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/ChequeGatewaySettingsSchema.php:40
 msgid "Enable check payments at checkout"
 msgstr "Scheckzahlungen beim Bezahlen aktivieren"
@@ -116,29 +108,13 @@ msgstr "Scheckzahlungen beim Bezahlen aktivieren"
 msgid "Enable Cash on delivery at checkout"
 msgstr "Zahlung per Nachnahme beim Bezahlen aktivieren"
 
-#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/CodGatewaySettingsSchema.php:74
-msgid "Choose which shipping methods support Cash on delivery."
-msgstr "Wähle aus, welche Versandarten Zahlung per Nachnahme unterstützen."
-
 #: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/CodGatewaySettingsSchema.php:87
 msgid "Cash on delivery settings"
 msgstr "Einstellungen für Zahlung per Nachnahme"
 
-#: src/Internal/RestApi/Routes/V4/ShippingZones/ShippingZoneSchema.php:56
-msgid "Array of locations for this zone. Omit or pass an empty array for an \"Everywhere\" zone."
-msgstr "Array von Standorten für diese Zone. Auslassen oder ein leeres Array für eine „Everywhere“-Zone übergeben."
-
 #: src/StoreApi/Schemas/V1/ImageAttachmentSchema.php:47
 msgid "Full size image srcset for responsive images."
 msgstr "Vollbild-Srcset für responsive Bilder."
-
-#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:70
-msgid "Manage how Direct bank transfer appears at checkout and in order emails."
-msgstr "Verwalte, wie die direkte Banküberweisung beim Bezahlen und in Bestell-E-Mails angezeigt wird."
-
-#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/CodGatewaySettingsSchema.php:88
-msgid "Manage how Cash on delivery appears at checkout and in order emails."
-msgstr "Verwalte, wie die Zahlung per Nachnahme beim Bezahlen und in Bestell-E-Mails angezeigt wird."
 
 #: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:51
 #: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/ChequeGatewaySettingsSchema.php:50
@@ -155,6 +131,30 @@ msgstr "Wird Kunden beim Bezahlen in der Liste der Zahlungsarten angezeigt."
 #: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/ChequeGatewaySettingsSchema.php:68
 msgid "Check payment settings"
 msgstr "Einstellungen für Scheckzahlungen"
+
+#: src/StoreApi/Routes/V1/Products.php:442
+msgid "Limit result set to products related to a specific product ID."
+msgstr "Beschränkt die Ergebnismenge auf Produkte, die sich auf eine bestimmte Produkt-ID beziehen."
+
+#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:70
+msgid "Manage how Direct bank transfer appears at checkout and in order emails."
+msgstr "Verwalte, wie die Zahlung per Vorkasse an der Kasse und in Bestell-E-Mails angezeigt wird."
+
+#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:69
+msgid "Direct bank transfer settings"
+msgstr "Einstellungen für Vorkasse"
+
+#: src/Internal/RestApi/Routes/V4/ShippingZones/ShippingZoneSchema.php:56
+msgid "Array of locations for this zone. Omit or pass an empty array for an \"Everywhere\" zone."
+msgstr "Array mit Standorten für diese Zone. Weglassen oder ein leeres Array für eine „Überall“-Zone übergeben."
+
+#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/CodGatewaySettingsSchema.php:74
+msgid "Choose which shipping methods support Cash on delivery."
+msgstr "Wähle aus, welche Versandarten die Zahlung per Nachnahme unterstützen."
+
+#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/CodGatewaySettingsSchema.php:88
+msgid "Manage how Cash on delivery appears at checkout and in order emails."
+msgstr "Verwalte, wie die Zahlung per Nachnahme an der Kasse und in Bestell-E-Mails angezeigt wird."
 
 #: src/Internal/Admin/Settings/PaymentsRestController.php:1038
 msgid "Text for the call-to-action link in the notice."
@@ -184,10 +184,6 @@ msgstr "Das zu verwendende E-Mail-Template. Wenn nicht angegeben, wird das beste
 msgid "No email template is available for this order."
 msgstr "Für diese Bestellung ist kein E-Mail-Template verfügbar."
 
-#: src/Internal/RestApi/Routes/V4/Customers/Controller.php:120
-msgid "New user username. Generated from email if not provided."
-msgstr "Neuer Benutzername. Wird aus E-Mail generiert, falls nicht angegeben."
-
 #: src/Internal/EmailEditor/EmailApiController.php:277
 msgid "The ID of the woo_email post."
 msgstr "Die ID des woo_email-Beitrags."
@@ -195,10 +191,6 @@ msgstr "Die ID des woo_email-Beitrags."
 #: src/Internal/RestApi/Routes/V4/Customers/Controller.php:125
 msgid "New user password. Generated automatically if not provided."
 msgstr "Neues Benutzer-Passwort. Wenn nicht angegeben, wird es automatisch generiert."
-
-#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:41
-msgid "Enable Direct bank transfer at checkout"
-msgstr "Direktüberweisung beim Bezahlen aktivieren"
 
 #: src/Internal/Orders/OrderNoteGroup.php:72
 msgid "Fulfillment"
@@ -257,6 +249,14 @@ msgstr "Ein optionaler Hinweis, der für diese Zahlungsart angezeigt wird (z. B.
 msgid "Short text for a badge/chip displayed next to the payment method title."
 msgstr "Kurzer Text für ein Badge/einen Chip, der neben dem Titel der Zahlungsart angezeigt wird."
 
+#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:41
+msgid "Enable Direct bank transfer at checkout"
+msgstr "Vorkasse beim Bezahlen aktivieren"
+
+#: src/Internal/RestApi/Routes/V4/Customers/Controller.php:120
+msgid "New user username. Generated from email if not provided."
+msgstr "Neuer Benutzername. Wird aus der E-Mail-Adresse generiert, falls nicht angegeben."
+
 #: src/Admin/Features/MarketingRecommendations/DefaultMarketingRecommendations.php:60
 msgid "Reach millions of active shoppers across Google by creating ads for your products straight from your dashboard."
 msgstr "Erreiche Millionen von aktiven Käufern auf Google, indem du Werbung für deine Produkte direkt über dein Dashboard erstellst."
@@ -290,11 +290,6 @@ msgstr "Webhook-Verarbeitung fehlgeschlagen."
 msgid "Continue reading"
 msgstr "Weiterlesen"
 
-#: src/Admin/API/Reports/Customers/Controller.php:629
-#: src/Admin/API/Reports/Customers/Stats/Controller.php:388
-msgid "Limit result to exclude items with specified customer ids."
-msgstr "Schließe Artikel mit bestimmten Kunden-IDs aus."
-
 #: src/Admin/API/ShippingPartnerSuggestions.php:200
 msgid "Countries where this partner should appear first."
 msgstr "Länder, in denen dieser Partner zuerst angezeigt werden soll."
@@ -304,11 +299,6 @@ msgstr "Länder, in denen dieser Partner zuerst angezeigt werden soll."
 #: src/Admin/Features/Fulfillments/FulfillmentOrderNotes.php:130
 msgid "Tracking: %s."
 msgstr "Sendungsverfolgung: %s."
-
-#. translators: %d: item ID
-#: src/Admin/Features/Fulfillments/FulfillmentOrderNotes.php:306
-msgid "Item #%d"
-msgstr "Artikel Nr. %d"
 
 #. translators: %s: shipping provider name
 #: src/Admin/Features/Fulfillments/FulfillmentOrderNotes.php:339
@@ -346,11 +336,6 @@ msgstr "Abwicklung Nr. %1$d aktualisiert. Artikel: %2$s."
 msgid "Fulfillment #%1$d created (status: %2$s). Items: %3$s."
 msgstr "Abwicklung Nr. %1$d erstellt (Status: %2$s). Artikel: %3$s."
 
-#. translators: 1) product name 3) URL to My Subscriptions page
-#: src/Admin/PluginsHelper.php:1041
-msgid "One of your subscriptions for <strong>%1$s</strong> has expired. This store is still covered by another active subscription."
-msgstr "Eins deiner Abonnements für <strong>%1$s</strong> ist abgelaufen. Dieser Shop ist weiterhin durch ein anderes aktives Abonnement abgedeckt."
-
 #: src/Admin/Features/Fulfillments/FulfillmentsRenderer.php:573
 msgid "Filter by shipping provider"
 msgstr "Nach Versanddienstleister filtern"
@@ -367,6 +352,21 @@ msgstr "Neuen Versanddienstleister hinzufügen"
 msgid "Shipping provider"
 msgstr "Versanddienstleister"
 
+#. translators: %d: item ID
+#: src/Admin/Features/Fulfillments/FulfillmentOrderNotes.php:306
+msgid "Item #%d"
+msgstr "Artikel-Nr. %d"
+
+#. translators: 1) product name 3) URL to My Subscriptions page
+#: src/Admin/PluginsHelper.php:1041
+msgid "One of your subscriptions for <strong>%1$s</strong> has expired. This store is still covered by another active subscription."
+msgstr "Eines deiner Abonnements für <strong>%1$s</strong> ist abgelaufen. Dieser Shop ist weiterhin durch ein anderes aktives Abonnement abgedeckt."
+
+#: src/Admin/API/Reports/Customers/Controller.php:629
+#: src/Admin/API/Reports/Customers/Stats/Controller.php:388
+msgid "Limit result to exclude items with specified customer ids."
+msgstr "Schließt Artikel mit bestimmten Kunden-IDs aus."
+
 #: includes/emails/class-wc-email-customer-on-hold-order.php:56
 msgid "Notifies customers when their order is pending payment confirmation."
 msgstr "Benachrichtigt Kunden, wenn die Zahlungsbestätigung für ihre Bestellung aussteht."
@@ -379,10 +379,6 @@ msgstr "Die Titelform „%s“ wird bereits von einem integrierten Versanddienst
 #: includes/class-wc-ajax.php:3952
 msgid "The icon URL must be a valid HTTP or HTTPS URL."
 msgstr "Die Icon-URL muss eine gültige HTTP- oder HTTPS-URL sein."
-
-#: includes/emails/class-wc-email-admin-payment-gateway-enabled.php:284
-msgid "Dummy Gateway"
-msgstr "Dummy-Gateway"
 
 #: includes/emails/class-wc-email-admin-payment-gateway-enabled.php:286
 msgid "Dummy Settings URL"
@@ -459,6 +455,10 @@ msgstr "E-Mails für aktivierte Zahlungsschnittstellen werden an ausgewählte Em
 #: templates/emails/block/admin-payment-gateway-enabled.php:46
 msgid "If this was intentional, you can safely ignore and delete this email."
 msgstr "Falls dies beabsichtigt geschehen ist, kannst du diese E-Mail ignorieren und löschen."
+
+#: includes/emails/class-wc-email-admin-payment-gateway-enabled.php:284
+msgid "Dummy Gateway"
+msgstr "Dummy-Schnittstelle"
 
 #: includes/admin/views/html-notice-sync-on-read-disabled.php:15
 msgid "HPOS order \"sync on read\" has been disabled"
@@ -879,17 +879,17 @@ msgstr "Ergebnismeldung."
 msgid "Limit result to items with specified user type."
 msgstr "Schränke die Ergebnisse auf Artikel mit einem bestimmten Benutzertyp ein."
 
-#: src/Admin/API/Reports/Customers/Controller.php:679
-msgid "Excludes customers by location (state, country). Provide a comma-separated list of locations. Each location can be a country code (e.g. GB) or combination of country and state (e.g. US:CA)."
-msgstr "Schließt Kunden nach Standort (Bundesland, Land) aus. Gib eine durch Kommas getrennte Liste von Standorten an. Jeder Standort kann ein Ländercode (z. B. GB) oder eine Kombination aus Land und Staat (z. B. US:CA) sein."
-
-#: src/Admin/API/Reports/Customers/Controller.php:674
-msgid "Includes customers by location (state, country). Provide a comma-separated list of locations. Each location can be a country code (e.g. GB) or combination of country and state (e.g. US:CA)."
-msgstr "Schließt Kunden nach Standort (Bundesland, Land) ein. Gib eine durch Kommas getrennte Liste von Standorten an. Jeder Standort kann ein Ländercode (z. B. GB) oder eine Kombination aus Land und Staat (z. B. US:CA) sein."
-
 #: src/Admin/Features/MarketingRecommendations/DefaultMarketingRecommendations.php:148
 msgid "The quickest way to grow your business by advertising to over 100 million users across Tumblr and WordPress, starting at just \\$5/day."
 msgstr "Die schnellste Möglichkeit, dein Geschäft auszubauen, indem du bei über 100 Millionen Benutzern auf Tumblr und WordPress Werbung machst – schon ab 5 \\$/Tag."
+
+#: src/Admin/API/Reports/Customers/Controller.php:674
+msgid "Includes customers by location (state, country). Provide a comma-separated list of locations. Each location can be a country code (e.g. GB) or combination of country and state (e.g. US:CA)."
+msgstr "Schließt Kunden nach Standort (Bundesland, Land) ein. Gib eine durch Kommas getrennte Liste von Standorten an. Jeder Standort kann ein Ländercode (z. B. GB) oder eine Kombination aus Land und Bundesland (z. B. US:CA) sein."
+
+#: src/Admin/API/Reports/Customers/Controller.php:679
+msgid "Excludes customers by location (state, country). Provide a comma-separated list of locations. Each location can be a country code (e.g. GB) or combination of country and state (e.g. US:CA)."
+msgstr "Schließt Kunden nach Standort (Bundesland, Land) aus. Gib eine durch Kommas getrennte Liste von Standorten an. Jeder Standort kann ein Ländercode (z. B. GB) oder eine Kombination aus Land und Bundesland (z. B. US:CA) sein."
 
 #: src/Admin/API/AnalyticsImports.php:213
 msgid "Last processed order date (null in immediate mode)."
@@ -935,10 +935,6 @@ msgstr "Ungültiger Action-Hook für den Batch-Import."
 msgid "Current import mode."
 msgstr "Aktueller Importmodus."
 
-#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1964
-msgid "Limit result set to products visible in Point of Sale."
-msgstr "Beschränkt die Ergebnismenge auf Produkte, die am Point of Sale sichtbar sind."
-
 #: src/Admin/API/AnalyticsImports.php:159
 msgid "Batch import triggered successfully."
 msgstr "Der Batch-Import wurde erfolgreich ausgelöst."
@@ -950,10 +946,6 @@ msgstr "Der Batch-Import wurde erfolgreich ausgelöst."
 msgid "Order item #%d contains legacy tax data format. Tax rate ID information is unavailable."
 msgstr "Der Bestellartikel mit der Nummer %d enthält ein veraltetes Steuerdatenformat. Informationen zur Steuersatz-ID sind nicht verfügbar."
 
-#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:1237
-msgid "Limit result set to variations visible in Point of Sale."
-msgstr "Beschränkt die Ergebnismenge auf Varianten, die am Point of Sale sichtbar sind."
-
 #: includes/wc-notice-functions.php:85
 msgid "This function should not be called before the WooCommerce session is initialized, or places where there is no session, e.g. WordPress admin."
 msgstr "Diese Funktion sollte nicht aufgerufen werden, bevor die WooCommerce-Sitzung initialisiert wurde, oder an Orten, an denen keine Sitzung vorhanden ist, z. B. WordPress-Admin."
@@ -962,6 +954,14 @@ msgstr "Diese Funktion sollte nicht aufgerufen werden, bevor die WooCommerce-Sit
 msgctxt "Taxonomy name"
 msgid "POS Product visibility"
 msgstr "POS-Produkt-Sichtbarkeit"
+
+#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1964
+msgid "Limit result set to products visible in Point of Sale."
+msgstr "Beschränkt die Ergebnismenge auf Produkte, die am Verkaufsort sichtbar sind."
+
+#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:1237
+msgid "Limit result set to variations visible in Point of Sale."
+msgstr "Beschränkt die Ergebnismenge auf Varianten, die am Verkaufsort sichtbar sind."
 
 #: includes/admin/settings/class-wc-settings-advanced.php:494
 msgid "Enable cache control headers"
@@ -1500,10 +1500,6 @@ msgstr "Beschreibung der Einstellungsgruppe."
 msgid "URL for the management link."
 msgstr "URL für den Verwaltungslink."
 
-#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:86
-msgid "Bank account details for direct bank transfer."
-msgstr "Bankkontodetails für direkte Banküberweisung."
-
 #: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:166
 msgid "Account details must be an array."
 msgstr "Kontodetails müssen ein Array sein."
@@ -1592,6 +1588,10 @@ msgstr "Der Ländercode, für den Offline-Zahlungsarten abgerufen werden sollen.
 #: src/Internal/RestApi/Routes/V4/Settings/OfflinePaymentMethods/Controller.php:138
 msgid "Manage offline payment methods available for your store."
 msgstr "Verwalte die für deinen Shop verfügbaren Offline-Zahlungsarten."
+
+#: src/Internal/RestApi/Routes/V4/Settings/PaymentGateways/Schema/BacsGatewaySettingsSchema.php:86
+msgid "Bank account details for direct bank transfer."
+msgstr "Bankverbindung für Vorkasse-Zahlungen."
 
 #: src/Internal/RestApi/Routes/V4/Refunds/Schema/RefundSchema.php:254
 msgid "Tax ID."
@@ -2437,10 +2437,6 @@ msgstr "Beschreibung für das Einstellungsfeld."
 msgid "Available options for select/multiselect fields."
 msgstr "Verfügbare Optionen für Auswahl-/Mehrfachauswahl-Felder."
 
-#: src/Internal/RestApi/Routes/V4/Settings/General/Schema/GeneralSettingsSchema.php:209
-msgid "Set your store's address, visibility, currency, language, and timezone."
-msgstr "Lege die Adresse, Sichtbarkeit, Währung, Sprache und Zeitzone deines Shops fest."
-
 #: src/Internal/RestApi/Routes/V4/Settings/Account/Schema/AccountSettingsSchema.php:54
 #: src/Internal/RestApi/Routes/V4/Settings/Email/Schema/EmailSettingsSchema.php:61
 #: src/Internal/RestApi/Routes/V4/Settings/Emails/Schema/EmailsSettingsSchema.php:128
@@ -2451,6 +2447,10 @@ msgstr "Lege die Adresse, Sichtbarkeit, Währung, Sprache und Zeitzone deines Sh
 #: src/Internal/RestApi/Routes/V4/Settings/Tax/Schema/TaxSettingsSchema.php:54
 msgid "Flat key-value mapping of all setting field values."
 msgstr "Flaches Schlüssel-Wert-Mapping aller Einstellungsfeldwerte."
+
+#: src/Internal/RestApi/Routes/V4/Settings/General/Schema/GeneralSettingsSchema.php:209
+msgid "Set your store's address, visibility, currency, language, and timezone."
+msgstr "Lege die Adresse, Sichtbarkeit, Währung, Sprache und Zeitzone deines Shops fest."
 
 #. translators: Alt text for video play button icon.
 #: packages/email-editor/src/Integrations/Core/Renderer/Blocks/class-video.php:156
@@ -2854,16 +2854,16 @@ msgstr "Möchtest du benachrichtigt werden, wenn dieses Produkt wieder auf Lager
 msgid "You have received this message because your e-mail address was used to sign up for stock notifications on our store. Wasn't you? Please get in touch with us if you keep receiving these messages."
 msgstr "Du hast diese Nachricht erhalten, weil deine E-Mail-Adresse verwendet wurde, um sich für Bestandsbenachrichtigungen in unserem Shop zu registrieren. Das warst nicht du? Bitte kontaktiere uns, wenn du diese Nachrichten immer wieder erhältst."
 
-#. translators: %$s placeholder is the verification expiration datetime string.
-#: templates/emails/customer-stock-notification-verify.php:60
-msgid "This link will remain active for %s."
-msgstr "Dieser Link bleibt aktiv für %s."
-
 #. translators: %s placeholder is the text part from above.
 #: templates/emails/customer-stock-notification-verified.php:69
 #: templates/emails/customer-stock-notification.php:74
 msgid "To stop receiving these messages, %s to unsubscribe."
 msgstr "Wenn du diese Nachrichten nicht mehr erhalten möchtest, %s, um dich abzumelden."
+
+#. translators: %$s placeholder is the verification expiration datetime string.
+#: templates/emails/customer-stock-notification-verify.php:60
+msgid "This link will remain active for %s."
+msgstr "Dieser Link bleibt für %s aktiv."
 
 #: src/Internal/StockNotifications/Frontend/SignupService.php:523
 msgctxt "notice action"
@@ -3776,18 +3776,6 @@ msgstr "Der Typ der Entität, für die die Abwicklung erstellt wird."
 msgid "Whether to notify the customer about the fulfillment update."
 msgstr "Ob der Kunde über die Aktualisierung der Abwicklung benachrichtigt werden soll."
 
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:751
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:809
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:857
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:897
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:947
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1044
-#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1117
-#: src/Internal/RestApi/Routes/V4/Fulfillments/Controller.php:113
-#: src/Internal/RestApi/Routes/V4/Fulfillments/Schema/FulfillmentSchema.php:41
-msgid "Unique identifier for the fulfillment."
-msgstr "Eindeutige Kennung für die Abwicklung."
-
 #: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:510
 msgid "Fulfillment deleted successfully."
 msgstr "Die Abwicklung wurde erfolgreich gelöscht."
@@ -3825,6 +3813,18 @@ msgstr "Sie ist <mark class=\"fulfillment-status\">abgewickelt</mark>."
 #: src/Admin/Features/Fulfillments/FulfillmentsRenderer.php:460
 msgid "Filter by fulfillment"
 msgstr "Nach Abwicklung filtern"
+
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:751
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:809
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:857
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:897
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:947
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1044
+#: src/Admin/Features/Fulfillments/OrderFulfillmentsRestController.php:1117
+#: src/Internal/RestApi/Routes/V4/Fulfillments/Controller.php:113
+#: src/Internal/RestApi/Routes/V4/Fulfillments/Schema/FulfillmentSchema.php:41
+msgid "Unique identifier for the fulfillment."
+msgstr "Eindeutige Kennung für die Abwicklung."
 
 #: src/Admin/Features/Fulfillments/FulfillmentsRenderer.php:259
 msgid "Mark as fulfilled"
@@ -9832,11 +9832,6 @@ msgid "Enable auto-renewal"
 msgstr "Automatische Verlängerung aktivieren"
 
 #. translators: 1) product name 2) expiry date 3) URL to My Subscriptions page
-#: src/Admin/PluginsHelper.php:967
-msgid "One of your subscriptions for <strong>%1$s</strong> expires on %2$s. <a href=\"%3$s\">Enable auto-renewal</a> to continue receiving updates and streamlined support."
-msgstr "Eins deiner Abonnements für <strong>%1$s</strong> läuft am %2$s ab. <a href=\"%3$s\">Aktiviere die automatische Verlängerung</a>, um weiterhin Aktualisierungen und Support zu erhalten."
-
-#. translators: 1) product name 2) expiry date 3) URL to My Subscriptions page
 #: src/Admin/PluginsHelper.php:965
 msgid "Your subscription for <strong>%1$s</strong> expires on %2$s. <a href=\"%3$s\">Enable auto-renewal</a> to continue receiving updates and streamlined support."
 msgstr "Dein Abonnement für <strong>%1$s</strong> läuft am %2$s ab. <a href=\"%3$s\">Aktiviere die automatische Verlängerung</a>, um weiterhin Aktualisierungen und Support zu erhalten."
@@ -9883,6 +9878,11 @@ msgstr "Altes WooCommerce-REST-API-Paket"
 #: includes/admin/settings/class-wc-settings-advanced.php:418
 msgid "⚠️ The WooCommerce Legacy REST API has been moved to <a target=”_blank” href=\"%1$s\">a dedicated extension</a>. <b><a target=”_blank” href=\"%2$s\">Learn more about this change</a></b>"
 msgstr "⚠️ Die alte WooCommerce-REST-API wurde zu <a target=”_blank” href=\"%1$s\">einer eigenen Erweiterung</a> verschoben. <b><a target=”_blank” href=\"%2$s\">Weitere Informationen zu dieser Änderung</a></b>"
+
+#. translators: 1) product name 2) expiry date 3) URL to My Subscriptions page
+#: src/Admin/PluginsHelper.php:967
+msgid "One of your subscriptions for <strong>%1$s</strong> expires on %2$s. <a href=\"%3$s\">Enable auto-renewal</a> to continue receiving updates and streamlined support."
+msgstr "Eines deiner Abonnements für <strong>%1$s</strong> läuft am %2$s ab. <a href=\"%3$s\">Aktiviere die automatische Verlängerung</a>, um weiterhin Aktualisierungen und Support zu erhalten."
 
 #: includes/admin/settings/class-wc-settings-advanced.php:415
 msgid "ℹ️️ The WooCommerce Legacy REST API extension is installed and active."
@@ -10500,11 +10500,6 @@ msgstr "Gezahlter Betrag"
 msgid "Discount (%s)"
 msgstr "Rabatt (%s)"
 
-#. translators: %d = order id
-#: src/Internal/ReceiptRendering/ReceiptRenderingEngine.php:290
-msgid "Summary: Order #%d"
-msgstr "Zusammenfassung: Bestellung #%d"
-
 #: src/Internal/ReceiptRendering/ReceiptRenderingEngine.php:284
 msgid "Receipt"
 msgstr "Beleg"
@@ -10563,6 +10558,11 @@ msgstr "Kontotyp"
 #: src/Internal/ReceiptRendering/ReceiptRenderingEngine.php:390
 msgid "Payment method"
 msgstr "Zahlungsart"
+
+#. translators: %d = order id
+#: src/Internal/ReceiptRendering/ReceiptRenderingEngine.php:290
+msgid "Summary: Order #%d"
+msgstr "Zusammenfassung: Bestellnr. %d"
 
 #: src/Internal/OrderCouponDataMigrator.php:171
 #: src/Internal/OrderCouponDataMigrator.php:187
@@ -13721,14 +13721,6 @@ msgstr "Die übergebene Bestellart stimmt mit keiner der registrierten Bestellar
 msgid "Order %s is locked."
 msgstr "Bestellung %s ist gesperrt."
 
-#. translators: %d is the remaining order items count.
-#: src/Checkout/Helpers/ReserveStock.php:156
-msgctxt "held stock note"
-msgid "- ...and %d more item."
-msgid_plural "- ... and %d more items."
-msgstr[0] "- ...und %d weiteren Artikel."
-msgstr[1] "- ... und %d weitere Artikel."
-
 #. translators: %1$s is a product's formatted name, %2$d: is the quantity of
 #. said product to which the stock hold applied.
 #: src/Checkout/Helpers/ReserveStock.php:136
@@ -13746,6 +13738,14 @@ msgstr "Was macht dieses Produkt einzigartig? Was sind seine wichtigsten Merkmal
 msgctxt "held stock note"
 msgid "Stock hold of %1$s minutes applied to: %2$s"
 msgstr "Bestandssperre von %1$s Minuten gilt für: %2$s"
+
+#. translators: %d is the remaining order items count.
+#: src/Checkout/Helpers/ReserveStock.php:156
+msgctxt "held stock note"
+msgid "- ...and %d more item."
+msgid_plural "- ... and %d more items."
+msgstr[0] "– … und %d weiteren Artikel."
+msgstr[1] "– … und %d weitere Artikel."
 
 #: src/StoreApi/Routes/V1/ProductsBySlug.php:92
 msgid "Invalid product slug."
@@ -15013,6 +15013,14 @@ msgstr "Der Marketingkanal, zu dem dieser Kampagnentyp gehört."
 msgid "The unique identifier for the marketing channel that this campaign belongs to."
 msgstr "Die eindeutige Kennung des Marketingkanals, zu dem diese Kampagne gehört."
 
+#. translators: 1) is the number of affected actions, 2) is a link to an admin
+#. screen.
+#: packages/action-scheduler/classes/ActionScheduler_AdminView.php:220
+msgid "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due action</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
+msgid_plural "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due actions</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
+msgstr[0] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktion</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
+msgstr[1] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktionen</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
+
 #: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1842
 #: src/Internal/RestApi/Routes/V4/Products/Controller.php:1909
 msgid "Slug automatically generated from the product name."
@@ -15027,14 +15035,6 @@ msgstr "Permalink-Template für das Produkt."
 #: includes/export/abstract-wc-csv-batch-exporter.php:133
 msgid "Unable to create or write to %s during CSV export. Please check file permissions."
 msgstr "Erstellen oder Schreiben unter %s während CSV-Export nicht möglich. Bitte überprüfe die Dateiberechtigungen."
-
-#. translators: 1) is the number of affected actions, 2) is a link to an admin
-#. screen.
-#: packages/action-scheduler/classes/ActionScheduler_AdminView.php:220
-msgid "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due action</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
-msgid_plural "<strong>Action Scheduler:</strong> %1$d <a href=\"%2$s\">past-due actions</a> found; something may be wrong. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Read documentation &raquo;</a>"
-msgstr[0] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktion</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
-msgstr[1] "<strong>Aktionsplaner:</strong> %1$d <a href=\"%2$s\">überfällige Aktionen</a> gefunden; möglicherweise gibt es ein Problem. <a href=\"https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do\" target=\"_blank\">Dokumentation lesen »</a>"
 
 #. translators: %d: shipping package number.
 #: includes/class-wc-cart.php:1735
@@ -18999,16 +18999,16 @@ msgstr "Ein Link zu einer Produktkategorie."
 msgid "Product Category Link"
 msgstr "Produktkategorie-Link"
 
-#: src/Internal/Admin/CustomerEffortScoreTracks.php:517
-msgid "How easy was it to add a product tag?"
-msgstr "Wie einfach war das Hinzufügen deines Produktschlagworts?"
-
 #. translators: %1$s: Link to WP Mail Logging plugin, %2$s: Link to Email FAQ
 #. support page.
 #: includes/admin/settings/class-wc-settings-emails.php:78
 #: includes/admin/settings/class-wc-settings-emails.php:594
 msgid "To ensure your store&rsquo;s notifications arrive in your and your customers&rsquo; inboxes, we recommend connecting your email address to your domain and setting up a dedicated SMTP server. If something doesn&rsquo;t seem to be sending correctly, install the <a href=\"%1$s\">WP Mail Logging Plugin</a> or check the <a href=\"%2$s\">Email FAQ page</a>."
 msgstr "Um sicherzustellen, dass die Benachrichtigungen deines Shops in deinem Posteingang und denen deiner Kunden ankommen, empfehlen wir dir, deine E-Mail-Adresse mit deiner Domain zu verbinden und einen dedizierten SMTP-Server einzurichten. Sollte etwas nicht korrekt gesendet werden, installiere das <a href=\"%1$s\">WP Mail Logging-Plugin</a> oder lies dir die <a href=\"%2$s\">FAQ-Seite zu E-Mails</a> durch."
+
+#: src/Internal/Admin/CustomerEffortScoreTracks.php:517
+msgid "How easy was it to add a product tag?"
+msgstr "Wie einfach war das Hinzufügen deines Produktschlagworts?"
 
 #: includes/class-wc-post-types.php:380
 msgid "A link to a product."
@@ -21577,10 +21577,6 @@ msgstr "Bildung und Lernen"
 msgid "With our blocks, you can select and display products, categories, filters, and more virtually anywhere on your site — no need to use shortcodes or edit lines of code. Learn more about how to use each one of them."
 msgstr "Mit unseren Blöcken kannst du Produkte, Kategorien, Filter und vieles mehr praktisch überall auf deiner Website auswählen und anzeigen – ohne Shortcodes zu verwenden oder Codezeilen zu bearbeiten. Erfahre mehr über die Verwendung der einzelnen Blöcke."
 
-#: src/StoreApi/Schemas/V1/ProductSchema.php:217
-msgid "Category link"
-msgstr "Kategorie-Link"
-
 #: src/StoreApi/Schemas/V1/ProductSchema.php:211
 msgid "Category slug"
 msgstr "Kategorie-Titelform"
@@ -21620,6 +21616,10 @@ msgstr "Schlagwort-Link."
 #: src/StoreApi/Schemas/V1/ProductSchema.php:239
 msgid "Tag name"
 msgstr "Schlagwort-Name"
+
+#: src/StoreApi/Schemas/V1/ProductSchema.php:217
+msgid "Category link"
+msgstr "Kategorielink"
 
 #: src/Internal/Admin/Notes/LaunchChecklist.php:48
 msgid "To make sure you never get that sinking \"what did I forget\" feeling, we've put together the essential pre-launch checklist."
@@ -22450,13 +22450,13 @@ msgstr "Tutorial ansehen"
 msgid "Changing eCommerce platforms might seem like a big hurdle to overcome, but it is easier than you might think to move your products, customers, and orders to WooCommerce. This article will help you with going through this process."
 msgstr "Der Wechsel der E-Commerce-Plattform mag zunächst als große Hürde erscheinen, es ist aber einfacher als du denkst, deine Produkte, Kunden und Bestellungen zu WooCommerce zu übertragen. Dieser Artikel geleitet dich durch diesen Prozess."
 
-#: src/Internal/Admin/Notes/MigrateFromShopify.php:65
-msgid "Do you want to migrate from Shopify to WooCommerce?"
-msgstr "Möchtest du von Shopify zu WooCommerce migrieren?"
-
 #: src/Internal/Admin/Notes/WooCommerceSubscriptions.php:48
 msgid "WooCommerce Subscriptions allows you to introduce a variety of subscriptions for physical or virtual products and services. Create product-of-the-month clubs, weekly service subscriptions or even yearly software billing packages. Add sign-up fees, offer free trials, or set expiration periods."
 msgstr "WooCommerce-Abonnements ermöglichen dir die Einführung verschiedener Abonnements für physische oder virtuelle Produkte und Dienste. Erstelle monatliche Abonnement-Boxen, wöchentliche Dienstabonnements oder auch Softwarepakete mit jährlicher Abrechnung. Füge Registrierungsgebühren hinzu, biete Gratis-Tests an oder richte Ablauffristen ein."
+
+#: src/Internal/Admin/Notes/MigrateFromShopify.php:65
+msgid "Do you want to migrate from Shopify to WooCommerce?"
+msgstr "Möchtest du von Shopify zu WooCommerce migrieren?"
 
 #: i18n/states.php:1102
 msgid "Taita-Taveta"
@@ -23931,14 +23931,6 @@ msgstr "Steuer insgesamt."
 msgid "Order Number."
 msgstr "Bestellnummer."
 
-#: src/Admin/API/Reports/Downloads/Controller.php:324
-#: src/Admin/API/Reports/Orders/Controller.php:463
-#: assets/client/admin/chunks/analytics-report-downloads.js:1
-#: assets/client/admin/chunks/analytics-report-orders.js:1
-#: assets/client/admin/chunks/dashboard-charts.js:1
-msgid "Order #"
-msgstr "Bestellnummer #"
-
 #: src/Admin/API/Reports/PerformanceIndicators/Controller.php:619
 msgid "Format of the stat."
 msgstr "Format der Statistik."
@@ -24107,6 +24099,14 @@ msgstr "Lagerbestand."
 #: assets/client/admin/chunks/analytics-report-stock.js:1
 msgid "Product / Variation"
 msgstr "Produkt/Variante"
+
+#: src/Admin/API/Reports/Downloads/Controller.php:324
+#: src/Admin/API/Reports/Orders/Controller.php:463
+#: assets/client/admin/chunks/analytics-report-downloads.js:1
+#: assets/client/admin/chunks/analytics-report-orders.js:1
+#: assets/client/admin/chunks/dashboard-charts.js:1
+msgid "Order #"
+msgstr "Bestellnummer "
 
 #: src/Admin/API/Reports/Coupons/Controller.php:225
 #: assets/client/admin/chunks/analytics-report-coupons.js:1
@@ -28248,11 +28248,6 @@ msgstr "Welche Produkt-Kategorie soll exportiert werden?"
 msgid "We recommend using ShipStation to save time at the post office by printing your shipping labels at home. Try ShipStation free for 30 days."
 msgstr "Wir empfehlen die Verwendung von ShipStation, um Zeit in der Postfiliale zu sparen, indem du deine Versandetiketten zu Hause druckst. Teste ShipStation 30 Tage lang kostenlos."
 
-#. translators: %1$s: live rates tooltip text, %2$s: shipping extensions URL
-#: includes/admin/class-wc-admin-setup-wizard.php:1128
-msgid "If you'd like to offer <span class=\"help_tip\" data-tip=\"%1$s\">live rates</span> from a specific carrier (e.g. UPS) you can find a variety of extensions available for WooCommerce <a href=\"%2$s\" target=\"_blank\">here</a>."
-msgstr "Wenn du <span class=\"help_tip\" data-tip=\"%1$s\">Echtzeitpreise</span> von einem bestimmten Transportunternehmen anbieten möchtest (z.&nbsp;B. UPS), findest du <a href=\"%2$s\" target=\"_blank\">hier</a> eine Auswahl von Erweiterungen für WooCommerce."
-
 #: includes/admin/meta-boxes/views/html-variation-admin.php:248
 msgid "Enter a number to set stock quantity at the variation level. Use a variation's 'Manage stock?' check box above to enable/disable stock management at the variation level."
 msgstr "Gib eine Zahl ein, um die Lagermenge auf Variantenebene festzulegen. Mit dem Kontrollkästchen „Bestand verwalten?“ über einer Variation kannst du die Bestandsverwaltung auf Variantenebene aktivieren/deaktivieren."
@@ -28264,6 +28259,11 @@ msgstr "Echtzeitpreise sind die genauen Kosten für den Versand einer Bestellung
 #: includes/admin/class-wc-admin-setup-wizard.php:1462
 msgid "WooCommerce PayPal Checkout Gateway"
 msgstr "WooCommerce-PayPal-Zahlungsschnittstelle"
+
+#. translators: %1$s: live rates tooltip text, %2$s: shipping extensions URL
+#: includes/admin/class-wc-admin-setup-wizard.php:1128
+msgid "If you'd like to offer <span class=\"help_tip\" data-tip=\"%1$s\">live rates</span> from a specific carrier (e.g. UPS) you can find a variety of extensions available for WooCommerce <a href=\"%2$s\" target=\"_blank\">here</a>."
+msgstr "Wenn du <span class=\"help_tip\" data-tip=\"%1$s\">Echtzeitpreise</span> von einem bestimmten Transportunternehmen anbieten möchtest (z. B. UPS), findest du <a href=\"%2$s\" target=\"_blank\">hier</a> eine Auswahl von Erweiterungen für WooCommerce."
 
 #: i18n/states.php:1622
 msgid "Alto Paraguay"
@@ -30132,7 +30132,7 @@ msgstr "Beschränkt die Ergebnismenge auf Produkte mit bestimmten Artikelnummern
 #. translators: WooCommerce link to setting up shipping zones
 #: includes/admin/settings/views/html-admin-page-shipping-zone-methods.php:60
 msgid "Postcodes containing wildcards (e.g. CB23*) or fully numeric ranges (e.g. <code>90210...99000</code>) are also supported. Please see the shipping zones <a href=\"%s\" target=\"_blank\">documentation</a> for more information."
-msgstr "Postleitzahlen, die Platzhalter (z.&nbsp;B. 803*) oder volle numerische Bereiche (z.&nbsp;B. <code>80331…85540</code>) enthalten, werden ebenfalls unterstützt. Weitere Informationen findest du in der <a href=\"%s\" target=\"_blank\">Dokumentation</a> zu den Versandzonen."
+msgstr "Postleitzahlen, die Platzhalter (z. B. 803*) oder volle numerische Bereiche (z. B. <code>80331…85540</code>) enthalten, werden ebenfalls unterstützt. Weitere Informationen findest du in der <a href=\"%s\" target=\"_blank\">Dokumentation</a> zu den Versandzonen."
 
 #: includes/admin/list-tables/class-wc-admin-list-table-orders.php:405
 msgid "Completed"
@@ -30854,12 +30854,6 @@ msgstr "Bestelldetails an Kunden senden"
 msgid "Below is a list of extensions available on your WooCommerce.com account. To receive extension updates please make sure the extension is installed, and its subscription activated and connected to your WooCommerce.com account. Extensions can be activated from the <a href=\"%s\">Plugins</a> screen."
 msgstr "Nachstehend siehst du eine Liste der Erweiterungen, die auf deinem WooCommerce.com-Konto verfügbar sind. Um Erweiterungsaktualisierungen zu erhalten, vergewissere dich, dass die Erweiterung installiert und deren Abonnement aktiviert und mit deinem WooCommerce.com-Konto verbunden ist. Erweiterungen können in der Ansicht <a href=\"%s\">Plugins</a> aktiviert werden."
 
-#: includes/admin/meta-boxes/class-wc-meta-box-order-actions.php:53
-#: src/Internal/StockNotifications/Admin/Templates/html-admin-notification-create.php:41
-#: src/Internal/StockNotifications/Admin/Templates/html-admin-notification-edit.php:43
-msgid "Choose an action..."
-msgstr "Wähle eine Aktion …"
-
 #: includes/admin/helper/views/html-main.php:44
 msgid "Sort by:"
 msgstr "Sortieren nach:"
@@ -30868,6 +30862,12 @@ msgstr "Sortieren nach:"
 #: includes/admin/meta-boxes/views/html-order-refund.php:23
 msgid "Refund #%1$s - %2$s by %3$s"
 msgstr "Erstattung #%1$s – %2$s von %3$s"
+
+#: includes/admin/meta-boxes/class-wc-meta-box-order-actions.php:53
+#: src/Internal/StockNotifications/Admin/Templates/html-admin-notification-create.php:41
+#: src/Internal/StockNotifications/Admin/Templates/html-admin-notification-edit.php:43
+msgid "Choose an action..."
+msgstr "Aktion auswählen …"
 
 #: includes/admin/helper/class-wc-helper.php:483
 #: assets/client/admin/chunks/marketplace.js:1
@@ -33035,11 +33035,6 @@ msgstr "Eircode"
 msgid "Error:"
 msgstr "Fehler:"
 
-#. translators: 1: product name 2: items in stock
-#: includes/class-wc-emails.php:1027
-msgid "%1$s is low in stock. There are %2$d left."
-msgstr "%1$s hat geringen Lagerbestand. Es verbleiben %2$d."
-
 #. translators: %d item count
 #: includes/class-wc-cart-session.php:670
 msgid "%d item from your previous order is currently unavailable and could not be added to your cart."
@@ -33062,6 +33057,11 @@ msgstr "Ungültige Einschränkung der E-Mail-Adresse."
 #: includes/class-wc-coupon.php:591
 msgid "Invalid discount type."
 msgstr "Ungültige Rabattart."
+
+#. translators: 1: product name 2: items in stock
+#: includes/class-wc-emails.php:1027
+msgid "%1$s is low in stock. There are %2$d left."
+msgstr "Der Bestand von „%1$s“ ist gering. Nur noch %2$d vorrätig."
 
 #: includes/class-wc-cart-session.php:633 includes/class-wc-cart.php:1297
 #: includes/class-wc-cart.php:1367 includes/class-wc-frontend-scripts.php:741
@@ -33528,10 +33528,6 @@ msgstr "Beschränkt die Ergebnismenge auf Produkte basierend auf dem Minimumprei
 msgid "Limit result set to products on sale."
 msgstr "Beschränkt die Ergebnismenge auf Produkte im Angebot."
 
-#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2535
-msgid "Limit result set to products in stock or out of stock."
-msgstr "Beschränkt die Ergebnismenge auf Produkte die auf Lager oder nicht auf Lager sind."
-
 #: includes/rest-api/Controllers/Version2/class-wc-rest-shipping-zone-methods-v2-controller.php:489
 msgid "Shipping method settings."
 msgstr "Einstellungen der Versandart."
@@ -33562,6 +33558,10 @@ msgstr "Kundenseitiger Titel der Versandart."
 #: includes/rest-api/Controllers/Version2/class-wc-rest-shipping-zone-methods-v2-controller.php:466
 msgid "Shipping method enabled status."
 msgstr "Aktiviert-Status der Versandart."
+
+#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2535
+msgid "Limit result set to products in stock or out of stock."
+msgstr "Beschränkt die Ergebnismenge auf Produkte, die vorrätig oder nicht vorrätig sind."
 
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-categories-v2-controller.php:161
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:1029
@@ -34138,10 +34138,6 @@ msgstr "Möchtest du diese Zone wirklich löschen? Diese Aktion kann nicht wider
 msgid "Shipping zones"
 msgstr "Versandzonen"
 
-#: includes/admin/settings/class-wc-settings-products.php:347
-msgid "Never show quantity remaining in stock"
-msgstr "Lagerbestand nie anzeigen"
-
 #: includes/admin/settings/class-wc-settings-products.php:338
 msgid "This controls how stock quantities are displayed on the frontend."
 msgstr "Dies bestimmt, wie der Lagerbestand im Frontend angezeigt wird."
@@ -34150,17 +34146,21 @@ msgstr "Dies bestimmt, wie der Lagerbestand im Frontend angezeigt wird."
 msgid "When product stock reaches this amount you will be notified via email."
 msgstr "Wenn der Produkt-Bestand diese Menge erreicht, wirst du per E-Mail benachrichtigt."
 
-#: includes/admin/settings/class-wc-settings-products.php:345
-msgid "Always show quantity remaining in stock e.g. \"12 in stock\""
-msgstr "Verbleibenden Lagerbestand immer anzeigen, z.&nbsp;B. „12 auf Lager“"
-
-#: includes/admin/settings/class-wc-settings-products.php:346
-msgid "Only show quantity remaining in stock when low e.g. \"Only 2 left in stock\""
-msgstr "Zeige nur einen geringen Lagerbestand an, wenn z.&nbsp;B. „Nur noch 2 Stück auf Lager“"
-
 #: includes/admin/settings/class-wc-settings-products.php:315
 msgid "When product stock reaches this amount the stock status will change to \"out of stock\" and you will be notified via email. This setting does not affect existing \"in stock\" products."
 msgstr "Wenn der Produkt-Bestand diese Menge erreicht, wird der Lagerbestand auf „Nicht auf Lager“ geändert und du wirst per E-Mail benachrichtigt. Diese Einstellung beeinflusst bestehende „auf Lager“-Produkte nicht."
+
+#: includes/admin/settings/class-wc-settings-products.php:346
+msgid "Only show quantity remaining in stock when low e.g. \"Only 2 left in stock\""
+msgstr "Nur einen geringen Lagerbestand anzeigen, z. B. „Nur noch 2 Stück vorrätig“"
+
+#: includes/admin/settings/class-wc-settings-products.php:345
+msgid "Always show quantity remaining in stock e.g. \"12 in stock\""
+msgstr "Verbleibenden Lagerbestand immer anzeigen, z. B. „12 vorrätig“"
+
+#: includes/admin/settings/class-wc-settings-products.php:347
+msgid "Never show quantity remaining in stock"
+msgstr "Bestand nie anzeigen"
 
 #. Translators: %s Page contents.
 #: includes/admin/settings/class-wc-settings-advanced.php:128
@@ -34903,6 +34903,16 @@ msgstr "Eindeutige Kennung für den Webhook."
 msgid "Name of the reviewer."
 msgstr "Name des Rezensenten."
 
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:46
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:88
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:45
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:105
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:133
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:183
+#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:56
+msgid "Unique identifier for the variable product."
+msgstr "Eindeutige Kennung für das variable Produkt."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-attribute-terms-v1-controller.php:47
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-attribute-terms-v1-controller.php:79
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-attribute-terms-v1-controller.php:115
@@ -34917,16 +34927,6 @@ msgstr "Neues Benutzer-Passwort."
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-reviews-controller.php:71
 msgid "Email of the reviewer."
 msgstr "E-Mail des Rezensenten."
-
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:46
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-reviews-v1-controller.php:88
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-reviews-v2-controller.php:45
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:105
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:133
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:183
-#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:56
-msgid "Unique identifier for the variable product."
-msgstr "Eindeutige Kennung für das variable Produkt."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-webhooks-v1-controller.php:73
 msgid "Webhook delivery URL."
@@ -36575,6 +36575,19 @@ msgstr "Das Datum, an dem das Produkt angelegt wurde (in der Zeitzone der Seite)
 msgid "The date the image was last modified, in the site's timezone."
 msgstr "Das Datum, an dem das Bild zuletzt geändert wurde (in der Zeitzone der Seite)."
 
+#: includes/rest-api/Controllers/Version1/class-wc-rest-product-categories-v1-controller.php:226
+#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2167
+#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2499
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-categories-v2-controller.php:155
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:1023
+#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2280
+#: includes/rest-api/Controllers/Version3/class-wc-rest-product-categories-controller.php:155
+#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:787
+#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1662
+#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1729
+msgid "The date the image was created, in the site's timezone."
+msgstr "Das Datum, an dem das Bild hinzugefügt wurde (in der Zeitzone der Seite)."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2283
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:791
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:541
@@ -36594,19 +36607,6 @@ msgstr "Das Datum, an dem die Variante zuletzt geändert wurde (in der Zeitzone 
 #: src/Internal/RestApi/Routes/V4/Refunds/Controller.php:106
 msgid "Number of decimal points to use in each resource."
 msgstr "Anzahl der Nachkommastellen in jeder Ressource."
-
-#: includes/rest-api/Controllers/Version1/class-wc-rest-product-categories-v1-controller.php:226
-#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2167
-#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2499
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-categories-v2-controller.php:155
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:1023
-#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2280
-#: includes/rest-api/Controllers/Version3/class-wc-rest-product-categories-controller.php:155
-#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:787
-#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1662
-#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1729
-msgid "The date the image was created, in the site's timezone."
-msgstr "Das Datum, an dem das Bild hinzugefügt wurde (in der Zeitzone der Seite)."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-order-refunds-v1-controller.php:483
 #: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1379
@@ -36647,6 +36647,34 @@ msgstr "Eindeutige Transaktions-ID."
 msgid "Meta label."
 msgstr "Meta-Bezeichnung."
 
+#: includes/rest-api/Controllers/Version1/class-wc-rest-order-refunds-v1-controller.php:495
+#: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1391
+#: includes/rest-api/Controllers/Version2/class-wc-rest-coupons-v2-controller.php:538
+#: includes/rest-api/Controllers/Version2/class-wc-rest-customers-v2-controller.php:384
+#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:439
+#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:564
+#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:656
+#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:747
+#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:845
+#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1468
+#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1585
+#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1711
+#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1802
+#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1900
+#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1976
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:1118
+#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2438
+#: includes/rest-api/Controllers/Version3/class-wc-rest-customers-controller.php:273
+#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:877
+#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1822
+#: src/Internal/RestApi/Routes/V4/Orders/Schema/AbstractLineItemSchema.php:47
+#: src/Internal/RestApi/Routes/V4/Orders/Schema/OrderSchema.php:456
+#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1889
+#: src/Internal/RestApi/Routes/V4/Refunds/Schema/RefundSchema.php:200
+#: src/StoreApi/Schemas/V1/CartShippingRateSchema.php:199
+msgid "Meta value."
+msgstr "Meta-Wert."
+
 #. translators: %s: weight unit
 #: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2448
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:972
@@ -36679,34 +36707,6 @@ msgstr "Breite der Variante (%s)."
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:638
 msgid "If the variation is downloadable."
 msgstr "Ob die Variante herunterladbar ist."
-
-#: includes/rest-api/Controllers/Version1/class-wc-rest-order-refunds-v1-controller.php:495
-#: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1391
-#: includes/rest-api/Controllers/Version2/class-wc-rest-coupons-v2-controller.php:538
-#: includes/rest-api/Controllers/Version2/class-wc-rest-customers-v2-controller.php:384
-#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:439
-#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:564
-#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:656
-#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:747
-#: includes/rest-api/Controllers/Version2/class-wc-rest-order-refunds-v2-controller.php:845
-#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1468
-#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1585
-#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1711
-#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1802
-#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1900
-#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1976
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:1118
-#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2438
-#: includes/rest-api/Controllers/Version3/class-wc-rest-customers-controller.php:273
-#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:877
-#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1822
-#: src/Internal/RestApi/Routes/V4/Orders/Schema/AbstractLineItemSchema.php:47
-#: src/Internal/RestApi/Routes/V4/Orders/Schema/OrderSchema.php:456
-#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1889
-#: src/Internal/RestApi/Routes/V4/Refunds/Schema/RefundSchema.php:200
-#: src/StoreApi/Schemas/V1/CartShippingRateSchema.php:199
-msgid "Meta value."
-msgstr "Meta-Wert."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2350
 #: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:874
@@ -36940,6 +36940,16 @@ msgstr "Kategorie-Slug."
 msgid "Download type, this controls the schema on the front-end."
 msgstr "Download-Typ - dies beeinflusst die Ausgabe im Frontend."
 
+#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:1969
+#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2428
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:952
+#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2082
+#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:711
+#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1427
+#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1494
+msgid "If managing stock, this controls if backorders are allowed."
+msgstr "Falls die Lagerverwaltung aktiviert ist, können damit Lieferrückstände erlaubt werden."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2091
 #: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2204
 #: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:885
@@ -36957,16 +36967,6 @@ msgstr "Eltern-Produkt ID."
 #: src/Internal/RestApi/Routes/V4/Orders/UpdateUtils.php:305
 msgid "Order item ID provided is not associated with order."
 msgstr "Die übergebene Bestellpositions-ID ist nicht mit einer Bestellung verknüpft."
-
-#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:1969
-#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2428
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:952
-#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2082
-#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:711
-#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1427
-#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1494
-msgid "If managing stock, this controls if backorders are allowed."
-msgstr "Falls die Lagerverwaltung aktiviert ist, können damit Lieferrückstände erlaubt werden."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-product-attributes-v1-controller.php:523
 msgid "Enable/Disable attribute archives."
@@ -37004,6 +37004,21 @@ msgstr "Zeigt an, ob die Variante im Lieferrückstand ist."
 msgid "Attribute name."
 msgstr "Name des Attributs."
 
+#: includes/cli/class-wc-cli-runner.php:114
+#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2210
+#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2252
+#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2541
+#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:1077
+#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2335
+#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2380
+#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:836
+#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1718
+#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1763
+#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1785
+#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1830
+msgid "Attribute ID."
+msgstr "ID des Attributs."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2220
 #: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2345
 #: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1728
@@ -37027,21 +37042,6 @@ msgstr "Zeigt, ob ein Lieferrückstand erlaubt ist."
 #: src/Internal/RestApi/Routes/V4/Products/Controller.php:1507
 msgid "Shows if the product is on backordered."
 msgstr "Zeigt, ob für das Produkt ein Lieferrückstand vorliegt."
-
-#: includes/cli/class-wc-cli-runner.php:114
-#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2210
-#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2252
-#: includes/rest-api/Controllers/Version1/class-wc-rest-products-v1-controller.php:2541
-#: includes/rest-api/Controllers/Version2/class-wc-rest-product-variations-v2-controller.php:1077
-#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2335
-#: includes/rest-api/Controllers/Version2/class-wc-rest-products-v2-controller.php:2380
-#: includes/rest-api/Controllers/Version3/class-wc-rest-product-variations-controller.php:836
-#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1718
-#: includes/rest-api/Controllers/Version3/class-wc-rest-products-controller.php:1763
-#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1785
-#: src/Internal/RestApi/Routes/V4/Products/Controller.php:1830
-msgid "Attribute ID."
-msgstr "ID des Attributs."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:987
 #: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1149
@@ -37247,6 +37247,12 @@ msgstr "Lege fest, ob die Bestellung bezahlt ist. Das setzt den Status auf „In
 msgid "Line subtotal tax (before discounts)."
 msgstr "Zwischensumme der Steuern (vor Preisnachlässen/Rabatten)."
 
+#: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1605
+#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1929
+#: src/Internal/RestApi/Routes/V4/Orders/Schema/OrderCouponSchema.php:53
+msgid "Discount total."
+msgstr "Rabatt gesamt."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-order-refunds-v1-controller.php:434
 #: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1332
 #: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1479
@@ -37278,12 +37284,6 @@ msgstr "Gesamtsumme (nach Preisnachlässen/Rabatten)."
 #: src/Internal/RestApi/Routes/V4/Orders/Schema/OrderShippingSchema.php:66
 msgid "Line total tax (after discounts)."
 msgstr "Gesamtsumme der Steuern (nach Preisnachlässen/Rabatten)."
-
-#: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1605
-#: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1929
-#: src/Internal/RestApi/Routes/V4/Orders/Schema/OrderCouponSchema.php:53
-msgid "Discount total."
-msgstr "Rabatt gesamt."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1610
 #: includes/rest-api/Controllers/Version2/class-wc-rest-orders-v2-controller.php:1934
@@ -38036,6 +38036,11 @@ msgstr "Maximale Anzahl der Artikel auf die der Gutschein angewendet werden kann
 msgid "UTC DateTime when the coupon expires."
 msgstr "Verfallsdatum des Gutscheins (UTC DateTime)."
 
+#: includes/rest-api/Controllers/Version1/class-wc-rest-customer-downloads-v1-controller.php:189
+#: includes/rest-api/Controllers/Version2/class-wc-rest-customer-downloads-v2-controller.php:105
+msgid "Downloadable file name."
+msgstr "Herunterladbarer Dateiname."
+
 #: includes/rest-api/Controllers/Version1/class-wc-rest-customers-v1-controller.php:882
 #: includes/rest-api/Controllers/Version1/class-wc-rest-customers-v1-controller.php:945
 #: includes/rest-api/Controllers/Version1/class-wc-rest-orders-v1-controller.php:1125
@@ -38052,11 +38057,6 @@ msgstr "Verfallsdatum des Gutscheins (UTC DateTime)."
 #: src/Internal/RestApi/Routes/V4/Orders/Schema/OrderSchema.php:364
 msgid "ISO code or name of the state, province or district."
 msgstr "ISO-Code oder Name des Staats, der Provinz oder des Distrikts."
-
-#: includes/rest-api/Controllers/Version1/class-wc-rest-customer-downloads-v1-controller.php:189
-#: includes/rest-api/Controllers/Version2/class-wc-rest-customer-downloads-v2-controller.php:105
-msgid "Downloadable file name."
-msgstr "Herunterladbarer Dateiname."
 
 #: includes/rest-api/Controllers/Version1/class-wc-rest-coupons-v1-controller.php:539
 #: includes/rest-api/Controllers/Version2/class-wc-rest-coupons-v2-controller.php:498
@@ -39894,11 +39894,6 @@ msgstr "Diese Funktion sollte nicht vor woocommerce_init ausgeführt werden."
 msgid "Unpaid order cancelled - time limit reached."
 msgstr "Unbezahlte Bestellung abgebrochen – Zeitlimit erreicht."
 
-#. translators: %s: page number
-#: includes/wc-template-functions.php:1157
-msgid "&nbsp;&ndash; Page %s"
-msgstr "&nbsp;&ndash; Seite %s"
-
 #: includes/wc-template-functions.php:1627
 #: includes/wc-template-functions.php:1693
 #: assets/client/blocks/all-products-frontend.js:4
@@ -40109,10 +40104,6 @@ msgstr "Benutzername oder E-Mail-Adresse"
 #: assets/client/blocks/order-confirmation-create-account.js:2
 msgid "Password"
 msgstr "Passwort"
-
-#: includes/wc-template-functions.php:4255
-msgid "Your cart is currently empty."
-msgstr "Dein Warenkorb ist gegenwärtig leer."
 
 #: src/Blocks/BlockTypes/MiniCartFooterBlock.php:44
 #: src/Internal/ReceiptRendering/ReceiptRenderingEngine.php:320
@@ -40811,6 +40802,15 @@ msgstr "Entschuldigung, aber es scheint, dass es keine verfügbaren Zahlungsarte
 msgid "The following addresses will be used on the checkout page by default."
 msgstr "Die folgenden Adressen werden standardmäßig auf der Kassenseite verwendet."
 
+#. translators: %s: page number
+#: includes/wc-template-functions.php:1157
+msgid "&nbsp;&ndash; Page %s"
+msgstr " &ndash; Seite %s"
+
+#: includes/wc-template-functions.php:4255
+msgid "Your cart is currently empty."
+msgstr "Dein Warenkorb ist derzeit leer."
+
 #. translators: %s: number of orders
 #. translators: %s: count
 #: includes/class-wc-post-types.php:724
@@ -41370,15 +41370,6 @@ msgstr "Zahlung ausstehend (%s)."
 msgid "Enter recipients (comma separated) for this email. Defaults to %s."
 msgstr "Gib (kommasepariert) die Empfänger für die E-Mail ein. Standard: %s."
 
-#: includes/gateways/bacs/class-wc-gateway-bacs.php:63
-#: includes/gateways/bacs/class-wc-gateway-bacs.php:115
-#: src/Admin/Features/PaymentGatewaySuggestions/DefaultPaymentGateways.php:183
-#: src/Internal/Admin/EmailPreview/EmailPreview.php:432
-#: assets/client/admin/wp-admin-scripts/settings-embed.js:2
-#: assets/client/blocks/wc-payment-method-bacs.js:1
-msgid "Direct bank transfer"
-msgstr "Direkte Banküberweisung"
-
 #: includes/gateways/bacs/class-wc-gateway-bacs.php:108
 msgid "Enable bank transfer"
 msgstr "Überweisung aktivieren"
@@ -41468,11 +41459,6 @@ msgstr "Die Zahlung soll bei Lieferung (per Nachnahme) erfolgen."
 #: includes/shipping/legacy-flat-rate/includes/settings-flat-rate.php:14
 msgid "Enter a cost (excl. tax) or sum, e.g. <code>10.00 * [qty]</code>."
 msgstr "Gib einen Betrag (exkl. Steuern) oder eine Formel, z.B. <code>10.00 * [qty]</code>, ein."
-
-#. translators: %s: Order ID.
-#: templates/emails/email-order-details.php:69
-msgid "[Order #%s]"
-msgstr "(Bestellnummer #%s)"
 
 #: includes/shipping/flat-rate/includes/settings-flat-rate.php:74
 #: includes/shipping/legacy-flat-rate/includes/settings-flat-rate.php:99
@@ -41753,6 +41739,20 @@ msgstr "Welche Postleitzahlen sind für die lokale Lieferung verfügbar?"
 #: includes/shipping/legacy-local-delivery/class-wc-shipping-legacy-local-delivery.php:160
 msgid "What fee do you want to charge for local delivery, disregarded if you choose free. Leave blank to disable."
 msgstr "Welche Gebühr möchtest du für die lokale Lieferung berechnen? Diese Angabe ist irrelevant, wenn du „kostenlos“ wählst. Lass das Feld leer, um die Option zu deaktivieren."
+
+#: includes/gateways/bacs/class-wc-gateway-bacs.php:63
+#: includes/gateways/bacs/class-wc-gateway-bacs.php:115
+#: src/Admin/Features/PaymentGatewaySuggestions/DefaultPaymentGateways.php:183
+#: src/Internal/Admin/EmailPreview/EmailPreview.php:432
+#: assets/client/admin/wp-admin-scripts/settings-embed.js:2
+#: assets/client/blocks/wc-payment-method-bacs.js:1
+msgid "Direct bank transfer"
+msgstr "Vorkasse"
+
+#. translators: %s: Order ID.
+#: templates/emails/email-order-details.php:69
+msgid "[Order #%s]"
+msgstr "(Bestellnummer %s)"
 
 #: includes/class-wc-ajax.php:318
 msgid "Sorry there was a problem removing this coupon."
@@ -42871,10 +42871,6 @@ msgstr "Die Dateigröße, die maximal innerhalb deiner WordPress-Installation ho
 msgid "The default timezone for your server."
 msgstr "Die Standard-Zeitzone auf deinem Server."
 
-#: includes/admin/views/html-admin-page-status-report.php:294
-msgid "Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits."
-msgstr "Suhosin ist ein erweitertes Sicherheitssystem für PHP-Installationen. Es wurde entwickelt, um einerseits deine Server gegen eine Vielzahl wohlbekannter Probleme in PHP-Anwendungen zu schützen und andererseits gegen möglicherweise noch unbekannte Schwachstellen innerhalb dieser Anwendungen oder dem PHP-Kern selbst. Wenn es auf deinem Server aktiviert ist, dann müsste Suhosin unter Umständen so konfiguriert werden, dass dessen Datenübertragungsgrenzen (data submission limits) erhöht werden."
-
 #. Translators: %s: default timezone..
 #: includes/admin/views/html-admin-page-status-report.php:330
 msgid "Default timezone is %s - it should be UTC"
@@ -42883,6 +42879,10 @@ msgstr "Standard-Zeitzone ist %s – es sollte UTC sein"
 #: includes/admin/views/html-admin-page-status-report.php:345
 msgid "Your server does not have fsockopen or cURL enabled - PayPal IPN and other scripts which communicate with other servers will not work. Contact your hosting provider."
 msgstr "Dein Webserver hat weder <code>fsockopen</code> noch <code>cURL</code> aktiviert. Die sofortige Zahlungsbestätigung bei PayPal (IPN) und andere Skripte, welche mit anderen Servern kommunizieren, werden daher nicht funktionieren. Kontaktiere deinen Webhosting-Anbieter."
+
+#: includes/admin/views/html-admin-page-status-report.php:294
+msgid "Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits."
+msgstr "Suhosin ist ein erweitertes Sicherheitssystem für PHP-Installationen. Es wurde entwickelt, um einerseits deine Server gegen eine Vielzahl wohlbekannter Probleme in PHP-Anwendungen zu schützen und andererseits gegen möglicherweise noch unbekannte Schwachstellen innerhalb dieser Anwendungen oder dem PHP-Kern selbst. Wenn es auf deinem Server aktiviert ist, dann müsste Suhosin unter Umständen so konfiguriert werden, dass dessen Datenübertragungsgrenzen (data submission limits) erhöht werden."
 
 #: includes/admin/views/html-admin-page-status-report.php:352
 msgid "Some webservices like shipping use SOAP to get information from remote servers, for example, live shipping quotes from FedEx require SOAP to be installed."
@@ -43612,10 +43612,6 @@ msgid "Cities for this rule. Semi-colon (;) separate multiple values. Leave blan
 msgstr "Orte für diese Regel. Mehrere Regeln mit Semikolon (<code>;</code>) trennen. Leer lassen, um auf alle Orte anzuwenden (keine Einschränkung)."
 
 #: includes/admin/settings/views/html-settings-tax.php:36
-msgid "Rate&nbsp;%"
-msgstr "Satz&nbsp;%"
-
-#: includes/admin/settings/views/html-settings-tax.php:36
 msgid "Enter a tax rate (percentage) to 4 decimal places."
 msgstr "Gib einen Steuersatz (Prozentangabe) ein, mit bis zu 4 Dezimalstellen."
 
@@ -44238,6 +44234,10 @@ msgstr "Steuersatz-ID."
 #: includes/admin/settings/class-wc-settings-general.php:281
 msgid "Coupons can be applied from the cart and checkout pages."
 msgstr "Gutscheine können von den Warenkorb- und Kassenseiten aus angewendet werden."
+
+#: includes/admin/settings/views/html-settings-tax.php:36
+msgid "Rate&nbsp;%"
+msgstr "Satz %"
 
 #: includes/admin/meta-boxes/views/html-variation-admin.php:268
 msgid "If managing stock, this controls whether or not backorders are allowed. If enabled, stock quantity can go below 0."
@@ -44883,10 +44883,6 @@ msgstr "Keine Produkte gefunden."
 #: assets/client/admin/product-editor/index.js:2
 msgid "Parent"
 msgstr "Übergeordnetes Produkt"
-
-#: includes/admin/reports/class-wc-report-stock.php:177
-msgid "Units in stock"
-msgstr "Lagerbestand"
 
 #: includes/admin/reports/class-wc-report-taxes-by-code.php:199
 #: src/Admin/API/Reports/Taxes/Controller.php:231
@@ -45614,6 +45610,10 @@ msgstr "Versandarten"
 #: includes/admin/reports/class-wc-report-customer-list.php:72
 msgid "Search customers"
 msgstr "Kunden suchen"
+
+#: includes/admin/reports/class-wc-report-stock.php:177
+msgid "Units in stock"
+msgstr "Bestand"
 
 #: includes/admin/class-wc-admin-setup-wizard.php:1834
 msgid "Offline Payments"

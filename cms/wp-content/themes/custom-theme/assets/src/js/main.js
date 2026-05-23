@@ -13,6 +13,7 @@ if (import.meta.env.PROD) {
 }
 
 // ─── Kern-Komponenten (immer geladen) ────────────────────────────────────────
+import { initImpressumTables } from './components/impressum-tables.js';
 import Navigation    from './components/navigation';
 import Toggle        from './components/toggle';
 import DarkMode      from './components/theme-switcher';
@@ -178,3 +179,5 @@ if (document.readyState === 'loading') {
 } else {
   initApp();
 }
+
+window.addEventListener('load', initImpressumTables);

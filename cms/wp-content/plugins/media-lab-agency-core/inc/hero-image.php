@@ -389,11 +389,13 @@ function media_lab_get_hero_image(?int $post_id = null) : ?array {
     if (!$post_id) return null;
 
     // Explizit deaktiviert?
-    // ACF gibt für eine noch nie gespeicherte true_false-Field 'false' zurück –
-    // NICHT den default_value (1). false/null bedeutet: Feld unberührt → anzeigen.
-    // Nur ausblenden wenn der User das Feld explizit auf 0 gesetzt hat.
-    $show = get_field('hero_image_show', $post_id);
-    if ($show === 0 || $show === '0') return null;
+    // get_post_meta() gibt den rohen DB-Wert zurück:
+    //   ''  = Feld wurde noch nie gespeichert → Hero anzeigen (default_value greift)
+    //   '0' = User hat Toggle explizit auf OFF gestellt → ausblenden
+    //   '1' = User hat Toggle explizit auf ON gestellt → anzeigen
+    // get_field() allein kann '0' und '' nicht unterscheiden (beides → false).
+    $show_raw = get_post_meta($post_id, 'hero_image_show', true);
+    if ($show_raw === '0') return null;
 
     // Bilder – _medialab_resolve_image() normalisiert Array/ID/false sicher zu Array oder null
     $desktop = _medialab_resolve_image(get_field('hero_image_desktop', $post_id))

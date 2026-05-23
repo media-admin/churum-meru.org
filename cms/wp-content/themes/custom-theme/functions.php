@@ -178,3 +178,10 @@ if ( ! function_exists('medialab_toggle') ) {
     }
 }
 
+// Body-Klasse für Impressum-Seite (Slug-basiert)
+    add_filter('body_class', function(array $classes): array {
+        if (is_page('impressum')) {
+            $classes[] = 'impressum-page';
+        }
+        return $classes;
+    });

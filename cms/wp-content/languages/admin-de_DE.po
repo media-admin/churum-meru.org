@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 7.0.x - Development - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-22 13:03:20+0000\n"
+"PO-Revision-Date: 2026-05-25 01:04:07+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9239,8 +9239,8 @@ msgid ""
 "UPDATE LOG\n"
 "=========="
 msgstr ""
-"AKTUALISIERUNGS-PROTOKOLL\n"
-"=========================="
+"AKTUALISIERUNGSPROTOKOLL\n"
+"===================="
 
 #: wp-admin/includes/class-wp-automatic-updater.php:1642
 msgid ""
@@ -15313,7 +15313,7 @@ msgstr "Mit Bild verlinken:"
 
 #: wp-admin/includes/media.php:2954
 msgid "Image Caption"
-msgstr "Untertitel des Bilds"
+msgstr "Bildbeschriftung"
 
 #: wp-admin/includes/media.php:2907
 msgid "Filter &#187;"

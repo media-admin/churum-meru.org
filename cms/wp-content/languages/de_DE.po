@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 7.0.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-23 04:14:21+0000\n"
+"PO-Revision-Date: 2026-05-24 21:18:13+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9959,7 +9959,7 @@ msgstr "Ob das Theme den Title-Tag des Dokuments verwalten kann."
 
 #: wp-includes/theme.php:4265
 msgid "Allows use of HTML5 markup for search forms, comment forms, comment lists, gallery, and caption."
-msgstr "Erlaubt die Verwendung von HTML5-Markup für Such- und Kommentar-Formulare, Kommentar-Listen, Galerien und Untertitel."
+msgstr "Erlaubt die Verwendung von HTML5-Markup für Such- und Kommentar-Formulare, Kommentarlisten, Galerien und Beschriftungen."
 
 #: wp-includes/theme.php:4257
 msgid "Whether theme opts in to the editor styles CSS wrapper."
@@ -10383,7 +10383,7 @@ msgstr "Videotitel"
 
 #: wp-includes/media-template.php:646
 msgid "Caption&hellip;"
-msgstr "Untertitel …"
+msgstr "Beschriftung …"
 
 #. translators: Hidden accessibility text.
 #: wp-includes/media-template.php:442 wp-includes/js/dist/editor.js:49630
@@ -13444,7 +13444,7 @@ msgstr "Die Beschreibung des Anhangs."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php:1135
 msgid "The attachment caption."
-msgstr "Der Untertitel des Anhangs."
+msgstr "Die Beschriftung des Anhangs."
 
 #: wp-includes/option.php:2874
 msgid "Default post category."
@@ -13865,11 +13865,11 @@ msgstr "Beschreibung für den Anhang, wie sie in der Datenbank vorliegt."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php:1149
 msgid "HTML caption for the attachment, transformed for display."
-msgstr "Der für die Anzeige umgewandelte HTML-Untertitel des Anhangs."
+msgstr "Der für die Anzeige umgewandelte HTML-Beschriftung des Anhangs."
 
 #: wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php:1144
 msgid "Caption for the attachment, as it exists in the database."
-msgstr "Der Untertitel für den Anhang, wie er in der Datenbank vorliegt."
+msgstr "Die Beschriftung für den Anhang, wie er in der Datenbank vorliegt."
 
 #: wp-includes/class-wp-customize-manager.php:6127
 msgid "Please enter a valid YouTube URL."
@@ -15748,7 +15748,7 @@ msgstr "Die Website, die du gesucht hast, %s, existiert nicht."
 #. translators: %s: A link to the embedded site.
 #: wp-includes/theme-compat/embed-404.php:21
 msgid "It looks like nothing was found at this location. Maybe try visiting %s directly?"
-msgstr "An diesem Ort konnte nichts gefunden werden. Möchtest du vielleicht versuchen, %s direkt aufzurufen?"
+msgstr "An diesem Ort wurde nichts gefunden. Möchtest du %s direkt aufrufen?"
 
 #: wp-includes/theme-compat/embed-404.php:14
 msgid "Oops! That embed cannot be found."
@@ -16118,11 +16118,11 @@ msgstr "Teilen-Dialog schließen"
 
 #: wp-includes/embed.php:1214
 msgid "Copy and paste this code into your site to embed"
-msgstr "Füge diesen Code in deine Website ein, um ihn einzubinden"
+msgstr "Füge diesen Code in deine Website ein, um den Inhalt einzubetten"
 
 #: wp-includes/embed.php:1207
 msgid "Copy and paste this URL into your WordPress site to embed"
-msgstr "Füge diese URL in deine WordPress-Website ein, um sie einzubetten"
+msgstr "Füge diese URL in deine WordPress-Website ein, um den Inhalt einzubetten"
 
 #: wp-includes/embed.php:1200
 msgid "HTML Embed"
@@ -18218,7 +18218,7 @@ msgstr "Video einfügen"
 
 #: wp-includes/class-wp-editor.php:1243
 msgid "Paste your embed code below:"
-msgstr "Embed-Code unten einfügen:"
+msgstr "Einbettungscode unten einfügen:"
 
 #: wp-includes/class-wp-editor.php:1242
 msgid "Alternative source"
@@ -18595,7 +18595,7 @@ msgstr "Das SSL-Zertifikat für den Host konnte nicht verifiziert werden."
 
 #: wp-includes/media-template.php:869
 msgid "Embed Media Player"
-msgstr "Eingebundener Medien-Player"
+msgstr "Medien-Player einbetten"
 
 #: wp-includes/media-template.php:886
 msgid "Link to Attachment Page"
@@ -23324,7 +23324,7 @@ msgstr "Bild bearbeiten"
 #: wp-includes/js/dist/media-utils.js:17367 wp-admin/includes/media.php:1422
 #: wp-admin/includes/media.php:3276
 msgid "Caption"
-msgstr "Untertitel"
+msgstr "Beschriftung"
 
 #: wp-includes/class-wp-editor.php:1337 wp-includes/media-template.php:830
 #: wp-admin/includes/media.php:1507 wp-admin/includes/media.php:3008

@@ -2,14 +2,20 @@
 
 // ==========================================================================
 // Hero Component
-// Version: 1.2.0 – Fluid Responsive System
+// Version: 1.2.1 – Churum Meru Brand Colors
+//
+// ÄNDERUNGEN v1.2.1:
+//   - $color-primary kaskadiert automatisch: #ff681a (war: #d40000)
+//   - $color-secondary kaskadiert: #595959 (war: #ff6b6b)
+//   - Gradient im __background: orange → grau (aus Token)
+//   - Keine strukturellen Änderungen.
 // ==========================================================================
 
 .hero {
-  position:   relative;
-  padding:    var(--space-2xl) 0;  // fluid: 48px → 80px (war: $spacing-8 = 64px fix)
-  min-height: 600px;
-  display:    flex;
+  position:    relative;
+  padding:     var(--space-2xl) 0;  // fluid: 48px → 80px (war: $spacing-8 = 64px fix)
+  min-height:  600px;
+  display:     flex;
   align-items: center;
 
   &__background {
@@ -17,6 +23,7 @@
     top: 0; left: 0;
     width:      100%;
     height:     100%;
+    // Gradient: Primary (#ff681a) → Secondary (#595959)
     background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
     z-index:    -1;
   }

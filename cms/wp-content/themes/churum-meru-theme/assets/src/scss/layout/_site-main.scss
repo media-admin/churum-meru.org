@@ -1,0 +1,40 @@
+@use '../abstracts' as *;
+
+// =============================================================================
+// Site Main – Abstände
+// Datei: assets/src/scss/layout/_site-main.scss
+// =============================================================================
+
+// ── Abstand nach oben (Seiten ohne Hero) ─────────────────────────────────────
+
+.site-main,
+main#main,
+main[role="main"] {
+  padding-top: var(--site-main-pt, var(--space-xl));
+
+  body.has-hero-image & {
+    padding-top: 0;
+  }
+}
+
+// ── Entry-Header + Entry-Content: Abstand nach oben ──────────────────────────
+// Gilt zusätzlich zum site-main padding – schafft Luft zum Hero bzw. zum Header.
+
+.entry-header,
+.entry-content,
+.page-content,
+.post-content {
+  margin-top: var(--space-lg);   // fluid ~24–32px
+
+  // Erstes Element braucht keinen Doppelabstand
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+// Auf Hero-Seiten: entry-header direkt nach Hero → kein extra Abstand
+body.has-hero-image {
+  .entry-header:first-of-type {
+    margin-top: var(--space-md);
+  }
+}

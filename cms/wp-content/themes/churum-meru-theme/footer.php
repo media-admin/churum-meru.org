@@ -1,100 +1,108 @@
-<footer class="site-footer">
-    <div class="container">
+<?php
+/**
+ * Footer Template – Churum Meru Theme
+ * Datei: footer.php
+ * Version: 2.0.0 – Polylang Mehrsprachigkeit
+ */
+?>
 
-        <div class="site-footer__inner">
+</main><!-- /#main.site-main -->
 
-            <?php
-            // ── Logo oder Site-Name ───────────────────────────────────────
-            $logo = function_exists('get_field') ? get_field('logo_desktop', 'option') : null;
-            ?>
-            <div class="site-footer__brand">
-                <?php if ( $logo && ! empty( $logo['url'] ) ) : ?>
-                    <a href="<?php echo esc_url( home_url('/') ); ?>" class="site-footer__logo-link">
-                        <img
-                            src="<?php echo esc_url( $logo['url'] ); ?>"
-                            alt="<?php bloginfo('name'); ?>"
-                            class="site-footer__logo"
-                            loading="lazy"
-                        >
-                    </a>
-                <?php else : ?>
-                    <a href="<?php echo esc_url( home_url('/') ); ?>" class="site-footer__site-name">
+<footer class="site-footer" role="contentinfo">
+
+    <!-- ── Footer Top ─────────────────────────────────────── -->
+    <div class="footer-top">
+        <div class="container">
+
+            <!-- Spalte 1: Logo -->
+            <div class="footer-widget footer-col-logo">
+                <?php
+                $custom_logo_id = get_theme_mod('custom_logo');
+                if ( $custom_logo_id ) :
+                    $logo = wp_get_attachment_image_src( $custom_logo_id, 'full' );
+                    if ( $logo ) : ?>
+                        <a href="<?php echo esc_url( function_exists('pll_home_url') ? pll_home_url() : home_url('/') ); ?>" rel="home">
+                            <img src="<?php echo esc_url( $logo[0] ); ?>"
+                                 alt="<?php bloginfo('name'); ?>"
+                                 class="footer-logo-img"
+                                 loading="lazy">
+                        </a>
+                    <?php endif;
+                else : ?>
+                    <a href="<?php echo esc_url( function_exists('pll_home_url') ? pll_home_url() : home_url('/') ); ?>"
+                       class="footer-site-name" rel="home">
                         <?php bloginfo('name'); ?>
                     </a>
                 <?php endif; ?>
             </div>
 
-            <?php
-            // ── Footer Navigation ─────────────────────────────────────────
-            if ( has_nav_menu('footer') ) :
-                wp_nav_menu(array(
-                    'theme_location' => 'footer',
-                    'menu_class'     => 'footer-nav__list',
-                    'container'      => 'nav',
-                    'container_class'=> 'site-footer__nav footer-nav',
-                    'container_aria_label' => 'Footer Navigation',
-                    'depth'          => 4,
-                    'fallback_cb'    => false,
-                ));
-            endif;
-            ?>
-
-        </div><!-- .site-footer__inner -->
-
-        <div class="site-footer__bottom">
-
-            <p class="site-footer__copyright">
-                &copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>.
-                <?php esc_html_e('Alle Rechte vorbehalten.', 'custom-theme'); ?>
-            </p>
-
-            <?php
-            // ── Footer Legal Navigation ───────────────────────────────────────────
-            if ( has_nav_menu('footer-legal') ) :
-                wp_nav_menu([
-                    'theme_location'       => 'footer-legal',
-                    'menu_class'           => 'footer-legal__list',
-                    'container'            => 'nav',
-                    'container_class'      => 'footer-legal',
-                    'container_aria_label' => __('Rechtliche Links', 'custom-theme'),
-                    'depth'                => 1,       // Nur eine Ebene – keine Submenüs
-                    'fallback_cb'          => false,
+            <!-- Spalte 2: Letzte Einträge
+                 Polylang filtert WP_Query automatisch nach aktiver Sprache -->
+            <div class="footer-widget footer-col-recent">
+                <h3 class="widget-title">
+                    <?php esc_html_e( 'Letzte Einträge', 'churum-meru-theme' ); ?>
+                </h3>
+                <?php
+                $recent = new WP_Query([
+                    'post_type'      => 'post',
+                    'posts_per_page' => 5,
+                    'post_status'    => 'publish',
+                    'no_found_rows'  => true,
                 ]);
-            endif;
-            ?>
+                if ( $recent->have_posts() ) : ?>
+                    <ul>
+                        <?php while ( $recent->have_posts() ) : $recent->the_post(); ?>
+                            <li>
+                                <a href="<?php the_permalink(); ?>">
+                                    <?php the_title(); ?>
+                                </a>
+                            </li>
+                        <?php endwhile; wp_reset_postdata(); ?>
+                    </ul>
+                <?php endif; ?>
+            </div>
 
-        </div><!-- .site-footer__bottom -->
+            <!-- Spalte 3: Gesetzlich
+                 Polylang → je Sprache eigenes Menü unter Design → Menüs
+                 der Location "Footer Legal" zuweisen -->
+            <div class="footer-widget footer-col-legal">
+                <h3 class="widget-title">
+                    <?php esc_html_e( 'Gesetzlich', 'churum-meru-theme' ); ?>
+                </h3>
+                <?php
+                if ( has_nav_menu('footer-legal') ) :
+                    wp_nav_menu([
+                        'theme_location' => 'footer-legal',
+                        'container'      => false,
+                        'depth'          => 1,
+                        'fallback_cb'    => false,
+                    ]);
+                endif; ?>
+            </div>
 
-        <div class="site-footer__credit">
+            <!-- Spalte 4: Kontakt
+                 Widget-Area per Sprache → Design → Widgets
+                 "Footer: Kontakt (DE)", "Footer: Kontakt (ES)" etc. -->
+            <div class="footer-widget footer-col-contact">
+                <h3 class="widget-title">
+                    <?php esc_html_e( 'Kontakt', 'churum-meru-theme' ); ?>
+                </h3>
+                <?php churummeru_footer_contact_sidebar(); ?>
+            </div>
 
-            <p>
-                <?php esc_html_e('Konzept und Programmierung:', 'custom-theme'); ?>
-                    <a 
-                    href="https://www.media-lab.at"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >Media Lab Tritremmel GmbH</a>
+        </div><!-- /.container -->
+    </div><!-- /.footer-top -->
+
+    <!-- ── Footer Bottom ──────────────────────────────────── -->
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="footer-copyright">
+                <?php churummeru_footer_copyright(); ?>
             </p>
         </div>
+    </div><!-- /.footer-bottom -->
 
-    </div><!-- .container -->
-</footer>
-
-</div><!-- #page -->
-
-<?php
-// ── Back-to-Top Button ────────────────────────────────────────────────────
-if ( function_exists('get_field') && get_field('btt_enabled', 'option') ) : ?>
-<button
-    class="back-to-top"
-    aria-label="<?php esc_attr_e('Zurück nach oben', 'custom-theme'); ?>"
-    type="button"
->
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <polyline points="18 15 12 9 6 15"></polyline>
-    </svg>
-</button>
-<?php endif; ?>
+</footer><!-- /.site-footer -->
 
 <?php wp_footer(); ?>
 </body>

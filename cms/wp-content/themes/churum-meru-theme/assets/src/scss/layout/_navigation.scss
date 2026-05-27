@@ -2,27 +2,49 @@
 
 // =============================================================================
 // Navigation – Header + Mobile + Footer
-// Version: 1.2.0 – Fluid Responsive System
+// Version: 1.2.1 – Churum Meru Brand + Sticky Transparent Header
 //
-// Änderungen:
+// ÄNDERUNGEN v1.2.1:
+//   - .site-header background → var(--header-bg)  [rgba weiß + Transparenz]
+//   - .site-header backdrop-filter: blur(var(--header-blur)) ergänzt
+//   - .site-header.is-scrolled State ergänzt
+//   - .site-logo background-color → var(--header-logo-bg) [Primary #ff681a]
+//   - Dark-Mode Media Query: --header-bg kommt jetzt aus [data-theme="dark"]
+//
+// Unverändert v1.2.0:
 //   - .site-navigation padding → var(--container-padding)
 //   - .mobile-menu padding → var(--space-*)
 //   - padding-top: 80px → var(--header-height) + var(--space-md)
 //   - font-size → var(--text-*)
 //   - @media (max-width: 767px) → @include respond-below('md')
-//   - Strukturelle Einrückungen ($spacing-*) für Multi-Level-Menüs bleiben erhalten
 // =============================================================================
 
 
 // ── Header ────────────────────────────────────────────────────────────────────
 
 .site-header {
-    position:      sticky;
-    top:           0;
-    z-index:       1000;
-    background:    var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    box-shadow:    $shadow-sm;
+    position:                sticky;
+    top:                     0;
+    z-index:                 1000;
+
+    // Weiß mit leichter Transparenz (Token aus _variables.scss)
+    background:              var(--header-bg);          // rgba(255,255,255,0.88)
+    backdrop-filter:         blur(var(--header-blur));   // 8px
+    -webkit-backdrop-filter: blur(var(--header-blur));
+
+    border-bottom:           1px solid rgba(0, 0, 0, 0.06);
+
+    transition:
+        background   0.3s ease,
+        box-shadow   0.3s ease,
+        border-color 0.3s ease;
+
+    // State: gescrollt → fast vollweiß + Schatten
+    &.is-scrolled {
+        background:   rgba(255, 255, 255, 0.97);
+        box-shadow:   0 2px 16px rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.1);
+    }
 }
 
 .site-navigation {
@@ -30,24 +52,47 @@
     align-items:     center;
     justify-content: space-between;
     // Fluid horizontal padding statt festem $spacing-6
-    padding:         $spacing-4 var(--container-padding);
+    padding:         0 var(--container-padding);
+    height:          var(--header-height);              // 64px – volle Höhe
     max-width:       1400px;
     margin:          0 auto;
 }
 
-.site-logo {
-    font-size:       var(--text-xl);
-    font-weight:     700;
-    color:           var(--color-text);
-    text-decoration: none;
-    flex-shrink:     0;
+// Logo-Bereich: Primary-Hintergrund
+.site-logo,
+.site-branding,
+.custom-logo-link,
+.header-logo,
+.ml-header__branding,
+.site-header a.site-logo,
+.site-navigation a.site-logo {
+    display:          flex;
+    align-items:      center;
+    align-self:       stretch;
+    background-color: #ff681a !important;   // Primary – direkt gesetzt
+    padding:          $spacing-2 $spacing-3;
+    text-decoration:  none;
+    flex-shrink:      0;
 
-    &:hover { color: $color-primary; }
+    // Text-Fallback (kein Bild-Logo)
+    font-size:        var(--text-xl);
+    font-weight:      700;
+    color:            $color-white;                      // weiß auf orangem BG
 
     &:focus-visible {
-        outline:        2px solid $color-primary;
+        outline:        2px solid $color-white;
         outline-offset: 3px;
         border-radius:  $radius-sm;
+    }
+
+    // Logo-Bild / SVG
+    img,
+    svg {
+        width:      auto;
+        height:     auto;
+        max-width:  var(--site-logo-width, 220px);
+        max-height: calc(var(--header-height) - #{$spacing-2 * 2});
+        display:    block;
     }
 }
 
@@ -67,6 +112,13 @@
         align-items: center;
     }
 
+    // Level 2+ (sub-menus): vertikal anzeigen
+    // .primary-menu ul gilt für ALLE ul – sub-menus brauchen flex-direction: column
+    .sub-menu {
+        flex-direction: column;
+        align-items:    stretch;  // volle Breite für Links
+    }
+
     // ── Level 1 ──────────────────────────────────────────────────────────────
 
     > ul > li {
@@ -79,7 +131,7 @@
             padding:         $spacing-3 $spacing-4;
             color:           var(--color-text);
             text-decoration: none;
-            font-weight:     500;
+            font-weight:     $font-weight-bold;
             white-space:     nowrap;
             transition:      color 0.2s ease;
 
@@ -96,7 +148,8 @@
         &.current-menu-parent > a,
         &.current-menu-ancestor > a {
             color:       $color-primary;
-            font-weight: 600;
+            font-weight: $font-weight-extrabold;
+            text-transform: uppercase;
         }
 
         // Pfeil-Indikator
@@ -171,7 +224,6 @@
                 font-weight: 600;
             }
 
-            // Flyout-Pfeil für Level 2+ mit Kindern
             &.menu-item-has-children > a::after {
                 content:     '›';
                 font-size:   18px;
@@ -318,7 +370,7 @@
         &::after {
             content:    '';
             position:   absolute;
-            left:       0;      // explizit – verhindert Versatz bei geerbten Styles
+            left:       0;
             width:      100%;
             height:     2px;
             background: var(--color-text);
@@ -352,9 +404,7 @@
     transition: transform 0.3s ease;
     overflow-y: auto;
     z-index:    999;
-    // Fluid: 48px padding ringsum, oben zusätzlich Platz für Header
     padding:       var(--space-xl);
-    // Nutzt --header-height statt hardcodiertem 80px
     padding-top:   calc(var(--header-height, 64px) + var(--space-md));
 
     @include respond-to('lg') { display: none; }
@@ -409,13 +459,11 @@
         font-size:   var(--text-lg);
     }
 
-    // Toggle-Indikator für alle Ebenen mit Kindern
     .menu-item-has-children {
         > a .nav-toggle-icon {
             display:         inline-flex;
             align-items:     center;
             justify-content: center;
-            // WCAG 2.5.5: 44×44px Touch Target ✅
             width:           44px;
             height:          44px;
             flex-shrink:     0;
@@ -426,9 +474,7 @@
             transition:      transform 0.2s ease;
         }
 
-        &.is-open > a .nav-toggle-icon {
-            transform: rotate(45deg);
-        }
+        &.is-open > a .nav-toggle-icon { transform: rotate(45deg); }
     }
 
     // ── Submenüs (Level 2, 3, 4) ──────────────────────────────────────────────
@@ -446,21 +492,17 @@
 
         a {
             font-size: var(--text-base);
-            padding:   $spacing-3 $spacing-4 $spacing-3 $spacing-6; // L2: Einrückung
+            padding:   $spacing-3 $spacing-4 $spacing-3 $spacing-6;
         }
-
-        // ── Level 3 ──────────────────────────────────────────────────────────
 
         .sub-menu {
             background: var(--color-hover-bg);
 
             a {
                 font-size: var(--text-sm);
-                padding:   $spacing-2 $spacing-4 $spacing-2 $spacing-8; // L3: tiefer
+                padding:   $spacing-2 $spacing-4 $spacing-2 $spacing-8;
                 color:     var(--color-text-muted);
             }
-
-            // ── Level 4 ──────────────────────────────────────────────────────
 
             .sub-menu {
                 border-left: 3px solid $color-primary;
@@ -468,7 +510,7 @@
 
                 a {
                     font-size:  var(--text-xs);
-                    padding:    $spacing-2 $spacing-4 $spacing-2 $spacing-10; // L4: noch tiefer
+                    padding:    $spacing-2 $spacing-4 $spacing-2 $spacing-10;
                     color:      var(--color-text-muted);
                     font-style: italic;
                 }
@@ -563,8 +605,6 @@
         }
     }
 
-    // ── Submenüs Desktop (Flyout nach oben) ──────────────────────────────────
-
     @include respond-to('md') {
         .sub-menu {
             position:      absolute;
@@ -587,8 +627,8 @@
             li { margin: 0; }
 
             a {
-                padding:    $spacing-2 $spacing-3;
-                font-size:  var(--text-xs);
+                padding:     $spacing-2 $spacing-3;
+                font-size:   var(--text-xs);
                 white-space: nowrap;
 
                 &:hover {
@@ -614,15 +654,13 @@
         }
     }
 
-    // ── Submenüs Mobile (Accordion) ───────────────────────────────────────────
-
     @include respond-below('md') {
         &__list { width: 100%; }
 
         li { width: 100%; }
 
         a {
-            padding:    $spacing-2 0;
+            padding:     $spacing-2 0;
             white-space: normal;
         }
 
@@ -638,7 +676,7 @@
             a { font-size: var(--text-xs); }
 
             .sub-menu {
-                padding-left:    $spacing-3;
+                padding-left:      $spacing-3;
                 border-left-color: rgba($color-primary, 0.4);
 
                 a { font-size: var(--text-xs); opacity: 0.85; }
@@ -653,11 +691,38 @@
 }
 
 
-// ── Dark Mode ─────────────────────────────────────────────────────────────────
 
-@media (prefers-color-scheme: dark) {
-    .site-header {
-        background:      rgba(0, 0, 0, 0.95);
-        backdrop-filter: blur(10px);
-    }
+// =============================================================================
+// STICKY HEADER FIX
+//
+// position: sticky funktioniert NICHT wenn ein Vorfahren-Element hat:
+//   overflow: hidden | auto | scroll
+// oder wenn kein explizites height auf dem Elternelement gesetzt ist.
+//
+// Fix: Sicherstellen dass html, body und der direkte Wrapper kein
+// overflow: hidden haben und der Header korrekt positioniert ist.
+// =============================================================================
+
+html,
+body {
+    // Kein overflow: hidden auf Root-Ebene – bricht position: sticky
+    overflow-x: clip;   // clip statt hidden: blockiert horizontal ohne sticky zu brechen
+    min-height: 100%;
+}
+
+// Direkter Wrapper um den Header (falls vorhanden) darf kein overflow: hidden haben
+.site-header-wrapper,
+#header-wrapper,
+.header-wrapper {
+    overflow: visible;
+}
+
+// Sticky explizit erzwingen + Hintergrund sichern
+.site-header {
+    position:         sticky !important;
+    top:              0      !important;
+    z-index:          1000;
+    // Hintergrund explizit mit !important – verhindert Override durch Plugins
+    background-color: rgba(255, 255, 255, 0.88) !important;
+    background:       rgba(255, 255, 255, 0.88) !important;
 }

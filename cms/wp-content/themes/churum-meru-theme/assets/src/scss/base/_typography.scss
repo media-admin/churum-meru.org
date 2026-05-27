@@ -29,9 +29,10 @@ body {
 // ─────────────────────────────────────────────────────────────────
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight:   $font-weight-bold;
+  font-family: $font-secondary;
+  font-weight:   $font-weight-normal;
   line-height:   $line-height-tight;
-  margin-bottom: var(--space-md);   // fluid statt fixem $spacing-3
+  margin-bottom: var(--space-sm);   // fluid statt fixem $spacing-3
   color:         var(--color-text);
 }
 

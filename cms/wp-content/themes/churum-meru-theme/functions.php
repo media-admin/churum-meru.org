@@ -80,6 +80,7 @@ add_action('after_setup_theme', 'customtheme_setup');
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/performance.php';
 require_once get_template_directory() . '/inc/shortcode-overrides.php';
+require_once get_template_directory() . '/inc/theme-fixes.php'; // ← NEU: Dark Mode Fix + has-hero-image Body-Class
 
 
 // Optional components (only if files exist)
@@ -179,9 +180,72 @@ if ( ! function_exists('medialab_toggle') ) {
 }
 
 // Body-Klasse für Impressum-Seite (Slug-basiert)
-    add_filter('body_class', function(array $classes): array {
-        if (is_page('impressum')) {
-            $classes[] = 'impressum-page';
+add_filter('body_class', function(array $classes): array {
+    if (is_page('impressum')) {
+        $classes[] = 'impressum-page';
+    }
+    return $classes;
+});
+// Hinweis: has-hero-image Body-Class kommt aus inc/theme-fixes.php ↑
+
+// =============================================================================
+// Footer Widget-Area – ans Ende der functions.php hängen
+// =============================================================================
+
+add_action( 'widgets_init', function() {
+
+    // Widget-Area für die Kontakt-Spalte im Footer
+    register_sidebar([
+        'name'          => __( 'Footer: Kontakt', 'churum-meru-theme' ),
+        'id'            => 'footer-contact',
+        'description'   => __( 'Kontaktdaten im Footer (E-Mail, Telefon, Partner-Logo etc.)', 'churum-meru-theme' ),
+        'before_widget' => '<div class="footer-contact-block %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="footer-contact-block__title">',
+        'after_title'   => '</h4>',
+    ]);
+
+} );
+
+require_once get_template_directory() . '/inc/footer-multilang.php';
+ 
+// =============================================================================
+// Logo-Breite als CSS Custom Property ausgeben
+// Ans Ende der functions.php hängen.
+//
+// Gibt --site-logo-width in <style> im <head> aus.
+// SCSS liest: max-width: var(--site-logo-width, 220px)
+//
+// Reihenfolge: WP Custom Logo → ACF → Fallback 160px
+// =============================================================================
+
+add_action( 'wp_head', function() {
+
+    $width = 0;
+
+    // 1. WordPress Custom Logo
+    $logo_id = get_theme_mod( 'custom_logo' );
+    if ( $logo_id ) {
+        $src = wp_get_attachment_image_src( $logo_id, 'full' );
+        if ( $src && ! empty( $src[1] ) ) {
+            $width = intval( $src[1] );
         }
-        return $classes;
-    });
+    }
+
+    // 2. ACF Options (Agency Core Logo-Felder)
+    if ( ! $width && function_exists( 'get_field' ) ) {
+        foreach ( [ 'logo', 'header_logo', 'site_logo', 'logo_image' ] as $field ) {
+            $img = get_field( $field, 'option' );
+            if ( ! empty( $img['width'] ) ) {
+                $width = intval( $img['width'] );
+                break;
+            }
+        }
+    }
+
+    // 3. Fallback
+    if ( ! $width ) $width = 160;
+
+    echo '<style id="site-logo-width">:root{--site-logo-width:' . $width . 'px}</style>' . "\n";
+
+}, 20 );

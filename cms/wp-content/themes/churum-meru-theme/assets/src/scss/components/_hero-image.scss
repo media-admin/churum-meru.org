@@ -2,9 +2,29 @@
 
 // =============================================================================
 // Hero Image
-// Version: 1.2.0 – Fluid Responsive System
+// Version: 1.2.2 – Desktop max-height 400px + Site-Title Ausblendung
 //
-// Änderungen:
+// ÄNDERUNGEN v1.2.2:
+//   - .hero-image: max-height: 400px ab 'lg' Breakpoint (Desktop)
+//   - body.has-hero-image .site-main: entry-title / page-title ausgeblendet
+//     (body class wird via PHP in functions.php gesetzt – siehe theme-fixes.php)
+//
+// ÄNDERUNGEN v1.2.1:
+//   - .hero-image: justify-content: center ergänzt (horizontale Zentrierung)
+//   - .hero-image (Basis): align-items: center als Standard gesetzt
+//     (Modifikatoren --vpos-* überschreiben weiterhin korrekt)
+//   - .hero-image__content: display flex + column für Titel-Zentrierung
+//   - .hero-image__title: komplett neu nach Spec (8 Eigenschaften):
+//       1. width: fit-content
+//       2. text-shadow: 2px 2px #000
+//       3. background-color: var(--color-primary)
+//       4. margin: auto
+//       5. padding: 0.5rem 1.5rem
+//       6. font-size: var(--text-h1)
+//       7. letter-spacing: -.06em
+//       8. line-height: 1em
+//
+// Unverändert v1.2.0:
 //   - @media (max-width: 768px) → @include respond-below('md')
 //   - @media (max-width: 480px) → @include respond-below('sm')
 //   - padding → var(--space-*) / var(--container-padding)
@@ -21,10 +41,20 @@ $hero-lg-mob:  360px;
 $hero-xl-mob:  420px;
 
 .hero-image {
-  position: relative;
-  width:    100%;
-  overflow: hidden;
-  display:  flex;
+  position:        relative;
+  width:           100%;
+  overflow:        hidden;
+
+  // Flex-Container
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+
+  // ── Hinter den sticky Header schieben ────────────────────────────────────
+  // margin-top negativ = Hero startet am oberen Bildschirmrand unter dem Header.
+  // padding-top gleicht aus, damit der Inhalt (Titel) nicht verdeckt wird.
+  margin-top:      calc(-1 * var(--header-height));
+  padding-top:     var(--header-height);
 
   // ── Höhenvarianten ────────────────────────────────────────────────────────
 
@@ -33,7 +63,6 @@ $hero-xl-mob:  420px;
   &--lg { height: clamp(#{$hero-lg-min}, #{$hero-lg-vw}, #{$hero-lg-max}); }
   &--xl { height: clamp(#{$hero-xl-min}, #{$hero-xl-vw}, #{$hero-xl-max}); }
 
-  // Mobile-Mindesthöhen – mixin statt hardcodierter px-Wert
   @include respond-below('md') {
     &--sm { height: $hero-sm-mob; }
     &--md { height: $hero-md-mob; }
@@ -41,10 +70,16 @@ $hero-xl-mob:  420px;
     &--xl { height: $hero-xl-mob; }
   }
 
-  // ── Vertikalausrichtung ───────────────────────────────────────────────────
+  // ── Desktop: max-height 400px ─────────────────────────────────────────────
+  // Gilt für ALLE Varianten ab lg-Breakpoint.
+  @include respond-to("lg") {
+    max-height: 400px;
+  }
+
+  // ── Vertikalausrichtung (überschreibt Basis align-items: center) ──────────
 
   &--vpos-bottom { align-items: flex-end; }
-  &--vpos-middle { align-items: center; }
+  &--vpos-middle { align-items: center; }   // identisch mit Basis – explizit für Klarheit
   &--vpos-top    { align-items: flex-start; }
 
   // ── Bild ──────────────────────────────────────────────────────────────────
@@ -80,20 +115,33 @@ $hero-xl-mob:  420px;
   }
 
   // ── Content-Wrapper ───────────────────────────────────────────────────────
+  // Flex-Column damit margin: auto auf __title in beide Richtungen wirkt.
 
   &__content {
-    position: relative;
-    z-index:  1;
-    width:    100%;
-    padding:  var(--space-xl) var(--container-padding);
+    position:        relative;
+    z-index:         1;
+    width:           100%;
+    height:          100%;              // volle Höhe → ermöglicht vertikales margin: auto
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;            // horizontal zentriert
+    justify-content: center;            // vertikal zentriert
+    padding:         var(--space-xl) var(--container-padding);
 
     @include respond-to('md') {
       padding: var(--space-2xl) var(--container-padding);
     }
   }
 
-  &--vpos-bottom &__content { padding-bottom: var(--space-2xl); }
-  &--vpos-top    &__content { padding-top:    var(--space-2xl); }
+  &--vpos-bottom &__content {
+    justify-content: flex-end;
+    padding-bottom:  var(--space-2xl);
+  }
+
+  &--vpos-top &__content {
+    justify-content: flex-start;
+    padding-top:     var(--space-2xl);
+  }
 
   // ── Inner ─────────────────────────────────────────────────────────────────
 
@@ -117,18 +165,54 @@ $hero-xl-mob:  420px;
   }
 
   // ── Titel ─────────────────────────────────────────────────────────────────
+  // Spec (8 Eigenschaften):
+  //   1. width: fit-content
+  //   2. text-shadow: 2px 2px black
+  //   3. background-color: var(--color-primary)  [#ff681a]
+  //   4. margin: auto   → zentriert horizontal + vertikal im flex-column __content
+  //   5. padding: 0.5rem 1.5rem
+  //   6. font-size: var(--text-h1)  [clamp(2rem, 6vw, 3rem)]
+  //   7. letter-spacing: -.06em
+  //   8. line-height: 1em
 
   &__title {
-    color:       $color-white;
-    font-size:   clamp(1.75rem, 4vw, 3rem);
-    font-weight: $font-weight-bold;
-    line-height: $line-height-tight;
-    margin:      0;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    // 1. Breite: nur so breit wie der Inhalt
+    width:            fit-content;
 
-    @include respond-to('md') {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-    }
+    // 2. Textschatten
+    text-shadow:      2px 2px 0 #000000;
+
+    // 3. Hintergrundfarbe = Primary
+    background-color: var(--color-primary);     // #ff681a
+
+    // 4. Zentriert als flex-child (horizontal + vertikal via margin: auto)
+    margin:           auto;
+
+    // 5. Innenabstand
+    padding:          0.5rem 1.5rem;
+
+    // 6. Schriftgröße: größer als Standard-H1 (fluid: 42–72px)
+    font-size:        clamp(2.625rem, 7.5vw, 4.5rem);
+
+    // 7. Buchstabenabstand
+    letter-spacing:   -0.06em;
+
+    // 8. Zeilenhöhe
+    line-height:      1em;
+
+    // Textfarbe: weiß auf orangem Hintergrund
+    color:            $color-white;
+
+    // z-index: über Overlay
+    position:         relative;
+    z-index:          2;
+
+    // Margin-Block-Reset (überschreibt H1-Browser-Standard)
+    margin-block-start: auto;
+    margin-block-end:   auto;
+
+    // Font-Weight: Bold für Seitentitel
+    font-weight:      $font-weight-bold;
   }
 
   // ── Untertitel ────────────────────────────────────────────────────────────
@@ -153,7 +237,6 @@ $hero-xl-mob:  420px;
     margin-top:  var(--space-lg);
     align-items: center;
 
-    // Auf sehr kleinen Screens: Stack
     @include respond-below('sm') {
       flex-direction: column;
       align-items:    flex-start;
@@ -200,5 +283,74 @@ $hero-xl-mob:  420px;
         border-color: rgba(255, 255, 255, 0.3);
       }
     }
+  }
+}
+
+// =============================================================================
+// Seitentitel ausblenden wenn .hero-image vorhanden
+//
+// STRATEGIE:
+//  1. CSS-Sibling  → greift wenn .hero-image & main Geschwister sind (kein JS)
+//  2. body.has-hero-image → wird per JS inline gesetzt (theme-fixes.php)
+//     → greift unabhängig von der DOM-Tiefe des Hero
+//
+// Abgedeckte Title-Klassen:
+//   .entry-title, .page-title, .wp-block-post-title,
+//   .entry-header h1, .page-header h1
+// =============================================================================
+
+// ── 1. CSS-Sibling (kein JS nötig) ───────────────────────────────────────────
+// Greift wenn .hero-image ein direktes/indirektes Geschwister vor <main> ist.
+
+.hero-image ~ main,
+.hero-image ~ .site-main,
+.hero-image ~ #main,
+.hero-image ~ #content,
+.hero-image + main,
+.hero-image + .site-main,
+.hero-image + #main {
+  .entry-title,
+  .page-title,
+  .wp-block-post-title,
+  .entry-header h1,
+  .page-header h1 { display: none; }
+}
+
+// ── 2. body class (via JS aus theme-fixes.php) ────────────────────────────────
+// Greift unabhängig von DOM-Verschachtelung.
+
+body.has-hero-image {
+  main,
+  .site-main,
+  #main,
+  #content {
+    .entry-title,
+    .page-title,
+    .wp-block-post-title,
+    .entry-header h1,
+    .page-header h1 { display: none; }
+  }
+}
+
+// ── Kein Hintergrundbild: kompakte Titelleiste in Primary Color ──────────────
+// Wird gesetzt wenn hero_image_show = true aber kein image_desktop gesetzt.
+// Überschreibt die Höhe der --sm/md/lg/xl Varianten → kein Leerraum.
+
+.hero-image--no-bg {
+  background-color: var(--color-primary);   // #ff681a
+
+  // Höhe: nur so groß wie der Inhalt (kein Leerraum durch --md/lg/xl)
+  height:           auto    !important;
+  min-height:       0       !important;
+
+  // Layout: Inhalt vertikal zentriert
+  align-items:      center  !important;
+
+  // Titel: kein separater BG + kein Schatten (sitzt direkt auf Primary)
+  .hero-image__title {
+    background-color: transparent;
+    text-shadow:      none;
+    color:            $color-white;
+    padding:          var(--space-md) var(--space-lg);
   }
 }

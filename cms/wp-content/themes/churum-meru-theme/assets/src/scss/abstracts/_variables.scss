@@ -1,26 +1,28 @@
 // =============================================================================
 // DESIGN TOKENS
 // Media Lab Starter Kit – Single Source of Truth
-// Version: 1.2.0 – Fluid Responsive System
+// Version: 1.2.1 – Churum Meru Brand Colors
 //
-// REGELN:
-//  - Jede Variable NUR EINMAL definieren
-//  - Hardcodierte Werte in Components → immer Token verwenden
-//  - CSS Custom Properties und SCSS-Variablen sind synchron gehalten
-//  - Fluid Tokens (clamp) in :root → keine px-Breakpoints für Type/Spacing nötig
+// ÄNDERUNGEN v1.2.1:
+//  - $color-primary:   #ff681a  (war: #d40000)
+//  - $color-secondary: #595959  (war: #ff6b6b)
+//  - $color-accent:    #ff681a  (war: #00d9ff)
+//  - $color-text:      $color-black / #000000 (war: $color-dark / #1a1a1a)
+//  - $color-primary-dark / -darker: neu berechnet für #ff681a
+//  - --header-bg, --header-logo-bg, --header-blur Token ergänzt
 // =============================================================================
 
 
 // ─────────────────────────────────────────────────────────────────
 // 1. BRAND COLORS
-//    Primärfarben – direkt aus Figma
+//    Primärfarben – Churum Meru 2026
 // ─────────────────────────────────────────────────────────────────
 
-$color-primary:   #d40000;  // Figma: "Primary" – WCAG AA Fix (war: #ff0000)
-$color-secondary: #ff6b6b;  // Figma: "Secondary"
-$color-accent:    #00d9ff;  // Figma: "Accent"
+$color-primary:   #ff681a;  // Churum Meru Orange
+$color-secondary: #595959;  // Churum Meru Grau
+$color-accent:    #ff681a;  // Accent = Primary (eigene Variable für spätere Flexibilität)
 
-// Hero-Slider Gradient (ersetzt hardcodiertes #667eea)
+// Hero-Slider Gradient (eigener Token – unabhängig von Brand-Primary)
 $color-hero-gradient: #667eea;
 
 
@@ -84,11 +86,12 @@ $color-purple: #8b5cf6;   // Highlights, Badges
 // 3b. VORKOMPILIERTE FARBVARIANTEN
 //     Ersatz für deprecated darken()/lighten() Funktionen.
 //     Berechnet via color.adjust($color, $lightness: ±n%).
+//     Für $color-primary: #ff681a = hsl(20°, 100%, 55%)
 //     NICHT in Components verwenden – nur über diese Tokens!
 // ─────────────────────────────────────────────────────────────────
 
-$color-primary-dark:        #b30000;  // darken($color-primary, 10%)
-$color-primary-darker:      #990000;  // darken($color-primary, 15%)
+$color-primary-dark:        #e64d00;  // darken($color-primary, 10%) → hsl(20°,100%,45%)
+$color-primary-darker:      #cc4400;  // darken($color-primary, 15%) → hsl(20°,100%,40%)
 
 $color-success-dark:        #075b3f;  // darken($color-success, 20%)
 $color-success-light-bg:    #b5f8e2;  // lighten($color-success, 45%)
@@ -110,7 +113,7 @@ $color-hero-gradient-dark:  #3958e3;  // darken($color-hero-gradient, 10%)
 //    Light Mode defaults – überschrieben durch CSS Custom Properties
 // ─────────────────────────────────────────────────────────────────
 
-$color-text:       $color-dark;
+$color-text:       $color-black;       // #000000 – Churum Meru Text
 $color-text-muted: $color-grey-dark;
 $color-text-light: $color-grey;
 $color-background: $color-white;
@@ -127,10 +130,10 @@ $color-input-bg:   $color-white;
 // ─────────────────────────────────────────────────────────────────
 
 :root {
-  // Basis
-  --color-primary:        #{$color-primary};
-  --color-secondary:      #{$color-secondary};
-  --color-accent:         #{$color-accent};
+  // Basis Brand
+  --color-primary:        #{$color-primary};    // #ff681a
+  --color-secondary:      #{$color-secondary};  // #595959
+  --color-accent:         #{$color-accent};     // #ff681a
 
   // Hintergrund & Oberflächen
   --color-background:     #{$color-white};
@@ -141,7 +144,7 @@ $color-input-bg:   $color-white;
   --color-light:          #{$color-light};
 
   // Text
-  --color-text:           #{$color-dark};
+  --color-text:           #{$color-black};       // #000000
   --color-text-muted:     #{$color-grey-dark};
   --color-text-light:     #{$color-grey};
   --color-text-secondary: #{$color-grey-dark};   // Alias für --color-text-muted
@@ -180,6 +183,40 @@ $color-input-bg:   $color-white;
   --color-gold:   #{$color-gold};
   --color-purple: #{$color-purple};
 
+  // ─────────────────────────────────────────────────────────────
+  // HEADER TOKENS
+  //   Zentral steuerbar für sticky Header + Logo-Bereich.
+  //   Genutzt in _header.scss und _navigation.scss.
+  // ─────────────────────────────────────────────────────────────
+  :root {
+    // ── Header-Höhe ────────────────────────────────────────────────────────────
+    // Mobile:  64px  (kompakt, Touch-freundlich)
+    // Desktop: 88px  (großzügiger, Logo kommt besser zur Geltung)
+    // → Anpassen nach Bedarf, JS und alle sticky-Offsets nutzen diese Variable.
+    --header-height:   64px;   // Mobile default
+  
+    // ── Header sonstige Tokens (unverändert) ───────────────────────────────────
+    --header-bg:       rgba(255, 255, 255, 0.88);
+    --header-logo-bg:  var(--color-primary);
+    --header-blur:     8px;
+  
+    // ── Top-Bar ────────────────────────────────────────────────────────────────
+    --top-bar-height:  40px;
+  
+    // ── site-main Abstand nach oben ────────────────────────────────────────────
+    // Schafft Luft zwischen Hero/Header-Kante und dem ersten Inhalt.
+    // Wird auf Seiten OHNE Hero angewendet; auf Seiten MIT Hero
+    // übernimmt das Hero selbst die visuelle Trennung.
+    --site-main-pt: var(--space-xl);   // fluid: ~32–48px
+  }
+  
+  // Desktop: Header höher
+  @media (min-width: 992px) {   // entspricht $breakpoint-lg
+    :root {
+      --header-height: 88px;
+    }
+  }
+
 
   // ═══════════════════════════════════════════════════════════════
   // FLUID TYPOGRAPHY
@@ -197,7 +234,7 @@ $color-input-bg:   $color-white;
   --text-3xl:  clamp(1.375rem,  3vw,    1.75rem);    // 22–28px
   --text-4xl:  clamp(1.75rem,   4vw,    2rem);       // 28–32px
   --text-5xl:  clamp(2rem,      5vw,    2.5rem);     // 32–40px
-  --text-h1:   clamp(2rem,      6vw,    3rem);       // 32–48px
+  --text-h1:   clamp(2rem,      6vw,    3rem);       // 32–48px  ← hero-image__title font-size
   --text-hero: clamp(2.25rem,   7vw,    3.5rem);     // 36–56px
 
 
@@ -233,6 +270,9 @@ $color-input-bg:   $color-white;
   --color-text-secondary: #a0a0a0;
 
   --color-border:         #333333;
+
+  // Header im Dark Mode: dunkel statt transparent-weiß
+  --header-bg:            rgba(26, 26, 26, 0.92);
 }
 
 // SCSS-Variablen auf CSS Custom Properties umschalten (Dark-Mode-fähig)
@@ -252,8 +292,8 @@ $color-border:         var(--color-border);
 //    In Components: CSS Custom Properties (--text-*) bevorzugen.
 // ─────────────────────────────────────────────────────────────────
 
-$font-primary:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-$font-secondary: 'Merriweather', Georgia, serif;
+$font-primary:   'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-secondary: 'Abril Fatface', Georgia, serif;
 
 // Statische Skala (für Kontexte wo clamp() nicht passt, z.B. Icons, Badges)
 $font-size-xs:   12px;
@@ -282,6 +322,7 @@ $font-weight-normal:   400;
 $font-weight-medium:   500;
 $font-weight-semibold: 600;
 $font-weight-bold:     700;
+$font-weight-extrabold: 900;
 
 // Line Heights
 $line-height-tight:   1.2;

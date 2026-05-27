@@ -2,9 +2,15 @@
 
 // ==========================================================================
 // Hero Slider
-// Version: 1.2.0 – Fluid Responsive System
+// Version: 1.2.1 – Churum Meru Brand Colors
 //
-// Änderungen:
+// ÄNDERUNGEN v1.2.1:
+//   - $color-primary kaskadiert automatisch: #ff681a (war: #d40000)
+//   - $color-hero-gradient bleibt #667eea (eigener Token – unabhängig von Brand)
+//   - Swiper-Farben über $color-primary cascaded → Swiper-Bullets + Nav in Orange
+//   - Keine strukturellen Änderungen.
+//
+// Unverändert v1.2.0:
 //   - Fixe Heights 600px/700px/500px → clamp() fluid
 //   - @media (min/max-width: 768px) → @include respond-to/respond-below
 //   - font-size: $font-size-4xl/$font-size-7xl → clamp()
@@ -103,6 +109,7 @@ html, body {
 
 .hero-slide__button {
   @include btn-base;
+  // Hero-Slider-Button nutzt eigenen Gradient-Token (unabhängig von Brand-Primary)
   background:   $color-hero-gradient;
   border-color: $color-hero-gradient;
   color:        $color-white;
@@ -117,14 +124,15 @@ html, body {
 }
 
 // ── Swiper Navigation ──────────────────────────────────────────────────────
+// Farben kaskadieren über $color-primary = #ff681a
 
 .swiper-button-prev,
 .swiper-button-next {
-  width:      50px !important;  // Swiper-API erfordert !important
-  height:     50px !important;
-  background: rgba($color-white, 0.2) !important;
+  width:         50px !important;
+  height:        50px !important;
+  background:    rgba($color-white, 0.2) !important;
   border-radius: 50% !important;
-  color:      $color-white !important;
+  color:         $color-white !important;
 
   &::after { font-size: $font-size-xl !important; }
   &:hover  { background: rgba($color-white, 0.3) !important; }
@@ -145,10 +153,11 @@ html, body {
   background: rgba($color-white, 0.5) !important;
   opacity:    1 !important;
 
-  &:hover   { background: rgba($color-white, 0.7) !important; }
+  &:hover { background: rgba($color-white, 0.7) !important; }
 }
 
 .swiper-pagination-bullet-active {
+  // Aktiver Bullet: $color-hero-gradient (eigener Token, kein Brand-Primary)
   background:    $color-hero-gradient !important;
   width:         32px !important;
   border-radius: 6px !important;

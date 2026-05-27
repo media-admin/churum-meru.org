@@ -1,610 +1,368 @@
 <?php
 /**
- * Custom Post Types
- * 
- * Register all custom post types for the agency core functionality.
- * These CPTs persist across theme changes.
- * 
- * @package Agency_Core
+ * Custom Post Types – Churum Meru
+ *
+ * Registriert alle projektspezifischen CPTs.
+ * Taxonomien werden ausschließlich in taxonomies.php registriert.
+ *
+ * CPTs:
+ *   - team           Teammitglieder
+ *   - testimonial    Erfahrungsberichte
+ *   - faq            Häufige Fragen
+ *   - gmap           Google Maps Standorte
+ *   - hero_slide     Hero Slider Slides
+ *   - carousel       Karussell-Elemente
+ *   - sponsor        Sponsoren (ersetzt generisches Logo-CPT)
+ *   - supporter      Unterstützer
+ *   - event          Veranstaltungen
+ *
+ * @package ChuramMeru
  */
 
-if (!defined('ABSPATH')) {
-    exit;
-}
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-/**
- * Register Team CPT
- */
-function agency_core_register_team_cpt() {
-    $labels = array(
-        'name' => __('Team', 'agency-core'),
-        'singular_name' => __('Team Mitglied', 'agency-core'),
-        'menu_name' => __('Team', 'agency-core'),
-        'add_new' => __('Neu hinzufügen', 'agency-core'),
-        'add_new_item' => __('Neues Team Mitglied', 'agency-core'),
-        'edit_item' => __('Team Mitglied bearbeiten', 'agency-core'),
-        'new_item' => __('New Team Member', 'agency-core'),
-        'view_item' => __('View Team Member', 'agency-core'),
-        'search_items' => __('Search Team', 'agency-core'),
-        'not_found' => __('No team members found', 'agency-core'),
-        'not_found_in_trash' => __('No team members found in trash', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'has_archive' => true,
-        'show_in_rest' => true,
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'),
-        'menu_icon' => 'dashicons-groups',
-        'menu_position' => 20,
-        'rewrite' => array('slug' => 'team'),
+// =============================================================================
+// Künstler·innen
+// =============================================================================
+
+add_action( 'init', 'churum_meru_register_artist_cpt' );
+
+function churum_meru_register_artist_cpt(): void {
+    register_post_type( 'artist', [
+        'labels' => [
+            'name'               => __( 'Künstler·innen', 'churum-meru' ),
+            'singular_name'      => __( 'Künstler·in', 'churum-meru' ),
+            'menu_name'          => __( 'Künstler·innen', 'churum-meru' ),
+            'add_new'            => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'       => __( 'Neue·r Künstler·in', 'churum-meru' ),
+            'edit_item'          => __( 'Künstler·in bearbeiten', 'churum-meru' ),
+            'new_item'           => __( 'Neue·r Künstler·in', 'churum-meru' ),
+            'view_item'          => __( 'Künstler·in ansehen', 'churum-meru' ),
+            'view_items'         => __( 'Künstler·innen ansehen', 'churum-meru' ),
+            'search_items'       => __( 'Künstler·innen durchsuchen', 'churum-meru' ),
+            'not_found'          => __( 'Keine Künstler·innen gefunden', 'churum-meru' ),
+            'not_found_in_trash' => __( 'Keine Künstler·innen im Papierkorb', 'churum-meru' ),
+            'all_items'          => __( 'Alle Künstler·innen', 'churum-meru' ),
+        ],
+        'public'          => true,
+        'has_archive'     => true,
+        'show_in_rest'    => true,
+        'supports'        => [ 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'page-attributes' ],
+        'menu_icon'       => 'dashicons-art',
+        'menu_position'   => 19,
+        'rewrite'         => [ 'slug' => 'kuenstlerinnen' ],
         'capability_type' => 'post',
-    );
-    
-    register_post_type('team', $args);
+        'taxonomies'      => [ 'artist_region', 'artist_artform', 'artist_context' ],
+    ] );
 }
-add_action('init', 'agency_core_register_team_cpt');
 
+// =============================================================================
+// Team
+// =============================================================================
 
-/**
- * Register Projects CPT
- */
-function agency_core_register_projects_cpt() {
-    $labels = array(
-        'name' => __('Projekte', 'agency-core'),
-        'singular_name' => __('Projekt', 'agency-core'),
-        'menu_name' => __('Projekte', 'agency-core'),
-        'add_new' => __('Neu hinzufügen', 'agency-core'),
-        'add_new_item' => __('Neues Projekt', 'agency-core'),
-        'edit_item' => __('Projekt bearbeiten', 'agency-core'),
-        'new_item' => __('New Project', 'agency-core'),
-        'view_item' => __('Projekt ansehen', 'agency-core'),
-        'search_items' => __('Projekte suchen', 'agency-core'),
-        'not_found' => __('Keine Projekte gefunden', 'agency-core'),
-        'not_found_in_trash' => __('Keine Projekte im Papierkorb gefunden', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'has_archive' => true,
-        'show_in_rest' => true,
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'),
-        'menu_icon' => 'dashicons-portfolio',
-        'menu_position' => 21,
-        'rewrite' => array('slug' => 'projekte'),
+add_action( 'init', 'churum_meru_register_team_cpt' );
+
+function churum_meru_register_team_cpt(): void {
+    register_post_type( 'team', [
+        'labels' => [
+            'name'               => __( 'Mitglieder', 'churum-meru' ),
+            'singular_name'      => __( 'Mitglied', 'churum-meru' ),
+            'menu_name'          => __( 'Mitglieder', 'churum-meru' ),
+            'add_new'            => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'       => __( 'Neues Mitglied', 'churum-meru' ),
+            'edit_item'          => __( 'Mitglied bearbeiten', 'churum-meru' ),
+            'new_item'           => __( 'Neues Mitglied', 'churum-meru' ),
+            'view_item'          => __( 'Mitglied ansehen', 'churum-meru' ),
+            'search_items'       => __( 'Mitglieder durchsuchen', 'churum-meru' ),
+            'not_found'          => __( 'Keine Mitglieder gefunden', 'churum-meru' ),
+            'not_found_in_trash' => __( 'Keine Mitglieder im Papierkorb', 'churum-meru' ),
+        ],
+        'public'          => true,
+        'has_archive'     => true,
+        'show_in_rest'    => true,
+        'supports'        => [ 'title', 'editor', 'thumbnail', 'excerpt', 'page-attributes' ],
+        'menu_icon'       => 'dashicons-groups',
+        'menu_position'   => 20,
+        'rewrite'         => [ 'slug' => 'team' ],
         'capability_type' => 'post',
-        'taxonomies' => array('project_category'),
-    );
-    
-    register_post_type('project', $args);
+        'taxonomies'      => [ 'team_category' ],
+    ] );
 }
-add_action('init', 'agency_core_register_projects_cpt');
 
+// =============================================================================
+// Testimonials
+// =============================================================================
 
-/**
- * Register Project Categories
- */
-function agency_core_register_project_categories() {
-    $labels = array(
-        'name' => __('Projekt Kategorien', 'agency-core'),
-        'singular_name' => __('Projekt Kategorie', 'agency-core'),
-        'search_items' => __('Kategorien durchsuchen', 'agency-core'),
-        'all_items' => __('Alle Kategorien', 'agency-core'),
-        'parent_item' => __('Übergeordnete Kategorie', 'agency-core'),
-        'parent_item_colon' => __('Übergeordnete Kategorie:', 'agency-core'),
-        'edit_item' => __('Kategorie bearbeiten', 'agency-core'),
-        'update_item' => __('Kategorie aktualisieren', 'agency-core'),
-        'add_new_item' => __('Neue Kategorie hinzufügen', 'agency-core'),
-        'new_item_name' => __('Neuer Kategorie-Name', 'agency-core'),
-        'menu_name' => __('Projekt Kategorien', 'agency-core'),
-    );
-    
-    register_taxonomy('project_category', array('project'), array(
-        'labels' => $labels,
-        'hierarchical' => true,
-        'show_in_rest' => true,
-        'show_admin_column' => true,
-        'rewrite' => array('slug' => 'projekt-kategorie'),
-    ));
-}
-add_action('init', 'agency_core_register_project_categories');
+add_action( 'init', 'churum_meru_register_testimonial_cpt' );
 
-
-/**
- * Register Testimonials CPT
- */
-function agency_core_register_testimonials_cpt() {
-    $labels = array(
-        'name' => __('Testimonials', 'agency-core'),
-        'singular_name' => __('Testimonial', 'agency-core'),
-        'menu_name' => __('Testimonials', 'agency-core'),
-        'add_new' => __('Neu hinzufügen', 'agency-core'),
-        'add_new_item' => __('Neues Testimonial', 'agency-core'),
-        'edit_item' => __('Testimonial bearbeiten', 'agency-core'),
-        'new_item' => __('Neues Testimonial', 'agency-core'),
-        'view_item' => __('Testimonial', 'agency-core'),
-        'search_items' => __('Testimonials durchsuchen', 'agency-core'),
-        'not_found' => __('Keine Testimonials gefunden', 'agency-core'),
-        'not_found_in_trash' => __('Keine Testimonials im Papierkorb gefunden', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'has_archive' => false,
-        'show_in_rest' => true,
-        'supports' => array('title', 'editor', 'thumbnail', 'page-attributes'),
-        'menu_icon' => 'dashicons-testimonial',
-        'menu_position' => 22,
-        'rewrite' => array('slug' => 'testimonials'),
+function churum_meru_register_testimonial_cpt(): void {
+    register_post_type( 'testimonial', [
+        'labels' => [
+            'name'               => __( 'Erfahrungsberichte', 'churum-meru' ),
+            'singular_name'      => __( 'Erfahrungsbericht', 'churum-meru' ),
+            'menu_name'          => __( 'Erfahrungsberichte', 'churum-meru' ),
+            'add_new'            => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'       => __( 'Neuer Erfahrungsbericht', 'churum-meru' ),
+            'edit_item'          => __( 'Erfahrungsbericht bearbeiten', 'churum-meru' ),
+            'new_item'           => __( 'Neuer Erfahrungsbericht', 'churum-meru' ),
+            'view_item'          => __( 'Erfahrungsbericht ansehen', 'churum-meru' ),
+            'search_items'       => __( 'Erfahrungsberichte durchsuchen', 'churum-meru' ),
+            'not_found'          => __( 'Keine Erfahrungsberichte gefunden', 'churum-meru' ),
+            'not_found_in_trash' => __( 'Keine Erfahrungsberichte im Papierkorb', 'churum-meru' ),
+        ],
+        'public'          => true,
+        'has_archive'     => false,
+        'show_in_rest'    => true,
+        'supports'        => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
+        'menu_icon'       => 'dashicons-format-quote',
+        'menu_position'   => 21,
+        'rewrite'         => [ 'slug' => 'erfahrungsberichte' ],
         'capability_type' => 'post',
-    );
-    
-    register_post_type('testimonial', $args);
+    ] );
 }
-add_action('init', 'agency_core_register_testimonials_cpt');
 
+// =============================================================================
+// FAQ
+// =============================================================================
 
-/**
- * Register Services CPT
- */
-function agency_core_register_services_cpt() {
-    $labels = array(
-        'name' => __('Leistungen', 'agency-core'),
-        'singular_name' => __('Leistung', 'agency-core'),
-        'menu_name' => __('Leistungen', 'agency-core'),
-        'add_new' => __('Neu hinzufügen', 'agency-core'),
-        'add_new_item' => __('Neue Leistung', 'agency-core'),
-        'edit_item' => __('Leistung bearbeiten', 'agency-core'),
-        'new_item' => __('Neue Leistung', 'agency-core'),
-        'view_item' => __('Leistung anzeigen', 'agency-core'),
-        'search_items' => __('Leistungen durchsuchen', 'agency-core'),
-        'not_found' => __('Keine Leistungen gefunden', 'agency-core'),
-        'not_found_in_trash' => __('Keine Leistungen im Papierkorb gefunden', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'has_archive' => true,
-        'show_in_rest' => true,
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'page-attributes'),
-        'menu_icon' => 'dashicons-admin-tools',
-        'menu_position' => 23,
-        'rewrite' => array('slug' => 'leistungen'),
-        'capability_type' => 'post',
-    );
-    
-    register_post_type('service', $args);
-}
-add_action('init', 'agency_core_register_services_cpt');
+add_action( 'init', 'churum_meru_register_faq_cpt' );
 
-
-/**
- * Register Services Categories
- */
-function agency_core_register_service_categories() {
-    $labels = array(
-        'name' => __('Leistungs-Kategorien', 'agency-core'),
-        'singular_name' => __('Leistungs-Kategorie', 'agency-core'),
-        'search_items' => __('Kategorien durchsuchen', 'agency-core'),
-        'all_items' => __('Alle Kategorien', 'agency-core'),
-        'parent_item' => __('Übergeordnete Kategorie', 'agency-core'),
-        'parent_item_colon' => __('Übergeordnete Kategorie:', 'agency-core'),
-        'edit_item' => __('Kategorie bearbeiten', 'agency-core'),
-        'update_item' => __('Kategorie aktualisieren', 'agency-core'),
-        'add_new_item' => __('Neue Kategorie hinzufügen', 'agency-core'),
-        'new_item_name' => __('Neuer Kategorie-Name', 'agency-core'),
-        'menu_name' => __('Service Kategorien', 'agency-core'),
-    );
-    
-    register_taxonomy('service_category', array('service'), array(
-        'labels' => $labels,
-        'hierarchical' => true,
-        'show_in_rest' => true,
-        'show_admin_column' => true,
-        'rewrite' => array('slug' => 'leistungs-kategorie'),
-    ));
-}
-add_action('init', 'agency_core_register_service_categories');
-
-
-/**
- * Register FAQ CPT
- */
-function agency_core_register_faq_cpt() {
-    $labels = array(
-        'name' => __('FAQ', 'agency-core'),
-        'singular_name' => __('Frage', 'agency-core'),
-        'menu_name' => __('Fragen', 'agency-core'),
-        'add_new' => __('Neu hinzufügen', 'agency-core'),
-        'add_new_item' => __('Neue Frage', 'agency-core'),
-        'edit_item' => __('Frage bearbeiten', 'agency-core'),
-        'new_item' => __('Neue Frage', 'agency-core'),
-        'view_item' => __('Frage anzeigen', 'agency-core'),
-        'search_items' => __('Fragen durchsuchen', 'agency-core'),
-        'not_found' => __('Keine Fragen gefunden', 'agency-core'),
-        'not_found_in_trash' => __('Keine Fragen im Papierkorb gefunden', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'description' => __('Frequently Asked Questions', 'agency-core'),
-        'hierarchical' => false,
-        'public' => false,
-        'show_ui' => true,
-        'show_in_menu' => true,
-        'menu_position' => 24,
-        'show_in_admin_bar' => true,
-        'show_in_nav_menus' => false,
-        'can_export' => true,
-        'has_archive' => false,
+function churum_meru_register_faq_cpt(): void {
+    register_post_type( 'faq', [
+        'labels' => [
+            'name'               => __( 'FAQ', 'churum-meru' ),
+            'singular_name'      => __( 'Frage', 'churum-meru' ),
+            'menu_name'          => __( 'FAQ', 'churum-meru' ),
+            'add_new'            => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'       => __( 'Neue Frage', 'churum-meru' ),
+            'edit_item'          => __( 'Frage bearbeiten', 'churum-meru' ),
+            'new_item'           => __( 'Neue Frage', 'churum-meru' ),
+            'search_items'       => __( 'Fragen durchsuchen', 'churum-meru' ),
+            'not_found'          => __( 'Keine Fragen gefunden', 'churum-meru' ),
+            'not_found_in_trash' => __( 'Keine Fragen im Papierkorb', 'churum-meru' ),
+        ],
+        'public'              => false,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => true,
+        'show_in_admin_bar'   => true,
+        'show_in_nav_menus'   => false,
+        'has_archive'         => false,
         'exclude_from_search' => true,
-        'publicly_queryable' => false,
-        'capability_type' => 'post',
-        'show_in_rest' => true,
-        'supports' => array('title', 'editor', 'page-attributes'),
-        'menu_icon' => 'dashicons-editor-help',
-        'rewrite' => array('slug' => 'faq'),
-    );
-    
-    register_post_type('faq', $args);
+        'publicly_queryable'  => false,
+        'supports'            => [ 'title', 'editor', 'page-attributes' ],
+        'menu_icon'           => 'dashicons-editor-help',
+        'menu_position'       => 22,
+        'rewrite'             => [ 'slug' => 'faq' ],
+        'capability_type'     => 'post',
+    ] );
 }
-add_action('init', 'agency_core_register_faq_cpt');
 
+// =============================================================================
+// Google Maps
+// =============================================================================
 
-/**
- * Register FAQ Category Taxonomy
- */
-function agency_core_register_faq_category_taxonomy() {
-    $labels = array(
-        'name' => _x('FAQ Kategorien', 'taxonomy general name', 'agency-core'),
-        'singular_name' => _x('FAQ Kategorie', 'taxonomy singular name', 'agency-core'),
-        'search_items' => __('FAQ Kategorien durchsuchen', 'agency-core'),
-        'all_items' => __('Alle FAQ Kategorien', 'agency-core'),
-        'parent_item' => __('Übergeordnete FAQ Kategorie', 'agency-core'),
-        'parent_item_colon' => __('Übergeordnete FAQ Kategorie:', 'agency-core'),
-        'edit_item' => __('FAQ Kategorie bearbeiten', 'agency-core'),
-        'update_item' => __('FAQ Kategorie updaten', 'agency-core'),
-        'add_new_item' => __('FAQ Kategorie hinzufügen', 'agency-core'),
-        'new_item_name' => __('Neuer FAQ Kategorie Name', 'agency-core'),
-        'menu_name' => __('FAQ Kategorien', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'hierarchical' => true,
-        'public' => false,
-        'show_ui' => true,
-        'show_admin_column' => true,
-        'show_in_nav_menus' => false,
-        'show_tagcloud' => false,
-        'show_in_rest' => true,
-    );
-    
-    register_taxonomy('faq_category', array('faq'), $args);
-}
-add_action('init', 'agency_core_register_faq_category_taxonomy');
+add_action( 'init', 'churum_meru_register_gmap_cpt' );
 
-
-/**
- * Register Google Maps Post Type
- */
-function agency_core_register_maps_cpt() {
-    $labels = array(
-        'name' => _x('Maps', 'Post Type General Name', 'agency-core'),
-        'singular_name' => _x('Map', 'Post Type Singular Name', 'agency-core'),
-        'menu_name' => __('Google Maps', 'agency-core'),
-        'name_admin_bar' => __('Map', 'agency-core'),
-        'all_items' => __('Alle Maps', 'agency-core'),
-        'add_new_item' => __('Neue Map hinzufügen', 'agency-core'),
-        'add_new' => __('Neue hinzufügen', 'agency-core'),
-        'new_item' => __('Neue Map', 'agency-core'),
-        'edit_item' => __('Map bearbeiten', 'agency-core'),
-        'update_item' => __('Map updaten', 'agency-core'),
-        'view_item' => __('Map anzeigen', 'agency-core'),
-        'search_items' => __('Map suchen', 'agency-core'),
-        'not_found' => __('Nichts gefunden', 'agency-core'),
-        'not_found_in_trash' => __('Nichts im Papierkorb gefunden', 'agency-core'),
-    );
-    
-    $args = array(
-        'label' => __('Google Map', 'agency-core'),
-        'description' => __('Google Maps Locations', 'agency-core'),
-        'labels' => $labels,
-        'supports' => array('title'),
-        'hierarchical' => false,
-        'public' => false,
-        'show_ui' => true,
-        'show_in_menu' => true,
-        'menu_position' => 25,
-        'menu_icon' => 'dashicons-location-alt',
-        'show_in_admin_bar' => true,
-        'show_in_nav_menus' => false,
-        'can_export' => true,
-        'has_archive' => false,
+function churum_meru_register_gmap_cpt(): void {
+    register_post_type( 'gmap', [
+        'labels' => [
+            'name'          => __( 'Google Maps', 'churum-meru' ),
+            'singular_name' => __( 'Karte', 'churum-meru' ),
+            'menu_name'     => __( 'Google Maps', 'churum-meru' ),
+            'add_new'       => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'  => __( 'Neue Karte', 'churum-meru' ),
+            'edit_item'     => __( 'Karte bearbeiten', 'churum-meru' ),
+            'all_items'     => __( 'Alle Karten', 'churum-meru' ),
+            'not_found'     => __( 'Keine Karten gefunden', 'churum-meru' ),
+        ],
+        'public'              => false,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => true,
+        'show_in_admin_bar'   => true,
+        'show_in_nav_menus'   => false,
+        'has_archive'         => false,
         'exclude_from_search' => true,
-        'publicly_queryable' => false,
-        'capability_type' => 'post',
-        'show_in_rest' => true,
-    );
-    
-    register_post_type('gmap', $args);
+        'publicly_queryable'  => false,
+        'supports'            => [ 'title' ],
+        'menu_icon'           => 'dashicons-location-alt',
+        'menu_position'       => 23,
+        'capability_type'     => 'post',
+    ] );
 }
-add_action('init', 'agency_core_register_maps_cpt');
 
+// =============================================================================
+// Hero Slides
+// =============================================================================
 
-/**
- * Register Hero Slide Post Type
- */
-function agency_core_register_hero_slide_cpt() {
-    $labels = array(
-        'name' => _x('Hero Slides', 'Post Type General Name', 'agency-core'),
-        'singular_name' => _x('Hero Slide', 'Post Type Singular Name', 'agency-core'),
-        'menu_name' => __('Hero Slides', 'agency-core'),
-        'name_admin_bar' => __('Hero Slide', 'agency-core'),
-        'archives' => __('Hero Slide Archive', 'agency-core'),
-        'attributes' => __('Hero Slide Attribute', 'agency-core'),
-        'parent_item_colon' => __('Übergeordnete Hero Slide:', 'agency-core'),
-        'all_items' => __('Alle Hero Slides', 'agency-core'),
-        'add_new_item' => __('Neue Hero Slide hinzufügen', 'agency-core'),
-        'add_new' => __('Neue Hero Slide', 'agency-core'),
-        'new_item' => __('Neue Hero Slide', 'agency-core'),
-        'edit_item' => __('Hero Slide bearbeiten', 'agency-core'),
-        'update_item' => __('Hero Slide updaten', 'agency-core'),
-        'view_item' => __('View Hero Slide anzeigen', 'agency-core'),
-        'view_items' => __('Hero Slides anzeigen', 'agency-core'),
-        'search_items' => __('Hero Slide durchsuchen', 'agency-core'),
-        'not_found' => __('Nichts gefunden', 'agency-core'),
-        'not_found_in_trash' => __('Nichts im Papierkorb gefunden', 'agency-core'),
-        'featured_image' => __('Featured Image', 'agency-core'),
-        'set_featured_image' => __('Featured Image festlegen', 'agency-core'),
-        'remove_featured_image' => __('Featured Image entfernen', 'agency-core'),
-        'use_featured_image' => __('Als Featured Image verwenden', 'agency-core'),
-        'insert_into_item' => __('Zur Hero Slide einfügen', 'agency-core'),
-        'uploaded_to_this_item' => __('Zu dieser Hero Slide hochladen', 'agency-core'),
-        'items_list' => __('Hero Slides Liste', 'agency-core'),
-        'items_list_navigation' => __('Hero Slides Listen-Navigation', 'agency-core'),
-        'filter_items_list' => __('Hero Slides Liste filtern', 'agency-core'),
-    );
-    
-    $args = array(
-        'label' => __('Hero Slide', 'agency-core'),
-        'description' => __('Hero Slider Slides', 'agency-core'),
-        'labels' => $labels,
-        'supports' => array('title', 'editor', 'thumbnail'),
-        'hierarchical' => false,
-        'public' => false,
-        'show_ui' => true,
-        'show_in_menu' => true,
-        'menu_position' => 26,
-        'menu_icon' => 'dashicons-slides',
-        'show_in_admin_bar' => true,
-        'show_in_nav_menus' => false,
-        'can_export' => true,
-        'has_archive' => false,
+add_action( 'init', 'churum_meru_register_hero_slide_cpt' );
+
+function churum_meru_register_hero_slide_cpt(): void {
+    register_post_type( 'hero_slide', [
+        'labels' => [
+            'name'          => __( 'Hero Slides', 'churum-meru' ),
+            'singular_name' => __( 'Hero Slide', 'churum-meru' ),
+            'menu_name'     => __( 'Hero Slides', 'churum-meru' ),
+            'add_new'       => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'  => __( 'Neue Hero Slide', 'churum-meru' ),
+            'edit_item'     => __( 'Hero Slide bearbeiten', 'churum-meru' ),
+            'all_items'     => __( 'Alle Hero Slides', 'churum-meru' ),
+            'not_found'     => __( 'Keine Hero Slides gefunden', 'churum-meru' ),
+        ],
+        'public'              => false,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => true,
+        'show_in_admin_bar'   => true,
+        'show_in_nav_menus'   => false,
+        'has_archive'         => false,
         'exclude_from_search' => true,
-        'publicly_queryable' => false,
-        'capability_type' => 'post',
-        'show_in_rest' => true,
-    );
-    
-    register_post_type('hero_slide', $args);
+        'publicly_queryable'  => false,
+        'supports'            => [ 'title', 'editor', 'thumbnail' ],
+        'menu_icon'           => 'dashicons-slides',
+        'menu_position'       => 24,
+        'capability_type'     => 'post',
+    ] );
 }
-add_action('init', 'agency_core_register_hero_slide_cpt');
 
+// =============================================================================
+// Karussell
+// =============================================================================
 
-/**
- * Register Carousel Post Type
- */
-function agency_core_register_carousel_cpt() {
-    $labels = array(
-        'name' => _x('Karussell Elemente', 'Post Type General Name', 'agency-core'),
-        'singular_name' => _x('Karussell Element', 'Post Type Singular Name', 'agency-core'),
-        'menu_name' => __('Karussells', 'agency-core'),
-        'name_admin_bar' => __('Karussell Element', 'agency-core'),
-        'archives' => __('Karussell Archiv', 'agency-core'),
-        'attributes' => __('Karussell Attribute', 'agency-core'),
-        'all_items' => __('Alle Elemente', 'agency-core'),
-        'add_new_item' => __('Neues Element hinzufügen', 'agency-core'),
-        'add_new' => __('Neues hinzufügen', 'agency-core'),
-        'new_item' => __('Neues Element', 'agency-core'),
-        'edit_item' => __('Element bearbeiten', 'agency-core'),
-        'update_item' => __('Element updaten', 'agency-core'),
-        'view_item' => __('Element anzeigen', 'agency-core'),
-        'view_items' => __('Elemente anzeigen', 'agency-core'),
-        'search_items' => __('Element suchen', 'agency-core'),
-        'not_found' => __('Nichts gefunden', 'agency-core'),
-        'not_found_in_trash' => __('Nichts im Papierkorb gefunden', 'agency-core'),
-    );
-    
-    $args = array(
-        'label' => __('Karussell Element', 'agency-core'),
-        'description' => __('Karussell Elemente', 'agency-core'),
-        'labels' => $labels,
-        'supports' => array('title', 'editor', 'thumbnail', 'page-attributes'),
-        'hierarchical' => false,
-        'public' => false,
-        'show_ui' => true,
-        'show_in_menu' => true,
-        'menu_position' => 27,
-        'menu_icon' => 'dashicons-images-alt2',
-        'show_in_admin_bar' => true,
-        'show_in_nav_menus' => false,
-        'can_export' => true,
-        'has_archive' => false,
+add_action( 'init', 'churum_meru_register_carousel_cpt' );
+
+function churum_meru_register_carousel_cpt(): void {
+    register_post_type( 'carousel', [
+        'labels' => [
+            'name'          => __( 'Karussell', 'churum-meru' ),
+            'singular_name' => __( 'Karussell-Element', 'churum-meru' ),
+            'menu_name'     => __( 'Karussells', 'churum-meru' ),
+            'add_new'       => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'  => __( 'Neues Element', 'churum-meru' ),
+            'edit_item'     => __( 'Element bearbeiten', 'churum-meru' ),
+            'all_items'     => __( 'Alle Elemente', 'churum-meru' ),
+            'not_found'     => __( 'Keine Elemente gefunden', 'churum-meru' ),
+        ],
+        'public'              => false,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => true,
+        'show_in_nav_menus'   => false,
+        'has_archive'         => false,
         'exclude_from_search' => true,
-        'publicly_queryable' => false,
+        'publicly_queryable'  => false,
+        'supports'            => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
+        'menu_icon'           => 'dashicons-images-alt2',
+        'menu_position'       => 25,
+        'capability_type'     => 'post',
+        'taxonomies'          => [ 'carousel_category' ],
+    ] );
+}
+
+// =============================================================================
+// Sponsoren (ersetzt generisches Logo-CPT aus dem Framework)
+// =============================================================================
+
+add_action( 'init', 'churum_meru_register_sponsor_cpt' );
+
+function churum_meru_register_sponsor_cpt(): void {
+    register_post_type( 'sponsor', [
+        'labels' => [
+            'name'               => __( 'Sponsoren', 'churum-meru' ),
+            'singular_name'      => __( 'Sponsor', 'churum-meru' ),
+            'menu_name'          => __( 'Sponsoren', 'churum-meru' ),
+            'add_new'            => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'       => __( 'Neuer Sponsor', 'churum-meru' ),
+            'edit_item'          => __( 'Sponsor bearbeiten', 'churum-meru' ),
+            'new_item'           => __( 'Neuer Sponsor', 'churum-meru' ),
+            'view_item'          => __( 'Sponsor ansehen', 'churum-meru' ),
+            'search_items'       => __( 'Sponsoren durchsuchen', 'churum-meru' ),
+            'not_found'          => __( 'Keine Sponsoren gefunden', 'churum-meru' ),
+            'not_found_in_trash' => __( 'Keine Sponsoren im Papierkorb', 'churum-meru' ),
+        ],
+        'public'              => false,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => true,
+        'show_in_admin_bar'   => true,
+        'show_in_nav_menus'   => false,
+        'has_archive'         => false,
+        'exclude_from_search' => true,
+        'publicly_queryable'  => false,
+        'supports'            => [ 'title', 'thumbnail', 'page-attributes' ],
+        'menu_icon'           => 'dashicons-star-filled',
+        'menu_position'       => 26,
+        'rewrite'             => [ 'slug' => 'sponsoren' ],
+        'capability_type'     => 'post',
+        'taxonomies'          => [ 'sponsor_category' ],
+    ] );
+}
+
+// =============================================================================
+// Unterstützer
+// =============================================================================
+
+add_action( 'init', 'churum_meru_register_supporter_cpt' );
+
+function churum_meru_register_supporter_cpt(): void {
+    register_post_type( 'supporter', [
+        'labels' => [
+            'name'               => __( 'Unterstützer', 'churum-meru' ),
+            'singular_name'      => __( 'Unterstützer', 'churum-meru' ),
+            'menu_name'          => __( 'Unterstützer', 'churum-meru' ),
+            'add_new'            => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'       => __( 'Neuer Unterstützer', 'churum-meru' ),
+            'edit_item'          => __( 'Unterstützer bearbeiten', 'churum-meru' ),
+            'new_item'           => __( 'Neuer Unterstützer', 'churum-meru' ),
+            'view_item'          => __( 'Unterstützer ansehen', 'churum-meru' ),
+            'search_items'       => __( 'Unterstützer durchsuchen', 'churum-meru' ),
+            'not_found'          => __( 'Keine Unterstützer gefunden', 'churum-meru' ),
+            'not_found_in_trash' => __( 'Keine Unterstützer im Papierkorb', 'churum-meru' ),
+        ],
+        'public'          => true,
+        'has_archive'     => true,
+        'show_in_rest'    => true,
+        'supports'        => [ 'title', 'editor', 'thumbnail', 'excerpt', 'page-attributes' ],
+        'menu_icon'       => 'dashicons-heart',
+        'menu_position'   => 27,
+        'rewrite'         => [ 'slug' => 'unterstuetzer' ],
         'capability_type' => 'post',
-        'show_in_rest' => true,
-    );
-    
-    register_post_type('carousel', $args);
+        'taxonomies'      => [ 'supporter_category' ],
+    ] );
 }
-add_action('init', 'agency_core_register_carousel_cpt');
 
+// =============================================================================
+// Veranstaltungen
+// =============================================================================
 
-/**
- * Register Carousel Category Taxonomy
- */
-function agency_core_register_carousel_category_taxonomy() {
-    $labels = array(
-        'name' => _x('Karussell Kategorien', 'taxonomy general name', 'agency-core'),
-        'singular_name' => _x('Karussell Kategorie', 'taxonomy singular name', 'agency-core'),
-        'search_items' => __('Kategorien durchsuchen', 'agency-core'),
-        'all_items' => __('Alle Kategorien', 'agency-core'),
-        'edit_item' => __('Kategorie bearbeiten', 'agency-core'),
-        'update_item' => __('Kategorie updaten', 'agency-core'),
-        'add_new_item' => __('Neue Kategorie hinzufügen', 'agency-core'),
-        'new_item_name' => __('Neuer Kategorie-Name', 'agency-core'),
-        'menu_name' => __('Kategorien', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'hierarchical' => true,
-        'public' => false,
-        'show_ui' => true,
-        'show_admin_column' => true,
-        'show_in_nav_menus' => false,
-        'show_tagcloud' => false,
-        'show_in_rest' => true,
-    );
-    
-    register_taxonomy('carousel_category', array('carousel'), $args);
+add_action( 'init', 'churum_meru_register_event_cpt' );
+
+function churum_meru_register_event_cpt(): void {
+    register_post_type( 'event', [
+        'labels' => [
+            'name'               => __( 'Veranstaltungen', 'churum-meru' ),
+            'singular_name'      => __( 'Veranstaltung', 'churum-meru' ),
+            'menu_name'          => __( 'Veranstaltungen', 'churum-meru' ),
+            'add_new'            => __( 'Neu hinzufügen', 'churum-meru' ),
+            'add_new_item'       => __( 'Neue Veranstaltung', 'churum-meru' ),
+            'edit_item'          => __( 'Veranstaltung bearbeiten', 'churum-meru' ),
+            'new_item'           => __( 'Neue Veranstaltung', 'churum-meru' ),
+            'view_item'          => __( 'Veranstaltung ansehen', 'churum-meru' ),
+            'view_items'         => __( 'Veranstaltungen ansehen', 'churum-meru' ),
+            'search_items'       => __( 'Veranstaltungen durchsuchen', 'churum-meru' ),
+            'not_found'          => __( 'Keine Veranstaltungen gefunden', 'churum-meru' ),
+            'not_found_in_trash' => __( 'Keine Veranstaltungen im Papierkorb', 'churum-meru' ),
+            'all_items'          => __( 'Alle Veranstaltungen', 'churum-meru' ),
+        ],
+        'public'          => true,
+        'has_archive'     => true,
+        'show_in_rest'    => true,
+        'supports'        => [ 'title', 'editor', 'thumbnail', 'excerpt', 'revisions', 'page-attributes' ],
+        'menu_icon'       => 'dashicons-calendar-alt',
+        'menu_position'   => 28,
+        'rewrite'         => [ 'slug' => 'veranstaltungen' ],
+        'capability_type' => 'post',
+        'taxonomies'      => [ 'event_category', 'event_location' ],
+    ] );
 }
-add_action('init', 'agency_core_register_carousel_category_taxonomy');
-
-
-/**
- * Register Jobs Post Type
- */
-function agency_core_register_jobs_cpt() {
-    $labels = array(
-        'name' => __('Jobs', 'agency-core'),
-        'singular_name' => __('Job', 'agency-core'),
-        'menu_name' => __('Jobs', 'agency-core'),
-        'add_new' => __('Add New', 'agency-core'),
-        'add_new_item' => __('Add New Job', 'agency-core'),
-        'edit_item' => __('Edit Job', 'agency-core'),
-        'new_item' => __('New Job', 'agency-core'),
-        'view_item' => __('View Job', 'agency-core'),
-        'search_items' => __('Search Jobs', 'agency-core'),
-        'not_found' => __('No jobs found', 'agency-core'),
-        'not_found_in_trash' => __('No jobs found in trash', 'agency-core'),
-        'all_items' => __('All Jobs', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'has_archive' => true,
-        'show_in_rest' => true,
-        'menu_icon' => 'dashicons-businessperson',
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'revisions'),
-        'rewrite' => array('slug' => 'jobs'),
-        'show_in_menu' => true,
-        'menu_position' => 28,
-        'taxonomies' => array('job_category', 'job_type', 'job_location'),
-    );
-    
-    register_post_type('job', $args);
-}
-add_action('init', 'agency_core_register_jobs_cpt');
-
-
-/**
- * Register Job Category Taxonomy
- */
-function agency_core_register_job_category_taxonomy() {
-    $labels = array(
-        'name' => __('Job Categories', 'agency-core'),
-        'singular_name' => __('Job Category', 'agency-core'),
-        'search_items' => __('Search Job Categories', 'agency-core'),
-        'all_items' => __('All Job Categories', 'agency-core'),
-        'parent_item' => __('Parent Job Category', 'agency-core'),
-        'parent_item_colon' => __('Parent Job Category:', 'agency-core'),
-        'edit_item' => __('Edit Job Category', 'agency-core'),
-        'update_item' => __('Update Job Category', 'agency-core'),
-        'add_new_item' => __('Add New Job Category', 'agency-core'),
-        'new_item_name' => __('New Job Category Name', 'agency-core'),
-        'menu_name' => __('Categories', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'hierarchical' => true,
-        'show_ui' => true,
-        'show_in_rest' => true,
-        'show_admin_column' => true,
-        'query_var' => true,
-        'rewrite' => array('slug' => 'job-category'),
-    );
-    
-    register_taxonomy('job_category', 'job', $args);
-}
-add_action('init', 'agency_core_register_job_category_taxonomy');
-
-
-/**
- * Register Job Type Taxonomy
- */
-function agency_core_register_job_type_taxonomy() {
-    $labels = array(
-        'name' => __('Job Types', 'agency-core'),
-        'singular_name' => __('Job Type', 'agency-core'),
-        'search_items' => __('Search Job Types', 'agency-core'),
-        'all_items' => __('All Job Types', 'agency-core'),
-        'edit_item' => __('Edit Job Type', 'agency-core'),
-        'update_item' => __('Update Job Type', 'agency-core'),
-        'add_new_item' => __('Add New Job Type', 'agency-core'),
-        'new_item_name' => __('New Job Type Name', 'agency-core'),
-        'menu_name' => __('Job Types', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'hierarchical' => true,
-        'show_ui' => true,
-        'show_in_rest' => true,
-        'show_admin_column' => true,
-        'query_var' => true,
-        'rewrite' => array('slug' => 'job-type'),
-    );
-    
-    register_taxonomy('job_type', 'job', $args);
-}
-add_action('init', 'agency_core_register_job_type_taxonomy');
-
-
-/**
- * Register Job Location Taxonomy
- */
-function agency_core_register_job_location_taxonomy() {
-    $labels = array(
-        'name' => __('Job Locations', 'agency-core'),
-        'singular_name' => __('Job Location', 'agency-core'),
-        'search_items' => __('Search Job Locations', 'agency-core'),
-        'all_items' => __('All Job Locations', 'agency-core'),
-        'edit_item' => __('Edit Job Location', 'agency-core'),
-        'update_item' => __('Update Job Location', 'agency-core'),
-        'add_new_item' => __('Add New Job Location', 'agency-core'),
-        'new_item_name' => __('New Job Location Name', 'agency-core'),
-        'menu_name' => __('Locations', 'agency-core'),
-    );
-    
-    $args = array(
-        'labels' => $labels,
-        'hierarchical' => true,
-        'show_ui' => true,
-        'show_in_rest' => true,
-        'show_admin_column' => true,
-        'query_var' => true,
-        'rewrite' => array('slug' => 'job-location'),
-    );
-    
-    register_taxonomy('job_location', 'job', $args);
-}
-add_action('init', 'agency_core_register_job_location_taxonomy');

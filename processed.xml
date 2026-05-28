@@ -1,0 +1,398 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:wp="http://wordpress.org/export/1.2/" version="2.0">
+
+<channel>
+	<title>Churúm-Merú</title>
+	<link>https://churum-meru.org</link>
+	<description>El portal cultural latinoamericano</description>
+	<pubDate>Thu, 28 May 2026 12:12:27 +0000</pubDate>
+	<language>de-AT</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://churum-meru.org</wp:base_site_url>
+	<wp:base_blog_url>https://churum-meru.org</wp:base_blog_url>
+
+		<wp:author><wp:author_id>1</wp:author_id><wp:author_login>bitsoftweb</wp:author_login><wp:author_email>office@churum-meru.org</wp:author_email><wp:author_display_name>bitsoftweb</wp:author_display_name><wp:author_first_name /><wp:author_last_name /></wp:author>
+	<wp:author><wp:author_id>6</wp:author_id><wp:author_login>media-admin</wp:author_login><wp:author_email>churum-meru@media-lab.at</wp:author_email><wp:author_display_name>Markus Tritremmel</wp:author_display_name><wp:author_first_name>Markus</wp:author_first_name><wp:author_last_name>Tritremmel</wp:author_last_name></wp:author>
+
+		<wp:category>
+		<wp:term_id>206</wp:term_id>
+		<wp:category_nicename>ehemalig</wp:category_nicename>
+		<wp:category_parent />
+		<wp:cat_name>Ehemalig</wp:cat_name>
+	</wp:category>
+				
+	
+
+		<item>
+		<title>Entrevista LatizonTV</title>
+		<link>https://churum-meru.org/entrevista-latizontv-2/</link>
+		<pubDate>Sat, 07 Feb 2015 22:31:36 +0000</pubDate>
+		<dc:creator>bitsoftweb</dc:creator>
+		<guid isPermaLink="false">https://churum-meru.org/?p=8563</guid>
+		<description />
+		<content:encoded>&lt;!-- wp:html --&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p style="text-align: justify;"&gt;&lt;!-- wp:paragraph --&gt;Zeichnete in Wien ein Team von  Latizón TV,  Deutschlands Fernsehsender über Lateinamerika, Interviews mit  Künstlerinnen und Künstlern auf, die zu unseren Aktivitäten in Österreich beitragen. Präsidentin Elvira Torres-Garmendia dankt Latizón TV für die Sendung, in der die Arbeit des Vereins einem breiteren Publikum gezeigt werden konnte.&lt;!-- /wp:shortcode --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;!-- /wp:paragraph --&gt;&lt;/p&gt;
+&lt;p&gt;[modula id="8555"]&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;!-- /wp:html --&gt;</content:encoded>
+		<excerpt:encoded />
+		<wp:post_id>8563</wp:post_id>
+		<wp:post_date>2015-02-07 22:31:36</wp:post_date>
+		<wp:post_date_gmt>2015-02-07 22:31:36</wp:post_date_gmt>
+		<wp:post_modified>2023-06-28 14:38:38</wp:post_modified>
+		<wp:post_modified_gmt>2023-06-28 12:38:38</wp:post_modified_gmt>
+		<wp:comment_status>closed</wp:comment_status>
+		<wp:ping_status>closed</wp:ping_status>
+		<wp:post_name>entrevista-latizontv-2</wp:post_name>
+		<wp:status>publish</wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>20</wp:menu_order>
+		<wp:post_type>post</wp:post_type>
+		<wp:post_password />
+		<wp:is_sticky>0</wp:is_sticky>
+										<category domain="language" nicename="de">Deutsch</category>
+		<category domain="category" nicename="ehemalig">Ehemalig</category>
+		<category domain="post_translations" nicename="pll_612d5c4b7c3c5">pll_612d5c4b7c3c5</category>
+						<wp:postmeta>
+		<wp:meta_key>_wpb_vc_js_status</wp:meta_key>
+		<wp:meta_value>true</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_mkdf-like</wp:meta_key>
+		<wp:meta_value>0</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_edit_last</wp:meta_key>
+		<wp:meta_value>6</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_dp_original</wp:meta_key>
+		<wp:meta_value>8554</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wp_old_date</wp:meta_key>
+		<wp:meta_value>2021-08-30</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>slide_template</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_footer_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_page_scroll_to_content_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_header_widget_menu_area_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_header_widget_logo_area_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_vertical_header_background_image_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_audio_type_meta</wp:meta_key>
+		<wp:meta_value>social_networks</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_video_type_meta</wp:meta_key>
+		<wp:meta_value>social_networks</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_blog_masonry_gallery_original_dimensions_meta</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_blog_masonry_gallery_fixed_dimensions_meta</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_boxed_background_image_attachment_meta</wp:meta_key>
+		<wp:meta_value>fixed</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_page_content_behind_header_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>wpmm_postgrid_views</wp:meta_key>
+		<wp:meta_value>277</wp:meta_value>
+		</wp:postmeta>
+							</item>
+					<item>
+		<title>Ein Jahr Kulturverein Churúm-Merú</title>
+		<link>https://churum-meru.org/ein-jahr-kulturverein-churum-meru/</link>
+		<pubDate>Wed, 30 Nov 2011 22:40:41 +0000</pubDate>
+		<dc:creator>bitsoftweb</dc:creator>
+		<guid isPermaLink="false">https://churum-meru.org/?p=8573</guid>
+		<description />
+		<content:encoded>&lt;!-- wp:html --&gt;
+&lt;p style="text-align: justify;"&gt;Mo­tiviert und an­getrie­ben von ei­ner sehr großen Lie­be zu mei­nem Land, un­se­ren Bru­der­ländern und zu Ös­ter­reich, wel­ches mir er­möglich­te, in ver­schie­de­nen As­pekten mei­nes Lebens zu wach­sen, ei­ne Kul­tur des Ver­ständnis­ses zwi­sch­en ver­schie­de­nen Völ­kern zu ent­wickeln und ei­nen Wir­belwind von Ideen ent­ste­hen zu las­sen, grün­de­te ich die „Asociacion Cul­tu­ral Chu­rum Me­ru“ als of­fe­ne Tü­re zum Ver­ständnis der Kul­tu­ren von Län­dern un­te­rein­an­der. Ein wesent­licher Anzieh­ungspunkt ist der brei­te Raum des un­terschied­lichen kul­tu­rel­len Er­lebens.&lt;/p&gt;
+&lt;p style="text-align: justify;"&gt;Sam­meln, Auswählen und Ver­brei­ten von Kul­tur ist im­mer ei­ne schwie­ri­ge Auf­ga­be ge­wesen.&lt;/p&gt;
+&lt;p style="text-align: justify;"&gt;In ei­ner Zeit, in der die di­gita­le Re­volution ei­nen un­mit­tel­ba­ren Zu­gang zu In­forma­tion und Kom­mu­nika­tion er­laubt und trotzdem wir nicht über die nö­tigen fi­nanziel­len Mit­tel ver­fü­gen, ha­ben wir die Web­sei­te in bei­den Sprachen als Por­tal kul­tu­rel­len Wis­sens ge­sch­af­fen.&lt;/p&gt;
+&lt;p style="text-align: justify;"&gt;Heute am 30. No­vem­ber ist es ein Jahr, dass Chu­rum Me­ru Kul­tu­rel­les sam­melt, auswählt und ver­mit­telt.&lt;/p&gt;
+&lt;p style="text-align: justify;"&gt;Ei­nen speziel­len Dank sa­ge ich mei­nem  Kol­legen Jo­han­nes Dub­kowitsch für sei­ne Un­terstütz­ung und Hin­ga­be aus ganzem Herzen.&lt;/p&gt;
+&lt;p style="text-align: justify;"&gt;Wei­ters un­se­ren Ehren­mit­glie­dern, be­son­ders Frau Eri­ka Vaal, die mit ihrer Anwesen­heit, ihrer Er­fahr­ung, ihrem Ent­hu­sias­mus und ihrer schö­nen Stim­me al­le un­se­re Events beg­lei­tet hat.
+Fer­ner mei­nen Un­terstützer­n: aus Ko­lum­bien Stra. Na­talia Zambra­no, aus Bra­silien Herr Richard Pe­rei­ra da Sil­va, aus Ar­gent­inien Maestro Lucio Bru­no Vi­dela, der Ehren­mit­glied von Chu­rum Me­ru ist, speziell auch der Pro­fes­so­rin Yracema Vicuna, Ver­tre­terin in Ve­nezuela, die ei­ne große Leist­ung erbracht und zum Er­folg der Ho­mepa­ge von Chu­rum Me­ru maßgeb­lich bei­get­ra­gen hat.&lt;/p&gt;
+&lt;p style="text-align: justify;"&gt;Dank an al­le !!&lt;/p&gt;
+&lt;!-- /wp:html --&gt;</content:encoded>
+		<excerpt:encoded />
+		<wp:post_id>8573</wp:post_id>
+		<wp:post_date>2011-11-30 22:40:41</wp:post_date>
+		<wp:post_date_gmt>2011-11-30 22:40:41</wp:post_date_gmt>
+		<wp:post_modified>2023-06-28 14:38:38</wp:post_modified>
+		<wp:post_modified_gmt>2023-06-28 12:38:38</wp:post_modified_gmt>
+		<wp:comment_status>closed</wp:comment_status>
+		<wp:ping_status>open</wp:ping_status>
+		<wp:post_name>ein-jahr-kulturverein-churum-meru</wp:post_name>
+		<wp:status>publish</wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>36</wp:menu_order>
+		<wp:post_type>post</wp:post_type>
+		<wp:post_password />
+		<wp:is_sticky>0</wp:is_sticky>
+										<category domain="language" nicename="de">Deutsch</category>
+		<category domain="category" nicename="ehemalig">Ehemalig</category>
+		<category domain="post_translations" nicename="pll_612d5ec3417d1">pll_612d5ec3417d1</category>
+						<wp:postmeta>
+		<wp:meta_key>mkdf_blog_masonry_gallery_fixed_dimensions_meta</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_boxed_background_image_attachment_meta</wp:meta_key>
+		<wp:meta_value>fixed</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_page_content_behind_header_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_page_scroll_to_content_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>slide_template</wp:meta_key>
+		<wp:meta_value />
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_edit_last</wp:meta_key>
+		<wp:meta_value>6</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_footer_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_header_widget_menu_area_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_header_widget_logo_area_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_vertical_header_background_image_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wp_old_date</wp:meta_key>
+		<wp:meta_value>2021-08-30</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wpb_vc_js_status</wp:meta_key>
+		<wp:meta_value>true</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_mkdf-like</wp:meta_key>
+		<wp:meta_value>0</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_audio_type_meta</wp:meta_key>
+		<wp:meta_value>social_networks</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_video_type_meta</wp:meta_key>
+		<wp:meta_value>social_networks</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_blog_masonry_gallery_original_dimensions_meta</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>wpmm_postgrid_views</wp:meta_key>
+		<wp:meta_value>263</wp:meta_value>
+		</wp:postmeta>
+							</item>
+					<item>
+		<title>Weihnachtsmarkt 2023</title>
+		<link>https://churum-meru.org/weihnachtsmarkt-2023/</link>
+		<pubDate>Tue, 19 Dec 2023 11:49:20 +0000</pubDate>
+		<dc:creator>media-admin</dc:creator>
+		<guid isPermaLink="false">https://churum-meru.org/?p=9555</guid>
+		<description />
+		<content:encoded>&lt;!-- wp:html --&gt;
+[mkdf_elements_holder holder_full_height="no" number_of_columns="one-column" switch_to_one_column="" alignment_one_column=""][mkdf_elements_holder_item item_padding="0 75px 0"]
+&lt;h4&gt;10. Weihnachtsmarkt - Kunsthandwerker aus Lateinamerika und Österreich 2023&lt;/h4&gt;
+[video width="1920px"height="auto" mp4="https://churum-meru.org/cms/cms/wp-content/uploads/2023/12/Weihnachtsmarkt_Kunsthandwerker-aus-Lateinamerika-und-Oesterreich-2023_web2.mp4"][/video]
+
+&amp;nbsp;[/mkdf_elements_holder_item][/mkdf_elements_holder][mkdf_elements_holder holder_full_height="no" number_of_columns="two-columns" switch_to_one_column="" alignment_one_column=""][mkdf_elements_holder_item vertical_alignment="top" item_padding="20px 50px 20px 95px"]
+&lt;h4&gt;&lt;strong&gt;WILLKOMMEN &lt;/strong&gt;&lt;/h4&gt;
+[/mkdf_elements_holder_item][mkdf_elements_holder_item vertical_alignment="top" item_padding="75px 95px 0 0px"]Liebe Freunde und Freunde des Weihnachtsmarktes.
+
+Anbei sende ich Ihnen die Einladung zum zehnten österreichisch-lateinamerikanischen Weihnachtsmarkt des Kulturvereins Churúm-Merú, der vom 8. bis 10. Dezember 2023 stattfinden wird.
+
+Ich lade Sie herzlich zu diesem Markt ein, auf dem Kunsthandwerker aus den verschiedenen Ländern Lateinamerikas, Österreichs und Spaniens ihre Produkte präsentieren werden.
+
+Wir werden in unserem Unterhaltungsprogramm auch typische Tänze Paraguays mit der Gruppe "Juky" haben, die den berühmten Tanz der Flaschen präsentieren wird, bei dem ihre Tänzer balancierte Flaschen auf ihren Köpfen tanzen. (Freitag, 8. Dezember um 17:00 Uhr):
+
+Eine Modenshow von Frau. Maggie Schöllbauer mit ihren Modeneuheiten. (Samstag, 10. Dezember&amp;nbsp; um 14:00 Uhr).
+
+Der Nikolo wird uns besuchen und den Kleinen die üblichen Geschenke bringen. (Samstag, 9. Dezember um 16:00 Uhr).
+
+Und nicht zu vergessen die berühmte mexikanische Piñata mit Spielzeug für die Kinder (Sonntag, 10. Dezember um 16:00 Uhr).
+
+Die Gastronomie wird von Frau Bilmania Gómez mit ihren Köstlichkeiten aus der Dominikanischen Republik betreut. Ich lade Sie ein, diese köstlichen Gerichte zu genießen.
+
+Besuchen Sie uns und Sie werden erstaunt sein, unsere lateinamerikanische Kultur zu sehen und zu schätzen sowie die Krippenausstellung zu bewundern.[/mkdf_elements_holder_item][/mkdf_elements_holder][mkdf_elements_holder holder_full_height="no" number_of_columns="one-column" switch_to_one_column="" alignment_one_column=""][mkdf_elements_holder_item horizontal_alignment="center" item_padding="0 75px 0"]
+&lt;h4 style="text-align: left;"&gt;Angenehme Momente während des Weihnachtsmarktes.&lt;/h4&gt;
+[/mkdf_elements_holder_item][/mkdf_elements_holder][mkdf_elements_holder holder_full_height="yes" number_of_columns="one-column" switch_to_one_column="" alignment_one_column=""][mkdf_elements_holder_item horizontal_alignment="center" vertical_alignment="top"][/mkdf_elements_holder_item][/mkdf_elements_holder]
+&lt;!-- /wp:html --&gt;</content:encoded>
+		<excerpt:encoded />
+		<wp:post_id>9555</wp:post_id>
+		<wp:post_date>2023-12-19 12:49:20</wp:post_date>
+		<wp:post_date_gmt>2023-12-19 11:49:20</wp:post_date_gmt>
+		<wp:post_modified>2023-12-19 12:48:10</wp:post_modified>
+		<wp:post_modified_gmt>2023-12-19 11:48:10</wp:post_modified_gmt>
+		<wp:comment_status>closed</wp:comment_status>
+		<wp:ping_status>open</wp:ping_status>
+		<wp:post_name>weihnachtsmarkt-2023</wp:post_name>
+		<wp:status>publish</wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>5</wp:menu_order>
+		<wp:post_type>post</wp:post_type>
+		<wp:post_password />
+		<wp:is_sticky>0</wp:is_sticky>
+										<category domain="category" nicename="ausstellungen">Ausstellungen</category>
+		<category domain="language" nicename="de">Deutsch</category>
+		<category domain="category" nicename="ehemalig">Ehemalig</category>
+		<category domain="post_translations" nicename="pll_65818340af243">pll_65818340af243</category>
+		<category domain="category" nicename="weihnachten">Weihnachten</category>
+						<wp:postmeta>
+		<wp:meta_key>slide_template</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wpb_vc_js_status</wp:meta_key>
+		<wp:meta_value>true</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_page_scroll_to_content_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_page_content_behind_header_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_boxed_background_image_attachment_meta</wp:meta_key>
+		<wp:meta_value>fixed</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_blog_masonry_gallery_fixed_dimensions_meta</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_blog_masonry_gallery_original_dimensions_meta</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_video_type_meta</wp:meta_key>
+		<wp:meta_value>social_networks</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_audio_type_meta</wp:meta_key>
+		<wp:meta_value>social_networks</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_vertical_header_background_image_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_header_widget_logo_area_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_header_widget_menu_area_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>mkdf_disable_footer_meta</wp:meta_key>
+		<wp:meta_value>no</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wp_old_date</wp:meta_key>
+		<wp:meta_value>2021-09-23</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_dp_original</wp:meta_key>
+		<wp:meta_value>8765</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>wpmm_postgrid_views</wp:meta_key>
+		<wp:meta_value>484</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_oembed_1613a5b72a4824a25397aaf49db46520</wp:meta_key>
+		<wp:meta_value>&lt;iframe title="7  Weinachtsmarkt 2018" width="1100" height="619" src="https://www.youtube.com/embed/dforVB8y1lk?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_oembed_time_1613a5b72a4824a25397aaf49db46520</wp:meta_key>
+		<wp:meta_value>1632409782</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_mkdf-like</wp:meta_key>
+		<wp:meta_value>0</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_edit_last</wp:meta_key>
+		<wp:meta_value>6</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wp_page_template</wp:meta_key>
+		<wp:meta_value>default</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>enclosure</wp:meta_key>
+		<wp:meta_value>https://churum-meru.org/cms/cms/wp-content/uploads/2023/12/Weihnachtsmarkt_Kunsthandwerker-aus-Lateinamerika-und-Oesterreich-2023_web2.mp4
+252250363
+video/mp4
+</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wpb_shortcodes_custom_css</wp:meta_key>
+		<wp:meta_value>.vc_custom_1702984913524{margin-top: 25px !important;}.vc_custom_1702986393620{padding-top: 50px !important;padding-bottom: 0px !important;}.vc_custom_1702985000469{margin-top: 50px !important;}.vc_custom_1702986036021{margin-bottom: 25px !important;}.vc_custom_1702985606602{margin-top: 75px !important;}.vc_custom_1702985558064{margin-bottom: 25px !important;}.vc_custom_1702985564512{margin-top: 25px !important;}</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wp_old_date</wp:meta_key>
+		<wp:meta_value>2023-12-19</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_wpb_shortcodes_custom_css_updated</wp:meta_key>
+		<wp:meta_value>1</wp:meta_value>
+		</wp:postmeta>
+							<wp:postmeta>
+		<wp:meta_key>_cmplz_scanned_post</wp:meta_key>
+		<wp:meta_value>1</wp:meta_value>
+		</wp:postmeta>
+							</item>
+				</channel>
+</rss>

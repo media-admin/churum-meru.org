@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 7.0.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-26 21:30:31+0000\n"
+"PO-Revision-Date: 2026-05-27 22:43:58+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4404,22 +4404,22 @@ msgstr "Anhang-Seiten"
 #: wp-includes/block-template-utils.php:200
 msgctxt "Template name"
 msgid "Tag Archives"
-msgstr "Schlagwort-Archive"
+msgstr "Schlagwortarchiv"
 
 #: wp-includes/block-template-utils.php:196
 msgctxt "Template name"
 msgid "Date Archives"
-msgstr "Datums-Archive"
+msgstr "Datumsarchiv"
 
 #: wp-includes/block-template-utils.php:188
 msgctxt "Template name"
 msgid "Category Archives"
-msgstr "Kategorie-Archive"
+msgstr "Kategoriearchiv"
 
 #: wp-includes/block-template-utils.php:184
 msgctxt "Template name"
 msgid "Author Archives"
-msgstr "Autoren-Archive"
+msgstr "Autorenarchiv"
 
 #: wp-includes/block-template-utils.php:180
 msgctxt "Template name"
@@ -6150,7 +6150,7 @@ msgstr "Ins Navigationsmenü einfügen"
 
 #: wp-includes/post.php:554
 msgid "Navigation Menu archives"
-msgstr "Navigationsmenü-Archive"
+msgstr "Navigationsmenü-Archiv"
 
 #: wp-includes/post.php:553
 msgid "No Navigation Menu found in Trash."
@@ -6229,7 +6229,7 @@ msgstr "In das Template-Teil einfügen"
 
 #: wp-includes/post.php:448
 msgid "Template part archives"
-msgstr "Template-Teil-Archive"
+msgstr "Template-Teil-Archiv"
 
 #: wp-includes/post.php:447
 msgid "No template parts found in Trash."
@@ -21471,7 +21471,7 @@ msgstr[1] "Zurzeit warten %s Kommentare auf Freigabe. Bitte gehe zur Moderation
 #. translators: Comment moderation. %s: Comment action URL.
 #: wp-includes/pluggable.php:2125
 msgid "Approve it: %s"
-msgstr "Genehmigen: %s"
+msgstr "Freigeben: %s"
 
 #: wp-includes/pluggable.php:2100
 msgid "Pingback excerpt: "

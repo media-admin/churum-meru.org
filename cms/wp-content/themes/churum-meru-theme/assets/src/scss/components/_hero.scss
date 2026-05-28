@@ -46,7 +46,7 @@
   &__title {
     // Fluid: 32px → 56px – kein @include respond-to mehr nötig
     font-size:     var(--text-hero);
-    font-weight:   $font-weight-bold;
+    font-weight:   $font-weight-normal;
     line-height:   $line-height-tight;
     margin-bottom: var(--space-lg);
   }

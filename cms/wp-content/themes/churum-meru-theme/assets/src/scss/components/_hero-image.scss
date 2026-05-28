@@ -195,7 +195,7 @@ $hero-xl-mob:  420px;
     font-size:        clamp(2.625rem, 7.5vw, 4.5rem);
 
     // 7. Buchstabenabstand
-    letter-spacing:   -0.06em;
+    letter-spacing:   0.03em;
 
     // 8. Zeilenhöhe
     line-height:      1em;
@@ -212,7 +212,7 @@ $hero-xl-mob:  420px;
     margin-block-end:   auto;
 
     // Font-Weight: Bold für Seitentitel
-    font-weight:      $font-weight-bold;
+    font-weight:      $font-weight-normal;
   }
 
   // ── Untertitel ────────────────────────────────────────────────────────────

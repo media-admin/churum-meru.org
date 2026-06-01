@@ -1,0 +1,102 @@
+// =============================================================================
+// Beiträge-Kategorie-Grid  [beitraege_kategorie]
+// =============================================================================
+
+.cm-posts-grid {
+    display:  flex;
+    flex-direction: column;
+    margin:   var(--space-xl, 3rem) 0;
+}
+
+.cm-posts-grid__empty {
+    color:      var(--color-text-muted, #888);
+    font-style: italic;
+    padding:    var(--space-lg, 2rem) 0;
+}
+
+// ── Einzelner Beitrag ─────────────────────────────────────────────────────────
+
+.cm-posts-grid__item {
+    // Kein Card-Styling – Beiträge als einfache Liste
+    background:  transparent;
+    border:      none;
+    border-radius: 0;
+    padding:     0;
+    cursor:      default;
+}
+
+// ── Body ──────────────────────────────────────────────────────────────────────
+
+.cm-posts-grid__body {
+    padding: 0;
+}
+
+// ── Datum ─────────────────────────────────────────────────────────────────────
+
+.cm-posts-grid__date {
+    display:        block;
+    font-size:      var(--text-xs, 0.75rem);
+    color:          var(--color-text-muted, #888);
+    font-weight:    500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom:  var(--space-sm, 0.5rem);
+}
+
+// ── Beitrags-Titel ────────────────────────────────────────────────────────────
+
+.cm-posts-grid__title {
+    font-size:       clamp(1.2rem, 2vw, 1.5rem) !important;
+    font-weight:     700 !important;
+    color:           var(--color-text, #111) !important; // kein Primärfarbe
+    margin:          0 0 var(--space-md, 1rem) !important;
+    line-height:     1.3 !important;
+    text-decoration: none !important;                    // kein Wavy-Underline
+}
+
+// ── Formatierter Inhalt ───────────────────────────────────────────────────────
+
+.cm-posts-grid__content {
+    font-size:   var(--text-base, 1rem);
+    color:       var(--color-text, #333);
+    line-height: 1.7;
+
+    > * + * { margin-top: var(--space-sm, 0.75rem); }
+    > *:first-child { margin-top: 0; }
+    > *:last-child  { margin-bottom: 0; }
+
+    h2 { font-size: var(--text-xl, 1.25rem);  }
+    h3 { font-size: var(--text-lg, 1.125rem); text-decoration: none !important; color: var(--color-text, #111) !important; }
+    h4 { font-size: var(--text-base, 1rem);   }
+
+    // Links deaktivieren (Beiträge nicht klickbar)
+    a {
+        color:           inherit !important;
+        text-decoration: none !important;
+        pointer-events:  none;
+        cursor:          default;
+    }
+
+    // Buttons ebenfalls deaktivieren
+    .wp-block-button__link,
+    .wp-element-button {
+        pointer-events: none;
+        cursor:         default;
+        opacity:        0.85;
+    }
+
+    img { max-width: 100%; height: auto; }
+
+    .wp-block-image,
+    .wp-block-paragraph,
+    .wp-block-heading { margin-left: 0; margin-right: 0; }
+}
+
+// ── Trenner zwischen Beiträgen ────────────────────────────────────────────────
+
+.cm-posts-grid__separator {
+    height:     10px;
+    margin:     var(--space-xl, 2.5rem) 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='10'%3E%3Cpath d='M0,5 Q5,0 10,5 Q15,10 20,5' stroke='%23cccccc' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x center;
+    opacity:    0.7;
+}

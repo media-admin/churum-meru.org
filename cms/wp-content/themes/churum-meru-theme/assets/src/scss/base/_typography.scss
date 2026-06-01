@@ -46,6 +46,16 @@ h5 { font-size: var(--text-xl);  }  // clamp(18px → 20px)
 h6 { font-size: var(--text-lg);  }  // clamp(16px → 18px)
 
 
+.entry-content {
+    h3 {
+      font-family: $font-primary;
+      font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+      font-weight: $font-weight-semibold;
+      color: $color-primary;
+    }
+}
+
+
 // ─────────────────────────────────────────────────────────────────
 // PARAGRAPHS & INLINE
 // ─────────────────────────────────────────────────────────────────
@@ -156,6 +166,16 @@ hr {
   border:        none;
   border-top:    1px solid var(--color-border);
   margin:        var(--space-xl) 0;
+}
+
+
+hr,
+.wp-block-separator {
+    border:     none;
+    height:     10px;
+    margin:     var(--space-xl) 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='10'%3E%3Cpath d='M0,5 Q5,0 10,5 Q15,10 20,5' stroke='%23cccccc' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x center;
+    opacity:    0.7;
 }
 
 

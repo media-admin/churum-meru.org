@@ -57,6 +57,9 @@ function medialab_project_init() {
     require_once MEDIALAB_PROJECT_PATH . 'inc/taxonomies.php';
     require_once MEDIALAB_PROJECT_PATH . 'inc/acf-config.php';
     require_once MEDIALAB_PROJECT_PATH . 'inc/shortcode-mitglieder.php';
+    require_once MEDIALAB_PROJECT_PATH . 'inc/shortcode-category-posts.php';
+    require_once MEDIALAB_PROJECT_PATH . 'inc/shortcode-artist-query.php';
+    require_once MEDIALAB_PROJECT_PATH . 'inc/shortcode-event-query.php';
 }
 add_action('plugins_loaded', 'medialab_project_init', 10);
 

@@ -67,3 +67,21 @@
     }
   }
 }
+
+
+
+// Hero hinter Header ziehen (gilt für alle Seiten, nicht nur Homepage)
+.hero-image,
+.acf-block-hero,
+[class*="hero-block"] {
+    margin-top: -88px !important;
+
+    @media (max-width: 991px) {
+        margin-top: -64px !important;
+    }
+}
+
+// site-main: kein padding-top wenn Hero vorhanden
+body.has-hero-image {
+    .site-main { padding-top: 0 !important; }
+}

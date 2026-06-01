@@ -21,6 +21,12 @@ $hero      = media_lab_get_hero_image($post_id);
 
 if (!$hero) return;
 
+if (!$hero) return;
+
+// ── TEMPORÄRER DEBUG – danach entfernen ───────────────────────────
+echo '<!-- HERO DEBUG: desktop_url=' . esc_html($hero['desktop']['url'] ?? 'LEER') . ' -->';
+// ── ENDE DEBUG ────────────────────────────────────────────────────
+
 $desktop_url = $hero['desktop']['url'] ?? '';
 $mobile_url  = $hero['mobile']['url']  ?? $desktop_url;
 $desktop_alt = $hero['desktop']['alt'] ?? '';

@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php wp_head(); ?>
     <script>
-        // Theme sofort setzen – verhindert Flash of wrong theme
+        // Dark Mode deaktiviert – Website verwendet ausschließlich Light Mode
         (function() {
-            var stored = localStorage.getItem('theme-preference');
-            var theme = stored
-                ? stored
-                : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.removeItem('theme-preference');
         })();
     </script>
 </head>

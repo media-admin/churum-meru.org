@@ -366,3 +366,32 @@ function churum_meru_register_event_cpt(): void {
         'taxonomies'      => [ 'event_category', 'event_location' ],
     ] );
 }
+
+// ── Admin-Spalten: Mitglieder-Kategorie ──────────────────────────────────────
+
+add_filter( 'manage_team_posts_columns', 'churum_meru_team_admin_columns' );
+
+function churum_meru_team_admin_columns( array $columns ): array {
+    // Nach "title" einfügen
+    $new = [];
+    foreach ( $columns as $key => $label ) {
+        $new[ $key ] = $label;
+        if ( $key === 'title' ) {
+            $new['team_category'] = __( 'Kategorie', 'churum-meru' );
+        }
+    }
+    return $new;
+}
+
+add_action( 'manage_team_posts_custom_column', 'churum_meru_team_column_content', 10, 2 );
+
+function churum_meru_team_column_content( string $column, int $post_id ): void {
+    if ( $column !== 'team_category' ) return;
+
+    $terms = get_the_terms( $post_id, 'team_category' );
+    if ( $terms && ! is_wp_error( $terms ) ) {
+        echo esc_html( implode( ', ', wp_list_pluck( $terms, 'name' ) ) );
+    } else {
+        echo '—';
+    }
+}

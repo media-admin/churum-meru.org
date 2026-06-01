@@ -188,6 +188,15 @@ video:not([class*="video-player"]) {
 }
 
 
+// WordPress Video-Block: inline aspect-ratio und Dimensionen überschreiben
+// WordPress setzt fälschlicherweise die Metadaten-Ratio (oft falsch bei Hochformat-Videos)
+.wp-block-video video {
+    width:        100% !important;
+    height:       auto !important;
+    aspect-ratio: unset !important;
+}
+
+
 
 // object-fit Utilities
 .object-cover   { object-fit: cover; }

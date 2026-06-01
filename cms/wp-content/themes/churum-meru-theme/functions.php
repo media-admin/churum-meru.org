@@ -80,7 +80,8 @@ add_action('after_setup_theme', 'customtheme_setup');
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/performance.php';
 require_once get_template_directory() . '/inc/shortcode-overrides.php';
-require_once get_template_directory() . '/inc/theme-fixes.php'; // ← NEU: Dark Mode Fix + has-hero-image Body-Class
+require_once get_template_directory() . '/inc/theme-fixes.php';
+require_once get_template_directory() . '/inc/customizer-footer.php';
 
 
 // Optional components (only if files exist)

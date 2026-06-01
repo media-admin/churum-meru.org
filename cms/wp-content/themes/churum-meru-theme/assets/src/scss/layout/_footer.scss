@@ -130,11 +130,18 @@
     img.footer-logo,
     .site-logo img,
     .footer-logo-img,
-    img:not([class*="partner"]) {
-        filter:     brightness(0) invert(1);
-        max-width:  240px;
-        height:     auto;
-        display:    block;
+    img:not([class*="partner"]):not(.footer-logo-img) {
+        filter:    brightness(0) invert(1);
+        max-width: 240px;
+        height:    auto;
+        display:   block;
+    }
+
+    .footer-logo-img {
+        filter:    none;
+        max-width: 240px;
+        height:    auto;
+        display:   block;
     }
 
     // Logo-Text unterhalb des Bildes
@@ -217,6 +224,16 @@
         border-radius: $radius-sm;
 
         &:hover { opacity: 0.85; }
+    }
+}
+
+.footer-col-contact {
+    .textwidget,
+    .widget_text,
+    p, a, span {
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
     }
 }
 

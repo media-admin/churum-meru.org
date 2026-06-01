@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 7.0.x - Development package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-05-27 22:43:58+0000\n"
+"PO-Revision-Date: 2026-05-28 18:43:52+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3993,7 +3993,7 @@ msgstr "Bitte übergib dieser Funktion ein Abfrage-Array."
 #. translators: %s: WP_HTML_Processor::create_fragment().
 #: wp-includes/html-api/class-wp-html-processor.php:391
 msgid "Call %s to create an HTML Processor instead of calling the constructor directly."
-msgstr "%s aufrufen, um einen HTML-Processor zu erstellen, statt den Konstruktor direkt aufzurufen."
+msgstr "%s aufrufen, um einen HTML-Prozessor zu erstellen, statt den Konstruktor direkt aufzurufen."
 
 #. translators: %s: The "type" key.
 #: wp-includes/functions.php:9119
@@ -5544,7 +5544,7 @@ msgstr "(Link zur Website von %s, wird in einem neuen Tab geöffnet)"
 #. translators: %s is the Author name.
 #: wp-includes/blocks/avatar.php:65
 msgid "(%s author archive, opens in a new tab)"
-msgstr "(Autoren-Archiv von %s, wird in einem neuen Tab geöffnet)"
+msgstr "(Autorenarchiv von %s, wird in einem neuen Tab geöffnet)"
 
 #. translators: %s: Author name.
 #: wp-includes/blocks/avatar.php:50 wp-includes/blocks/avatar.php:77
@@ -13527,7 +13527,7 @@ msgstr "Archiv"
 #: wp-includes/theme.php:2476
 msgctxt "Theme starter content"
 msgid "This is an example of a homepage section. Homepage sections can be any page other than the homepage itself, including the page that shows your latest blog posts."
-msgstr "Hier ist als Beispiel ein Abschnitt deiner Homepage. Ein Homepage-Abschnitt kann jede Seite sein; ausgenommen die Homepage selbst, aber einschließlich der Seite, die deine neuen Blog-Beiträge zeigt."
+msgstr "Hier ist als Beispiel ein Abschnitt deiner Homepage. Ein Homepage-Abschnitt kann jede Seite sein; ausgenommen die Homepage selbst, aber einschließlich der Seite, die deine neuen Blogbeiträge zeigt."
 
 #: wp-includes/theme.php:2468
 msgctxt "Theme starter content"
@@ -15713,22 +15713,22 @@ msgstr "Breite für mittelgroße Bilder"
 #. translators: %s: Site link.
 #: wp-includes/theme-compat/sidebar.php:107
 msgid "You are currently browsing the %s blog archives."
-msgstr "Du befindest dich aktuell im Blog-Archiv von %s."
+msgstr "Du befindest dich im Blogarchiv von %s."
 
 #. translators: 1: Site link, 2: Archive year.
 #: wp-includes/theme-compat/sidebar.php:83
 msgid "You are currently browsing the %1$s blog archives for the year %2$s."
-msgstr "Du befindest dich im Moment in den Blog-Archiven von %1$s für das Jahr %2$s."
+msgstr "Du befindest dich im Blogarchiv von %1$s für das Jahr %2$s."
 
 #. translators: 1: Site link, 2: Archive month.
 #: wp-includes/theme-compat/sidebar.php:70
 msgid "You are currently browsing the %1$s blog archives for %2$s."
-msgstr "Du befindest dich im Moment in den Blog-Archiven von %1$s für %2$s."
+msgstr "Du befindest dich im Blogarchiv von %1$s für %2$s."
 
 #. translators: 1: Site link, 2: Archive date.
 #: wp-includes/theme-compat/sidebar.php:57
 msgid "You are currently browsing the %1$s blog archives for the day %2$s."
-msgstr "Du befindest dich im Moment in den Blog-Archiven von %1$s für den Tag %2$s."
+msgstr "Du befindest dich im Blogarchiv von %1$s für den Tag %2$s."
 
 #. translators: %s: Admin email link.
 #: wp-includes/ms-load.php:111
@@ -20306,7 +20306,7 @@ msgstr "l, j. F Y"
 #. translators: %s: Category name.
 #: wp-includes/theme-compat/sidebar.php:46
 msgid "You are currently browsing the archives for the %s category."
-msgstr "Du befindest dich im Moment im Archiv der Kategorie %s."
+msgstr "Du befindest dich im Archiv der Kategorie %s."
 
 #. translators: Used to join items in a list with only 2 items.
 #: wp-includes/formatting.php:5354

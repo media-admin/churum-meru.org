@@ -2,7 +2,7 @@
 /**
  * Footer Template – Churum Meru Theme
  * Datei: footer.php
- * Version: 2.0.0 – Polylang Mehrsprachigkeit
+ * Version: 2.1.0 – Footer-Logo separates Theme Mod
  */
 ?>
 
@@ -14,30 +14,47 @@
     <div class="footer-top">
         <div class="container">
 
-            <!-- Spalte 1: Logo -->
+            <!-- Spalte 1: Footer-Logo (eigenes Theme Mod, unabhängig vom Header-Logo) -->
             <div class="footer-widget footer-col-logo">
                 <?php
-                $custom_logo_id = get_theme_mod('custom_logo');
-                if ( $custom_logo_id ) :
-                    $logo = wp_get_attachment_image_src( $custom_logo_id, 'full' );
+                $home_url = function_exists('pll_home_url') ? pll_home_url() : home_url('/');
+
+                // 1. Footer-spezifisches Logo (via Customizer → Footer → Footer-Logo)
+                $footer_logo_id = get_theme_mod('footer_logo');
+
+                if ( $footer_logo_id ) :
+                    $logo = wp_get_attachment_image_src( $footer_logo_id, 'full' );
                     if ( $logo ) : ?>
-                        <a href="<?php echo esc_url( function_exists('pll_home_url') ? pll_home_url() : home_url('/') ); ?>" rel="home">
+                        <a href="<?php echo esc_url( $home_url ); ?>" rel="home">
                             <img src="<?php echo esc_url( $logo[0] ); ?>"
                                  alt="<?php bloginfo('name'); ?>"
                                  class="footer-logo-img"
                                  loading="lazy">
                         </a>
                     <?php endif;
+
+                // 2. Fallback: globales Header-Logo
+                elseif ( $header_logo_id = get_theme_mod('custom_logo') ) :
+                    $logo = wp_get_attachment_image_src( $header_logo_id, 'full' );
+                    if ( $logo ) : ?>
+                        <a href="<?php echo esc_url( $home_url ); ?>" rel="home">
+                            <img src="<?php echo esc_url( $logo[0] ); ?>"
+                                 alt="<?php bloginfo('name'); ?>"
+                                 class="footer-logo-img"
+                                 loading="lazy">
+                        </a>
+                    <?php endif;
+
+                // 3. Fallback: Seitenname als Text
                 else : ?>
-                    <a href="<?php echo esc_url( function_exists('pll_home_url') ? pll_home_url() : home_url('/') ); ?>"
+                    <a href="<?php echo esc_url( $home_url ); ?>"
                        class="footer-site-name" rel="home">
                         <?php bloginfo('name'); ?>
                     </a>
                 <?php endif; ?>
             </div>
 
-            <!-- Spalte 2: Letzte Einträge
-                 Polylang filtert WP_Query automatisch nach aktiver Sprache -->
+            <!-- Spalte 2: Letzte Einträge -->
             <div class="footer-widget footer-col-recent">
                 <h3 class="widget-title">
                     <?php esc_html_e( 'Letzte Einträge', 'churum-meru-theme' ); ?>
@@ -62,9 +79,7 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Spalte 3: Gesetzlich
-                 Polylang → je Sprache eigenes Menü unter Design → Menüs
-                 der Location "Footer Legal" zuweisen -->
+            <!-- Spalte 3: Gesetzlich -->
             <div class="footer-widget footer-col-legal">
                 <h3 class="widget-title">
                     <?php esc_html_e( 'Gesetzlich', 'churum-meru-theme' ); ?>
@@ -80,9 +95,7 @@
                 endif; ?>
             </div>
 
-            <!-- Spalte 4: Kontakt
-                 Widget-Area per Sprache → Design → Widgets
-                 "Footer: Kontakt (DE)", "Footer: Kontakt (ES)" etc. -->
+            <!-- Spalte 4: Kontakt Widget-Area -->
             <div class="footer-widget footer-col-contact">
                 <h3 class="widget-title">
                     <?php esc_html_e( 'Kontakt', 'churum-meru-theme' ); ?>

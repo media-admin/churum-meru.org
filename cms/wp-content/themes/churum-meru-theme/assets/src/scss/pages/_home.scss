@@ -1,1 +1,32 @@
-// Home Page
+@use '../abstracts' as *;
+
+// ── Startseite ──────────────────────────────────────────────────────────────
+
+.home {
+
+    // 1. Seitentitel ausblenden
+    .entry-header {
+        display: none;
+    }
+
+    // 2. Horizontalen Overflow verhindern (fullwidth-Trick)
+    .site-main {
+        overflow-x: hidden;
+    }
+
+    // 3. Hero-Slider: aus dem Container herausbrechen + hinter Header schieben
+    .entry-content > .hero-slider {
+        width:         100vw !important;
+        max-width:     100vw !important;
+        margin-left:   calc(50% - 50vw) !important;
+        margin-top:    -88px !important;   // Desktop-Headerhöhe
+        margin-bottom: var(--space-2xl);
+        height:        100svh !important;  // volle Viewporthöhe
+
+        // Mobile: kleinere Headerhöhe + kompakterer Slider
+        @media (max-width: 991px) {
+            margin-top: -64px !important;
+            height:     70svh !important;
+        }
+    }
+}

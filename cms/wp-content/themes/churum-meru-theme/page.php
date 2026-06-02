@@ -1,28 +1,46 @@
 <?php
 /**
  * Page Template – Churum Meru Theme
- * Datei: page.php
  *
- * Hero wird gerendert sobald hero_image_show = true,
- * unabhängig davon ob ein Bild gesetzt ist.
- * Ohne Bild: Primary-Color-Hintergrund + Titel.
+ * Hero-Status wird VOR get_header() geprüft.
  */
+
+// ── Hero-Felder VOR get_header() auslesen ────────────────────────────────────
+
+$cm_show_hero = function_exists('get_field') && get_field('hero_image_show');
+
+if ( $cm_show_hero ) {
+
+    // body_class-Filter → hat-page-hero Klasse für CSS-Targeting
+    add_filter( 'body_class', function( $classes ) {
+        $classes[] = 'has-page-hero';
+        return $classes;
+    });
+
+    // wp_head-Hook (Priority 999 = nach allen Theme-Styles)
+    add_action( 'wp_head', function() {
+        echo '<style id="ml-page-hero-fix">'
+           // site-main: kein overflow-clipping, kein padding
+           . '.has-page-hero .site-main{'
+           . 'padding-top:0!important;'
+           . 'overflow:visible!important;'
+           . '}'
+           . '</style>';
+    }, 999 );
+}
 
 get_header();
 
 // ── Hero Image ────────────────────────────────────────────────────────────────
 
-if ( function_exists('get_field') && get_field('hero_image_show') ) :
+if ( $cm_show_hero ) :
 
-    // Seiteneigenes Bild
-    $img_desktop = get_field('image_desktop');
+    $img_desktop = get_field('hero_image_desktop');
 
-    // Fallback: globales Fallback-Bild aus Agency Core → Hero Image Einstellungen
     if ( ! $img_desktop ) {
         $img_desktop = get_field( 'hero_fallback_desktop', 'option' );
     }
 
-    // Fallback 2: Featured Image der Seite
     if ( ! $img_desktop && has_post_thumbnail() ) {
         $tid = get_post_thumbnail_id();
         $src = wp_get_attachment_image_src( $tid, 'full' );
@@ -36,32 +54,32 @@ if ( function_exists('get_field') && get_field('hero_image_show') ) :
         }
     }
 
-    $img_mobile   = get_field('image_mobile')
-                 ?: get_field('hero_fallback_mobile', 'option');
+    $img_mobile = get_field('hero_image_mobile')
+               ?: get_field('hero_fallback_mobile', 'option');
 
-    $hero_title   = get_field('hero_image_title')   ?: get_the_title();
-    $hero_sub     = get_field('hero_image_subtitle') ?: '';
-    $hero_btn     = get_field('hero_btn1_text')      ?: '';
+    $hero_title  = get_field('hero_image_title')   ?: get_the_title();
+    $hero_sub    = get_field('hero_image_subtitle') ?: '';
+    $hero_btn    = get_field('hero_btn1_text')      ?: '';
 
-    // Seiteneigene Einstellungen, Fallback auf globale Agency Core Defaults
-    $hero_align   = get_field('hero_image_align')
-                 ?: get_field('hero_default_align',  'option')
-                 ?: 'center';
-    $hero_height  = get_field('hero_image_height')
-                 ?: get_field('hero_default_height', 'option')
-                 ?: 'md';
-    $hero_vpos    = get_field('hero_image_vpos')     ?: 'bottom';
+    $hero_align  = get_field('hero_image_align')
+                ?: get_field('hero_default_align', 'option')
+                ?: 'center';
+    $hero_height = get_field('hero_image_height')
+                ?: get_field('hero_default_height', 'option')
+                ?: 'md';
+    $hero_vpos   = get_field('hero_image_vpos') ?: 'bottom';
 
-    // Overlay: Seitenwert → globaler Wert (in %, daher /100) → 0
     $page_opacity   = get_field('hero_image_opacity');
-    $global_opacity = get_field('overlay_opacity', 'option');
-    $hero_opacity   = $page_opacity ?? ( $global_opacity !== null ? $global_opacity / 100 : 0 );
+    $global_opacity = get_field('hero_overlay_opacity', 'option');
+    $hero_opacity   = ( $page_opacity !== null && $page_opacity !== '' )
+        ? floatval( $page_opacity )
+        : ( $global_opacity !== null ? floatval( $global_opacity ) / 100 : 0.3 );
 
-    // Klassen
+    // Klassen & Höhen
     $is_numeric_height = is_numeric( $hero_height );
     $height_class      = $is_numeric_height ? '' : 'hero-image--' . sanitize_html_class( $hero_height );
-    $height_style      = $is_numeric_height ? ' style="height:' . intval($hero_height) . 'px"' : '';
-    $no_image_class    = ( ! $img_desktop ) ? ' hero-image--no-bg' : '';
+    $height_style_attr = $is_numeric_height ? 'height:' . intval($hero_height) . 'px;' : '';
+    $no_image_class    = $img_desktop ? '' : ' hero-image--no-bg';
 
     $hero_classes = trim( implode( ' ', array_filter([
         'hero-image',
@@ -70,7 +88,7 @@ if ( function_exists('get_field') && get_field('hero_image_show') ) :
         'hero-image--vpos-'  . sanitize_html_class( $hero_vpos ),
     ]) ) ) . $no_image_class;
 
-    // Bild-Daten Desktop
+    // Bild Desktop
     $d_url = $d_alt = $d_w = $d_h = '';
     if ( $img_desktop ) {
         if ( is_array($img_desktop) ) {
@@ -87,16 +105,24 @@ if ( function_exists('get_field') && get_field('hero_image_show') ) :
         }
     }
 
-    // Bild-Daten Mobile
+    // Bild Mobile
     $m_url = '';
     if ( $img_mobile ) {
         $m_url = is_array($img_mobile)
             ? ( $img_mobile['url'] ?? '' )
             : wp_get_attachment_url( intval($img_mobile) );
     }
+
+    // ── Inline-Style direkt auf dem <section>-Element ─────────────────────────
+    // Umgeht CSS-Spezifitätsprobleme und overflow-Clipping komplett.
+    // var(--header-height, 88px) wird vom Theme gesetzt; 88px ist der Fallback.
+    $section_inline = $height_style_attr
+        . 'position:relative;'
+        . 'z-index:0;';
     ?>
 
-    <section class="<?php echo esc_attr( $hero_classes ); ?>"<?php echo $height_style; ?>
+    <section class="<?php echo esc_attr( $hero_classes ); ?>"
+             style="<?php echo esc_attr( $section_inline ); ?>"
              aria-label="<?php echo esc_attr( $hero_title ); ?>">
 
         <?php if ( $d_url ) : ?>
@@ -121,7 +147,7 @@ if ( function_exists('get_field') && get_field('hero_image_show') ) :
             <?php endif; ?>
 
             <div class="hero-image__overlay"
-                 style="--hero-opacity: <?php echo esc_attr( floatval($hero_opacity) ); ?>"
+                 style="--hero-opacity: <?php echo esc_attr( $hero_opacity ); ?>"
                  aria-hidden="true"></div>
         <?php endif; ?>
 
@@ -153,7 +179,7 @@ if ( function_exists('get_field') && get_field('hero_image_show') ) :
 
     </section>
 
-<?php endif; // hero_image_show ?>
+<?php endif; // cm_show_hero ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
 

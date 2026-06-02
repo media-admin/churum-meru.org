@@ -3,21 +3,21 @@
  * Shortcode: Mitglieder-Grid
  * Datei: inc/shortcode-mitglieder.php
  *
- * Einbinden in der Plugin-Hauptdatei oder inc/shortcodes.php:
- *   require_once plugin_dir_path( __FILE__ ) . 'inc/shortcode-mitglieder.php';
- *
  * Verwendung:
  *   [mitglieder]
  *   [mitglieder kategorie="Vorstand"]
- *   [mitglieder kategorie="Vorstand" sprache="de" spalten="4" limit="8"]
+ *   [mitglieder kategorie="Ehrenmitglieder" spalten="1"]
  *
  * Parameter:
  *   kategorie   – Name der team_category (leer = alle)
  *   sprache     – Polylang-Sprachcode z.B. "de" | "es" (leer = alle Sprachen)
- *   spalten     – Anzahl Spalten auf Desktop: 2 | 3 | 4  (Standard: 3)
+ *   spalten     – Anzahl Spalten auf Desktop: 1 | 2 | 3 | 4  (Standard: 3)
  *   limit       – Max. Anzahl Einträge, -1 = alle          (Standard: -1)
  *   reihenfolge – ASC | DESC                              (Standard: ASC)
  *   sortierung  – menu_order | title | date               (Standard: menu_order)
+ *
+ * Hinweis: Bei spalten="1" wird in mitglieder-grid__bio der vollständige
+ * formatierte Post-Inhalt ausgegeben (Gutenberg-Blöcke korrekt gerendert).
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -66,12 +66,10 @@ function cm_mitglieder_grid_shortcode( $atts ) : string {
         'order'          => strtoupper( $atts['reihenfolge'] ) === 'DESC' ? 'DESC' : 'ASC',
     ];
 
-    // Polylang: nur filtern wenn sprache= explizit angegeben
     if ( ! empty( $atts['sprache'] ) ) {
         $args['lang'] = sanitize_key( $atts['sprache'] );
     }
 
-    // Kategorie-Filter (nach Name, nicht Slug)
     if ( ! empty( $atts['kategorie'] ) ) {
         $args['tax_query'] = [ [
             'taxonomy' => 'team_category',
@@ -88,7 +86,6 @@ function cm_mitglieder_grid_shortcode( $atts ) : string {
             . '</p>';
     }
 
-    // Output-Puffer
     ob_start();
     ?>
     <div class="mitglieder-grid mitglieder-grid--cols-<?php echo esc_attr( $cols ); ?>">
@@ -103,8 +100,8 @@ function cm_mitglieder_grid_shortcode( $atts ) : string {
         $email = function_exists('get_field') ? get_field( CM_MEMBER_FIELD_EMAIL, $id ) : '';
         $phone = function_exists('get_field') ? get_field( CM_MEMBER_FIELD_PHONE, $id ) : '';
 
-        // Fallback Bio → vollständiger Post-Inhalt (kein gekürztes Excerpt)
-        if ( empty( $bio ) ) {
+        // Bei cols > 1: Bio-Fallback auf Plain-Text-Inhalt
+        if ( $cols > 1 && empty( $bio ) ) {
             $bio = wp_strip_all_tags( get_the_content() );
         }
 
@@ -155,7 +152,6 @@ function cm_mitglieder_grid_shortcode( $atts ) : string {
             </div>
 
             <?php /* ── Kontakt: E-Mail + Telefon + Social ──── */ ?>
-            <?php /* Immer gerendert (auch leer) – Subgrid-Track 3 muss existieren */ ?>
             <div class="mitglieder-grid__contact">
 
                 <?php if ( ! empty( $email ) ) : ?>
@@ -192,12 +188,26 @@ function cm_mitglieder_grid_shortcode( $atts ) : string {
 
             </div>
 
-            <?php /* ── Footer: Bio ───────────────────────────── */ ?>
-            <?php if ( ! empty( $bio ) ) : ?>
+            <?php /* ── Footer: Bio / vollständiger Content ─── */ ?>
+            <?php
+            $has_content = $cols === 1
+                ? ! empty( trim( get_the_content() ) )
+                : ! empty( $bio );
+            ?>
+            <?php if ( $has_content ) : ?>
             <footer class="mitglieder-grid__footer">
-                <p class="mitglieder-grid__bio"><?php echo esc_html( $bio ); ?></p>
+                <?php if ( $cols === 1 ) : ?>
+                    <?php /* Spalte 1 (Ehrenmitglieder): vollständiger formatierter Content */ ?>
+                    <div class="mitglieder-grid__bio mitglieder-grid__bio--full">
+                        <?php echo apply_filters( 'the_content', get_the_content() ); ?>
+                    </div>
+                <?php else : ?>
+                    <?php /* Mehrspaltiges Grid: ACF-Kurztext / Plain-Text */ ?>
+                    <p class="mitglieder-grid__bio"><?php echo esc_html( $bio ); ?></p>
+                <?php endif; ?>
             </footer>
             <?php endif; ?>
+
         </article>
     <?php
     endwhile;

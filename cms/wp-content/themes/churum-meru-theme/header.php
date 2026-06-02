@@ -4,6 +4,77 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php wp_head(); ?>
+    <style id="ml-hero-padding-fix">
+        /* ── CSS-Variable: Mobile-Fallback (JS überschreibt nach vollständigem Load) */
+        :root {
+            --header-height: 64px;
+        }
+
+        /* ── Hero: padding-top entfernen, overflow freigeben ─────────────────── */
+        .site-main:has(> .hero-image:first-child) {
+            padding-top: 0 !important;
+            overflow: visible !important;
+        }
+
+        /* ── Hero: margin-top mit Variable ───────────────────────────────────── */
+        .hero-image {
+            margin-top: calc(-1 * var(--header-height)) !important;
+        }
+
+        /* ── Hero Desktop: max-height auf 500px (war 400px) ──────────────────── */
+        @media (min-width: 992px) {
+            .hero-image {
+                max-height: 500px !important;
+            }
+        }
+
+        /* ── Site-Header: ca. doppelt so hoch ────────────────────────────────── */
+        @media (min-width: 992px) {
+            .site-header,
+            .site-navigation {
+                min-height: 125px !important;
+            }
+            /* Logo mitwächst: Höhe automatisch, Breite begrenzt */
+            .site-logo__img--desktop {
+                width: auto !important;
+                height: 110px !important; /* ca. 60% der Header-Höhe */
+                max-width: 320px;
+                object-fit: contain;
+            }
+        }
+
+        /* ── Hero-Titel: vertikal zentriert zwischen Header-UK und Hero-UK ───── */
+        /* Override vpos-bottom: Content nimmt volle Höhe ein */
+        .hero-image--vpos-bottom {
+            align-items: stretch !important;
+        }
+        /* Padding-top = Header-Höhe → verbleibender Raum wird zentriert */
+        .hero-image--vpos-bottom .hero-image__content {
+            display:        flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            padding-top:    var(--header-height) !important;
+            box-sizing:     border-box !important;
+        }
+    </style>
+    <script>
+        // --header-height dynamisch setzen – NACH vollständigem Load
+        // (Fonts + Logo müssen geladen sein für korrekte Header-Höhe)
+        (function() {
+            function setHeaderHeight() {
+                var h = document.querySelector('.site-header');
+                if (h) {
+                    document.documentElement.style.setProperty(
+                        '--header-height', h.offsetHeight + 'px'
+                    );
+                }
+            }
+            // window.load → Fonts, Bilder und Admin-Bar sind bereit
+            window.addEventListener('load', setHeaderHeight);
+            // Resize (z.B. Orientierungswechsel, Admin-Bar)
+            window.addEventListener('resize', setHeaderHeight, { passive: true });
+        })();
+    </script>
     <script>
         // Dark Mode deaktiviert – Website verwendet ausschließlich Light Mode
         (function() {
@@ -22,7 +93,6 @@
 
 <?php
 // ── Scroll Progress Bar ───────────────────────────────────────────────────
-// Sichtbarkeit per ACF gesteuert (Agency Core → Logo / Globale Einstellungen)
 if ( function_exists('get_field') && get_field('scroll_progress_enabled', 'option') ) :
     $scope = get_field('scroll_progress_scope', 'option') ?: 'single';
     $show_progress = match($scope) {
@@ -44,7 +114,6 @@ if ( function_exists('get_field') && get_field('scroll_progress_enabled', 'optio
 <?php
 /**
  * Top Header (über dem Main Header)
- * Wird nur ausgegeben, wenn in Agency Core Settings aktiviert.
  */
 if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' ) ) :
     $th_address = get_field( 'top_header_address', 'option' );
@@ -57,7 +126,6 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
     $bg_class     = 'top-header--' . esc_attr( $th_style['background'] ?? 'primary' );
     $mobile_class = 'top-header--mobile-' . esc_attr( $th_style['mobile'] ?? 'toggle' );
 
-    // ── Kontakt-Render-Map ────────────────────────────────────────────────────
     $th_renderers = [
 
         'address' => function () use ( $th_address ) {
@@ -111,7 +179,6 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
 
     ];
 
-    // ── Social-Link-Map (Daten) ───────────────────────────────────────────────
     $social_links = [
         'facebook'  => [ 'label' => 'Facebook',   'icon' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>' ],
         'instagram' => [ 'label' => 'Instagram',  'icon' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>' ],
@@ -121,7 +188,6 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
         'xing'      => [ 'label' => 'Xing',       'icon' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/></svg>' ],
     ];
 
-    // ── Reihenfolgen aus Plugin-Settings ─────────────────────────────────────
     $th_order     = function_exists( 'medialab_get_top_header_order' )
         ? medialab_get_top_header_order()
         : array_keys( $th_renderers );
@@ -137,7 +203,7 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
             <?php foreach ( $th_order as $key ) {
                 if ( isset( $th_renderers[ $key ] ) ) $th_renderers[ $key ]();
             } ?>
-        </div><!-- .top-header__contact -->
+        </div>
 
         <?php if ( ! empty( $th_social['enable'] ) ) : ?>
         <div class="top-header__social">
@@ -151,11 +217,11 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
                 <?php echo $data['icon']; ?>
             </a>
             <?php endforeach; ?>
-        </div><!-- .top-header__social -->
+        </div>
         <?php endif; ?>
 
-    </div><!-- .top-header__inner -->
-</div><!-- .top-header -->
+    </div>
+</div>
 <?php endif; // top_header_enable ?>
 
 
@@ -171,14 +237,12 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
             $logo_mobile_width  = function_exists('get_field') ? get_field('logo_mobile_width', 'option')  : 120;
 
             if ($logo_desktop) :
-                // Desktop-Logo (immer angezeigt, auf Mobile ggf. via CSS ausgeblendet)
                 echo '<img src="' . esc_url($logo_desktop['url']) . '"'
                    . ' alt="' . esc_attr($logo_desktop['alt'] ?: get_bloginfo('name')) . '"'
                    . ' width="' . esc_attr($logo_desktop_width) . '"'
                    . ' class="site-logo__img site-logo__img--desktop"'
                    . ' loading="eager">';
 
-                // Mobiles Logo (nur wenn ein separates hochgeladen wurde)
                 if ($logo_mobile) :
                     echo '<img src="' . esc_url($logo_mobile['url']) . '"'
                        . ' alt="' . esc_attr($logo_mobile['alt'] ?: get_bloginfo('name')) . '"'
@@ -188,25 +252,24 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
                 endif;
 
             else :
-                // Fallback: Seitenname als Text
                 echo '<span class="site-logo__text">' . esc_html(get_bloginfo('name')) . '</span>';
             endif;
             ?>
         </a>
-        
+
         <!-- Desktop Menu -->
         <div class="primary-menu">
             <?php
             wp_nav_menu(array(
                 'theme_location' => 'primary',
-                'container' => false,
-                'menu_class' => '',
-                'fallback_cb' => false,
-                'depth' => 4, // 4 levels
+                'container'      => false,
+                'menu_class'     => '',
+                'fallback_cb'    => false,
+                'depth'          => 4,
             ));
             ?>
         </div>
-        
+
         <!-- Mobile Toggle -->
         <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false">
             <span></span>
@@ -219,10 +282,10 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
     <?php
     wp_nav_menu(array(
         'theme_location' => 'primary',
-        'container' => false,
-        'menu_class' => '',
-        'fallback_cb' => false,
-        'depth' => 4,
+        'container'      => false,
+        'menu_class'     => '',
+        'fallback_cb'    => false,
+        'depth'          => 4,
     ));
     ?>
 </div>

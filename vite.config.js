@@ -17,26 +17,20 @@ const themeDir   = path.resolve(__dirname, 'cms/wp-content/themes/churum-meru-th
 
 const isDev = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging';
 
+// Chunks die WordPress unter stabilem Namen (ohne Hash) erwartet
+const STABLE_CHUNKS = ['swiper'];
+
 export default defineConfig({
   root: path.resolve(themeDir, 'assets'),
 
-  /**
-   * FIX: Im Dev-Modus zeigt base auf den Vite Dev Server (localhost:3000).
-   * WordPress liest diese URL aus einer JSON-Datei (s.u.) und verwendet sie
-   * für alle Asset-URLs → Browser verbindet sich mit dem Vite-WebSocket
-   * → HMR und Live Reload funktionieren.
-   *
-   * Im Build-Modus: normaler dist-Pfad für WordPress.
-   */
   base: isDev
     ? 'http://localhost:3000/'
     : '/wp-content/themes/churum-meru-theme/assets/dist/',
 
   plugins: [
-    // Triggert Full-Page-Reload bei PHP-Änderungen (relativ zum CWD = Projekt-Root)
     liveReload([
       'cms/wp-content/themes/churum-meru-theme/**/*.php',
-      'cms/wp-content/themes/churum-meru-theme/**/*.twig', // falls Twig verwendet wird
+      'cms/wp-content/themes/churum-meru-theme/**/*.twig',
     ]),
     ...(compression
       ? [
@@ -56,11 +50,26 @@ export default defineConfig({
       },
       output: {
         entryFileNames: 'js/[name].js',
-        chunkFileNames: 'js/chunks/[name]-[hash].js',
+
+        // Swiper → stabiler Name ohne Hash; alle anderen Chunks mit Hash
+        chunkFileNames: (chunkInfo) => {
+          if (STABLE_CHUNKS.includes(chunkInfo.name)) {
+            return 'js/chunks/[name].js';
+          }
+          return 'js/chunks/[name]-[hash].js';
+        },
+
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith('.css')) return 'css/style.css';
           if (/\.(png|jpe?g|svg|gif|webp)$/.test(assetInfo.name ?? '')) return 'images/[name][extname]';
           return 'assets/[name][extname]';
+        },
+
+        // Swiper als eigenen Chunk erzwingen → chunks/swiper.js
+        manualChunks: (id) => {
+          if (id.includes('/swiper/') || id.includes('\\swiper\\')) {
+            return 'swiper';
+          }
         },
       },
     },
@@ -83,8 +92,6 @@ export default defineConfig({
     port:       3000,
     strictPort: true,
     cors:       true,
-
-    // HMR über expliziten Host – wichtig wenn WordPress auf einer anderen Domain läuft
     hmr: {
       host:     'localhost',
       port:     3000,

@@ -9,31 +9,36 @@
         display: none !important;
     }
 
-    // 2. Gesamte Spacing-Kette auf 0 setzen damit Slider wirklich oben beginnt
-    .site-main    { padding-top: 0 !important; overflow-x: hidden; }
-    .container    { padding-top: 0 !important; }
-    article       { margin-top:  0 !important; }
-    .entry-content { margin-top: 0 !important; }
+    // 2. Spacing-Kette nullen → Slider beginnt oben
+    .site-main     { padding-top: 0 !important; overflow-x: hidden; }
+    .container     { padding-top: 0 !important; }
+    article        { margin-top:  0 !important; }
+    .entry-content { margin-top:  0 !important; }
 
-    // 3. Slider: aus Container herausbrechen, direkt am oberen Seitenrand
+    // 3. Slider: aus Container herausbrechen, hinter den Header schieben
+    //    margin-top = -header-height → überlappt den Header von unten
     .entry-content > .ml-block-slider {
         width:         100vw !important;
         max-width:     100vw !important;
         margin-left:   calc(50% - 50vw) !important;
-        margin-top:    0 !important;              // kein negativer Margin nötig – Spacing oben bereits 0
+        margin-top:    calc(-1 * var(--header-height, 125px)) !important;
         margin-bottom: var(--space-2xl, 4rem);
-        height:        500px !important;
-        max-height:    500px !important;
-        overflow:      hidden;
+        height:        750px !important;
+        max-height:    750px !important;
+        overflow:      visible;   // ← visible damit Dots nicht abgeschnitten werden
         position:      relative;
 
         @media (max-width: 991px) {
             height: min(70svh, 500px) !important;
         }
 
-        // Swiper und Wrapper: volle Höhe
+        // Swiper-Wrapper müssen overflow:hidden selbst managen
         .swiper,
-        .ml-slider__swiper,
+        .ml-slider__swiper {
+            height:   100% !important;
+            overflow: hidden !important;
+        }
+
         .swiper-wrapper,
         .ml-slider__wrapper,
         .swiper-slide,
@@ -45,7 +50,6 @@
         .ml-slider__slide-media {
             position: absolute !important;
             inset:    0 !important;
-            overflow: hidden;
 
             img.ml-slider__slide-img {
                 width:      100% !important;
@@ -54,60 +58,66 @@
             }
         }
 
-        // 4. Text: wie hero-image__title formatiert
-        //    Zentriert zwischen Header-Unterkante und Slider-Unterkante
+        // 4. Text: zentriert im sichtbaren Bereich (unterhalb site-header)
+        //    Formel: top = header-height/2 + 50% → Mitte des Bereichs unter dem Header
         .ml-slider__slide-content {
             position:        absolute !important;
-            top:             var(--header-height, 125px) !important;
-            bottom:          0 !important;
+            top:             calc(var(--header-height, 125px) / 2 + 50%) !important;
             left:            0 !important;
             right:           0 !important;
+            transform:       translateY(-50%) !important;
             display:         flex !important;
             flex-direction:  column !important;
             align-items:     center !important;
             justify-content: center !important;
             text-align:      center !important;
-            padding:         1rem !important;
+            padding:         0 3rem !important;
             box-sizing:      border-box !important;
+            z-index:         2;
         }
 
-        .ml-slider__slide-heading {
-            // Entspricht dem hero-image__title Style
-            display:          inline-block;
-            background-color: var(--color-primary, #ff681a);
-            color:            #fff !important;
-            font-size:        clamp(1.8rem, 4vw, 3.5rem);
-            font-weight:      900;
-            line-height:      1.15;
-            padding:          0.3em 0.7em;
-            margin:           0;
-            text-shadow:      none;
-        }
-
-        // 5. Pfeile: Abstand zum Seitenrand
+        // Pfeile: ebenfalls im sichtbaren Bereich zentrieren
         .swiper-button-prev,
-        .ml-slider__btn.swiper-button-prev {
-            left: 1.5rem !important;
-        }
         .swiper-button-next,
-        .ml-slider__btn.swiper-button-next {
-            right: 1.5rem !important;
+        .ml-slider__btn {
+            top:       calc(var(--header-height, 125px) / 2 + 50%) !important;
+            transform: translateY(-50%) !important;
         }
 
-        // 6. Pagination-Dots: sichtbar machen, am unteren Rand
-        .swiper-pagination,
-        .ml-slider__pagination {
-            position:      absolute !important;
-            bottom:        1rem !important;
-            z-index:       20 !important;
-            display:       block !important;
-            visibility:    visible !important;
+        .ml-slider__slide-heading,
+        h2.ml-slider__slide-heading,
+        h3.ml-slider__slide-heading {
+            display:          inline-block !important;
+            background-color: var(--color-primary, #ff681a) !important;
+            color:            #ffffff !important;
+            font-size:        clamp(1.8rem, 4vw, 3.5rem) !important;
+            font-weight:      900 !important;
+            line-height:      1.15 !important;
+            padding:          0.3em 0.7em !important;
+            margin:           0 !important;
+            text-shadow:      none !important;
+            border-radius:    0 !important;
+        }
+
+        // 5. Pfeile: Abstand zum Seitenrand (Position wird oben gesetzt)
+        .swiper-button-prev { left:  1.5rem !important; }
+        .swiper-button-next { right: 1.5rem !important; }
+
+        // 6. Pagination-Dots: sichtbar + außerhalb des overflow:hidden der .swiper-Ebene
+        .swiper-pagination {
+            position:   absolute !important;
+            bottom:     -2rem !important;  // unter dem Slider, sichtbar da overflow:visible
+            left:       0 !important;
+            right:      0 !important;
+            z-index:    20 !important;
+            text-align: center !important;
 
             .swiper-pagination-bullet {
-                background: rgba(255, 255, 255, 0.6) !important;
-                opacity:    1 !important;
-                width:      10px;
-                height:     10px;
+                background: var(--color-primary, #ff681a) !important;
+                opacity:    0.4 !important;
+                width:      10px !important;
+                height:     10px !important;
+                display:    inline-block !important;
             }
 
             .swiper-pagination-bullet-active {

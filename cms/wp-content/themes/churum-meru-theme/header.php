@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php wp_head(); ?>
     <style id="ml-hero-padding-fix">
-        /* ── CSS-Variable: Mobile-Fallback (JS überschreibt nach vollständigem Load) */
+        /* ── CSS-Variable: Fallback = tatsächliche Desktop-Header-Höhe ─────────── */
         :root {
-            --header-height: 64px;
+            --header-height: 125px; /* wird von JS nach window.load präzise gesetzt */
         }
 
         /* ── Hero: padding-top entfernen, overflow freigeben ─────────────────── */
@@ -28,16 +28,22 @@
             }
         }
 
-        /* ── Site-Header: ca. doppelt so hoch ────────────────────────────────── */
+        /* ── Site-Header: 85% Opazität ───────────────────────────────────────── */
+        /* Das Theme setzt background: var(--color-surface) als Shorthand →     */
+        /* background-color allein reicht nicht, Shorthand muss überschrieben   */
         @media (min-width: 992px) {
+            .site-header {
+                background:              rgba(255, 255, 255, 0.85) !important;
+                -webkit-backdrop-filter: blur(4px);
+                backdrop-filter:         blur(4px);
+            }
             .site-header,
             .site-navigation {
                 min-height: 125px !important;
             }
-            /* Logo mitwächst: Höhe automatisch, Breite begrenzt */
             .site-logo__img--desktop {
                 width: auto !important;
-                height: 110px !important; /* ca. 60% der Header-Höhe */
+                height: 80px !important;
                 max-width: 320px;
                 object-fit: contain;
             }

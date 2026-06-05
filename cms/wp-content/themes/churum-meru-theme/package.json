@@ -4,10 +4,10 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:css\" \"npm run dev:js\"",
     "dev:css": "sass --watch assets/src/scss/style.scss assets/dist/css/style.css",
-    "dev:js": "vite",
+    "dev:js": "cd ../../../../ && vite",
     "build": "npm run build:css && npm run build:js",
     "build:css": "sass assets/src/scss/style.scss assets/dist/css/style.css --style=compressed --no-source-map",
-    "build:js": "vite build"
+    "build:js": "cd ../../../../ && vite build && mkdir -p cms/wp-content/themes/churum-meru-theme/assets/dist/js/chunks && cp node_modules/swiper/swiper-bundle.min.js cms/wp-content/themes/churum-meru-theme/assets/dist/js/chunks/swiper.js && echo '[copy-swiper] ✓'"
   },
   "devDependencies": {
     "concurrently": "^8.2.0",

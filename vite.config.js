@@ -4,7 +4,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import autoprefixer from 'autoprefixer';
 
-// Compression (Brotli + Gzip) – graceful fallback wenn nicht installiert
 let compression = null;
 try {
   const mod = await import('vite-plugin-compression2');
@@ -14,19 +13,13 @@ try {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 const themeDir   = path.resolve(__dirname, 'cms/wp-content/themes/churum-meru-theme');
-
 const isDev = process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'staging';
-
-// Chunks die WordPress unter stabilem Namen (ohne Hash) erwartet
-const STABLE_CHUNKS = ['swiper'];
 
 export default defineConfig({
   root: path.resolve(themeDir, 'assets'),
-
   base: isDev
     ? 'http://localhost:3000/'
     : '/wp-content/themes/churum-meru-theme/assets/dist/',
-
   plugins: [
     liveReload([
       'cms/wp-content/themes/churum-meru-theme/**/*.php',
@@ -39,41 +32,23 @@ export default defineConfig({
         ]
       : []),
   ],
-
   build: {
     outDir:      path.resolve(themeDir, 'assets/dist'),
     emptyOutDir: true,
-
     rollupOptions: {
       input: {
         main: path.resolve(themeDir, 'assets/src/js/main.js'),
       },
       output: {
         entryFileNames: 'js/[name].js',
-
-        // Swiper → stabiler Name ohne Hash; alle anderen Chunks mit Hash
-        chunkFileNames: (chunkInfo) => {
-          if (STABLE_CHUNKS.includes(chunkInfo.name)) {
-            return 'js/chunks/[name].js';
-          }
-          return 'js/chunks/[name]-[hash].js';
-        },
-
+        chunkFileNames: 'js/chunks/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith('.css')) return 'css/style.css';
           if (/\.(png|jpe?g|svg|gif|webp)$/.test(assetInfo.name ?? '')) return 'images/[name][extname]';
           return 'assets/[name][extname]';
         },
-
-        // Swiper als eigenen Chunk erzwingen → chunks/swiper.js
-        manualChunks: (id) => {
-          if (id.includes('/swiper/') || id.includes('\\swiper\\')) {
-            return 'swiper';
-          }
-        },
       },
     },
-
     manifest:              true,
     cssCodeSplit:          false,
     chunkSizeWarningLimit: 200,
@@ -86,19 +61,13 @@ export default defineConfig({
       },
     },
   },
-
   server: {
     host:       'localhost',
     port:       3000,
     strictPort: true,
     cors:       true,
-    hmr: {
-      host:     'localhost',
-      port:     3000,
-      protocol: 'ws',
-    },
+    hmr: { host: 'localhost', port: 3000, protocol: 'ws' },
   },
-
   css: {
     preprocessorOptions: {
       scss: { api: 'modern-compiler' },
@@ -111,7 +80,6 @@ export default defineConfig({
       ],
     },
   },
-
   resolve: {
     alias: {
       '@': path.resolve(themeDir, 'assets/src'),

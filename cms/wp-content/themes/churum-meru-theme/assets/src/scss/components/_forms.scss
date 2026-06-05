@@ -12,3 +12,28 @@ select {
     border-color: $color-primary;
   }
 }
+
+// Select: WebKit/Safari zeigt color auf <select> manchmal nicht an
+// -webkit-text-fill-color erzwingt die Textfarbe zuverlässig
+select {
+  -webkit-text-fill-color: var(--color-text);
+
+  // Placeholder-Option ("Bitte wählen") etwas gedimmt darstellen
+  option:first-child {
+    color: var(--color-text-muted, #888);
+  }
+
+  // Echte Optionen: volle Textfarbe
+  option:not(:first-child) {
+    color: var(--color-text);
+    -webkit-text-fill-color: var(--color-text);
+  }
+}
+
+
+// In _forms.scss – select vertical padding fix
+.wpcf7-form select {
+    padding-top:    0;
+    padding-bottom: 0;
+    line-height:    44px;
+}

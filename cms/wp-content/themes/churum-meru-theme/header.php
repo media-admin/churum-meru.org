@@ -88,6 +88,27 @@
             localStorage.removeItem('theme-preference');
         })();
     </script>
+    <style id="ml-cf7-select-fix">
+        /* CF7 Select: macOS WebKit rendert mit appearance:none keinen Text.
+           Workaround: color transparent + text-shadow erzeugt sichtbaren Text
+           unabhängig vom Browser-Rendering-Bug.
+           Eigener Theme-Pfeil wird per background-image wiederhergestellt. */
+        .wpcf7-form-control.wpcf7-select,
+        .wpcf7 select {
+            -webkit-appearance:      none !important;
+            appearance:              none !important;
+            color:                   rgba(0,0,0,0) !important;
+            -webkit-text-fill-color: rgba(0,0,0,0) !important;
+            text-shadow:             0 0 0 #374151 !important;
+            background-image:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23999' d='M6 8L0 0h12z'/%3E%3C/svg%3E") !important;
+        }
+
+        /* Datumsfeld: Format-Platzhalter (tt.mm.jjjj) wieder dunkelgrau */
+        .wpcf7 input[type="date"]::-webkit-datetime-edit {
+            color:                   #6b7280 !important;
+            -webkit-text-fill-color: #6b7280 !important;
+        }
+    </style>
 </head>
 <body <?php body_class(); ?>>
 

@@ -74,10 +74,14 @@
             padding:         0 3rem !important;
             box-sizing:      border-box !important;
             z-index:         2;
+            will-change:     opacity;
+            transition:      opacity 0.3s ease;
         }
 
-        // Pfeile: ebenfalls im sichtbaren Bereich zentrieren
-        .swiper-button-prev,
+        // Inaktive Slides: Content ausblenden damit kein Ghosting beim Fade
+        .swiper-slide:not(.swiper-slide-active) .ml-slider__slide-content {
+            opacity: 0 !important;
+        }
         .swiper-button-next,
         .ml-slider__btn {
             top:       calc(var(--header-height, 125px) / 2 + 50%) !important;

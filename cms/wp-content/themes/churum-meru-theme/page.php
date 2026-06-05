@@ -7,7 +7,7 @@
 
 // ── Hero-Felder VOR get_header() auslesen ────────────────────────────────────
 
-$cm_show_hero = function_exists('get_field') && get_field('hero_image_show');
+$cm_show_hero = function_exists('get_field') && ( get_field('hero_image_show', get_the_ID()) === true );
 
 if ( $cm_show_hero ) {
 

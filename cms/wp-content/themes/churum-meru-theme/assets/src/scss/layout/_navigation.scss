@@ -2,7 +2,20 @@
 
 // =============================================================================
 // Navigation – Header + Mobile + Footer
-// Version: 1.2.1 – Churum Meru Brand + Sticky Transparent Header
+// Version: 1.2.3 – Mobile Padding + Header-Höhe + Logo Mobile
+//
+// ÄNDERUNGEN v1.2.3:
+//   - .mobile-menu > ul > li > a: padding $spacing-4 (32px) → $spacing-2 (16px)
+//   - .site-navigation: height → 48px auf Mobile (via respond-below('lg'))
+//   - .site-logo Padding: $spacing-2 $spacing-3 → $spacing-1 $spacing-2 auf Mobile
+//   - Logo img/svg: max-height: 36px → 56px auf Mobile (respond-below('lg'))
+//
+// ÄNDERUNGEN v1.2.2:
+//   - Mobile Submenu Fix (Option A):
+//     .sub-menu { display: none } → &.is-open entfernt
+//     Stattdessen: .menu-item-has-children.is-open > .sub-menu { display: block }
+//     Grund: JS setzt is-open auf <li.menu-item-has-children>, nicht auf <ul.sub-menu>
+//   - Logo max-height: 36px (vorher: calc(var(--header-height) - #{$spacing-2 * 2}) ≈ 48px)
 //
 // ÄNDERUNGEN v1.2.1:
 //   - .site-header background → var(--header-bg)  [rgba weiß + Transparenz]
@@ -53,7 +66,7 @@
     justify-content: space-between;
     // Fluid horizontal padding statt festem $spacing-6
     padding:         0 var(--container-padding);
-    height:          var(--header-height);              // 64px – volle Höhe
+    // Keine fixe height → Header passt sich dem Logo-Inhalt an (v1.2.4)
     max-width:       1400px;
     margin:          0 auto;
 }
@@ -86,13 +99,18 @@
     }
 
     // Logo-Bild / SVG
+    // FIX v1.2.4: Mobile max-height 72px, Desktop 36px
     img,
     svg {
         width:      auto;
         height:     auto;
         max-width:  var(--site-logo-width, 220px);
-        max-height: calc(var(--header-height) - #{$spacing-2 * 2});
+        max-height: 72px;                               // Mobile: gut sichtbar
         display:    block;
+
+        @include respond-to('lg') {
+            max-height: 36px;                           // Desktop: kompakter
+        }
     }
 }
 
@@ -454,7 +472,7 @@
     // ── Level 1 ──────────────────────────────────────────────────────────────
 
     > ul > li > a {
-        padding:     $spacing-4;
+        padding:     $spacing-2;                        // FIX v1.2.3: war $spacing-4 (32px) → 16px
         font-weight: 500;
         font-size:   var(--text-lg);
     }
@@ -478,12 +496,12 @@
     }
 
     // ── Submenüs (Level 2, 3, 4) ──────────────────────────────────────────────
+    // FIX v1.2.2: JS setzt is-open auf <li.menu-item-has-children>, nicht auf
+    // <ul.sub-menu>. Daher Sichtbarkeit über den Parent steuern (Option A).
 
     .sub-menu {
         display:    none;
         background: var(--color-card-bg);
-
-        &.is-open { display: block; }
 
         li {
             border-bottom-color: rgba(0, 0, 0, 0.08);
@@ -492,7 +510,7 @@
 
         a {
             font-size: var(--text-base);
-            padding:   $spacing-3 $spacing-4 $spacing-3 $spacing-6;
+            padding:   $spacing-2 $spacing-2 $spacing-2 $spacing-3;  // v1.2.4: halbiert (war $spacing-3 $spacing-4 $spacing-3 $spacing-6)
         }
 
         .sub-menu {
@@ -500,7 +518,7 @@
 
             a {
                 font-size: var(--text-sm);
-                padding:   $spacing-2 $spacing-4 $spacing-2 $spacing-8;
+                padding:   $spacing-1 $spacing-2 $spacing-1 $spacing-4;  // v1.2.4: halbiert (war $spacing-2 $spacing-4 $spacing-2 $spacing-8)
                 color:     var(--color-text-muted);
             }
 
@@ -510,12 +528,18 @@
 
                 a {
                     font-size:  var(--text-xs);
-                    padding:    $spacing-2 $spacing-4 $spacing-2 $spacing-10;
+                    padding:    $spacing-1 $spacing-2 $spacing-1 $spacing-5;  // v1.2.4: halbiert (war $spacing-2 $spacing-4 $spacing-2 $spacing-10)
                     color:      var(--color-text-muted);
                     font-style: italic;
                 }
             }
         }
+    }
+
+    // FIX v1.2.2: Submenü einblenden wenn Parent-<li> is-open trägt
+    // Gilt für alle Ebenen (Level 2, 3, 4)
+    .menu-item-has-children.is-open > .sub-menu {
+        display: block;
     }
 }
 

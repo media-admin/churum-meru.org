@@ -33,7 +33,7 @@
 
     // Padding: kein top/bottom – Höhe über --header-height und align-items geregelt
     padding:                 0;
-    min-height:              var(--header-height);     // 64px
+    min-height:              auto;     // vorher: var(--header-height); 64px
 
     transition:
         background   0.3s ease,

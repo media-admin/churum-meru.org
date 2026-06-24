@@ -28,6 +28,22 @@ export default class Navigation {
         this._initFooterSubmenus();
         this._initDesktopViewportCheck();
         this._addToggleIcons();
+        this._setHeaderHeight();
+    }
+
+    // ─── Tatsächliche Header-Höhe als CSS-Variable setzen ────────────────────────
+
+    _setHeaderHeight() {
+        const header = document.querySelector('.site-header');
+        if (!header) return;
+
+        const update = () => {
+            const h = header.getBoundingClientRect().height;
+            document.documentElement.style.setProperty('--header-actual-height', h + 'px');
+        };
+
+        update();
+        window.addEventListener('resize', update);
     }
 
     // ─── Toggle-Icon in Mobile-Menü einfügen ─────────────────────────────────
@@ -175,4 +191,5 @@ export default class Navigation {
             item.addEventListener('mouseenter', checkOverflow, { once: false });
         });
     }
+    
 }

@@ -193,7 +193,7 @@ $color-input-bg:   $color-white;
     // Mobile:  64px  (kompakt, Touch-freundlich)
     // Desktop: 88px  (großzügiger, Logo kommt besser zur Geltung)
     // → Anpassen nach Bedarf, JS und alle sticky-Offsets nutzen diese Variable.
-    --header-height:   64px;   // Mobile default
+    --header-height:   48px;   // Mobile default
   
     // ── Header sonstige Tokens (unverändert) ───────────────────────────────────
     --header-bg:       rgba(255, 255, 255, 0.88);

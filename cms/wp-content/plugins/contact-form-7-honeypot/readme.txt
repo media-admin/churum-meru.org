@@ -1,8 +1,8 @@
 === CF7 Apps – Honeypot, Database, Redirection, Webhook, and Addons for Contact Form 7 ===
 Tags: anti-spam, spam protection, captcha, honeypot, cf7 database
 Requires at least: 4.8
-Tested up to: 6.9
-Stable tag: 3.6.0
+Tested up to: 7.0
+Stable tag: 3.7.0
 Requires PHP: 5.6
 Contributors: wpexpertsio
 License: GPLv2 or later
@@ -179,6 +179,9 @@ You can delete individual submissions or bulk delete multiple entries directly f
 = Where do I report security bugs found in this plugin? =
 Please report security bugs found in the source code of the CF7 Apps – [Honeypot and hCAPTCHA for Contact Form 7] plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/e58fd0b7-60aa-4ba8-aeeb-61889936d10c). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
+= My forms fail on cached sites. What should I do? =
+CF7 Apps Honeypot uses signed tokens that work with full-page caching. Since v3.7.0, forms validate honeypot data without relying on server-side transients. If you still see issues, exclude Contact Form 7 pages from full-page cache plugins such as WP Fastest Cache, or ensure JavaScript is not blocked by cookie consent tools before the form loads. You can also force honeypot token refresh on page load with: `add_filter( 'honeypot4cf7_force_refill', '__return_true' );`
+
 = Disclaimer =
 
 CF7 Apps is a third-party plugin and is not officially associated with or endorsed by Contact Form 7.
@@ -192,6 +195,28 @@ CF7 Apps is a third-party plugin and is not officially associated with or endors
 5. CF7 Apps Tags.
 
 == Changelog ==
+
+= 3.7.0 - July 31, 2026 =
+* NEW - Introduced new dashboard UI with improved spacing, layout alignment, visual clarity, Modern design & UX.
+* NEW - Added stateless signed honeypot tokens so cached forms validate without server-side transient lookups.
+* NEW - Added replay protection for signed honeypot tokens.
+* FIX - Fixed thousands of honeypot transient entries accumulating in the database and overloading the server.
+* FIX - Fixed honeypot field always being flagged as spam and exposing honeypot detection details in the JSON response.
+* FIX - Fixed form field spacing changes introduced in v3.6.0 that altered form layout and design.
+* FIX - Fixed conflict WP Fastest Cache.
+* FIX - Improved honeypot refill detection for WP Fastest Cache and other caching plugins when WP_CACHE is false.
+* FIX - Renamed misleading honeypot spam log messages for invalid or expired sessions.
+* TWEAK - Improved AI credit exhaustion message to display renewal date instead of generic "Insufficient Balance" error.
+* TWEAK - Removed unnecessary admin email notice from the CF7 Apps dashboard.
+* TWEAK - Added .po and .mo language translation files for internationalization support.
+* TWEAK - Feedback SDK updated to latest version.
+* TWEAK - Honeypot refill responses and frontend script now refresh signed tokens after form submission.
+
+= 3.6.1 - June 09, 2026 =
+* TWEAK - Added additional information and improvements to Spam Detection.
+* FIX - Fixed an issue where Webhooks could interfere with form submissions.
+* FIX - Improved compatibility of the Dynamic Honeypot feature introduced in v3.6.0 with full-page caching environments.
+* FIX - Resolved minor compatibility issues to ensure compatibility with WordPress 7.0.
 
 = 3.6.0 - May 14, 2026 =
 * NEW - Added dynamic field names in Honeypot.

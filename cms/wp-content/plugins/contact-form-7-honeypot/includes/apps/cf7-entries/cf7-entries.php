@@ -30,7 +30,7 @@ if ( ! class_exists( 'CF7Apps_Entries_App' ) && class_exists( 'CF7Apps_App' ) ) 
 			$this->is_pro             = false;
 			$this->by_default_enabled = false;
 			$this->documentation_url  = 'https://cf7apps.com/docs/general/entries';
-			$this->parent_menu        = __( 'General', 'cf7apps' );
+			$this->parent_menu        = 'general';
 			$this->setting_tabs       = array(
 				'general' => __( 'General', 'cf7apps' ),
 				'entries' => __( 'Entries', 'cf7apps' ),
@@ -112,9 +112,24 @@ if ( ! class_exists( 'CF7Apps_Entries_App' ) && class_exists( 'CF7Apps_App' ) ) 
 			$form_tags   = $form->scan_form_tags();
 
 			foreach ( $form_tags as $form_tag ) {
-				if ( ! empty( $form_tag['name'] ) ) {
-					$data[ $form_tag['name'] ] = $posted_data[ $form_tag['name'] ];
+				$field_name = is_object( $form_tag ) ? $form_tag->name : ( $form_tag['name'] ?? '' );
+
+				if ( empty( $field_name ) ) {
+					continue;
 				}
+
+				$do_not_store = $form->scan_form_tags(
+					array(
+						'name'    => $field_name,
+						'feature' => 'do-not-store',
+					)
+				);
+
+				if ( ! empty( $do_not_store ) || ! array_key_exists( $field_name, $posted_data ) ) {
+					continue;
+				}
+
+				$data[ $field_name ] = $posted_data[ $field_name ];
 			}
 
 			$entry = new CF7Apps_Form_Entries();

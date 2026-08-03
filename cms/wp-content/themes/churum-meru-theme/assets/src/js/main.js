@@ -74,9 +74,16 @@ const initApp = async () => {
     safeInit('TestimonialsSlider', () => new TestimonialsSlider());
   }
 
+  // Logo Carousel: Klasse aus PHP → .logo-carousel.swiper
   if (has('.logo-carousel')) {
     const { default: LogoCarousel } = await import('./components/logo-carousel');
     safeInit('LogoCarousel', () => new LogoCarousel());
+  }
+
+  // Background Music Player: Klasse aus PHP → .bg-music-player
+  if (has('.bg-music-player')) {
+    const { default: BackgroundMusic } = await import('./components/bg-music');
+    safeInit('BackgroundMusic', () => new BackgroundMusic());
   }
 
   // Media Lab Blocks – Swiper-Slider

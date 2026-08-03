@@ -253,8 +253,6 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
 </div>
 <?php endif; // top_header_enable ?>
 
-
-
 <header class="site-header" role="banner">
     <nav class="site-navigation" role="navigation" aria-label="Primary Navigation">
         <!-- Logo -->
@@ -304,6 +302,18 @@ if ( function_exists( 'get_field' ) && get_field( 'top_header_enable', 'option' 
             <span></span>
         </button>
     </nav>
+
+    <?php if ( is_front_page() ) : ?>
+        <div class="bg-music-player" id="bg-music-player">
+            <audio id="bg-music" loop preload="auto" muted playsinline>
+                <source src="<?php echo esc_url( get_template_directory_uri() . '/assets/dist/audio/Laura-cuatro.mp3' ); ?>" type="audio/mpeg">
+            </audio>
+            <button id="bg-music-toggle" type="button" aria-pressed="false" aria-label="<?php esc_attr_e( 'Musik ein-/ausschalten', 'churum-meru' ); ?>">
+                <span class="icon-muted" aria-hidden="true">🔇</span>
+                <span class="icon-unmuted" aria-hidden="true">🔊</span>
+            </button>
+        </div>
+    <?php endif; ?>
 </header>
 
 <!-- Mobile Menu -->

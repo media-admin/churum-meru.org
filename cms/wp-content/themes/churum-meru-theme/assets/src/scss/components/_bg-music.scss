@@ -1,0 +1,59 @@
+@use '../abstracts' as *;
+
+// Positionierungs-Kontext für den Slider
+.ml-block-slider .swiper {
+    position: relative;
+}
+
+.bg-music-player {
+    position: absolute;
+    bottom: $spacing-unit * 2;
+    right: $spacing-unit * 2;
+    z-index: 20; // über Swiper-Pagination/Navigation
+
+    #bg-music-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: var(--color-secondary, #{$color-secondary});
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        &:hover {
+            background: var(--color-accent, #{$color-accent});
+            transform: scale(1.05);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--color-accent, #{$color-accent});
+            outline-offset: 2px;
+        }
+
+        .icon-muted,
+        .icon-unmuted {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        // Standardzustand: gemutet -> Muted-Icon sichtbar
+        .icon-unmuted {
+            display: none;
+        }
+
+        // Sobald unmuted -> Icon-Swap
+        &.is-unmuted {
+            .icon-muted {
+                display: none;
+            }
+            .icon-unmuted {
+                display: block;
+            }
+        }
+    }
+}

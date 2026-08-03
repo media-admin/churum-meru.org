@@ -35,6 +35,12 @@
     "src": "src/js/components/ajax-search.js",
     "isDynamicEntry": true
   },
+  "src/js/components/bg-music.js": {
+    "file": "js/chunks/bg-music-D39O6GUO.js",
+    "name": "bg-music",
+    "src": "src/js/components/bg-music.js",
+    "isDynamicEntry": true
+  },
   "src/js/components/carousel.js": {
     "file": "js/chunks/carousel-eNzfBWf6.js",
     "name": "carousel",
@@ -173,6 +179,7 @@
       "src/js/components/hero-slider.js",
       "src/js/components/testimonials-slider.js",
       "src/js/components/logo-carousel.js",
+      "src/js/components/bg-music.js",
       "src/js/components/ml-slider.js",
       "src/js/components/ml-logo-slider.js",
       "src/js/components/carousel.js",

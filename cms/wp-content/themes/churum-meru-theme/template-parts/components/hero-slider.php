@@ -39,6 +39,7 @@ if (empty($slides)) {
                 </div>
             </div>
         <?php endforeach; ?>
+        
     </div>
     
     <!-- Navigation -->
@@ -47,4 +48,5 @@ if (empty($slides)) {
     
     <!-- Pagination -->
     <div class="swiper-pagination"></div>
+    
 </div>

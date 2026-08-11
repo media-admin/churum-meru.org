@@ -109,7 +109,7 @@
         display:    block;
 
         @include respond-to('lg') {
-            max-height: 36px;                           // Desktop: kompakter
+            max-height: initial;                           // Desktop: kompakter // vorher. 56px
         }
     }
 }

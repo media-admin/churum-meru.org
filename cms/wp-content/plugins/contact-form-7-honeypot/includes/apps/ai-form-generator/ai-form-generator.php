@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'CF7APPS_AI_MIDDLEWARE_BASE_URL' ) ) {
-	define( 'CF7APPS_AI_MIDDLEWARE_BASE_URL', 'https://phpstack-1080859-6319643.cloudwaysapps.com/' );
+	define( 'CF7APPS_AI_MIDDLEWARE_BASE_URL', 'https://ai-api.wpexperts.io/' );
 }
 
 require_once __DIR__ . '/includes/class-cf7-ai-middleware-client.php';

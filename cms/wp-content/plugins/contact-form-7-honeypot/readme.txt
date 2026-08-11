@@ -1,9 +1,9 @@
 === CF7 Apps – Honeypot, Database, Redirection, Webhook, and Addons for Contact Form 7 ===
 Tags: anti-spam, spam protection, captcha, honeypot, cf7 database
-Requires at least: 4.8
-Tested up to: 7.0
-Stable tag: 3.7.0
-Requires PHP: 5.6
+Requires at least: 6.7
+Tested up to: 7.0.2
+Stable tag: 3.7.2
+Requires PHP: 7.4
 Contributors: wpexpertsio
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -196,7 +196,13 @@ CF7 Apps is a third-party plugin and is not officially associated with or endors
 
 == Changelog ==
 
-= 3.7.0 - July 31, 2026 =
+= 3.7.2 - Aug 6, 2026 =
+* UPDATED - AI Forms Server URL
+
+= 3.7.1 - Aug 06, 2026 =
+* FIX - Fixed issue when CSS is breaking the form layout in some cases.
+
+= 3.7.0 - Aug 3, 2026 =
 * NEW - Introduced new dashboard UI with improved spacing, layout alignment, visual clarity, Modern design & UX.
 * NEW - Added stateless signed honeypot tokens so cached forms validate without server-side transient lookups.
 * NEW - Added replay protection for signed honeypot tokens.

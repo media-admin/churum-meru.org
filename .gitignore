@@ -155,3 +155,9 @@ Desktop.ini
 /scripts/deploy-*.js
 deploy-config.local.*
 cms/wp-content/themes/custom-theme/assets/hot
+
+# Drittanbieter-Plugins – nicht versioniert (Auto-Updates/Fremdcode)
+cms/wp-content/plugins/media-lab-backup/
+cms/wp-content/plugins/media-lab-seo/
+cms/wp-content/plugins/flamingo/
+cms/wp-content/plugins/polylang/

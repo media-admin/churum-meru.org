@@ -116,6 +116,15 @@ Without Agency Core, the theme will display a warning.
 
 ---
 
+## Changelog
+
+### 1.14.1
+- Fix: Hero-/Startseiten-Slider – Untertitel (`.ml-slider__slide-text`) war unformatiert und auf hellen Hintergrundbildern schlecht lesbar. Jetzt weiß mit Text-Shadow, analog zum bestehenden `.ml-slider__slide-heading`-Badge.
+- Fix: Cookie-Notice angepasst (`cookie-notice.js`)
+- chore: `media-lab-agency-core` ist keine Repo-Abhängigkeit mehr innerhalb dieses Client-Repos – wird künftig ausschließlich im Starter-Kit-Repo (`media-admin/media-lab-starter-kit`) versioniert und über normale Plugin-Updates eingespielt
+
+---
+
 ## License
 
 GPL v2 or later

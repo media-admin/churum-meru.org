@@ -28,6 +28,11 @@ ACF fields auto-load from `acf-json/`
 
 Requires: Media Lab Agency Core plugin
 
+## Changelog
+
+### 1.0.1
+- Fix: `shortcode-artist-query.php` – Leer-Meldung („Keine Künstler·innen gefunden.") und automatische Trenn-Wellenlinie werden nicht mehr angezeigt, wenn die Künstler-Query kein Ergebnis liefert
+
 ## Version
 
-1.0.0
+1.0.1

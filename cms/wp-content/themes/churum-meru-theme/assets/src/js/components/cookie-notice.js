@@ -85,11 +85,33 @@ export default class CookieConsent {
             categories,
         } ) );
         this._dispatch( 'cookies:changed', categories );
+        this._logConsentServerSide( categories );
     }
 
     _hasValidConsent() {
         return this.consent !== null;
     }
+
+       // ── Server-seitiges Logging (anonymisiert, fire-and-forget) ────────────────
+
+   _logConsentServerSide( categories ) {
+       const cfg = window.medialabConsentTracker;
+       if ( ! cfg?.ajaxUrl || ! cfg?.nonce ) return;
+
+       const body = new URLSearchParams();
+       body.set( 'action', 'medialab_log_consent' );
+       body.set( 'nonce', cfg.nonce );
+       Object.entries( categories ).forEach( ( [ key, val ] ) => {
+           body.set( `categories[${key}]`, val ? '1' : '0' );
+       } );
+
+       // Fire-and-forget – darf den Consent-Flow nie blockieren oder verzögern
+       fetch( cfg.ajaxUrl, {
+           method:      'POST',
+           credentials: 'omit',
+           body,
+       } ).catch( () => {} );
+   }
 
     // ── Render ────────────────────────────────────────────────────────────────
 

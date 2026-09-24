@@ -1,38 +1,22 @@
-# Media Lab Project Starter
+# Churum Meru Plugin
 
-Project-specific CPTs, taxonomies, and ACF fields for client websites.
+**Version:** 1.0.1
+**Requires:** WordPress 6.0+, PHP 8.0+
+**Depends on:** [Media Lab Agency Core](https://github.com/media-admin/media-lab-starter-kit)
+
+Project-specific CPTs, taxonomies, and ACF fields for the Churúm-Merú client website.
 
 ## What's Included
 
-- **Custom Post Types**: Team, Project, Job, Service, Testimonial, FAQ, Hero Slides, Carousel, Maps
-- **Taxonomies**: Project Categories, Service Categories, Job Categories, Job Types, Job Locations, etc.
-- **ACF Field Groups**: 11 field groups (65 fields total) stored as JSON
-
-## Usage
-
-### For Each New Client Project:
-
-1. Duplicate this plugin folder
-2. Rename to `client-name-project` (e.g., `acme-corp-project`)
-3. Update plugin header in main PHP file
-4. Activate for client site
-5. Customize CPTs/ACF as needed
-
-## Customization
-
-Add/remove CPTs in `inc/custom-post-types.php`
-Add/remove taxonomies in `inc/taxonomies.php`
-ACF fields auto-load from `acf-json/`
+- **Custom Post Types**: Team, Testimonial, FAQ, Artist, Hero Slides, Carousel, Maps
+- **Taxonomies**: Artist Region, Artist Artform, Artist Context, Team Category
+- **ACF Field Groups**: field groups stored as JSON
+- **Shortcodes**: `[cm_artist_query]` u. a.
 
 ## Dependencies
 
-Requires: Media Lab Agency Core plugin
+Requires: **Media Lab Agency Core** plugin (gepflegt im separaten [Starter-Kit-Repo](https://github.com/media-admin/media-lab-starter-kit))
 
 ## Changelog
 
-### 1.0.1
-- Fix: `shortcode-artist-query.php` – Leer-Meldung („Keine Künstler·innen gefunden.") und automatische Trenn-Wellenlinie werden nicht mehr angezeigt, wenn die Künstler-Query kein Ergebnis liefert
-
-## Version
-
-1.0.1
+See [CHANGELOG.md](./CHANGELOG.md)

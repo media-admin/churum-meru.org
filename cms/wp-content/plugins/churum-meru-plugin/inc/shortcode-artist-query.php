@@ -102,7 +102,7 @@ function churum_meru_kuenstler_abfrage_shortcode( array $atts ): string {
     $query = new WP_Query( $args );
 
     if ( ! $query->have_posts() ) {
-        return '<p class="cm-posts-grid__empty">' . esc_html__( 'Keine Künstler·innen gefunden.', 'churum-meru' ) . '</p>';
+        return ''; // statt der "Keine Künstler·innen gefunden"-Meldung: einfach nichts ausgeben / vorher: return '<p class="cm-posts-grid__empty">' . esc_html__( 'Keine Künstler·innen gefunden.', 'churum-meru' ) . '</p>';
     }
 
     // ── Ausgabe ────────────────────────────────────────────────────────────────

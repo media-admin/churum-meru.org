@@ -161,3 +161,15 @@ cms/wp-content/plugins/media-lab-backup/
 cms/wp-content/plugins/media-lab-seo/
 cms/wp-content/plugins/flamingo/
 cms/wp-content/plugins/polylang/
+
+# Sprachdateien – automatisch von WP generiert
+cms/wp-content/languages/
+
+# Standard-WP-Readme, kommt mit jedem Core-Update neu
+cms/liesmich.html
+
+# Backup-Plugin: Laufzeit-Temp-Ordner
+cms/wp-content/mlbkp-temp/
+
+# Temporärer Notfall-Fix (nicht dauerhaft, nicht versioniert)
+cms/wp-content/mu-plugins/temp-revision-fix.php

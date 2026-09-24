@@ -57,6 +57,12 @@
     "src": "src/js/components/faq-accordion.js",
     "isDynamicEntry": true
   },
+  "src/js/components/fb-video-consent.js": {
+    "file": "js/chunks/fb-video-consent-D4OlBop4.js",
+    "name": "fb-video-consent",
+    "src": "src/js/components/fb-video-consent.js",
+    "isDynamicEntry": true
+  },
   "src/js/components/google-maps.js": {
     "file": "js/chunks/google-maps-C9esLFoU.js",
     "name": "google-maps",
@@ -133,6 +139,12 @@
     "src": "src/js/components/scroll-animations.js",
     "isDynamicEntry": true
   },
+  "src/js/components/social-embed-consent.js": {
+    "file": "js/chunks/social-embed-consent-C7NwqK25.js",
+    "name": "social-embed-consent",
+    "src": "src/js/components/social-embed-consent.js",
+    "isDynamicEntry": true
+  },
   "src/js/components/spoiler.js": {
     "file": "js/chunks/spoiler-DxgufwEn.js",
     "name": "spoiler",
@@ -194,7 +206,9 @@
       "src/js/components/ajax-search.js",
       "src/js/components/load-more.js",
       "src/js/components/ajax-filters.js",
-      "src/js/components/google-maps.js"
+      "src/js/components/google-maps.js",
+      "src/js/components/fb-video-consent.js",
+      "src/js/components/social-embed-consent.js"
     ]
   },
   "src/js/utils/sentry.js": {

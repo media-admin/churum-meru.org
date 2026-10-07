@@ -2,7 +2,13 @@
 
 // =============================================================================
 // Navigation – Header + Mobile + Footer
-// Version: 1.2.3 – Mobile Padding + Header-Höhe + Logo Mobile
+// Version: 1.2.5 – Flex nur für Menüpunkte mit Pfeil
+//
+// ÄNDERUNGEN v1.2.5:
+//   - .primary-menu > ul > li > a: display:flex, align-items und gap entfernt
+//     (display:flex verschob die Sprachumschalter-Fahnen, li.lang-item > a > img)
+//   - Neu: &.menu-item-has-children > a { display:flex; align-items; gap }
+//     → Flex gilt nur dort, wo der Pfeil (::after) ausgerichtet werden muss
 //
 // ÄNDERUNGEN v1.2.3:
 //   - .mobile-menu > ul > li > a: padding $spacing-4 (32px) → $spacing-2 (16px)
@@ -143,9 +149,6 @@
         position: relative;
 
         > a {
-            display:         flex;
-            align-items:     center;
-            gap:             $spacing-1;
             padding:         $spacing-3 $spacing-4;
             color:           var(--color-text);
             text-decoration: none;
@@ -160,6 +163,14 @@
                 outline-offset: 2px;
                 border-radius:  $radius-sm;
             }
+        }
+
+        // Flex nur dort, wo der Pfeil (::after) ausgerichtet werden muss.
+        // Andere Level-1-Links (z. B. Sprachumschalter-Fahnen) bleiben unberührt.
+        &.menu-item-has-children > a {
+            display:     flex;
+            align-items: center;
+            gap:         $spacing-1;
         }
 
         &.current-menu-item > a,

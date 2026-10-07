@@ -89,7 +89,7 @@
             "save_options": 0
         },
         {
-            "key": "field_hero_image_desktop",
+            "key": "field_slide_image_desktop",
             "label": "Desktop Image",
             "name": "image_desktop",
             "aria-label": "",
@@ -114,7 +114,7 @@
             "mime_types": ""
         },
         {
-            "key": "field_hero_image_mobile",
+            "key": "field_slide_image_mobile",
             "label": "Mobile Image",
             "name": "image_mobile",
             "aria-label": "",
@@ -139,7 +139,7 @@
             "mime_types": ""
         },
         {
-            "key": "field_hero_overlay_opacity",
+            "key": "field_slide_overlay_opacity",
             "label": "Overlay Opacity",
             "name": "overlay_opacity",
             "aria-label": "",
@@ -207,5 +207,5 @@
     "description": "",
     "show_in_rest": false,
     "display_title": "",
-    "modified": 1771236278
+    "modified": 1791383538
 }

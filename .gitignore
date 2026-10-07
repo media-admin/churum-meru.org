@@ -6,6 +6,7 @@
 /cms/wp-*.php
 /cms/xmlrpc.php
 /cms/readme.html
+/cms/liesmich.html
 /cms/license.txt
 /cms/index.php
 
@@ -18,7 +19,7 @@
 /cms/wp-config-production.php
 
 # ============================================
-# UPLOADS & GENERIERTER CONTENT
+# UPLOADS, CACHE & GENERIERTER CONTENT
 # ============================================
 /cms/wp-content/uploads/
 /cms/wp-content/upgrade/
@@ -27,52 +28,48 @@
 /cms/wp-content/advanced-cache.php
 /cms/wp-content/object-cache.php
 /cms/wp-content/db.php
+/cms/wp-content/languages/
+/cms/wp-content/mlbkp-temp/
 
 # ============================================
-# PLUGINS – Third Party (via Composer/ZIP installieren)
+# PLUGINS
+# Nur das Projekt-Plugin wird versioniert.
+# media-lab-* liegen zentral im Starter Kit,
+# Drittanbieter-Plugins kommen per ZIP/Composer.
 # ============================================
-/cms/wp-content/plugins/advanced-custom-fields/
-/cms/wp-content/plugins/advanced-custom-fields-pro/
-/cms/wp-content/plugins/contact-form-7/
-/cms/wp-content/plugins/wordpress-importer/
-/cms/wp-content/plugins/woocommerce/
-/cms/wp-content/plugins/woocommerce-gateway-stripe/
-/cms/wp-content/plugins/woocommerce-paypal-payments/
-/cms/wp-content/plugins/woocommerce-services/
-/cms/wp-content/plugins/better-search-replace/
-/cms/wp-content/plugins/ewww-image-optimizer/
-/cms/wp-content/plugins/wp-fastest-cache/
-/cms/wp-content/plugins/query-monitor/
-
-# Inaktive Plugins (noch nicht fertig entwickelt)
-/cms/wp-content/plugins/media-lab-core/
-/cms/wp-content/plugins/media-lab-analytics/
-/cms/wp-content/plugins/media-lab-events/
-/cms/wp-content/plugins/media-lab-project-starter/
-/cms/wp-content/plugins/media-lab-woocommerce/
+/cms/wp-content/plugins/*
+!/cms/wp-content/plugins/index.php
+!/cms/wp-content/plugins/churum-meru-plugin/
 
 # ============================================
-# THEMES – Standard WP Themes
+# MU-PLUGINS
+# Eigene mu-plugins sind versioniert,
+# nur lokale Fixes bleiben draußen.
+# ============================================
+/cms/wp-content/mu-plugins/cf7-autoload-fix.php
+/cms/wp-content/mu-plugins/temp-revision-fix.php
+
+# ============================================
+# THEMES
 # ============================================
 /cms/wp-content/themes/twenty*/
 
+# Build-Output und Vite-Hot-File (themeunabhängig)
+/cms/wp-content/themes/*/assets/dist/
+/cms/wp-content/themes/*/assets/hot
+
 # ============================================
 # BUILD & DEPENDENCIES
+# (Lockfiles werden bewusst versioniert)
 # ============================================
 node_modules/
 npm-debug.log*
 yarn-error.log*
-yarn.lock
-package-lock.json
 /vendor/
-composer.lock
-
-# Build-Output (wird generiert, nicht versionieren)
-/cms/wp-content/themes/custom-theme/assets/dist/
 *.map
 
 # ============================================
-# BACKUP & TEMP FILES (aus Entwicklungsiterationen)
+# BACKUP & TEMP FILES
 # ============================================
 *.bak
 *.bak2
@@ -86,14 +83,11 @@ composer.lock
 *.broken
 *.before
 *.orig
-*~ 
+*~
 *.tmp
 *.temp
 *.swp
 *.swo
-
-# JS Backup Files
-/cms/wp-content/themes/custom-theme/assets/src/js/main.js.backup-error-tracking
 
 # ============================================
 # UMGEBUNGSVARIABLEN (NIEMALS committen!)
@@ -109,7 +103,6 @@ composer.lock
 # LOGS
 # ============================================
 *.log
-/cms/wp-content/debug.log
 error_log
 php_error.log
 
@@ -154,23 +147,3 @@ Desktop.ini
 # ============================================
 /scripts/deploy-*.js
 deploy-config.local.*
-cms/wp-content/themes/custom-theme/assets/hot
-
-# Drittanbieter-Plugins – nicht versioniert (Auto-Updates/Fremdcode)
-cms/wp-content/plugins/media-lab-backup/
-cms/wp-content/plugins/media-lab-seo/
-cms/wp-content/plugins/flamingo/
-cms/wp-content/plugins/polylang/
-
-# Sprachdateien – automatisch von WP generiert
-cms/wp-content/languages/
-
-# Standard-WP-Readme, kommt mit jedem Core-Update neu
-cms/liesmich.html
-
-# Backup-Plugin: Laufzeit-Temp-Ordner
-cms/wp-content/mlbkp-temp/
-
-# Temporärer Notfall-Fix (nicht dauerhaft, nicht versioniert)
-cms/wp-content/mu-plugins/temp-revision-fix.php
-cms/wp-content/plugins/media-lab-agency-core/

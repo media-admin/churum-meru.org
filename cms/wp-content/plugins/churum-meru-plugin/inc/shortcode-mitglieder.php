@@ -128,7 +128,7 @@ function cm_mitglieder_grid_shortcode( $atts ) : string {
             <?php /* ── Foto ──────────────────────────────────── */ ?>
             <div class="mitglieder-grid__image-wrap">
                 <?php if ( has_post_thumbnail() ) : ?>
-                    <?php the_post_thumbnail( 'medium', [
+                    <?php the_post_thumbnail( $cols === 1 ? 'large' : 'medium', [
                         'class'   => 'mitglieder-grid__image',
                         'alt'     => esc_attr( get_the_title() ),
                         'loading' => 'lazy',

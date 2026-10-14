@@ -37,8 +37,8 @@
         &--cols-4 { grid-template-columns: repeat(4, 1fr); }
     }
 
-    // ── Spalte 1: Horizontales Layout (Bild links, Inhalt rechts) ─────────────
-    // Kein Subgrid nötig – eine Karte pro Zeile, kein spaltenübergreifendes Alignment.
+        // ── Spalte 1: Foto links (3:4, oben), Inhalt rechts ───────────────────────
+    // Kein Subgrid nötig – eine Karte pro Zeile.
 
     &--cols-1 &__card {
         grid-row: span 1;                          // Subgrid-Span aufheben
@@ -48,18 +48,32 @@
             "image  body"
             "image  contact"
             "image  footer";
+        align-items: start;                        // nichts wird in die Höhe gezogen
+
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+    }
+
+    // Ohne Rahmen kein Hover-Lift mit Schatten.
+    // :hover ist nötig, sonst gewinnt die Hover-Regel der Basis-Karte (gleiche Spezifität, später im File).
+    &--cols-1 &__card:hover {
+        box-shadow: none;
+        transform: none;
     }
 
     &--cols-1 &__image-wrap {
         grid-area: image;
-        aspect-ratio: unset;   // Höhe vom Inhalt bestimmt, nicht vom Seitenverhältnis
-        min-height: 240px;
+        align-self: start;                         // Foto bündig am oberen Rand
+        aspect-ratio: 3 / 4;
+        min-height: 0;
 
         img,
         svg {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain !important; // war: cover
+            object-position: center top;           // Zuschnitt oben verankert (Köpfe bleiben im Bild)
             display: block;
         }
     }
@@ -74,8 +88,7 @@
     }
 
     &--cols-1 &__footer {
-        grid-area: footer;
-        align-self: end;       // Bio bleibt am unteren Rand der Karte
+        grid-area: footer;                         // Bio direkt unter dem Kontakt, nicht mehr am unteren Rand
     }
 
     &__empty {
@@ -121,6 +134,7 @@
         object-fit: cover;
         display: block;
         transition: transform $transition-base;
+        padding-top: $spacing-5;
 
         .mitglieder-grid__card:hover & {
             transform: scale(1.04);
